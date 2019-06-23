@@ -1,39 +1,65 @@
-# eap-server
+## 简介
+[ jeeweb-vue-admin](https://gitee.com/dataact/jeeweb-vue-admin) 是一个基于vue-element-admin的，并且需要配合jeeweb的前后端分离模块一起开发模块。
 
-#### 介绍
-{**以下是码云平台说明，您可以替换此简介**
-码云是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用码云实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+[后端源码（JeeWeb）](https://gitee.com/dataact/jeeweb/)
 
-#### 软件架构
-软件架构说明
+[在线访问](http://vuedemo.jeeweb.cn)
 
+## 界面预览
+![输入图片说明](https://images.gitee.com/uploads/images/2018/1120/165223_c531df44_1394985.png "QQ截图20181120164919.png")
 
-#### 安装教程
+![输入图片说明](https://images.gitee.com/uploads/images/2018/1120/165233_c96b6c74_1394985.png "QQ截图20181120164934.png")
 
-1. xxxx
-2. xxxx
-3. xxxx
+![输入图片说明](https://images.gitee.com/uploads/images/2018/1120/165242_9d09ed0e_1394985.png "QQ截图20181120164953.png")
 
-#### 使用说明
+![输入图片说明](https://images.gitee.com/uploads/images/2018/1120/165255_29ce44cf_1394985.png "QQ截图20181120165031.png")
 
-1. xxxx
-2. xxxx
-3. xxxx
+## 开发
 
-#### 参与贡献
+```bash
+# 克隆项目
+git clone https://gitee.com/dataact/jeeweb-vue-admin.git
 
-1. Fork 本仓库
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
+# 安装依赖
+npm install
 
+# 建议不要用 cnpm 安装 会有各种诡异的bug 可以通过如下操作解决 npm 下载速度慢的问题
+npm install --registry=https://registry.npm.taobao.org
 
-#### 码云特技
+# 启动服务
+npm run dev
+```
 
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+浏览器访问 http://localhost:9527
+
+## 发布
+
+```bash
+# 构建测试环境
+npm run build:sit
+
+# 构建生产环境
+npm run build:prod
+```
+
+## 其它
+
+```bash
+# --report to build with bundle size analytics
+npm run build:prod
+
+# --generate a bundle size analytics. default: bundle-report.html
+npm run build:prod --generate_report
+
+# --preview to start a server in local to preview
+npm run build:prod --preview
+
+# lint code
+npm run lint
+
+# auto fix
+npm run lint -- --fix
+```
+
+详细文档可以参考（vue-element-admin）：
+[vue-element-admin](http://panjiachen.github.io/vue-element-admin) 是一个后台集成解决方案，它基于 [vue]

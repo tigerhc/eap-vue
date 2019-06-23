@@ -1,0 +1,289 @@
+<template>
+  <div class="navbar">
+    <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
+
+    <!-- <breadcrumb class="breadcrumb-container"/> -->
+    <div class="headerSur">
+      <el-tabs v-model="activeName" @tab-click="chooseFirstLeave" >
+        <el-tab-pane v-for="(item,index) in firstLeave" :key="index" :label="item.name" :name="item.id"/>
+      </el-tabs>
+    </div>
+    <div class="right-menu">
+      <el-dropdown style="top: -10px;" trigger="click" @command="handleCommand">
+        <span class="el-dropdown-link">
+          <span style="position: relative;top: -6px;color: #101010;font-size: 18px;">系统</span>
+          <i style="position: relative;top: -5px;" class="el-icon-caret-bottom"/>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item v-for="(item,index) in projectList" :command="item" :key="index">{{ item.projectName }}</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <template v-if="device!=='mobile'">
+        <error-log class="errLog-container right-menu-item"/>
+
+        <el-tooltip :content="$t('navbar.screenfull')" effect="dark" placement="bottom">
+          <screenfull class="screenfull right-menu-item"/>
+        </el-tooltip>
+
+        <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
+          <size-select class="international right-menu-item"/>
+        </el-tooltip>
+
+        <lang-select class="international right-menu-item"/>
+
+        <el-tooltip :content="$t('navbar.theme')" effect="dark" placement="bottom">
+          <theme-picker class="theme-switch right-menu-item"/>
+        </el-tooltip>
+      </template>
+
+      <el-dropdown class="avatar-container right-menu-item" trigger="click">
+        <div class="avatar-wrapper">
+          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <i class="el-icon-caret-bottom"/>
+        </div>
+        <el-dropdown-menu slot="dropdown">
+          <router-link to="/home">
+            <el-dropdown-item>
+              {{ $t('navbar.home') }}
+            </el-dropdown-item>
+          </router-link>
+          <router-link to="/info">
+            <el-dropdown-item divided>
+              用户信息
+            </el-dropdown-item>
+          </router-link>
+          <router-link to="/change/password">
+            <el-dropdown-item>
+              修改密码
+            </el-dropdown-item>
+          </router-link>
+          <el-dropdown-item divided>
+            <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+  </div>
+</template>
+
+<script>
+import { getToken, setToken, removeToken, getRefreshToken, setRefreshToken, removeRefreshToken } from '@/utils/auth'
+import { fetchProList } from '@/api/sys/project'
+import { mapGetters } from 'vuex'
+import { fetchMenuList, fetchMeunRouterList } from '@/api/sys/menu'
+import Breadcrumb from '@/components/Breadcrumb'
+import Hamburger from '@/components/Hamburger'
+import ErrorLog from '@/components/ErrorLog'
+import Screenfull from '@/components/Screenfull'
+import SizeSelect from '@/components/SizeSelect'
+import LangSelect from '@/components/LangSelect'
+import ThemePicker from '@/components/ThemePicker'
+
+export default {
+  components: {
+    Breadcrumb,
+    Hamburger,
+    ErrorLog,
+    Screenfull,
+    SizeSelect,
+    LangSelect,
+    ThemePicker
+  },
+  computed: {
+    ...mapGetters([
+      'sidebar',
+      'name',
+      'avatar',
+      'device',
+      'addRouters',
+      'project'
+    ])
+  },
+  data() {
+    return {
+      firstLeave: [],
+      projectList: [],
+      activeName: ''
+    }
+  },
+  mounted() {
+    const obj =  this.$route.query
+    if(obj.projectPhotoUrl){
+      window.sessionStorage.setItem('project',JSON.stringify(obj))
+    }
+    const projectItem = JSON.parse(sessionStorage.getItem('project')) 
+    this.$store.dispatch('getProject',projectItem)
+    this.getFirstMeun()
+    this.getList()
+  },
+  methods: {
+    toggleSideBar() {
+      this.$store.dispatch('toggleSideBar')
+    },
+    logout() {
+      this.$store.dispatch('LogOut').then(() => {
+        location.reload()// In order to re-instantiate the vue-router object to avoid bugs
+      })
+    },
+    // 切换系统
+    handleCommand(item) {
+      window.location.href = item.projectUrl + '?projectId=' + item.projectId + '&projectName=' + item.projectName +'&projectPhotoUrl=' + item.projectPhotoUrl
+    },
+    // 查询项目
+    getList() {
+      const params = this.changeParams()
+      fetchProList(params).then(response => {
+        this.projectList = response.data
+      })
+    },
+    // 转换入参
+    changeParams() {
+      const params = {
+        'page.pn': 1,
+        'page.size': 99999,
+        'status': 1,
+        'delFlag': 0,
+        'queryFields': 'id,projectName,projectDetail,projectUrl,projectPhotoUrl,'
+      }
+      return params
+    },
+    // 获取一级菜单
+    getFirstMeun() {
+      const params = {
+        projectId: this.project.projectId
+      }
+      fetchMenuList(params).then(response => {
+        this.firstLeave = response.data
+        this.activeName = this.firstLeave[0].id
+        this.getSecondLeave(this.activeName)
+      })
+    },
+    // 点击一级菜单 header-home-sidebar
+    chooseFirstLeave(tab) {
+      this.getSecondLeave(tab.name)
+    },
+    // 获取二级菜单
+    getSecondLeave(id) {
+      const params = {
+        id
+      }
+      fetchMeunRouterList(params).then(response => {
+        this.$store.commit('SET_MEUNROUTES', response.data)
+        this.$store.commit('SET_ACTIVENAME', id)
+      })
+    }
+  }
+}
+</script>
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+.navbar {
+  height: 50px;
+  line-height: 50px;
+  border-radius: 0px !important;
+  .headerSur{
+    display: inline-block;
+   // width: 40%;
+    line-height: 50px;
+  }
+  .hamburger-container {
+    line-height: 58px;
+    height: 50px;
+    float: left;
+    padding: 0 10px;
+  }
+  .breadcrumb-container{
+    float: left;
+  }
+  .errLog-container {
+    display: inline-block;
+    vertical-align: top;
+  }
+  .right-menu {
+    float: right;
+    height: 100%;
+    &:focus{
+     outline: none;
+    }
+    .right-menu-item {
+      display: inline-block;
+      margin: 0 8px;
+    }
+    .screenfull {
+      height: 20px;
+    }
+    .international{
+      vertical-align: top;
+    }
+    .theme-switch {
+      vertical-align: 15px;
+    }
+    .avatar-container {
+      height: 50px;
+      margin-right: 30px;
+      .avatar-wrapper {
+        cursor: pointer;
+        margin-top: 5px;
+        position: relative;
+        .user-avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+        }
+        .el-icon-caret-bottom {
+          position: absolute;
+          right: -20px;
+          top: 25px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+</style>
+<style>
+    /*覆写一级菜单样式*/
+   .headerSur .el-tabs__header{
+        margin: 0;
+        margin-right:10px;
+
+    }
+   .headerSur .el-tabs__nav-wrap::after{
+        height: 0;
+    }
+   .headerSur .el-tabs__active-bar{
+        height: 0;
+    }
+   .headerSur .el-tabs__item{
+        font-size: 18px;
+        height:50px;
+        line-height:50px;
+    }
+   .headerSur .el-tabs__item.is-active {
+      border-bottom: 2px solid #409EFF;
+    }
+   .headerSur .el-tabs__nav{
+        margin-top:-3px;
+        float: right;
+    }
+   .headerSur .el-tabs__nav-prev{
+        line-height: 50px;
+    }
+   .headerSur .el-tabs--bottom .el-tabs__item.is-bottom:nth-child(2), .el-tabs--bottom .el-tabs__item.is-top:nth-child(2), .el-tabs--top .el-tabs__item.is-bottom:nth-child(2), .el-tabs--top .el-tabs__item.is-top:nth-child(2){
+        padding-left:20px;
+    }
+   .headerSur .el-tabs--bottom .el-tabs__item.is-bottom:last-child, .el-tabs--bottom .el-tabs__item.is-top:last-child, .el-tabs--top .el-tabs__item.is-bottom:last-child, .el-tabs--top .el-tabs__item.is-top:last-child{
+        padding-right:20px;
+    }
+   .headerSur .el-tabs__item:hover{
+        /* color: white; */
+        border-bottom: 2px solid #409EFF;
+    }
+    .mar-top-20{
+        margin-top:20px
+    }
+    .wid160{
+        width:160px
+    }
+</style>
+

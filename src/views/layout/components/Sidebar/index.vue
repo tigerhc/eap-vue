@@ -1,0 +1,85 @@
+<template>
+  <el-scrollbar wrap-class="scrollbar-wrapper">
+    <div v-show="!isCollapse" class="header-sidebar" @click="comeBack">
+      <img :src="project.projectPhotoUrl">
+      <span>{{project.projectName}}</span>
+    </div>
+    <div v-show="isCollapse" style="padding-left:10px" class="header-sidebar" @click="comeBack">
+      <img :src="project.projectPhotoUrl">
+    </div>
+    <el-menu
+      :show-timeout="200"
+      :default-active="$route.path"
+      :collapse="isCollapse"
+      :default-openeds="openeds"
+      mode="vertical"
+      background-color="#002140"
+      text-color="#bfcbd9"
+      active-text-color="#409EFF"
+    >
+      >
+      <sidebar-item v-for="route in meunRouter[0].children" :key="route.path" :item="route" :base-path="meunRouter[0].path"/>
+    </el-menu>
+  </el-scrollbar>
+</template>
+
+<script>
+import { mapGetters, Store } from 'vuex'
+import SidebarItem from './SidebarItem'
+
+export default {
+  components: { SidebarItem },
+  computed: {
+    ...mapGetters([
+      'sidebar',
+      'project'
+    ]),
+    isCollapse() {
+      return !this.sidebar.opened
+    },
+    meunRouter() {
+      if (this.$store.state.permission.meunRouter.length > 0) {
+        return this.$store.state.permission.meunRouter
+      } else {
+        return [{ children: [] }]
+      }
+    },
+    openeds() {
+      return ['1']
+    },
+  },
+  methods: {
+    comeBack() {
+      this.$router.push('/dashboard')
+    }
+  }
+}
+</script>
+<style lang="scss"  scoped>
+.header-sidebar {
+    padding-left: 24px;
+    display: flex;
+    height: 55px;
+    align-items: center;
+    background-color: #002140;
+    opacity: 1;
+    overflow: visible;
+    position: relative;
+    transition: all .3s ease-in-out;
+    cursor: pointer;
+    img {
+      width: 32px;
+      vertical-align: middle;
+    }
+    span {
+      color: #fff;
+      font-size: 20px;
+      margin-left: 10px;
+      vertical-align: middle;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+}
+
+</style>
+

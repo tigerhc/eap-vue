@@ -8,26 +8,40 @@
     </div>
 
     <div class="content">
-      <div v-for="(item,index) in tabData" :key="index" class="item">
-        <div class="item-text">
-          <label>程序位置</label> <span>{{ item.ptNo }}</span>
+      <div :class="statusText[item.eqpStatus]"  v-for="(item,index) in tabData" :key="index" class="item">
+        <div :class="statusText[item.eqpStatus]"  class="item-header">
+          <span>{{item.eqpId}}</span>
+          <span>{{item.modelName}}</span>
         </div>
-        <div class="item-text">
-          <label>当前段位</label> <span>{{ item.segNo }}</span>
+        <div class="item-content">
+          <div class="item-mid">
+            <div class="item-left">
+              <img  src="@/assets/img/temp.jpg" >
+            </div>
+            <div class="item-right">
+              <div class="item-right-text">
+                <label>程序位置</label> <span>{{ item.ptNo }}</span>
+              </div>
+              <div class="item-right-text">
+                <label>当前段位</label> <span>{{ item.segNo }}</span>
+              </div>
+              <div class="item-right-text">
+                <label>剩余时间</label> <span>{{ item.rtime }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="temp">
+            <span style="margin-right: 54px;">{{ item.temp + '℃'}}</span>
+          </div>
+          <div class="item-buttom">
+            <div>
+              <label style="margin-left:0.2rem">批次:</label> <span>{{ item.lotId }}</span>
+            </div>
+            <div style="font-size: 1.3rem;margin-top: 0.4rem;">
+              <label style="margin-left:0.2rem">程序号:</label> <span>{{ item.ptNo }}</span>
+            </div>
+          </div>
         </div>
-        <div class="item-text">
-          <label>剩余时间</label> <span>{{ item.rtime }}</span>
-        </div>
-        <div class="item-text">
-          <label>温度</label> <span>{{ item.temp }}</span>
-        </div>
-        <div class="item-text">
-          <label>批次</label> <span>{{ item.lotId }}</span>
-        </div>
-        <div class="item-text">
-          <label>程序号</label> <span>{{ item.ptNo }}</span>
-        </div>
-        <div style="text-align: center;display: inline;" class="item-text" :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</div>
       </div>
     </div>
   </div>
@@ -98,7 +112,7 @@ export default {
         'page.pn': 1,
         'page.size': 999999,
         'delFlag': 0,
-        'queryFields': 'eqpId,controlState,lotId,eqpStatus,connectionStatus,recipeName,lockFlag,'
+        'queryFields': 'eqpId,controlState,modelName,lotId,eqpStatus,connectionStatus,recipeName,lockFlag,'
       }
       fetchList(params).then(res => {
         this.tabData = res.data
@@ -153,44 +167,80 @@ export default {
 </script>
 <style  lang="scss" scoped>
 .span-ALARM {
-  background-color: red;
+  border: 2px solid #e81818;
+  background: #e81818
 }
 .span-DOWN {
-  background-color: gray;
+  border: 2px solid #999fa7;
+  background: #999fa7
 }
 .span-RUN {
-  background-color: green;
+  border: 2px solid #43ca17;
+  background: #43ca17
 }
 .span-IDLE {
-  background-color: yellow;
+  border: 2px solid #cfe60c;
+  background: #cfe60c
 }
 .monitor {
     .content {
         border-top : 1px solid #dcdfe6;
         padding-top: 20px;
         display: flex;
-      //  justify-content: center;
         flex-wrap: wrap;
         .item {
             display: flex;
-            width: 200px;
-            height: 350px;
-            border: 1px solid #500f0f;
+            width: 16rem;
+            height: 20rem;
             flex-direction: column ;
             margin-left: 20px;
             margin-top: 20px;
-            .item-text {
-               display: flex;
-               line-height: 50px;
-               height: 50px;
-               border-bottom: 1px solid #dcdfe6;
-               justify-content: space-between;
-               label {
-                 font-weight: 900;
-                 margin-left: 20px;
+            .item-header {
+              height: 5rem;
+              span {
+                color: white;
+                height: 2.5rem;
+                line-height: 2.5rem;
+                font-size: 1.5rem;
+                    display: inherit;
               }
-               span {
-                margin-right: 20px;
+            }
+            .item-content {
+              background: white;
+              height: 15rem;
+              .item-mid {
+                height: 7rem;
+                .item-left {
+                  width: 50%;
+                  float: left;
+                  img {
+                    width: 100%;
+                    height: 7rem;
+                  }
+                }
+                .item-right {
+                  width: 50%;
+                  float: right;
+                  padding-left: 10px;
+                  padding-right: 10px;
+                  .item-right-text {
+                    display: flex;
+                    line-height: 2.33rem;
+                    height: 2.33rem;
+                    justify-content: space-between;
+                  }
+                }
+              }
+              .temp{
+                text-align: center;
+                width: 98%;
+                height: 4rem;
+                line-height: 4rem;
+                font-size: 2rem;
+              }
+              .item-buttom {
+                height: 4rem;
+
               }
             }
         }

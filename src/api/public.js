@@ -62,3 +62,11 @@ export function fetchDict(dictcode) {
     dictcode
   })
 }
+
+export function exportLoginLog(tab, query) {
+  return request({
+    url: tab + 'export',
+    method: 'get',
+    params: query
+  })
+}

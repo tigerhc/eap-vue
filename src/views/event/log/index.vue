@@ -2,20 +2,20 @@
   <div class="app-container calendar-list-container">
     <div class="filter-container">
       <el-input v-model="listQuery.eqpId" style="width: 200px;" class="filter-item" placeholder="请输入设备号" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.eventId" style="width: 200px;" class="filter-item" placeholder="请输入时间id" @keyup.enter.native="handleFilter"/>
-       <el-date-picker
-         style="width: 200px;" class="filter-item"
-         v-model="listQuery.startDate"
-         type="datetime"
-         placeholder="选择开始时间">
-        </el-date-picker> 
-        <el-date-picker
-        style="width: 200px;" class="filter-item"
-         v-model="listQuery.endDate"
-         type="datetime"
-         placeholder="选择结束时间">
-        </el-date-picker> 
-        <br>
+      <el-input v-model="listQuery.eventId" style="width: 200px;" class="filter-item" placeholder="请输入事件ID" @keyup.enter.native="handleFilter"/>
+      <el-date-picker
+        v-model="listQuery.startDate"
+        style="width: 200px;"
+        class="filter-item"
+        type="datetime"
+        placeholder="选择开始时间"/>
+      <!--<el-date-picker-->
+      <!--style="width: 200px;" class="filter-item"-->
+      <!--v-model="listQuery.endDate"-->
+      <!--type="datetime"-->
+      <!--placeholder="选择结束时间">-->
+      <!--</el-date-picker>-->
+      <br>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
       <el-button :loading="downloadLoading" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
@@ -28,33 +28,34 @@
       border
       fit
       style="width: 100%"
-     >
+    >
       <el-table-column type="index" label="序号" width="50px" align="center"/>
+
+      <el-table-column align="center" label="设备号">
+        <template slot-scope="scope">
+          <span>{{ scope.row.eqpId }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="事件ID">
+        <template slot-scope="scope">
+          <span>{{ scope.row.eventId }}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="开始时间">
         <template slot-scope="scope">
           <span>{{ scope.row.startDate }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="结束时间">
-        <template slot-scope="scope">
-          <span>{{ scope.row.endDate }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="设备id">
-        <template slot-scope="scope">
-          <span>{{ scope.row.eqpId }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="事件id">
-        <template slot-scope="scope">
-          <span>{{ scope.row.eventId }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="创建时间">
-        <template slot-scope="scope">
-          <span>{{ scope.row.createDate }}</span>
-        </template>
-      </el-table-column>
+      <!--<el-table-column align="center" label="结束时间">-->
+      <!--<template slot-scope="scope">-->
+      <!--<span>{{ scope.row.endDate }}</span>-->
+      <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column align="center" label="创建时间">-->
+      <!--<template slot-scope="scope">-->
+      <!--<span>{{ scope.row.createDate }}</span>-->
+      <!--</template>-->
+      <!--</el-table-column>-->
     </el-table>
 
     <div class="pagination-container">
@@ -72,12 +73,12 @@
 </template>
 
 <script>
-import { fetchList, create, update, del, getDeteils, batchDelete,exportLoginLog } from '@/api/public'
+import { fetchList, create, update, del, getDeteils, batchDelete, exportLoginLog } from '@/api/public'
 import { fetchDeviceList } from '@/api/sys/device'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
-  name: 'alarmLog',
+  name: 'AlarmLog',
   directives: {
     waves
   },
@@ -95,13 +96,13 @@ export default {
         limit: 10,
         eqpId: undefined,
         eventId: undefined,
-        startDate:'',
-        endDate:''
+        startDate: '',
+        endDate: ''
       },
       tab: '/edc/edcevtrecord/'
     }
   },
-  created() { 
+  created() {
     this.getList()
   },
   methods: {
@@ -142,7 +143,7 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = false
-      exportLoginLog(this.tab,this.listQuery).then(response => {
+      exportLoginLog(this.tab, this.listQuery).then(response => {
         this.downloadLoading = true
         if (response.data.code === 0) {
           import('@/vendor/Export2Excel').then(excel => {
@@ -157,7 +158,7 @@ export default {
           })
         }
       })
-    }, 
+    }
   }
 }
 </script>

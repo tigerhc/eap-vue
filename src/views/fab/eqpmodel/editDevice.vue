@@ -44,12 +44,13 @@
 <script>
 import { fetchDeviceList, addDevice, updateDevice, deleteDevice, getDeteilsDevice } from '@/api/sys/device'
 export default {
-  name: 'EditDevice',
+  name: 'editDevice',
   data() {
     return {
       editList: {},
       viewObj: {},
       id: '',
+      showFlag:false,
       rules: {
         manufacturerName: [{ required: true, message: '设备厂家必填', trigger: 'blur' }],
         classCode: [{ required: true, message: '设备类型必填', trigger: 'blur' }],
@@ -61,12 +62,10 @@ export default {
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
     },
-    showFlag() {
-      return this.$route.query.flag
-    }
   },
   mounted() {
     this.id = this.$route.query.id
+    this.showFlag = this.$route.query.flag
     this.getDeteils()
   },
   methods: {
@@ -111,7 +110,7 @@ export default {
     cancel() {
       this.getView()
       this.$store.dispatch('delView', this.viewObj).then(({ visitedViews }) => {
-        this.$router.push({ name: 'device' })
+        this.$router.push({ name: 'eqpmodel' })
       })
     }
   }

@@ -1,13 +1,13 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.manufacturerName" style="width: 200px;" class="filter-item" placeholder="请输入设备厂家" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.classCode" style="width: 200px;" class="filter-item" placeholder="请输入设备类型" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.paraName" style="width: 200px;" class="filter-item" placeholder="请输入参数名称" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.paraShortName" style="width: 200px;" class="filter-item" placeholder="请输入参数简称" @keyup.enter.native="handleFilter"/>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-delete" @click="batchDelete">批量删除</el-button>
     </div>
-
+    <div class="message">
+       <div class="title">基本信息</div> 
+    </div>
     <el-table
       v-loading="listLoading"
       :key="tableKey"
@@ -23,7 +23,7 @@
       <el-table-column type="index" label="序号" width="50px" align="center"/>
       <el-table-column align="center" label="设备厂家">
         <template slot-scope="scope">
-          <span class="textLink" @click="handleUpdate(scope.row,'deteils')">{{ scope.row.manufacturerName }}</span>
+          <span class="textLink" @click="openDeteils(scope.row)">{{ scope.row.manufacturerName }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="设备类型">
@@ -45,8 +45,6 @@
       <el-table-column :label="$t('table.actions')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">{{ $t('table.delete') }}
-          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -70,7 +68,7 @@ import { fetchDeviceList, addDevice, updateDevice, deleteDevice, batchDelete } f
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
-  name: 'eqpmodel',
+  name: 'ovenEditModel',
   directives: {
     waves
   },
@@ -81,17 +79,19 @@ export default {
       total: null,
       listLoading: true,
       multipleSelection: [], // 存放选中的值
+      item:{},
       listQuery: {
         page: 1,
         limit: 10,
-        manufacturerName: undefined,
-        classCode: undefined,
+        paraName: undefined,
+        paraShortName: undefined,
         sort: 'updateDate'
       }
     }
   },
   created() {
-    this.getList()
+    this.item = this.$route.query.item
+   // this.getList()
   },
   methods: {
     getList() {
@@ -140,69 +140,25 @@ export default {
     chooseAll(row) {
       this.multipleSelection = row
     },
-    handleDelete(row) {
-      deleteDevice(row.id).then(() => {
-        this.getList()
-        this.$notify({
-          title: '成功',
-          message: '删除成功',
-          type: 'success',
-          duration: 2000
-        })
-      })
+    openDeteils(item) {
+    
     },
-    // 批量删除
-    batchDelete() {
-      if (this.multipleSelection.length > 0) {
-        this.$confirm('此操作将永久删除数据, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          const obj = {
-            ids: ''
-          }
-          const ids = []
-          for (const item of this.multipleSelection) {
-            ids.push(item.id)
-          }
-          obj.ids = ids.join(',')
-          batchDelete(obj).then(() => {
-            this.getList()
-            this.$notify({
-              title: '成功',
-              message: '删除成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }).catch(() => {
-          this.$notify({
-            type: 'info',
-            message: '已取消删除',
-            duration: 2000
-          })
-        })
-      } else {
-        this.$notify({
-          showClose: true,
-          message: '请选择至少一条数据删除',
-          type: 'error',
-          duration: 2000
-        })
-      }
-    },
-    handleCreate() {
-      this.$router.push('/fab/addDevice')
-    },
-    handleUpdate(item, flag) {
-      this.$router.push({
-        path: '/fab/editDevice',
-        query: {
-          id: item.id,
-          flag: !flag
-        }})
+    handleUpdate(){
+        
     }
   }
 }
 </script>
+<style lang="scss" scoped>
+.message {
+    .title {
+        height: 50px;
+        color: #409eff;
+        font-size: 24px;
+        border-bottom: 1px solid #eee;
+    }
+}
+</style>
+
+
+

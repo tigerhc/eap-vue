@@ -91,7 +91,7 @@ import { fetchList, create, update, del, getDeteils, batchDelete } from '@/api/p
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
-  name: 'MachineTpye',
+  name: 'eqp',
   directives: {
     waves
   },

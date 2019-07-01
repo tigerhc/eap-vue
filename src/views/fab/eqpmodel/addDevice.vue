@@ -43,7 +43,7 @@
 <script>
 import { fetchDeviceList, addDevice, updateDevice, deleteDevice } from '@/api/sys/device'
 export default {
-  name: 'AddDevice',
+  name: 'addDevice',
   data() {
     return {
       addList: {

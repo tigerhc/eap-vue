@@ -151,6 +151,7 @@ import { fetchList, create, update, del, getDeteils, batchDelete, fetchDict } fr
 import { fetchDeviceList } from '@/api/sys/device'
 import waves from '@/directive/waves' // 水波纹指令
 export default {
+  name: 'programAdd',
   data() {
     return {
       load: false,

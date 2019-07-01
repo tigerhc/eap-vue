@@ -41,56 +41,63 @@ export const constantRouterMap = [
         component: () => import('@/views/fab/eqpmodel/addDevice'),
         name: 'addDevice',
         hidden: true,
-        meta: { title: '设备类型-新增', icon: '', noCache: true }
+        meta: { title: '设备类型-新增', icon: '', noCache: false }
       },
       {
         path: '/fab/editDevice',
         component: () => import('@/views/fab/eqpmodel/editDevice'),
         name: 'editDevice',
         hidden: true,
-        meta: { title: '设备类型-修改', icon: '', noCache: true }
+        meta: { title: '设备类型-修改', icon: '', noCache: false }
       },
       {
         path: '/fab/machineModel',
         component: () => import('@/views/fab/eqp/model'),
         name: 'machineModel',
         hidden: true,
-        meta: { title: '机台类型-操作', icon: '', noCache: true }
+        meta: { title: '机台类型-操作', icon: '', noCache: false }
       },
       {
         path: '/oven/batchlotView',
         component: () => import('@/views/oven/batchlot/temChart'),
         name: 'tempModel',
         hidden: true,
-        meta: { title: '烤箱温度图', icon: '', noCache: true }
+        meta: { title: '烤箱温度图', icon: '', noCache: false }
       },
       {
         path: '/rms/programAdd',
         component: () => import('@/views/rms/recipe/programAdd'),
         name: 'programAdd',
         hidden: true,
-        meta: { title: '参数新增', icon: '', noCache: true }
+        meta: { title: '参数新增', icon: '', noCache: false }
       },
       {
         path: '/rms/programEdit',
         component: () => import('@/views/rms/recipe/programEdit'),
         name: 'programEdit',
         hidden: true,
-        meta: { title: '参数详情', icon: '', noCache: true }
+        meta: { title: '参数详情', icon: '', noCache: false }
       },
       {
         path: '/fab/eqpmodel',
         component: () => import('@/views/fab/eqpmodel/index'),
         name: 'eqpmodel',
         hidden: true,
-        meta: { title: '设备类型', icon: '', noCache: true }
+        meta: { title: '设备类型', icon: '', noCache: false }
       },
       {
         path: '/fab/eqp',
         component: () => import('@/views/fab/eqp/index'),
         name: 'eqp',
         hidden: true,
-        meta: { title: '设备列表', icon: '', noCache: true }
+        meta: { title: '设备列表', icon: '', noCache: false }
+      },
+      {
+        path: '/oven/editModel',
+        component: () => import('@/views/oven/model/editModel'),
+        name: 'ovenEditModel',
+        hidden: true,
+        meta: { title: '模板修改', icon: '', noCache: false }
       }
     ]
   },

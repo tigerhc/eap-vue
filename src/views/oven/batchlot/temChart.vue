@@ -31,7 +31,7 @@ require('echarts/theme/macarons') // echarts theme
 import { debounce } from '@/utils'
 import { fetchList, fetchEcharts } from '@/api/sys/temperature'
 export default {
-
+  name:'tempModel',
   data() {
     return {
       chart: null,

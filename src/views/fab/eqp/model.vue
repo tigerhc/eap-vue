@@ -49,7 +49,7 @@ import { fetchOrganizationList } from '@/api/sys/organization'
 import { fetchList, create, update, del, deteils, batchDelete } from '@/api/public'
 import SelectDevice from './select/selectDevice'
 export default {
-  name: 'MachineModel',
+  name: 'machineModel',
   components: { SelectDevice },
   data() {
     return {
@@ -74,6 +74,7 @@ export default {
       id: '',
       tab: '/fab/fabequipment/',
       options: [],
+      showFlag:undefined,
       rules: {
         eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
         modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
@@ -85,9 +86,6 @@ export default {
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
     },
-    showFlag() {
-      return this.$route.query.flag
-    }
   },
   mounted() {
     this.modelType = this.$route.query.type
@@ -96,6 +94,7 @@ export default {
     })
     if (this.modelType !== 'addModel') {
       this.id = this.$route.query.id
+      this.showFlag = this.$route.query.flag
       this.getDeteils()
     }
   },

@@ -136,7 +136,7 @@ import { fetchDeviceList } from '@/api/sys/device'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
-  name: 'ProgramManage',
+  name: 'program',
   directives: {
     waves
   },
@@ -170,6 +170,7 @@ export default {
     }
   },
   created() {
+    debugger
     this.getList()
     this.getDictValue()
   },

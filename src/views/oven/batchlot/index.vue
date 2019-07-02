@@ -18,12 +18,12 @@
       @select="chooseOne"
       @select-all="chooseAll">
       <el-table-column type="index" label="序号" width="50px" align="center"/>
-      <el-table-column align="center" show-overflow-tooltip label="批次号">
+      <el-table-column align="left" show-overflow-tooltip label="批次号">
         <template slot-scope="scope">
           <span class="textLink" @click="handleOperating(scope.row)">{{ scope.row.lotId }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="站别">
+      <el-table-column align="left" label="站别">
         <template slot-scope="scope">
           <span>{{ scope.row.officeName }}</span>
         </template>
@@ -33,7 +33,7 @@
           <span>{{ scope.row.eqpId }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="程序名">
+      <el-table-column align="left" label="程序名">
         <template slot-scope="scope">
           <span>{{ scope.row.recipeCode }}</span>
         </template>
@@ -106,7 +106,7 @@ export default {
     // 转换入参
     changeParams(obj) {
       const params = {
-        'sort.createDate': 'desc',
+        'sort.startTime': 'desc',
         'page.pn': obj.page,
         'page.size': obj.limit,
         'query.eqpId||like': obj.eqpId || '',

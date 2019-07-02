@@ -39,7 +39,7 @@
     >
       <el-table-column type="index" label="序号" width="50px" align="center"/>
 
-      <el-table-column align="center" label="设备号">
+      <el-table-column align="center" label="设备号" width="150px">
         <template slot-scope="scope">
           <span>{{ scope.row.eqpId }}</span>
         </template>
@@ -49,22 +49,22 @@
           <span>{{ scope.row.eqpModelName }}</span>
         </template>
       </el-table-column> -->
-      <el-table-column align="left" label="报警ID">
+      <el-table-column align="left" label="报警ID" width="150px">
         <template slot-scope="scope">
           <span>{{ scope.row.alarmId }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="报警名称">
+      <el-table-column align="left" label="报警名称">
         <template slot-scope="scope">
           <span>{{ scope.row.alarmName }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="报警开始时间">
+      <el-table-column align="center" label="报警开始时间" width="200px">
         <template slot-scope="scope">
           <span>{{ scope.row.startDate }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="报警结束时间">
+      <el-table-column align="center" label="报警结束时间" width="200px">
         <template slot-scope="scope">
           <span>{{ scope.row.endDate }}</span>
         </template>

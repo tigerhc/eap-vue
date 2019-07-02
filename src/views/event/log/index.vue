@@ -31,17 +31,17 @@
     >
       <el-table-column type="index" label="序号" width="50px" align="center"/>
 
-      <el-table-column align="center" label="设备号">
+      <el-table-column align="center" label="设备号" width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.eqpId }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="事件ID">
+      <el-table-column align="center" label="事件ID" width="500px">
         <template slot-scope="scope">
           <span>{{ scope.row.eventId }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="开始时间">
+      <el-table-column align="center" label="开始时间" width="200px">
         <template slot-scope="scope">
           <span>{{ scope.row.startDate }}</span>
         </template>

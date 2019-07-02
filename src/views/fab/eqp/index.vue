@@ -128,7 +128,7 @@ export default {
     // 转换入参
     changeParams(obj) {
       const params = {
-        'sort': 'updateDate',
+        'sort.sortCode': 'asc',
         'page.pn': obj.page,
         'page.size': obj.limit,
         'query.eqpId||like': obj.eqpId || '',

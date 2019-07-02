@@ -77,7 +77,8 @@ export default {
           }
         },
         legend: {
-          data: ['运行温度', '设定温度', '低温报警', '高温报警']
+//          data: ['运行温度', '设定温度', '低温报警', '高温报警']
+          data: ['运行温度', '低温报警', '高温报警']
         },
         dataZoom: [
           {
@@ -132,23 +133,23 @@ export default {
             animationDuration: 3000,
             animationEasing: 'quadraticOut'
           },
-          {
-            name: '设定温度',
-            smooth: true,
-            type: 'line',
-            itemStyle: {
-              normal: {
-                color: '#FFDEAD',
-                lineStyle: {
-                  color: '#FFDEAD',
-                  width: 2
-                }
-              }
-            },
-            data: [],
-            animationDuration: 2600,
-            animationEasing: 'quadraticOut'
-          },
+//          {
+//            name: '设定温度',
+//            smooth: true,
+//            type: 'line',
+//            itemStyle: {
+//              normal: {
+//                color: '#FFDEAD',
+//                lineStyle: {
+//                  color: '#FFDEAD',
+//                  width: 2
+//                }
+//              }
+//            },
+//            data: [],
+//            animationDuration: 2600,
+//            animationEasing: 'quadraticOut'
+//          },
           {
             name: '低温报警',
             smooth: true,
@@ -193,9 +194,9 @@ export default {
     loadCureData(option) {
       option.xAxis.data = this.produce(this.resultList, 'createDate')
       option.series[0].data = this.produce(this.resultList, 'tempPv1')
-      option.series[3].data = this.produce(this.resultList, 'tempMax')
-      option.series[2].data = this.produce(this.resultList, 'tempMin')
-      option.series[1].data = this.produce(this.resultList, 'tempSp1')
+      option.series[2].data = this.produce(this.resultList, 'tempMax')
+      option.series[1].data = this.produce(this.resultList, 'tempMin')
+//      option.series[1].data = this.produce(this.resultList, 'tempSp1')
       return option
     },
     produce(data, name) {

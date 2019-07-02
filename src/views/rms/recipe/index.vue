@@ -170,7 +170,6 @@ export default {
     }
   },
   created() {
-    debugger
     this.getList()
     this.getDictValue()
   },

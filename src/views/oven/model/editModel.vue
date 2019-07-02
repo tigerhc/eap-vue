@@ -5,9 +5,17 @@
       <el-input v-model="listQuery.paraShortName" style="width: 200px;" class="filter-item" placeholder="请输入参数简称" @keyup.enter.native="handleFilter"/>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
     </div>
-    <div class="message">
+    <!-- <div class="message">
        <div class="title">基本信息</div> 
-    </div>
+       <el-form :model="modelList" class="modelForm" label-width="150px">
+         <el-form-item label="机台型号">
+          <el-input :disabled="true" v-model="modelList.bcCode"/>
+        </el-form-item>
+        <el-form-item label="型号描述" >
+          <el-input :disabled="true" v-model="modelList.ip"/>
+        </el-form-item>
+       </el-form>
+    </div> -->
     <el-table
       v-loading="listLoading"
       :key="tableKey"
@@ -19,32 +27,45 @@
       @selection-change="handleSelectionChange"
       @select="chooseOne"
       @select-all="chooseAll">
-      <el-table-column type="selection" width="36" />
       <el-table-column type="index" label="序号" width="50px" align="center"/>
-      <el-table-column align="center" label="设备厂家">
+      <el-table-column align="center" label="参数代码">
         <template slot-scope="scope">
-          <span class="textLink" @click="openDeteils(scope.row)">{{ scope.row.manufacturerName }}</span>
+          <el-input v-model="scope.row.paraCode"/>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="设备类型">
+      <el-table-column align="center" label="参数名">
         <template slot-scope="scope">
-          <span>{{ scope.row.classCode }}</span>
+          <el-input v-model="scope.row.paraName"/>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="有效标志">
+      <el-table-column align="center" label="参数简称">
         <template slot-scope="scope">
-          <span v-if="scope.row.activeFlag == 1">有效</span>
-          <span v-else>无效</span>
+          <el-input v-model="scope.row.paraShortName"/>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="更新时间">
+      <el-table-column align="center" label="单位">
         <template slot-scope="scope">
-          <span>{{ scope.row.updateDate }}</span>
+          <el-input v-model="scope.row.paraUnit"/>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="设定值">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <el-input v-model="scope.row.setValue"/>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="是否首页显示">
+        <template slot-scope="scope">
+          <el-checkbox v-model="scope.row.showFlag"></el-checkbox>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="是否监控">
+        <template slot-scope="scope">
+          <el-checkbox v-model="scope.row.monitorFlag"></el-checkbox>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="排序号">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.sortNo"/>
         </template>
       </el-table-column>
     </el-table>
@@ -64,7 +85,7 @@
 </template>
 
 <script>
-import { fetchDeviceList, addDevice, updateDevice, deleteDevice, batchDelete } from '@/api/sys/device'
+import { fetchList, create, update, del, deteils, batchDelete } from '@/api/public'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
@@ -80,24 +101,26 @@ export default {
       listLoading: true,
       multipleSelection: [], // 存放选中的值
       item:{},
+      tab: '/rms/rmsrecipetemplate/',
       listQuery: {
         page: 1,
         limit: 10,
+        eqpModelId:'',
         paraName: undefined,
         paraShortName: undefined,
-        sort: 'updateDate'
       }
     }
   },
   created() {
     this.item = this.$route.query.item
-   // this.getList()
+    this.listQuery.eqpModelId = this.item.id
+    this.getList()
   },
   methods: {
     getList() {
       this.listLoading = true
       const params = this.changeParams(this.listQuery)
-      fetchDeviceList(params).then(response => {
+      fetchList(this.tab,params).then(response => {
         this.list = response.data.results
         this.total = response.data.total
         this.listLoading = false
@@ -108,10 +131,12 @@ export default {
       const params = {
         'sort': 'updateDate',
         'page.pn': obj.page,
+        'eqpModelId':obj.eqpModelId,
         'page.size': obj.limit,
-        'query.manufacturerName||like': obj.manufacturerName || '',
-        'query.classCode||like': obj.classCode || '',
-        'queryFields': 'id,manufacturerName,classCode,smlPath,hostJavaClass,activeFlag,iconPath,updateDate,'
+        'sort.sortNo': 'desc',
+        'query.paraName||like': obj.paraName || '',
+        'query.paraShortName||like': obj.paraShortName || '',
+        'queryFields': 'id,paraName,paraShortName,eqpModelId,eqpModelName,paraCodeparaUnit,setValue,limitMin,limitMax,limitType,monitorFlag,paraLevel,paraDataType,showFlag,activeFlag,updateDate,'
       }
       return params
     },

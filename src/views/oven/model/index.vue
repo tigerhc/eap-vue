@@ -140,8 +140,10 @@ export default {
         query: { item }
       })
     },
-    handleUpdate(){
-        
+    handleUpdate(item){
+        this.$router.push({ path: '/oven/editModel',
+        query: { item }
+      })
     }
   }
 }

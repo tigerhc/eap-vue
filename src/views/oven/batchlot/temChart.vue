@@ -2,6 +2,7 @@
   <div>
     <el-form ref="modelForm" :inline="true" :rules="rules" :model="modelList" class="modelForm" label-width="150px">
       <el-form-item label="批次号" prop="lotId">
+        <!--:autosize="{ minRows: 2, maxRows: 4}"-->
         <el-input style="width:530px" v-model="modelList.lotId" type="textarea"/>
       </el-form-item>
       <el-form-item label="站别" prop="officeName">

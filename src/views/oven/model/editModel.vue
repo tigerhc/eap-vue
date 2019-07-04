@@ -6,7 +6,7 @@
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
     </div>
     <!-- <div class="message">
-       <div class="title">基本信息</div> 
+       <div class="title">基本信息</div>
        <el-form :model="modelList" class="modelForm" label-width="150px">
          <el-form-item label="机台型号">
           <el-input :disabled="true" v-model="modelList.bcCode"/>
@@ -136,7 +136,7 @@ export default {
         'sort.sortNo': 'desc',
         'query.paraName||like': obj.paraName || '',
         'query.paraShortName||like': obj.paraShortName || '',
-        'queryFields': 'id,paraName,paraShortName,eqpModelId,eqpModelName,paraCodeparaUnit,setValue,limitMin,limitMax,limitType,monitorFlag,paraLevel,paraDataType,showFlag,activeFlag,updateDate,'
+        'queryFields': 'id,paraCode,paraName,paraShortName,eqpModelId,eqpModelName,paraCodeparaUnit,setValue,limitMin,limitMax,limitType,monitorFlag,paraLevel,paraDataType,showFlag,activeFlag,updateDate,'
       }
       return params
     },
@@ -166,10 +166,10 @@ export default {
       this.multipleSelection = row
     },
     openDeteils(item) {
-    
+
     },
     handleUpdate(){
-        
+
     }
   }
 }

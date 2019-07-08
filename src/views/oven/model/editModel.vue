@@ -5,20 +5,6 @@
       <el-input v-model="listQuery.paraShortName" style="width: 200px;" class="filter-item" placeholder="请输入参数简称" @keyup.enter.native="handleFilter"/>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
     </div>
-<<<<<<< HEAD
-=======
-    <!-- <div class="message">
-       <div class="title">基本信息</div>
-       <el-form :model="modelList" class="modelForm" label-width="150px">
-         <el-form-item label="机台型号">
-          <el-input :disabled="true" v-model="modelList.bcCode"/>
-        </el-form-item>
-        <el-form-item label="型号描述" >
-          <el-input :disabled="true" v-model="modelList.ip"/>
-        </el-form-item>
-       </el-form>
-    </div> -->
->>>>>>> 9eebc40ee0da987da7c22af9bf87bcf3b8d43d51
     <el-table
       v-loading="listLoading"
       :key="tableKey"
@@ -263,7 +249,6 @@ export default {
         }
       })
     },
-<<<<<<< HEAD
     cancel() {
       this.getView()
       this.$store.dispatch('delView', this.viewObj).then(({ visitedViews }) => {
@@ -278,14 +263,12 @@ export default {
         }
       }
     },
-=======
     openDeteils(item) {
 
     },
     handleUpdate(){
 
     }
->>>>>>> 9eebc40ee0da987da7c22af9bf87bcf3b8d43d51
   }
 }
 </script>

@@ -70,3 +70,11 @@ export function exportLoginLog(tab, query) {
     params: query
   })
 }
+
+export function batchUpdate(tab, data) {
+  return request({
+    url: tab + 'batchUpdate',
+    method: 'post',
+    data
+  })
+}

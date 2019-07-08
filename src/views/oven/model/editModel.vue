@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { fetchList, create, update, del, deteils, batchDelete } from '@/api/public'
+import { fetchList, create, update, del, deteils, batchDelete,batchUpdate } from '@/api/public'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
@@ -230,7 +230,7 @@ export default {
         recipeTemplateList:JSON.stringify(this.list),
         id:this.item.id
       }
-      update(this.tab, params).then((res) => {
+      batchUpdate(this.tab, params).then((res) => {
         if (res.data.code == 0) {
           this.cancel()
           this.$notify({

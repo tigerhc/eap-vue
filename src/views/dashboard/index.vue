@@ -57,6 +57,13 @@ export default {
       this.timer()
     }
   },
+  beforeDestroy() {
+    if (!this.chart) {
+      return
+    }
+    this.chart.dispose()
+    this.chart = null
+  },
   destroyed() {
     clearTimeout(this.timer)
   },
@@ -123,6 +130,10 @@ export default {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
                 shadowColor: 'rgba(0, 0, 0, 0.5)'
+              },
+              color:function(params) {
+                var colorList = ['#999fa7','#43ca17','#e81818','#cfe60c'];
+                return colorList[params.dataIndex]
               }
             }
           }

@@ -6,7 +6,7 @@
     </div>
 
   <div class="content">
-      <div :class="statusText[item.eqpStatus]"  v-for="(item,index) in tabData" :key="index" class="item">
+      <div :class="statusText[item.eqpStatus ||'status']"  v-for="(item,index) in tabData" :key="index" class="item">
         <div :class="statusText[item.eqpStatus]"  class="item-header">
           <span>{{item.eqpId}}</span>
           <span>{{item.modelName}}</span>
@@ -63,7 +63,8 @@ export default {
         ALARM: 'span-ALARM',
         DOWN: 'span-DOWN',
         RUN: 'span-RUN',
-        IDLE: 'span-IDLE'
+        IDLE: 'span-IDLE',
+        status:'span-status'
       }// 显示状态
     }
   },
@@ -71,6 +72,13 @@ export default {
     tabData() {
       this.timer()
     }
+  },
+  beforeDestroy() {
+    if (!this.chart) {
+      return
+    }
+    this.chart.dispose()
+    this.chart = null
   },
   destroyed() {
     clearTimeout(this.timer)
@@ -144,6 +152,10 @@ export default {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
                 shadowColor: 'rgba(0, 0, 0, 0.5)'
+              },
+              color:function(params) {
+                var colorList = ['#999fa7','#43ca17','#e81818','#cfe60c'];
+                return colorList[params.dataIndex]
               }
             }
           }
@@ -164,6 +176,9 @@ export default {
 }
 </script>
 <style  lang="scss" scoped>
+.span-status{
+  border: 2px solid #999fa7;
+}
 .span-ALARM {
   border: 2px solid #e81818;
   background: #e81818
@@ -184,6 +199,7 @@ export default {
     .content {
         border-top : 1px solid #dcdfe6;
         padding-top: 20px;
+        padding-bottom: 20px;
         display: flex;
         flex-wrap: wrap;
         .item {
@@ -237,8 +253,7 @@ export default {
                 font-size: 2rem;
               }
               .item-buttom {
-                height: 4rem;
-
+                height: 3rem;
               }
             }
         }

@@ -78,7 +78,7 @@ import { fetchDeviceList } from '@/api/sys/device'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
-  name: 'AlarmLog',
+  name: 'eventLog',
   directives: {
     waves
   },

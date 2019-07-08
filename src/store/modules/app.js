@@ -13,7 +13,6 @@ const app = {
   },
   mutations: {
     GET_PROJECT: (state, data) => {
-      debugger
       state.project.projectId = data.projectId
       state.project.projectName = data.projectName
       state.project.projectPhotoUrl = data.projectPhotoUrl

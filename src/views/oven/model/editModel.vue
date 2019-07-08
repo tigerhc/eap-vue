@@ -5,17 +5,6 @@
       <el-input v-model="listQuery.paraShortName" style="width: 200px;" class="filter-item" placeholder="请输入参数简称" @keyup.enter.native="handleFilter"/>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
     </div>
-    <!-- <div class="message">
-       <div class="title">基本信息</div> 
-       <el-form :model="modelList" class="modelForm" label-width="150px">
-         <el-form-item label="机台型号">
-          <el-input :disabled="true" v-model="modelList.bcCode"/>
-        </el-form-item>
-        <el-form-item label="型号描述" >
-          <el-input :disabled="true" v-model="modelList.ip"/>
-        </el-form-item>
-       </el-form>
-    </div> -->
     <el-table
       v-loading="listLoading"
       :key="tableKey"
@@ -26,7 +15,7 @@
       style="width: 100%"
       @selection-change="handleSelectionChange"
       @select="chooseOne"
-      @select-all="chooseAll">
+      >
       <el-table-column type="index" label="序号" width="50px" align="center"/>
       <el-table-column align="center" label="参数代码">
         <template slot-scope="scope">
@@ -81,6 +70,10 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"/>
     </div>
+    <div slot="footer" class="add-footer">
+      <el-button @click="cancel">{{ $t('table.cancel') }}</el-button>
+      <el-button v-if="showFlag" type="primary" @click="updateData">{{ $t('table.confirm') }}</el-button>
+    </div>
   </div>
 </template>
 
@@ -99,9 +92,11 @@ export default {
       list: null,
       total: null,
       listLoading: true,
+      showFlag:true,
       multipleSelection: [], // 存放选中的值
       item:{},
       tab: '/rms/rmsrecipetemplate/',
+      oldPage:1,
       listQuery: {
         page: 1,
         limit: 10,
@@ -122,9 +117,25 @@ export default {
       const params = this.changeParams(this.listQuery)
       fetchList(this.tab,params).then(response => {
         this.list = response.data.results
+        this.getNewList()
         this.total = response.data.total
         this.listLoading = false
       })
+    },
+    //获取新list
+    getNewList(){
+      this.list.forEach(item => {
+        if(item.showFlag == 'N'){
+          item.showFlag = false
+        } else {
+          item.showFlag = true
+        }
+        if(item.monitorFlag == 'N'){
+          item.monitorFlag = false
+        } else {
+          item.monitorFlag = true
+        }
+      });
     },
     // 转换入参
     changeParams(obj) {
@@ -140,17 +151,58 @@ export default {
       }
       return params
     },
+    //校验
+    valite(){
+      
+    },
     handleFilter() {
-      this.listQuery.page = 1
-      this.getList()
+      this.$confirm('此操作会覆盖之前的编辑数据,确定继续吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() =>{
+          this.listQuery.page = 1
+          this.getList()
+        }).catch(() => {
+          this.$notify({
+            type: 'info',
+            message: '已取消操作'
+          })      
+        });  
     },
     handleSizeChange(val) {
+      let i = this.listQuery.limit
       this.listQuery.limit = val
-      this.getList()
+      this.$confirm('此操作会覆盖之前的编辑数据,确定继续吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() =>{
+          this.getList()
+        }).catch(() => {
+          this.listQuery.limit = i
+          this.$notify({
+            type: 'info',
+            message: '已取消操作'
+          })      
+        });
     },
     handleCurrentChange(val) {
-      this.listQuery.page = val
-      this.getList()
+      this.listQuery.page  = val
+      this.$confirm('此操作会覆盖之前的编辑数据,确定继续吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() =>{
+          this.oldPage = this.listQuery.page 
+          this.getList()
+        }).catch(() => {
+          this.listQuery.page = this.oldPage
+          this.$notify({
+            type: 'info',
+            message: '已取消操作'
+          })      
+        });
     },
     // 选中触发事件
     handleSelectionChange(row) {
@@ -161,16 +213,56 @@ export default {
     chooseOne(row) {
       this.multipleSelection = row
     },
-    // 全选
-    chooseAll(row) {
-      this.multipleSelection = row
+    updateData(){
+      this.list.forEach(item => {
+        if(item.showFlag){
+          item.showFlag = 'Y'
+        } else {
+          item.showFlag = 'N'
+        }
+        if(item.monitorFlag){
+          item.monitorFlag = 'Y'
+        } else {
+          item.monitorFlag = 'N'
+        }
+      });
+      const params = {
+        recipeTemplateList:JSON.stringify(this.list),
+        id:this.item.id
+      }
+      update(this.tab, params).then((res) => {
+        if (res.data.code == 0) {
+          this.cancel()
+          this.$notify({
+            title: '成功',
+            message: '修改成功',
+            type: 'success',
+            duration: 2000
+          })
+        } else {
+          this.$notify({
+            title: '失败',
+            message: '修改失败',
+            type: 'error',
+            duration: 2000
+          })
+        }
+      })
     },
-    openDeteils(item) {
-    
+    cancel() {
+      this.getView()
+      this.$store.dispatch('delView', this.viewObj).then(({ visitedViews }) => {
+        this.$router.push({ name: 'ovenModel' })
+      })
     },
-    handleUpdate(){
-        
-    }
+    getView() {
+      const List = this.$store.state.tagsView.visitedViews
+      for (const item of List) {
+        if (item.name == 'ovenEditModel') {
+          this.viewObj = item
+        }
+      }
+    },
   }
 }
 </script>

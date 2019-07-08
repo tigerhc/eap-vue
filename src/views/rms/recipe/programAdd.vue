@@ -242,7 +242,7 @@ export default {
       this.doubleClickIndex = this.ruleForm.tableData.length - 1
     },
     handleClick(tab, event) {
-      console.log(tab, event)
+     
     },
     // 获取index
     tableRowClassName({ row, rowIndex }) {

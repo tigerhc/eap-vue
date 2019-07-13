@@ -142,7 +142,7 @@ export default {
       const params = {
         'sort': 'updateDate',
         'page.pn': obj.page,
-        'eqpModelId':obj.eqpModelId,
+        'query.eqpModelId||eq':obj.eqpModelId,
         'page.size': obj.limit,
         'sort.sortNo': 'desc',
         'query.paraName||like': obj.paraName || '',

@@ -97,7 +97,7 @@ export const constantRouterMap = [
         component: () => import('@/views/oven/model/editModel'),
         name: 'ovenEditModel',
         hidden: true,
-        meta: { title: '模板详情', icon: '', noCache: false }
+        meta: { title: '模板详情', icon: '', noCache: true }
       }
     ]
   },

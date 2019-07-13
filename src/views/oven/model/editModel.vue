@@ -140,20 +140,19 @@ export default {
     // 转换入参
     changeParams(obj) {
       const params = {
-        'sort': 'updateDate',
         'page.pn': obj.page,
         'query.eqpModelId||eq':obj.eqpModelId,
         'page.size': obj.limit,
-        'sort.sortNo': 'desc',
+        'sort.sortNo': 'asc',
         'query.paraName||like': obj.paraName || '',
         'query.paraShortName||like': obj.paraShortName || '',
-        'queryFields': 'id,paraCode,paraName,paraShortName,eqpModelId,eqpModelName,paraCodeparaUnit,setValue,limitMin,limitMax,limitType,monitorFlag,paraLevel,paraDataType,showFlag,activeFlag,updateDate,'
+        'queryFields': 'id,paraCode,paraName,paraShortName,eqpModelId,eqpModelName,paraCodeparaUnit,setValue,limitMin,limitMax,limitType,monitorFlag,paraLevel,paraDataType,showFlag,activeFlag,updateDate,sortNo,'
       }
       return params
     },
     //校验
     valite(){
-      
+
     },
     handleFilter() {
       this.$confirm('此操作会覆盖之前的编辑数据,确定继续吗?', '提示', {
@@ -167,8 +166,8 @@ export default {
           this.$notify({
             type: 'info',
             message: '已取消操作'
-          })      
-        });  
+          })
+        });
     },
     handleSizeChange(val) {
       let i = this.listQuery.limit
@@ -184,7 +183,7 @@ export default {
           this.$notify({
             type: 'info',
             message: '已取消操作'
-          })      
+          })
         });
     },
     handleCurrentChange(val) {
@@ -194,14 +193,14 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() =>{
-          this.oldPage = this.listQuery.page 
+          this.oldPage = this.listQuery.page
           this.getList()
         }).catch(() => {
           this.listQuery.page = this.oldPage
           this.$notify({
             type: 'info',
             message: '已取消操作'
-          })      
+          })
         });
     },
     // 选中触发事件

@@ -9,6 +9,7 @@
     </div>
     <el-menu
       :show-timeout="200"
+      style="height:90%"
       :default-active="$route.path"
       :collapse="isCollapse"
       :default-openeds="openeds"
@@ -59,7 +60,8 @@ export default {
 .header-sidebar {
     padding-left: 24px;
     display: flex;
-    height: 55px;
+    min-height: 55px;
+    height: 90%;
     align-items: center;
     background-color: #002140;
     opacity: 1;

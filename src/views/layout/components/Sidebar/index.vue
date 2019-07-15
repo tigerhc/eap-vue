@@ -61,7 +61,7 @@ export default {
     padding-left: 24px;
     display: flex;
     min-height: 55px;
-    height: 90%;
+    height: 10%;
     align-items: center;
     background-color: #002140;
     opacity: 1;

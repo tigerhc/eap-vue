@@ -98,6 +98,13 @@ export const constantRouterMap = [
         name: 'ovenEditModel',
         hidden: true,
         meta: { title: '模板详情', icon: '', noCache: true }
+      },
+      {
+        path: '/edc/recordDeteils',
+        component: () => import('@/views/edc/edcparamrecord/recordDeteils'),
+        name: 'recordDeteils',
+        hidden: true,
+        meta: { title: '采集记录详情', icon: '', noCache: true }
       }
     ]
   },

@@ -29,7 +29,7 @@
             </div>
           </div>
           <div class="temp">
-            <span style="margin-right: 54px;">{{ item.temp }} ℃</span>
+            <span style="margin-right: 54px;">{{ item.temp }}&nbsp;℃</span>
           </div>
           <div class="item-buttom">
             <div>

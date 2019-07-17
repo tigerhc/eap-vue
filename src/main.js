@@ -23,13 +23,16 @@ import * as filters from './filters' // global filters
 
 import checkPermission from '@/utils/permission' // 权限判断函数
 
+import iconPicker from '@/components/IconPicker'
+Vue.component(iconPicker.name, iconPicker)
+
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 })
 
 // register global utility filters.
-Object.keys(filters).forEach(key => {
+Object.keys(filters).forEach((key) => {
   Vue.filter(key, filters[key])
 })
 
@@ -48,5 +51,5 @@ new Vue({
   router,
   store,
   i18n,
-  render: h => h(App)
+  render: (h) => h(App)
 })

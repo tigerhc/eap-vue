@@ -19,12 +19,12 @@
       <el-table-column type="index" label="序号" width="50px" align="center"/>
       <el-table-column align="center" label="参数代码">
         <template slot-scope="scope">
-          <el-input readonly v-model="scope.row.paraCode"/>
+          <span>{{ scope.row.paraCode }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="参数名">
         <template slot-scope="scope">
-          <el-input readonly v-model="scope.row.paraName"/>
+          <span>{{ scope.row.paraName }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="参数简称">

@@ -31,26 +31,31 @@
           <span class="textLink" @click="openDeteils(scope.row)">{{ scope.row.eqpId }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="取值日期">
+      <el-table-column align="center" label="采集日期">
         <template slot-scope="scope">
           <span>{{ scope.row.bizDate }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="业务大类">
+        <template slot-scope="scope">
+          <span>{{ scope.row.bizType | dictLabel('EDC_BIZ_TYPE')}}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="业务小类">
         <template slot-scope="scope">
-          <span>{{ scope.row.bizSubType }}</span>
+          <span>{{ scope.row.bizSubType | dictLabel('EDC_BIZ_SUB_TYPE')}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="创建人">
         <template slot-scope="scope">
-          <span>{{ scope.row.createBy }}</span>
+          <span>{{ scope.row.createByName }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-        </template>
-      </el-table-column>
+      <!--<el-table-column :label="$t('table.actions')" align="center" class-name="small-padding fixed-width">-->
+        <!--<template slot-scope="scope">-->
+          <!--<el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
     </el-table>
 
     <div class="pagination-container">
@@ -115,11 +120,11 @@ export default {
         'page.size': obj.limit,
         'query.eqpId||like': obj.eqpId || '',
         'query.bizSubType||like': obj.bizSubType || '',
-        'queryFields': 'id,eqpId,bizSubType,smlPath,bizDate,activeFlag,createBy,updateDate,'
+        'queryFields': 'id,eqpId,bizType,bizSubType,bizDate,createByName,'
       }
       if(obj.bizDate){
-        params['query.bizDate||great'] = obj.bizDate?obj.bizDate[0]:'';
-        params['query.bizDate||less'] = obj.bizDate?obj.bizDate[1]:'';
+        params['query.bizDate||ge'] = obj.bizDate?obj.bizDate[0]:'';
+        params['query.bizDate||lt'] = obj.bizDate?obj.bizDate[1]:'';
       }
       return params
     },

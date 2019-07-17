@@ -1,25 +1,22 @@
 <template>
   <div class="app-container calendar-list-container">
     <el-form ref="modelForm" disabled :inline="true"  :model="modelList" class="modelForm" label-width="150px">
-      <el-form-item label="取值日期" prop="eqpId">
+      <el-form-item label="采集日期" prop="eqpId">
         <el-date-picker style="width:185px" v-model="modelList.bizDate" type="date"></el-date-picker>
       </el-form-item>
-      <el-form-item label="设备ID" prop="eqpId">
+      <el-form-item label="设备号" prop="eqpId">
         <el-input  v-model="modelList.eqpId"/>
       </el-form-item>
-      <el-form-item label="设备名称" prop="ip">
-        <el-input  v-model="modelList.ip"/>
-      </el-form-item>
-      <el-form-item label="设备大类" prop="location">
+      <el-form-item label="业务大类" prop="location">
         <el-input  v-model="modelList.location"/>
       </el-form-item>
-      <el-form-item label="设备小类" prop="bizSubType">
+      <el-form-item label="业务小类" prop="bizSubType">
         <el-input  v-model="modelList.bizSubType"/>
       </el-form-item>
       <el-form-item label="备注" prop="activeFlag">
         <el-input type="textarea" style="width:400px" :rows="4" v-model="modelList.location"/>
       </el-form-item>
-    </el-form>  
+    </el-form>
     <el-table
       v-loading="listLoading"
       :key="tableKey"
@@ -32,16 +29,6 @@
       @select="chooseOne"
       @select-all="chooseAll">
       <el-table-column type="index" label="序号" width="50px" align="center"/>
-      <el-table-column align="center" label="取值日期">
-        <template slot-scope="scope">
-          <span>{{ scope.row.bizDate }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="SV_ROW_ID">
-        <template slot-scope="scope">
-          <span>{{ scope.row.paramRowId }}</span>
-        </template>
-      </el-table-column>
       <el-table-column align="center" label="SVID">
         <template slot-scope="scope">
           <span>{{ scope.row.paramId }}</span>

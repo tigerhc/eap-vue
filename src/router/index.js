@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-const _import = require('./_import_vue')
+// const _import = require('./_import_vue')
 
 Vue.use(Router)
 
@@ -28,83 +28,13 @@ import Layout from '@/views/layout/Layout'
 **/
 export const constantRouterMap = [
   {
-    path: '/redirect',
+    path: '',
     component: Layout,
     hidden: true,
     children: [
       {
         path: '/redirect/:path*',
         component: () => import('@/views/redirect/index')
-      },
-      {
-        path: '/fab/addDevice',
-        component: () => import('@/views/fab/eqpmodel/addDevice'),
-        name: 'addDevice',
-        hidden: true,
-        meta: { title: '设备类型-新增', icon: '', noCache: false }
-      },
-      {
-        path: '/fab/editDevice',
-        component: () => import('@/views/fab/eqpmodel/editDevice'),
-        name: 'editDevice',
-        hidden: true,
-        meta: { title: '设备类型-修改', icon: '', noCache: false }
-      },
-      {
-        path: '/fab/machineModel',
-        component: () => import('@/views/fab/eqp/model'),
-        name: 'machineModel',
-        hidden: true,
-        meta: { title: '机台类型-操作', icon: '', noCache: false }
-      },
-      {
-        path: '/oven/batchlotView',
-        component: () => import('@/views/oven/batchlot/temChart'),
-        name: 'tempModel',
-        hidden: true,
-        meta: { title: '烤箱温度图', icon: '', noCache: false }
-      },
-      {
-        path: '/rms/programAdd',
-        component: () => import('@/views/rms/recipe/programAdd'),
-        name: 'programAdd',
-        hidden: true,
-        meta: { title: '参数新增', icon: '', noCache: false }
-      },
-      {
-        path: '/rms/programEdit',
-        component: () => import('@/views/rms/recipe/programEdit'),
-        name: 'programEdit',
-        hidden: true,
-        meta: { title: '参数详情', icon: '', noCache: false }
-      },
-      {
-        path: '/fab/eqpmodel',
-        component: () => import('@/views/fab/eqpmodel/index'),
-        name: 'eqpmodel',
-        hidden: true,
-        meta: { title: '设备类型', icon: '', noCache: false }
-      },
-      {
-        path: '/fab/eqp',
-        component: () => import('@/views/fab/eqp/index'),
-        name: 'eqp',
-        hidden: true,
-        meta: { title: '设备列表', icon: '', noCache: false }
-      },
-      {
-        path: '/oven/editModel',
-        component: () => import('@/views/oven/model/editModel'),
-        name: 'ovenEditModel',
-        hidden: true,
-        meta: { title: '模板详情', icon: '', noCache: true }
-      },
-      {
-        path: '/edc/recordDeteils',
-        component: () => import('@/views/edc/edcparamrecord/recordDeteils'),
-        name: 'recordDeteils',
-        hidden: true,
-        meta: { title: '采集记录详情', icon: '', noCache: true }
       }
     ]
   },
@@ -126,7 +56,7 @@ export const constantRouterMap = [
     hidden: true
   },
   {
-    path: '/404',
+    path: '/a/b/404',
     component: () => import('@/views/errorPage/404'),
     hidden: true
   },
@@ -147,6 +77,10 @@ export const constantRouterMap = [
         meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
       }
     ]
+  },
+  {
+    path: '*',
+    component: () => import('@/views/errorPage/404')
   }
 ]
 
@@ -161,32 +95,99 @@ export default new Router({
  *
  * @param routerMap
  */
-export function processRouter(routerMap) {
+/**
+ * 匹配 views 文件夹下 所有非 components,layout,login 文件夹下的 index.vue
+ */
+const allModules = require.context('@/views/', true, /^((?!\/components\/|\/layout\/|\/login\/).)+\.vue$/, 'lazy')
+const moduleComponents = {}
+console.info(allModules.keys())
+allModules.keys().forEach(file => {
+  file.match(/\.(.*).vue/)
+  const asyncCompt = () => allModules(file).then(r => r.default)
+  moduleComponents['views' + RegExp.$1] = asyncCompt
+})
+
+// const isLeafe = (router) => {
+//   return router && !router.children && router.type === 2
+// }
+
+const page404 = () => import('@/views/errorPage/404')
+const routerView = () => import('@/components/RouterMeta')
+export function processRouter(routerMap, isTopLevel = true) {
   const newRouters = routerMap.filter(router => {
     const component = router.component
     try {
-      router.name = router.path
+      if (!isTopLevel) {
+        router.path = router.path.replace('/', '')
+      }
       if (component) {
         if (component === 'Layout') {
           router.component = Layout
-        } else if (!component.name) {
-          router.component = _import(component)
+          if (!isTopLevel) {
+            router.component = routerView
+          }
+        } else if (!component.name) { // 判定是否数据库配置的组件(判定逻辑有待完善) 否则进行本地代码转化
+          router.component && (router.name = router.component) // 用组件路径代替 路由name  业务代码可以使用 router.push({name:"数据库配置的组件路径"}) 进行跳转
+          router.component = moduleComponents[router.component] || page404 // 没有找到本地组件设置404页面
         }
       } else {
         router.component = undefined
       }
     } catch (e) {
-      router.component = () => import('@/views/errorPage/404')
+      router.component = page404
     }
     if (router.children && router.children.length) {
       for (const item of router.children) {
         if (item.children) {
-          item.children = processRouter(item.children)
+          item.children = processRouter(item.children, false)
         }
       }
-      router.children = processRouter(router.children)
+      router.children = processRouter(router.children, false)
     }
     return true
   })
+  // console.info(JSON.stringify(newRouters,(key,val)=>{
+  //   if(key==='component'){
+  //     return val && val.name
+  //   }
+  //   return val
+  // }))
   return newRouters
 }
+
+// export function processRouter_bac(routerMap) {
+//   const newRouters = routerMap.filter(router => {
+//     const component = router.component
+//     try {
+//       // router.name = router.path
+//       console.info(router.path);
+//       if (component) {
+//         if (component === 'Layout') {
+//           router.component = Layout
+//         } else if (!component.name) {
+//           router.component = _import(component)
+//         }
+//       } else {
+//         router.component = undefined
+//       }
+//     } catch (e) {
+//       router.component = () => import('@/views/errorPage/404')
+//     }
+//     if (router.children && router.children.length) {
+//       for (const item of router.children) {
+//         if (item.children) {
+//           item.children = processRouter(item.children)
+//         }
+//       }
+//       router.children = processRouter(router.children)
+//     }
+//     return true
+//   })
+//   console.info(JSON.stringify(newRouters,(key,val)=>{
+//     if(key==='component'){
+//       return val && val.name
+//     }
+//     return val
+//   }))
+//   return newRouters
+// }

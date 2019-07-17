@@ -12,7 +12,8 @@ import { isExternal } from '@/utils'
 export default {
   props: {
     to: {
-      type: String,
+      type: Object,
+      default: () => { '/' },
       required: true
     }
   },
@@ -20,7 +21,8 @@ export default {
     isExternalLink(routePath) {
       return isExternal(routePath)
     },
-    linkProps(url) {
+    linkProps(to) {
+      const url = to.path
       if (this.isExternalLink(url)) {
         return {
           is: 'a',
@@ -31,7 +33,7 @@ export default {
       }
       return {
         is: 'router-link',
-        to: url
+        to
       }
     }
   }

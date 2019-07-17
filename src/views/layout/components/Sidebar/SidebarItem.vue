@@ -2,8 +2,8 @@
   <div class="menu-wrapper">
 
     <template v-if="!item.children" >
-      <app-link :to="resolvePath(item.path)">
-        <el-menu-item :index="resolvePath(item.path)" :class="{'submenu-title-noDropdown':!isNest}">
+      <app-link :to="resolvePath(item)">
+        <el-menu-item :index="item.name" :class="{'submenu-title-noDropdown':!isNest}">
           <item v-if="item.meta" :icon="item.meta.icon||'meun'" :title="generateTitle(item.meta.title)" />
         </el-menu-item>
       </app-link>
@@ -23,8 +23,8 @@
           :base-path="resolveBasePath(child.path)"
           class="nest-menu" />
 
-        <app-link v-else :to="resolveNewPath(child)" :key="child.name">
-          <el-menu-item :index="resolvePath(child.path)">
+        <app-link v-else :to="resolvePath(child)" :key="child.name">
+          <el-menu-item :index="child.name">
             <item v-if="child.meta" :icon="child.meta.icon" :title="generateTitle(child.meta.title)" />
           </el-menu-item>
         </app-link>
@@ -67,6 +67,9 @@ export default {
       secondBase: ''
     }
   },
+  mounted() {
+    // console.info(this.item)
+  },
   methods: {
     // hasOneShowingChild(children, parent) {
     //   const showingChildren = children.filter(item => {
@@ -92,14 +95,21 @@ export default {
 
     //   return false
     // },
-    resolvePath(routePath) {
+    resolveRoute(item) {
+
+    },
+    resolvePath(item) {
+      const routePath = item.path
       if (this.isExternalLink(routePath)) {
-        return routePath
+        return { path: routePath }
       }
-      return path.resolve(this.basePath, routePath)
+      return {
+        name: item.component || item.name // 为了方便编码  取用数据库配置的组件路径作为跳转参数 route.push({name:"xxxx"})
+      }
+      // path.resolve(this.basePath, routePath)
     },
     resolveBasePath(routePath) {
- 
+
     },
     isExternalLink(routePath) {
       return isExternal(routePath)

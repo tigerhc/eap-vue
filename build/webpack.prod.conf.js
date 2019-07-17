@@ -75,22 +75,22 @@ const webpackConfig = merge(baseWebpackConfig, {
       inline: /runtime\..*\.js$/
     }),
     // keep chunk.id stable when chunk has no name
-    new webpack.NamedChunksPlugin(chunk => {
-      if (chunk.name) {
-        return chunk.name
-      }
-      const modules = Array.from(chunk.modulesIterable)
-      if (modules.length > 1) {
-        const hash = require('hash-sum')
-        const joinedHash = hash(modules.map(m => m.id).join('_'))
-        let len = nameLength
-        while (seen.has(joinedHash.substr(0, len))) len++
-        seen.add(joinedHash.substr(0, len))
-        return `chunk-${joinedHash.substr(0, len)}`
-      } else {
-        return modules[0].id
-      }
-    }),
+    // new webpack.NamedChunksPlugin(chunk => {
+    //   if (chunk.name) {
+    //     return chunk.name
+    //   }
+    //   const modules = Array.from(chunk.modulesIterable)
+    //   if (modules.length > 1) {
+    //     const hash = require('hash-sum')
+    //     const joinedHash = hash(modules.map(m => m.id).join('_'))
+    //     let len = nameLength
+    //     while (seen.has(joinedHash.substr(0, len))) len++
+    //     seen.add(joinedHash.substr(0, len))
+    //     return `chunk-${joinedHash.substr(0, len)}`
+    //   } else {
+    //     return modules[0].id
+    //   }
+    // }),
     // keep module.id stable when vender modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // copy custom static assets
@@ -105,6 +105,10 @@ const webpackConfig = merge(baseWebpackConfig, {
   optimization: {
     splitChunks: {
       chunks: 'all',
+      // automaticNameDelimiter: "@",
+      // minSize: 300 * 1024,
+      // maxSize: 800 * 1024,
+      // maxInitialRequests:1,
       cacheGroups: {
         libs: {
           name: 'chunk-libs',

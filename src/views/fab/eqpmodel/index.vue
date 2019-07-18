@@ -197,7 +197,7 @@ export default {
     },
     handleUpdate(item, flag) {
       this.$router.push({
-        path: '/fab/editDevice',
+        name: 'views/fab/eqpmodel/addDevice',
         query: {
           id: item.id,
           flag: !flag

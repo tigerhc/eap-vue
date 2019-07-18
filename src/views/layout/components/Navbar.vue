@@ -169,6 +169,9 @@ export default {
       fetchMeunRouterList(params).then(response => {
         this.$store.commit('SET_MEUNROUTES', response.data)
         this.$store.commit('SET_ACTIVENAME', id)
+        if (!this.$store.state.app.sidebar.opened) {
+          this.toggleSideBar()
+        }
       })
     }
   }
@@ -214,7 +217,8 @@ export default {
       margin: 0 8px;
     }
     .sys-dw{
-      font-size:18px;
+      font-size:16px;
+      font-weight:bold;
     }
     .avatar-container {
       // height: 50px;
@@ -225,8 +229,8 @@ export default {
         display: flex;
         align-items: center;
         .user-avatar {
-          width: 40px;
-          height: 40px;
+          width: 36px;
+          height: 34px;
           border-radius: 50%;
         }
         .el-icon-caret-bottom {
@@ -235,46 +239,6 @@ export default {
       }
     }
   }
-  // .right-menu {
-  //   float: right;
-  //   height: 100%;
-  //   &:focus{
-  //    outline: none;
-  //   }
-  //   .right-menu-item {
-  //     display: inline-block;
-  //     margin: 0 8px;
-  //   }
-  //   .screenfull {
-  //     height: 20px;
-  //   }
-  //   .international{
-  //     vertical-align: top;
-  //   }
-  //   .theme-switch {
-  //     vertical-align: 15px;
-  //   }
-  //   .avatar-container {
-  //     height: 50px;
-  //     margin-right: 30px;
-  //     .avatar-wrapper {
-  //       cursor: pointer;
-  //       margin-top: 5px;
-  //       position: relative;
-  //       .user-avatar {
-  //         width: 40px;
-  //         height: 40px;
-  //         border-radius: 10px;
-  //       }
-  //       .el-icon-caret-bottom {
-  //         position: absolute;
-  //         right: -20px;
-  //         top: 25px;
-  //         font-size: 12px;
-  //       }
-  //     }
-  //   }
-  // }
 }
 </style>
 <style>
@@ -291,7 +255,7 @@ export default {
         height: 0;
     }
    .headerSur .el-tabs__item{
-        font-size: 16px;
+        font-size: 17px;
         height:50px;
         line-height:50px;
     }
@@ -305,11 +269,17 @@ export default {
    .headerSur .el-tabs__nav-prev{
         line-height: 50px;
     }
+    .headerSur .el-tabs__item  + .el-tabs__item{
+      margin-left:20px;
+    }
+    .headerSur .el-tabs__item {
+      padding:0;
+    }
    .headerSur .el-tabs--bottom .el-tabs__item.is-bottom:nth-child(2), .el-tabs--bottom .el-tabs__item.is-top:nth-child(2), .el-tabs--top .el-tabs__item.is-bottom:nth-child(2), .el-tabs--top .el-tabs__item.is-top:nth-child(2){
-        padding-left:20px;
+        /* padding-left:20px; */
     }
    .headerSur .el-tabs--bottom .el-tabs__item.is-bottom:last-child, .el-tabs--bottom .el-tabs__item.is-top:last-child, .el-tabs--top .el-tabs__item.is-bottom:last-child, .el-tabs--top .el-tabs__item.is-top:last-child{
-        padding-right:20px;
+        /* padding-right:20px; */
     }
    .headerSur .el-tabs__item:hover{
         /* color: white; */

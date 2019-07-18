@@ -1,10 +1,9 @@
 <template>
   <div class="menu-wrapper">
-
-    <template v-if="!item.children" >
+    <template v-if="!hasChild(item.children).length">
       <app-link :to="resolvePath(item)">
-        <el-menu-item :index="item.name" :class="{'submenu-title-noDropdown':!isNest}">
-          <item v-if="item.meta" :icon="item.meta.icon||'meun'" :title="generateTitle(item.meta.title)" />
+        <el-menu-item :index="item.name" :class="{ 'submenu-title-noDropdown': !isNest }">
+          <item v-if="item.meta" :icon="item.meta.icon || 'meun'" :title="generateTitle(item.meta.title)" />
         </el-menu-item>
       </app-link>
     </template>
@@ -14,14 +13,15 @@
         <item v-if="item.meta" :icon="item.meta.icon" :title="generateTitle(item.meta.title)" />
       </template>
 
-      <template v-for="child in item.children" v-if="!child.hidden">
+      <template v-for="child in hasChild(item.children)">
         <sidebar-item
-          v-if="child.children&&child.children.length>0"
+          v-if="child.children && child.children.length > 0"
           :is-nest="true"
           :item="child"
           :key="child.path"
           :base-path="resolveBasePath(child.path)"
-          class="nest-menu" />
+          class="nest-menu"
+        />
 
         <app-link v-else :to="resolvePath(child)" :key="child.name">
           <el-menu-item :index="child.name">
@@ -30,7 +30,6 @@
         </app-link>
       </template>
     </el-submenu>
-
   </div>
 </template>
 
@@ -67,10 +66,15 @@ export default {
       secondBase: ''
     }
   },
-  mounted() {
-    // console.info(this.item)
-  },
   methods: {
+    hasChild(menus) {
+      if (!menus || !Array.isArray(menus)) {
+        return []
+      }
+      return menus.filter((i) => {
+        return !i.hidden && i.type !== '3' && i.type !== '4'
+      })
+    },
     // hasOneShowingChild(children, parent) {
     //   const showingChildren = children.filter(item => {
     //     if (item.hidden) {
@@ -95,9 +99,7 @@ export default {
 
     //   return false
     // },
-    resolveRoute(item) {
-
-    },
+    resolveRoute(item) {},
     resolvePath(item) {
       const routePath = item.path
       if (this.isExternalLink(routePath)) {
@@ -108,9 +110,7 @@ export default {
       }
       // path.resolve(this.basePath, routePath)
     },
-    resolveBasePath(routePath) {
-
-    },
+    resolveBasePath(routePath) {},
     isExternalLink(routePath) {
       return isExternal(routePath)
     },
@@ -123,7 +123,7 @@ export default {
 </script>
 <style scoped>
 .menu-wrapper {
-  margin-left: 5px;
+  /* margin-left: 5px; */
 }
 </style>
 

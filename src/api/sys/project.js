@@ -38,3 +38,10 @@ export function deleteProject(id) {
     method: 'post'
   })
 }
+
+export function fetchHome() {
+  return request({
+    url: '/sys/sysconfig/sys.protal.url/getByKey',
+    method: 'get'
+  })
+}

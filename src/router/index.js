@@ -116,6 +116,12 @@ const routerView = () => import('@/components/RouterMeta')
 export function processRouter(routerMap, isTopLevel = true) {
   const newRouters = routerMap.filter(router => {
     const component = router.component
+    /**
+     * 不处理权限按钮
+     */
+    if (router.type === '3') {
+      return false
+    }
     try {
       if (!isTopLevel) {
         router.path = router.path.replace('/', '')

@@ -9,10 +9,10 @@
       </el-tabs>
     </div>
     <div class="right-menu">
-      <el-dropdown style="top: -10px;" trigger="click" @command="handleCommand">
+      <el-dropdown trigger="click" @command="handleCommand">
         <span class="el-dropdown-link">
-          <span style="position: relative;top: -6px;color: #101010;font-size: 18px;">系统</span>
-          <i style="position: relative;top: -5px;" class="el-icon-caret-bottom"/>
+          <span class="sys-dw">系统</span>
+          <i class="el-icon-caret-bottom"/>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item v-for="(item,index) in projectList" :command="item" :key="index">{{ item.projectName }}</el-dropdown-item>
@@ -67,7 +67,6 @@
 </template>
 
 <script>
-import { getToken, setToken, removeToken, getRefreshToken, setRefreshToken, removeRefreshToken } from '@/utils/auth'
 import { fetchProList } from '@/api/sys/project'
 import { mapGetters } from 'vuex'
 import { fetchMenuList, fetchMeunRouterList } from '@/api/sys/menu'
@@ -89,6 +88,13 @@ export default {
     LangSelect,
     ThemePicker
   },
+  data() {
+    return {
+      firstLeave: [],
+      projectList: [],
+      activeName: ''
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar',
@@ -99,20 +105,13 @@ export default {
       'project'
     ])
   },
-  data() {
-    return {
-      firstLeave: [],
-      projectList: [],
-      activeName: ''
-    }
-  },
   mounted() {
-    const obj =  this.$route.query
-    if(obj.projectPhotoUrl){
-      window.sessionStorage.setItem('project',JSON.stringify(obj))
+    const obj = this.$route.query
+    if (obj.projectPhotoUrl) {
+      window.sessionStorage.setItem('project', JSON.stringify(obj))
     }
-    const projectItem = JSON.parse(sessionStorage.getItem('project')) 
-    this.$store.dispatch('getProject',projectItem)
+    const projectItem = JSON.parse(sessionStorage.getItem('project'))
+    this.$store.dispatch('getProject', projectItem)
     this.getFirstMeun()
     this.getList()
   },
@@ -127,7 +126,7 @@ export default {
     },
     // 切换系统
     handleCommand(item) {
-      window.location.href = item.projectUrl + '?projectId=' + item.projectId + '&projectName=' + item.projectName +'&projectPhotoUrl=' + item.projectPhotoUrl
+      window.location.href = item.projectUrl + '?projectId=' + item.projectId + '&projectName=' + item.projectName + '&projectPhotoUrl=' + item.projectPhotoUrl
     },
     // 查询项目
     getList() {
@@ -179,12 +178,17 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .navbar {
   height: 50px;
-  line-height: 50px;
+  // line-height: 50px;
   border-radius: 0px !important;
+  display: flex;
+  width: 100%;
   .headerSur{
     display: inline-block;
    // width: 40%;
     line-height: 50px;
+
+    flex: 1;
+    overflow: auto;
   }
   .hamburger-container {
     line-height: 58px;
@@ -199,9 +203,9 @@ export default {
     display: inline-block;
     vertical-align: top;
   }
-  .right-menu {
-    float: right;
-    height: 100%;
+  .right-menu{
+    display: flex;
+    align-items: center;
     &:focus{
      outline: none;
     }
@@ -209,36 +213,68 @@ export default {
       display: inline-block;
       margin: 0 8px;
     }
-    .screenfull {
-      height: 20px;
-    }
-    .international{
-      vertical-align: top;
-    }
-    .theme-switch {
-      vertical-align: 15px;
+    .sys-dw{
+      font-size:18px;
     }
     .avatar-container {
-      height: 50px;
-      margin-right: 30px;
+      // height: 50px;
+      // margin-right: 30px;
       .avatar-wrapper {
         cursor: pointer;
-        margin-top: 5px;
         position: relative;
+        display: flex;
+        align-items: center;
         .user-avatar {
           width: 40px;
           height: 40px;
-          border-radius: 10px;
+          border-radius: 50%;
         }
         .el-icon-caret-bottom {
-          position: absolute;
-          right: -20px;
-          top: 25px;
           font-size: 12px;
         }
       }
     }
   }
+  // .right-menu {
+  //   float: right;
+  //   height: 100%;
+  //   &:focus{
+  //    outline: none;
+  //   }
+  //   .right-menu-item {
+  //     display: inline-block;
+  //     margin: 0 8px;
+  //   }
+  //   .screenfull {
+  //     height: 20px;
+  //   }
+  //   .international{
+  //     vertical-align: top;
+  //   }
+  //   .theme-switch {
+  //     vertical-align: 15px;
+  //   }
+  //   .avatar-container {
+  //     height: 50px;
+  //     margin-right: 30px;
+  //     .avatar-wrapper {
+  //       cursor: pointer;
+  //       margin-top: 5px;
+  //       position: relative;
+  //       .user-avatar {
+  //         width: 40px;
+  //         height: 40px;
+  //         border-radius: 10px;
+  //       }
+  //       .el-icon-caret-bottom {
+  //         position: absolute;
+  //         right: -20px;
+  //         top: 25px;
+  //         font-size: 12px;
+  //       }
+  //     }
+  //   }
+  // }
 }
 </style>
 <style>
@@ -255,7 +291,7 @@ export default {
         height: 0;
     }
    .headerSur .el-tabs__item{
-        font-size: 18px;
+        font-size: 16px;
         height:50px;
         line-height:50px;
     }
@@ -263,8 +299,8 @@ export default {
       border-bottom: 2px solid #409EFF;
     }
    .headerSur .el-tabs__nav{
-        margin-top:-3px;
-        float: right;
+        /* margin-top:-3px; */
+        /* float: right; */
     }
    .headerSur .el-tabs__nav-prev{
         line-height: 50px;

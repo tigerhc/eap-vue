@@ -154,12 +154,12 @@ export default {
       this.multipleSelection = row
     },
     openDeteils(item) {
-      this.$router.push({ path: '/edc/recordDeteils',
+      this.$router.push({ name: 'views/edc/edcparamrecord/recordDeteils',
         query: { id: item.id }
       })
     },
     handleUpdate(item){
-        this.$router.push({ path: '/oven/recordDeteils',
+        this.$router.push({ name: 'views/edc/edcparamrecord/recordDeteils',
         query: { id: item.id }
       })
     }

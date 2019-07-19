@@ -312,12 +312,12 @@ export default {
       }
     },
     edit(type, id) {
-      this.$router.push({ path: '/rms/programEdit',
+      this.$router.push({ name: 'views/rms/recipe/programEdit',
         query: { type, id }
       })
     },
     handleOperating(type, id) {
-      this.$router.push({ path: '/rms/programAdd' })
+      this.$router.push({ name: 'views/rms/recipe/programAdd' })
     }
   }
 }

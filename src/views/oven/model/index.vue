@@ -136,12 +136,12 @@ export default {
       this.multipleSelection = row
     },
     openDeteils(item) {
-      this.$router.push({ path: '/oven/editModel',
+      this.$router.push({ name: 'views/oven/model/editModel',
         query: { item }
       })
     },
     handleUpdate(item){
-        this.$router.push({ path: '/oven/editModel',
+        this.$router.push({ name: 'views/oven/model/editModel',
         query: { item }
       })
     }

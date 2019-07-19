@@ -36,27 +36,25 @@
         </el-tooltip>
       </template>
 
-      <el-dropdown class="avatar-container right-menu-item" trigger="click">
+      <el-dropdown class="avatar-container right-menu-item" trigger="click" @command="getHome">
         <div class="avatar-wrapper">
           <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
           <i class="el-icon-caret-bottom"/>
         </div>
-        <el-dropdown-menu slot="dropdown">
-          <router-link to="/home">
-            <el-dropdown-item>
-              {{ $t('navbar.home') }}
-            </el-dropdown-item>
-          </router-link>
+        <el-dropdown-menu  slot="dropdown">
+          <el-dropdown-item command="home" trigger="click" >
+            {{ $t('navbar.home') }}
+          </el-dropdown-item>
           <router-link to="/info">
             <el-dropdown-item divided>
               用户信息
             </el-dropdown-item>
           </router-link>
-          <router-link to="/change/password">
+          <!-- <router-link to="/change/password">
             <el-dropdown-item>
               修改密码
             </el-dropdown-item>
-          </router-link>
+          </router-link> -->
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>
@@ -67,7 +65,7 @@
 </template>
 
 <script>
-import { fetchProList } from '@/api/sys/project'
+import { fetchProList ,fetchHome} from '@/api/sys/project'
 import { mapGetters } from 'vuex'
 import { fetchMenuList, fetchMeunRouterList } from '@/api/sys/menu'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -92,7 +90,8 @@ export default {
     return {
       firstLeave: [],
       projectList: [],
-      activeName: ''
+      activeName: '',
+      home:''
     }
   },
   computed: {
@@ -116,6 +115,14 @@ export default {
     this.getList()
   },
   methods: {
+    getHome(item){
+      if(item == 'home') {
+        fetchHome().then(res =>{
+          this.home = res.data
+          window.open(this.home)
+        })
+      }   
+    },
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
     },

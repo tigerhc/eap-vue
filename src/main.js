@@ -24,8 +24,11 @@ import * as filters from './filters' // global filters
 import checkPermission from '@/utils/permission' // 权限判断函数
 
 import iconPicker from '@/components/IconPicker'
+import eapTable from '@/components/EapTable'
+import waves from '@/directive/waves'
+Vue.directive('waves', waves)
 Vue.component(iconPicker.name, iconPicker)
-
+Vue.component(eapTable.name, eapTable)
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)

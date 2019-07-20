@@ -100,7 +100,6 @@ export default new Router({
  */
 const allModules = require.context('@/views/', true, /^((?!\/components\/|\/layout\/|\/login\/).)+\.vue$/, 'lazy')
 const moduleComponents = {}
-console.info(allModules.keys())
 allModules.keys().forEach(file => {
   file.match(/\.(.*).vue/)
   const asyncCompt = () => allModules(file).then(r => r.default)

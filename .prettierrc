@@ -2,8 +2,9 @@
   "tabWidth": 2,
   "trailingComma": "none",
   "arrowParens": "always",
-  "jsxBracketSameLine": true,
+  "jsxBracketSameLine": false,
   "printWidth": 120,
   "semi": false,
-  "singleQuote": true
+  "singleQuote": true,
+  "jsxSingleQuote": true
 }

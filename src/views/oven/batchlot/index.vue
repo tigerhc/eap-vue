@@ -143,7 +143,7 @@ export default {
     },
     handleOperating(item) {
       this.$router.push({
-        path: '/oven/batchlotView',
+        name: 'views/oven/batchlot/temChart',
         query: {
           id: item.id,
           list: item

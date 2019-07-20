@@ -221,7 +221,7 @@ export default {
         flag = false
       }
       this.$router.push({
-        path: '/fab/machineModel',
+        name: 'views/fab/eqp/model',
         query: {
           type,
           id,

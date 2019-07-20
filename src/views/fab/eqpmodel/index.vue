@@ -16,7 +16,7 @@ export default {
           update: 'views/fab/eqpmodel/editDevice'
           // delete: true,
           // search: true,
-          // reset: true
+          // batchDelete: true
         },
         sort: 'updateDate',
         columns: [

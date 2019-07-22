@@ -100,9 +100,9 @@ export default new Router({
  */
 const allModules = require.context('@/views/', true, /^((?!\/components\/|\/layout\/|\/login\/).)+\.vue$/, 'lazy')
 const moduleComponents = {}
-allModules.keys().forEach(file => {
+allModules.keys().forEach((file) => {
   file.match(/\.(.*).vue/)
-  const asyncCompt = () => allModules(file).then(r => r.default)
+  const asyncCompt = () => allModules(file).then((r) => r.default)
   moduleComponents['views' + RegExp.$1] = asyncCompt
 })
 
@@ -113,7 +113,7 @@ allModules.keys().forEach(file => {
 const page404 = () => import('@/views/errorPage/404')
 const routerView = () => import('@/components/RouterMeta')
 export function processRouter(routerMap, isTopLevel = true) {
-  const newRouters = routerMap.filter(router => {
+  const newRouters = routerMap.filter((router) => {
     const component = router.component
     /**
      * 不处理权限按钮
@@ -131,9 +131,19 @@ export function processRouter(routerMap, isTopLevel = true) {
           if (!isTopLevel) {
             router.component = routerView
           }
-        } else if (!component.name) { // 判定是否数据库配置的组件(判定逻辑有待完善) 否则进行本地代码转化
-          router.component && (router.name = router.component) // 用组件路径代替 路由name  业务代码可以使用 router.push({name:"数据库配置的组件路径"}) 进行跳转
-          router.component = moduleComponents[router.component] || page404 // 没有找到本地组件设置404页面
+        } else if (!component.name) {
+          const { path, component, MenuTreeNode_parendId, meta, name, type } = router
+          const newRouter = { path, component, MenuTreeNode_parendId, meta, name, type }
+          if (router.children && router.children.length) {
+            newRouter.path = ''
+            router.children.unshift(newRouter)
+            router.component = routerView
+            delete router.name
+          } else {
+            // 判定是否数据库配置的组件(判定逻辑有待完善) 否则进行本地代码转化
+            router.component && (router.name = router.component) // 用组件路径代替 路由name  业务代码可以使用 router.push({name:"数据库配置的组件路径"}) 进行跳转
+            router.component = moduleComponents[router.component] || page404 // 没有找到本地组件设置404页面
+          }
         }
       } else {
         router.component = undefined
@@ -151,12 +161,14 @@ export function processRouter(routerMap, isTopLevel = true) {
     }
     return true
   })
-  // console.info(JSON.stringify(newRouters,(key,val)=>{
-  //   if(key==='component'){
-  //     return val && val.name
-  //   }
-  //   return val
-  // }))
+  console.info(
+    JSON.stringify(newRouters, (key, val) => {
+      if (key === 'component') {
+        return val && val.name
+      }
+      return val
+    })
+  )
   console.info(newRouters)
   return newRouters
 }

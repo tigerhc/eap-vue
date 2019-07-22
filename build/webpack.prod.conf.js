@@ -105,9 +105,9 @@ const webpackConfig = merge(baseWebpackConfig, {
   optimization: {
     splitChunks: {
       chunks: 'all',
-      // automaticNameDelimiter: "@",
-      // minSize: 300 * 1024,
-      // maxSize: 800 * 1024,
+      automaticNameDelimiter: "@",
+      minSize: 200 * 1024,
+      maxSize: 600 * 1024,
       // maxInitialRequests:1,
       cacheGroups: {
         libs: {

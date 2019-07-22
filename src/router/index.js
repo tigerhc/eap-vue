@@ -157,6 +157,7 @@ export function processRouter(routerMap, isTopLevel = true) {
   //   }
   //   return val
   // }))
+  console.info(newRouters)
   return newRouters
 }
 

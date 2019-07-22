@@ -37,6 +37,7 @@ const permission = {
           if (state.fetchRoutes.length === 0) {
             commit('SET_FETCHROUTES', response.data)
             const accessedRouters = processRouter(response.data)
+            console.info('获取路由')
             commit('SET_ROUTERS', accessedRouters)
           }
           resolve()

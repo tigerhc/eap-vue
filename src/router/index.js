@@ -132,17 +132,21 @@ export function processRouter(routerMap, isTopLevel = true) {
             router.component = routerView
           }
         } else if (!component.name) {
+          // 判定是否数据库配置的组件(判定逻辑有待完善) 否则进行本地代码转化
+          debugger
           const { path, component, MenuTreeNode_parendId, meta, name, type } = router
           const newRouter = { path, component, MenuTreeNode_parendId, meta, name, type }
           if (router.children && router.children.length) {
             newRouter.path = ''
             router.children.unshift(newRouter)
             router.component = routerView
-            delete router.name
+            router.name = undefined
           } else {
-            // 判定是否数据库配置的组件(判定逻辑有待完善) 否则进行本地代码转化
             router.component && (router.name = router.component) // 用组件路径代替 路由name  业务代码可以使用 router.push({name:"数据库配置的组件路径"}) 进行跳转
             router.component = moduleComponents[router.component] || page404 // 没有找到本地组件设置404页面
+            if (!router.name) {
+              console.error('no name')
+            }
           }
         }
       } else {

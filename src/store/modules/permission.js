@@ -1,7 +1,7 @@
 import { constantRouterMap, processRouter } from '@/router'
 import { fetchMenuList } from '@/api/menu'
 import { fetchPermissionList } from '@/api/permission'
-
+import { cloneDeep } from 'lodash'
 const permission = {
   state: {
     routers: constantRouterMap,
@@ -36,7 +36,7 @@ const permission = {
         fetchMenuList(state.token).then(response => {
           if (state.fetchRoutes.length === 0) {
             commit('SET_FETCHROUTES', response.data)
-            const accessedRouters = processRouter(response.data)
+            const accessedRouters = processRouter(cloneDeep(response.data))
             console.info('获取路由')
             commit('SET_ROUTERS', accessedRouters)
           }

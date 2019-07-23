@@ -45,3 +45,10 @@ export function fetchHome() {
     method: 'get'
   })
 }
+
+export function getProject(id) {
+  return request({
+    url: '/sysProject/' + id + '/getProject',
+    method: 'post'
+  })
+}

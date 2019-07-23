@@ -63,7 +63,7 @@ export default {
         activeFlag: '',
         delFlag: 0,
         officeId: '',
-        projectId: '1'
+        projectId: '2'
       },
       textMap: {
         addModel: '新增设备',

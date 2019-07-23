@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import { fetchProList ,fetchHome} from '@/api/sys/project'
+import { fetchProList ,fetchHome,getProject} from '@/api/sys/project'
 import { mapGetters } from 'vuex'
 import { fetchMenuList, fetchMeunRouterList } from '@/api/sys/menu'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -105,12 +105,10 @@ export default {
     ])
   },
   mounted() {
-    const obj = this.$route.query
-    if (obj.projectPhotoUrl) {
-      window.sessionStorage.setItem('project', JSON.stringify(obj))
-    }
-    const projectItem = JSON.parse(sessionStorage.getItem('project'))
-    this.$store.dispatch('getProject', projectItem)
+    getProject('2').then(res =>{
+      const obj = res.data
+      this.$store.dispatch('getProject', obj)
+    })
     this.getFirstMeun()
     this.getList()
   },
@@ -133,7 +131,8 @@ export default {
     },
     // 切换系统
     handleCommand(item) {
-      window.location.href = item.projectUrl + '?projectId=' + item.projectId + '&projectName=' + item.projectName + '&projectPhotoUrl=' + item.projectPhotoUrl
+      window.location.href = item.projectUrl
+      // window.location.href = item.projectUrl + '?projectId=' + item.projectId + '&projectName=' + item.projectName + '&projectPhotoUrl=' + item.projectPhotoUrl
     },
     // 查询项目
     getList() {
@@ -156,7 +155,7 @@ export default {
     // 获取一级菜单
     getFirstMeun() {
       const params = {
-        projectId: this.project.projectId
+        projectId: '2'
       }
       fetchMenuList(params).then(response => {
         this.firstLeave = response.data

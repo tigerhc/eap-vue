@@ -55,7 +55,7 @@ export default {
         hostJavaClass: '',
         remarks: '',
         delFlag: 0,
-        projectId: '1'
+        projectId: '2'
       },
       viewObj: {},
       rules: {

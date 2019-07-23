@@ -17,11 +17,15 @@ export default {
     const vnodes = []
 
     if (icon) {
-      vnodes.push(<svg-icon icon-class={icon}/>)
+      if (icon.indexOf('fa-') > -1 || icon.indexOf('el-') > -1) {
+        vnodes.push(<span class={icon + ' svg-icon'} />)
+      } else {
+        vnodes.push(<svg-icon icon-class={icon} />)
+      }
     }
 
     if (title) {
-      vnodes.push(<span slot='title'>{(title)}</span>)
+      vnodes.push(<span slot='title'>{title}</span>)
     }
     return vnodes
   }

@@ -106,15 +106,11 @@ allModules.keys().forEach((file) => {
   moduleComponents['views' + RegExp.$1] = asyncCompt
 })
 
-// const isLeafe = (router) => {
-//   return router && !router.children && router.type === 2
-// }
-
 const page404 = () => import('@/views/errorPage/404')
 const routerView = () => import('@/components/RouterMeta')
 export function processRouter(routerMap, isTopLevel = true) {
   const newRouters = routerMap.filter((router) => {
-    const component = router.component
+    const cmpt = router.component
     /**
      * 不处理权限按钮
      */
@@ -125,15 +121,14 @@ export function processRouter(routerMap, isTopLevel = true) {
       if (!isTopLevel) {
         router.path = router.path.replace('/', '')
       }
-      if (component) {
-        if (component === 'Layout') {
+      if (cmpt) {
+        if (cmpt === 'Layout') {
           router.component = Layout
           if (!isTopLevel) {
             router.component = routerView
           }
-        } else if (!component.name) {
+        } else if (!cmpt.name && typeof cmpt === 'string') {
           // 判定是否数据库配置的组件(判定逻辑有待完善) 否则进行本地代码转化
-          debugger
           const { path, component, MenuTreeNode_parendId, meta, name, type } = router
           const newRouter = { path, component, MenuTreeNode_parendId, meta, name, type }
           if (router.children && router.children.length) {
@@ -142,11 +137,11 @@ export function processRouter(routerMap, isTopLevel = true) {
             router.component = routerView
             router.name = undefined
           } else {
-            router.component && (router.name = router.component) // 用组件路径代替 路由name  业务代码可以使用 router.push({name:"数据库配置的组件路径"}) 进行跳转
-            router.component = moduleComponents[router.component] || page404 // 没有找到本地组件设置404页面
-            if (!router.name) {
-              console.error('no name')
+            if (router.component) {
+              router.name = router.component
             }
+            // 用组件路径代替 路由name  业务代码可以使用 router.push({name:"数据库配置的组件路径"}) 进行跳转
+            router.component = moduleComponents[router.component] || page404 // 没有找到本地组件设置404页面
           }
         }
       } else {
@@ -165,51 +160,13 @@ export function processRouter(routerMap, isTopLevel = true) {
     }
     return true
   })
-  console.info(
-    JSON.stringify(newRouters, (key, val) => {
-      if (key === 'component') {
-        return val && val.name
-      }
-      return val
-    })
-  )
-  console.info(newRouters)
+  // console.info(
+  //   JSON.stringify(newRouters, (key, val) => {
+  //     if (key === 'component') {
+  //       return val && val.name
+  //     }
+  //     return val
+  //   })
+  // )
   return newRouters
 }
-
-// export function processRouter_bac(routerMap) {
-//   const newRouters = routerMap.filter(router => {
-//     const component = router.component
-//     try {
-//       // router.name = router.path
-//       console.info(router.path);
-//       if (component) {
-//         if (component === 'Layout') {
-//           router.component = Layout
-//         } else if (!component.name) {
-//           router.component = _import(component)
-//         }
-//       } else {
-//         router.component = undefined
-//       }
-//     } catch (e) {
-//       router.component = () => import('@/views/errorPage/404')
-//     }
-//     if (router.children && router.children.length) {
-//       for (const item of router.children) {
-//         if (item.children) {
-//           item.children = processRouter(item.children)
-//         }
-//       }
-//       router.children = processRouter(router.children)
-//     }
-//     return true
-//   })
-//   console.info(JSON.stringify(newRouters,(key,val)=>{
-//     if(key==='component'){
-//       return val && val.name
-//     }
-//     return val
-//   }))
-//   return newRouters
-// }

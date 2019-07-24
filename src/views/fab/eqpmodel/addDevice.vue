@@ -109,7 +109,7 @@ export default {
     cancel() {
       this.getView()
       this.$store.dispatch('delView', this.viewObj).then(({ visitedViews }) => {
-        this.$router.push({ name: 'device' })
+        this.$router.push({ name: 'views/fab/eqpmodel/index' })
       })
     }
   }

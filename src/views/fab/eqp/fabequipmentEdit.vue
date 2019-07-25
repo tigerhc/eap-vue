@@ -47,7 +47,8 @@
 <script>
 import { fetchOrganizationList } from '@/api/sys/organization'
 import { fetchList, create, update, del, deteils, batchDelete } from '@/api/public'
-import SelectDevice from './select/selectDevice'
+//import SelectDevice from './select/selectDevice'
+import SelectDevice from '@/views/fab/eqpmodel/eqpmodelLook'
 export default {
   name: 'machineModel',
   components: { SelectDevice },

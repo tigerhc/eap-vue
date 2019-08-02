@@ -36,7 +36,8 @@ export default {
     return {
       // model: {},
       inited: false,
-      api: fetch(this.url)
+      api: fetch(this.url),
+      resized: null
     }
   },
   computed: {
@@ -53,6 +54,14 @@ export default {
     if (this.flag === 'editModel') {
       this.getDeteils()
     }
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth < 1000) {
+        this.resized = 2
+      } else {
+        this.resized = 3
+      }
+    })
   },
   methods: {
     getDeteils() {
@@ -188,7 +197,11 @@ export default {
     },
     wrapCol(v, s) {
       const { col } = this.getPropAndAttrs(v)
-      return <el-col span={col || s}>{this.formItem(v)}</el-col>
+      return (
+        <el-col xs={24} span={col || s}>
+          {this.formItem(v)}
+        </el-col>
+      )
     },
     wrapRow(columns = 3) {
       const total = 24
@@ -234,7 +247,7 @@ export default {
           class='modelForm'
           ref='form'
         >
-          {this.wrapRow(this.col)}
+          {this.wrapRow(this.resized || this.col)}
         </el-form>
         <div slot='footer' class='add-footer'>
           <el-button on-click={this.cancel.bind(this)}>返回</el-button>

@@ -5,7 +5,9 @@
     <!-- <breadcrumb class="breadcrumb-container"/> -->
     <div class="headerSur">
       <el-tabs v-model="activeName" @tab-click="chooseFirstLeave" >
-        <el-tab-pane v-for="(item,index) in firstLeave" :key="index" :label="item.name" :name="item.id"/>
+        <el-tab-pane v-for="(item,index) in firstLeave" :key="index" :label="item.name" :name="item.id">
+          <span slot="label">&nbsp;<item :icon="item.icon" />&nbsp;<span class="menu-name">{{ item.name }}</span> </span>
+        </el-tab-pane>
       </el-tabs>
     </div>
     <div class="right-menu">
@@ -41,7 +43,7 @@
           <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
           <i class="el-icon-caret-bottom"/>
         </div>
-        <el-dropdown-menu  slot="dropdown">
+        <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="home" trigger="click" >
             {{ $t('navbar.home') }}
           </el-dropdown-item>
@@ -65,7 +67,7 @@
 </template>
 
 <script>
-import { fetchProList ,fetchHome,getProject} from '@/api/sys/project'
+import { fetchProList, fetchHome, getProject } from '@/api/sys/project'
 import { mapGetters } from 'vuex'
 import { fetchMenuList, fetchMeunRouterList } from '@/api/sys/menu'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -75,7 +77,7 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 import ThemePicker from '@/components/ThemePicker'
-
+import Item from './Sidebar/Item'
 export default {
   components: {
     Breadcrumb,
@@ -84,14 +86,15 @@ export default {
     Screenfull,
     SizeSelect,
     LangSelect,
-    ThemePicker
+    ThemePicker,
+    Item
   },
   data() {
     return {
       firstLeave: [],
       projectList: [],
       activeName: '',
-      home:''
+      home: ''
     }
   },
   computed: {
@@ -105,7 +108,7 @@ export default {
     ])
   },
   mounted() {
-    getProject('2').then(res =>{
+    getProject('2').then(res => {
       const obj = res.data
       this.$store.dispatch('getProject', obj)
     })
@@ -113,13 +116,13 @@ export default {
     this.getList()
   },
   methods: {
-    getHome(item){
-      if(item == 'home') {
-        fetchHome().then(res =>{
+    getHome(item) {
+      if (item === 'home') {
+        fetchHome().then(res => {
           this.home = res.data
           window.open(this.home)
         })
-      }   
+      }
     },
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
@@ -296,6 +299,11 @@ export default {
     }
     .wid160{
         width:160px
+    }
+    @media (max-width: 800px) {
+        .headerSur .menu-name{
+          display: none;
+        }
     }
 </style>
 

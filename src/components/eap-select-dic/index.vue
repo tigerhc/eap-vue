@@ -28,13 +28,9 @@ export default {
     }
   },
   watch: {
-    value: function(v, o) {
-      console.info(v, o)
-    }
+    value: function(v, o) {}
   },
-  mounted() {
-    console.info('dict mounted')
-  },
+  mounted() {},
   methods: {
     onValueChange(e) {
       this.$emit('input', e)

@@ -1,7 +1,7 @@
 <template>
   <div>
     <select-device ref="selectDevice" @childByValue="childByValue" />
-    <el-input :disabled="disabled" :value="value" placeholder="placeholder" readonly>
+    <el-input :disabled="disabled" :value="value" :placeholder="placeholder" readonly>
       <i slot="suffix" class="el-input__icon el-icon-search" @click="selecton" />
     </el-input>
   </div>
@@ -18,7 +18,11 @@ export default {
       type: Boolean,
       default: false
     },
-    value: { type: undefined, default: undefined }
+    value: { type: undefined, default: undefined },
+    placeholder: {
+      type: String,
+      default: '单击选择设备类型'
+    }
   },
   methods: {
     selecton() {

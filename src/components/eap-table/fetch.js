@@ -24,7 +24,13 @@ export default function(url) {
         data
       })
     },
-
+    detail: (id) => {
+      return request({
+        url: `${url}/` + id + '/get',
+        method: 'get',
+        id
+      })
+    },
     delete: (id) => {
       return request({
         url: `${url}/` + id + `/delete`,

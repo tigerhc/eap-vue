@@ -5,6 +5,7 @@ export default function eapInstall() {
     console.info(file)
     const f = files(file).default || files(file)
     if (f.name) {
+      console.warn(f.name)
       Vue.component(f.name, f)
     }
   })

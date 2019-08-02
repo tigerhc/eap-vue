@@ -50,8 +50,24 @@ export default {
   mounted() {
     this.initAdd()
     this.initEdit()
+    if (this.flag === 'editModel') {
+      this.getDeteils()
+    }
   },
   methods: {
+    getDeteils() {
+      const id = this.$route.query.id
+      if (id === undefined) {
+        console.info('找不到详情id')
+        return
+      }
+      this.api.detail(id).then((resp) => {
+        let m = resp.data
+        const { detail } = this.$vnode.context
+        m = (detail && detail.call(this, m)) || m
+        Object.assign(this.model, m)
+      })
+    },
     cancel() {
       const { cancel } = this.$vnode.context
       cancel && cancel.call(this)
@@ -111,7 +127,6 @@ export default {
       this.$vnode.context.add = (...agu) => {
         this.$refs.form.validate().then(() => {
           const p = add && add.call(this, this.model)
-          console.info(p)
           this.add(p || this.model)
         })
       }
@@ -145,7 +160,6 @@ export default {
       return !!vnode.componentOptions
     },
     formItem(v) {
-      // console.info(v)
       if (this.isComponent(v)) {
         const { componentOptions, data } = v
         // const { listeners } = componentOptions
@@ -209,7 +223,7 @@ export default {
 
   render() {
     return (
-      <div>
+      <div class='model'>
         <div class='header'>{this.title[this.flag]}</div>
         <el-form
           model={this.realModel}
@@ -236,5 +250,15 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+.model {
+  margin: 0 30px 0 20px;
+  .header {
+    height: 50px;
+    border-bottom: 1px solid #eee;
+    padding: 13px 10px 1px 15px;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+}
 </style>

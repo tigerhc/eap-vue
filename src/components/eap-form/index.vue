@@ -42,8 +42,8 @@ export default {
   },
   computed: {
     flag: function() {
-      const type = this.$route.query.type
-      if (!type || type === 'deteils') {
+      const type = this.type
+      if (!type || type === 'VIEW') {
         // 查看处理
         return false
       }
@@ -59,7 +59,7 @@ export default {
   mounted() {
     this.initAdd()
     this.initEdit()
-    if (this.type === 'deteils' || this.type === 'editModel') {
+    if (this.type === 'VIEW' || this.type === 'EDIT') {
       this.getDeteils()
     }
 

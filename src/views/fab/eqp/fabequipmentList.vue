@@ -1,12 +1,46 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.eqpId" style="width: 200px;" class="filter-item" placeholder="请输入设备号" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.bcCode" style="width: 200px;" class="filter-item" placeholder="请输入BC号" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.modelName" style="width: 200px;" class="filter-item" placeholder="请输入设备型号名称" @keyup.enter.native="handleFilter"/>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleOperating('addModel')">{{ $t('table.add') }}</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-delete" @click="batchDelete">批量删除</el-button>
+      <el-input
+        v-model="listQuery.eqpId"
+        style="width: 200px;"
+        class="filter-item"
+        placeholder="请输入设备号"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-input
+        v-model="listQuery.bcCode"
+        style="width: 200px;"
+        class="filter-item"
+        placeholder="请输入BC号"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-input
+        v-model="listQuery.modelName"
+        style="width: 200px;"
+        class="filter-item"
+        placeholder="请输入设备型号名称"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{
+        $t('table.search')
+      }}</el-button>
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px;"
+        type="primary"
+        icon="el-icon-edit"
+        @click="handleOperating('ADD')"
+        >{{ $t('table.add') }}</el-button
+      >
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px;"
+        type="primary"
+        icon="el-icon-delete"
+        @click="batchDelete"
+        >批量删除</el-button
+      >
     </div>
 
     <el-table
@@ -19,12 +53,13 @@
       style="width: 100%"
       @selection-change="handleSelectionChange"
       @select="chooseOne"
-      @select-all="chooseAll">
+      @select-all="chooseAll"
+    >
       <el-table-column type="selection" width="36" />
-      <el-table-column type="index" label="序号" width="50px" align="center"/>
+      <el-table-column type="index" label="序号" width="50px" align="center" />
       <el-table-column align="center" label="设备号">
         <template slot-scope="scope">
-          <span class="textLink" @click="handleOperating('deteils',scope.row.id)">{{ scope.row.eqpId }}</span>
+          <span class="textLink" @click="handleOperating('VIEW', scope.row.id)">{{ scope.row.eqpId }}</span>
         </template>
       </el-table-column>
       <el-table-column align="left" label="部门">
@@ -65,9 +100,10 @@
       </el-table-column>
       <el-table-column :label="$t('table.actions')" width="200px" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleOperating('editModel',scope.row.id)">{{ $t('table.edit') }}</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">{{ $t('table.delete') }}
-          </el-button>
+          <el-button type="primary" size="mini" @click="handleOperating('EDIT', scope.row.id)">{{
+            $t('table.edit')
+          }}</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">{{ $t('table.delete') }} </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -75,23 +111,24 @@
     <div class="pagination-container">
       <el-pagination
         :current-page.sync="listQuery.page"
-        :page-sizes="[10,20,30, 50]"
+        :page-sizes="[10, 20, 30, 50]"
         :page-size="listQuery.limit"
         :total="total"
         background
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"/>
+        @current-change="handleCurrentChange"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import { fetchList, create, update, del, getDeteils, batchDelete } from '@/api/public'
+import { fetchList, del, batchDelete } from '@/api/public'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
-  name: 'eqp',
+  name: 'Eqp',
   directives: {
     waves
   },
@@ -119,7 +156,7 @@ export default {
     getList() {
       this.listLoading = true
       const params = this.changeParams(this.listQuery)
-      fetchList(this.tab, params).then(response => {
+      fetchList(this.tab, params).then((response) => {
         this.list = response.data.results
         this.total = response.data.total
         this.listLoading = false
@@ -134,7 +171,7 @@ export default {
         'query.eqpId||like': obj.eqpId || '',
         'query.bcCode||like': obj.bcCode || '',
         'query.modelName||like': obj.modelName || '',
-        'queryFields': 'id,eqpId,officeName,classCode,ip,bcCode,modelName,location,activeFlag,iconPath,updateDate,'
+        queryFields: 'id,eqpId,officeName,classCode,ip,bcCode,modelName,location,activeFlag,iconPath,updateDate,'
       }
       return params
     },
@@ -181,31 +218,33 @@ export default {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        }).then(() => {
-          const obj = {
-            ids: ''
-          }
-          const ids = []
-          for (const item of this.multipleSelection) {
-            ids.push(item.id)
-          }
-          obj.ids = ids.join(',')
-          batchDelete(this.tab, obj).then(() => {
-            this.getList()
+        })
+          .then(() => {
+            const obj = {
+              ids: ''
+            }
+            const ids = []
+            for (const item of this.multipleSelection) {
+              ids.push(item.id)
+            }
+            obj.ids = ids.join(',')
+            batchDelete(this.tab, obj).then(() => {
+              this.getList()
+              this.$notify({
+                title: '成功',
+                message: '删除成功',
+                type: 'success',
+                duration: 2000
+              })
+            })
+          })
+          .catch(() => {
             this.$notify({
-              title: '成功',
-              message: '删除成功',
-              type: 'success',
+              type: 'info',
+              message: '已取消删除',
               duration: 2000
             })
           })
-        }).catch(() => {
-          this.$notify({
-            type: 'info',
-            message: '已取消删除',
-            duration: 2000
-          })
-        })
       } else {
         this.$notify({
           showClose: true,
@@ -216,17 +255,18 @@ export default {
       }
     },
     handleOperating(type, id) {
-      let flag = true
-      if (type == 'deteils') {
-        flag = false
-      }
+      // let flag = true
+      // if (type == 'deteils') {
+      //   flag = false
+      // }
       this.$router.push({
         name: 'views/fab/eqp/fabequipmentEdit',
         query: {
           type,
-          id,
-          flag
-        }})
+          id
+          // flag
+        }
+      })
     }
   }
 }

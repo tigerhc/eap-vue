@@ -56,7 +56,7 @@ export const constantRouterMap = [
     hidden: true
   },
   {
-    path: '/a/b/404',
+    path: '/404',
     component: () => import('@/views/errorPage/404'),
     hidden: true
   },
@@ -77,11 +77,11 @@ export const constantRouterMap = [
         meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
       }
     ]
-  },
-  {
-    path: '*',
-    component: () => import('@/views/errorPage/404')
   }
+  // {
+  //   path: '*',
+  //   component: () => import('@/views/errorPage/404')
+  // }
 ]
 
 export default new Router({

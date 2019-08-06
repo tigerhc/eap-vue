@@ -42,6 +42,14 @@ export default {
   },
   computed: {
     flag: function() {
+      const type = this.$route.query.type
+      if (!type || type === 'deteils') {
+        // 查看处理
+        return false
+      }
+      return true
+    },
+    type: function() {
       return this.$route.query.type
     },
     realModel: function() {
@@ -51,7 +59,7 @@ export default {
   mounted() {
     this.initAdd()
     this.initEdit()
-    if (this.flag === 'editModel') {
+    if (this.type === 'deteils' || this.type === 'editModel') {
       this.getDeteils()
     }
 
@@ -237,7 +245,7 @@ export default {
   render() {
     return (
       <div class='model'>
-        <div class='header'>{this.title[this.flag]}</div>
+        <div class='header'>{this.title[this.type]}</div>
         <el-form
           model={this.realModel}
           inline={false}
@@ -251,11 +259,11 @@ export default {
         </el-form>
         <div slot='footer' class='add-footer'>
           <el-button on-click={this.cancel.bind(this)}>返回</el-button>
-          {
+          {this.flag && (
             <el-button type='primary' on-click={this.operating.bind(this)}>
               {this.$t('table.confirm')}
             </el-button>
-          }
+          )}
         </div>
       </div>
     )

@@ -28,7 +28,8 @@ export default {
       },
       textMap: {
         addModel: '新增设备',
-        editModel: '修改设备'
+        editModel: '修改设备',
+        deteils: '设备详情'
       },
       viewObj: {},
       tab: '/fab/fabequipment/',

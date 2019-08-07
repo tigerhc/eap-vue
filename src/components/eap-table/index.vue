@@ -214,7 +214,9 @@ export default {
       }
       this.$router.push({
         name, // 'views/fab/eqpmodel/addDevice'
-        type: 'ADD'
+        query: {
+          type: 'ADD'
+        }
       })
     },
     // 编辑
@@ -224,7 +226,7 @@ export default {
         throw Error('未设置编辑跳转路径')
       }
       this.$router.push({
-        name: this.handler.edit, // 'views/fab/eqpmodel/addDevice',
+        name, // 'views/fab/eqpmodel/addDevice',
         query: {
           id: item.id,
           type: 'EDIT'
@@ -237,7 +239,7 @@ export default {
         throw Error('未设置查看跳转路径')
       }
       this.$router.push({
-        name: this.handler.view, // 'views/fab/eqpmodel/addDevice',
+        name, // 'views/fab/eqpmodel/addDevice',
         query: {
           id: item.id,
           type: 'VIEW'

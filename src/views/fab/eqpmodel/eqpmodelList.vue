@@ -12,9 +12,9 @@ export default {
       table: {
         url: '/fab/fabequipmentmodel',
         handler: {
-          add: 'views/fab/eqpmodel/eqpmodelAdd',
-          edit: 'views/fab/eqpmodel/eqpmodelEdit',
-          view: 'views/fab/eqpmodel/eqpmodelEdit'
+          add: 'views/fab/eqpmodel/eqpmodelAdd'
+          // edit: 'views/fab/eqpmodel/eqpmodelEdit',
+          // view: 'views/fab/eqpmodel/eqpmodelEdit'
           // delete: true,
           // search: true,
           // batchDelete: true

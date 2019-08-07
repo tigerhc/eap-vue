@@ -33,10 +33,11 @@ export default {
   data: function() {
     return {
       isLoading: false,
+      colSet: [],
       query: {
         page: 1,
         limit: 10,
-        queryFields: this.columns.map((i) => i.name).join() + ','
+        queryFields: this.queryName
       },
       total: 0,
       list: [],
@@ -58,18 +59,29 @@ export default {
       return this.columns.filter((i) => !i.hidden)
     },
     queryFields: function() {
-      return this.columns.filter((i) => i.query && i.queryMode)
+      return this.colSet.filter((i) => i.query && i.queryMode)
+    },
+    queryName: function() {
+      return this.colSet.map((i) => i.name).join() + ','
     }
   },
-  created() {
-    this.refresh(1) // 初始加载第一页
-    // 初始化配置查询model
-    this.queryFields.map((field) => {
-      const key = `query.${field.name}||${field.condition}`
-      this.$set(this.query, key, undefined)
-    })
+  watch: {
+    colSet: function(n, o) {
+      if (n && n.length) {
+        this.doFetchData()
+      }
+    }
   },
+  created() {},
   methods: {
+    doFetchData() {
+      // 初始化配置查询model
+      this.queryFields.map((field) => {
+        const key = `query.${field.name}||${field.condition}`
+        this.$set(this.query, key, undefined)
+      })
+      this.refresh(1) // 初始加载第一页
+    },
     excludeBindProps(col) {
       const { formatter, ...rest } = col
       console.info(formatter)
@@ -103,6 +115,7 @@ export default {
     refresh(page = 1, limit = 10) {
       this.query.page = page
       this.query.limit = limit
+      this.query.queryFields = this.queryName
       this.getList(this.query)
     },
     getList(query) {
@@ -355,6 +368,19 @@ export default {
         {this.$t('table.search')}
       </el-button>
     )
+    const getColFromSlot = () => {
+      return (this.$slots.default || [])
+        .filter((item) => item.componentOptions.tag === 'eap-table-col')
+        .map((item) => {
+          return { ...item.data.attrs }
+        })
+        .filter((i) => !i.hidden)
+    }
+    const newCols = [...this.tableColumns, ...getColFromSlot()]
+
+    if (JSON.stringify(newCols) !== JSON.stringify(this.colSet)) {
+      this.colSet = newCols
+    }
 
     return (
       <div>
@@ -367,7 +393,7 @@ export default {
         <el-table {...tableConf} v-loading={this.isLoading}>
           <el-table-column type='selection' width='36' />
           <el-table-column type='index' label='序号' width='50px' align='center' />
-          {this.tableColumns.map((col) => {
+          {newCols.map((col) => {
             const conf = {
               props: { align: 'center', ...col },
               scopedSlots: {

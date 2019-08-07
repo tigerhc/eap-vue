@@ -1,6 +1,8 @@
 <template>
   <div class="app-container calendar-list-container">
-    <eap-table v-bind="table" />
+    <eap-table v-bind="table">
+      <eap-table-col name="updateDate" label="更新时间" />
+    </eap-table>
   </div>
 </template>
 
@@ -41,10 +43,6 @@ export default {
             name: 'activeFlag',
             label: '有效标志',
             'formatter.dict': 'ACTIVE_FLAG'
-          },
-          {
-            name: 'updateDate',
-            label: '更新时间'
           }
         ]
       }

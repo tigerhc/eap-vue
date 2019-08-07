@@ -52,27 +52,6 @@ export default {
         }
       }
     }
-  },
-  methods: {
-    // // 获取详情结果处理
-    // detail(m) {
-    //   m.officeIds = m.officeIds.split(',')
-    //   return m
-    // },
-    // // 新增  用于处理参数 返回的值将作为api 请求参数
-    // add() {
-    //   const re = { ...this.model }
-    //   re.officeId = re.officeIds[re.officeIds.length - 1]
-    //   re.officeIds = undefined
-    //   return re
-    // },
-    // // 修改
-    // edit() {
-    //   const re = { ...this.model }
-    //   re.officeId = re.officeIds[re.officeIds.length - 1]
-    //   re.officeIds = undefined
-    //   return re
-    // }
   }
 }
 </script>

@@ -62,7 +62,7 @@ export default {
   methods: {
     generateTitle, // generateTitle by vue-i18n
     isActive(route) {
-      return route.path === this.$route.path
+      return route.name === this.$route.name
     },
     addViewTags() {
       const { name } = this.$route

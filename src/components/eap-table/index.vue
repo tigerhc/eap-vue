@@ -194,25 +194,53 @@ export default {
         })
       }
     },
+    // 默认取设置的类型  没有取其他类型
+    getRedirectPath(type = '') {
+      type = type.toLowerCase()
+      const assets = [type, 'ADD', 'EDIT', 'VIEW']
+      return assets.reduce((res, t) => {
+        const p = this.handler[t.toLowerCase()] || this.handler[t.toUpperCase()]
+        if (!res && p) {
+          return p
+        }
+        return res
+      }, '')
+    },
     // 新建
-    create() {
-      if (!this.handler.create) {
+    add() {
+      const name = this.getRedirectPath('ADD')
+      if (!name) {
         throw Error('未设置新增跳转路径')
       }
       this.$router.push({
-        name: this.handler.create // 'views/fab/eqpmodel/addDevice'
+        name, // 'views/fab/eqpmodel/addDevice'
+        type: 'ADD'
       })
     },
     // 编辑
-    update(item, flag) {
-      if (!this.handler.update) {
+    edit(item, flag) {
+      const name = this.getRedirectPath('EDIT')
+      if (!name) {
         throw Error('未设置编辑跳转路径')
       }
       this.$router.push({
-        name: this.handler.update, // 'views/fab/eqpmodel/addDevice',
+        name: this.handler.edit, // 'views/fab/eqpmodel/addDevice',
         query: {
           id: item.id,
-          flag: !flag
+          type: 'EDIT'
+        }
+      })
+    },
+    view(item) {
+      const name = this.getRedirectPath('VIEW')
+      if (!name) {
+        throw Error('未设置查看跳转路径')
+      }
+      this.$router.push({
+        name: this.handler.view, // 'views/fab/eqpmodel/addDevice',
+        query: {
+          id: item.id,
+          type: 'VIEW'
         }
       })
     },
@@ -261,8 +289,8 @@ export default {
       scopedSlots: {
         default: (scope) => (
           <slot name='options'>
-            {this.handler.update !== false && (
-              <el-button type='primary' size='mini' on-click={this.update.bind(this, scope.row)}>
+            {this.handler.edit !== false && (
+              <el-button type='primary' size='mini' on-click={this.edit.bind(this, scope.row)}>
                 {this.$t('table.edit')}
               </el-button>
             )}
@@ -302,7 +330,7 @@ export default {
         style='margin-left: 10px;'
         type='primary'
         icon='el-icon-edit'
-        on-click={this.create.bind(this)}
+        on-click={this.add.bind(this)}
       >
         {this.$t('table.add')}
       </el-button>

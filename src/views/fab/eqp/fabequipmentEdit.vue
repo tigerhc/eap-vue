@@ -27,9 +27,9 @@ export default {
         projectId: '2'
       },
       textMap: {
-        addModel: '新增设备',
-        editModel: '修改设备',
-        deteils: '设备详情'
+        ADD: '新增设备',
+        EDIT: '修改设备',
+        VIEW: '设备详情'
       },
       viewObj: {},
       tab: '/fab/fabequipment/',

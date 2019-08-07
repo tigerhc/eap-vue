@@ -12,8 +12,9 @@ export default {
       table: {
         url: '/fab/fabequipmentmodel',
         handler: {
-          create: 'views/fab/eqpmodel/eqpmodelAdd',
-          update: 'views/fab/eqpmodel/eqpmodelEdit'
+          add: 'views/fab/eqpmodel/eqpmodelAdd',
+          edit: 'views/fab/eqpmodel/eqpmodelEdit',
+          view: 'views/fab/eqpmodel/eqpmodelEdit'
           // delete: true,
           // search: true,
           // batchDelete: true
@@ -24,7 +25,7 @@ export default {
             name: 'manufacturerName',
             align: 'center',
             label: '设备厂家',
-            'formatter.handler': 'update',
+            'formatter.handler': 'view', // view add edit
             query: 'true',
             queryMode: 'input',
             condition: 'like'

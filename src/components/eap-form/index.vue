@@ -90,11 +90,11 @@ export default {
       cancel && cancel.call(this)
     },
     operating() {
-      if (this.flag === 'addModel') {
+      if (this.type === 'ADD') {
         const { add } = this.$vnode.context
         add && add.call(this)
       }
-      if (this.flag === 'editModel') {
+      if (this.type === 'EDIT') {
         const { edit } = this.$vnode.context
         edit && edit.call(this)
       }

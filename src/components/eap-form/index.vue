@@ -30,6 +30,14 @@ export default {
     url: {
       type: String,
       default: ''
+    },
+    beforeSubmit: {
+      type: Function,
+      default: (v) => v
+    },
+    onLoadData: {
+      type: Function,
+      default: (v) => v
     }
   },
   data: function() {
@@ -57,8 +65,6 @@ export default {
     }
   },
   mounted() {
-    this.initAdd()
-    this.initEdit()
     if (this.type === 'VIEW' || this.type === 'EDIT') {
       this.getDeteils()
     }
@@ -80,9 +86,13 @@ export default {
       }
       this.api.detail(id).then((resp) => {
         let m = resp.data
-        const { detail } = this.$vnode.context
-        m = (detail && detail.call(this, m)) || m
+        // const { detail } = this.$vnode.context
+        // m = (detail && detail.call(this, m)) || m
+        m = this.onLoadData(m) || m
         Object.assign(this.model, m)
+        setTimeout(() => {
+          this.$refs.form.reset()
+        })
       })
     },
     cancel() {
@@ -96,12 +106,10 @@ export default {
     },
     operating() {
       if (this.type === 'ADD') {
-        const { add } = this.$vnode.context
-        add && add.call(this)
+        this.doAdd()
       }
       if (this.type === 'EDIT') {
-        const { edit } = this.$vnode.context
-        edit && edit.call(this)
+        this.doEdit()
       }
     },
     add(params) {
@@ -144,23 +152,27 @@ export default {
         }
       })
     },
-    initAdd() {
-      const { add } = this.$vnode.context
-      this.$vnode.context.add = (...agu) => {
-        this.$refs.form.validate().then(() => {
-          const p = add && add.call(this, this.model)
+    doAdd() {
+      this.$refs.form.validate().then(
+        () => {
+          const p = this.beforeSubmit(this.model, 'ADD')
           this.add(p || this.model)
-        })
-      }
+        },
+        (e) => {
+          console.info('cancel add')
+        }
+      )
     },
-    initEdit() {
-      const { edit } = this.$vnode.context
-      this.$vnode.context.edit = (...agu) => {
-        this.$refs.form.validate().then(() => {
-          const p = edit && edit.call(this, this.model)
+    doEdit() {
+      this.$refs.form.validate().then(
+        () => {
+          const p = this.beforeSubmit(this.model, 'EDIT')
           this.edit(p || this.model)
-        })
-      }
+        },
+        (e) => {
+          console.info('cancel edit')
+        }
+      )
     },
 
     getPropAndAttrs(v) {

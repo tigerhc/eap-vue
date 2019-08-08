@@ -7,9 +7,9 @@ export default {
   },
   render(h) {
     return (
-      <keep-alive>
-        <router-view />
-      </keep-alive>
+      // <keep-alive >
+      <router-view />
+      // </keep-alive>
     )
   }
 }

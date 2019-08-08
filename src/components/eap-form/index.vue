@@ -91,7 +91,7 @@ export default {
         m = this.onLoadData(m) || m
         Object.assign(this.model, m)
         setTimeout(() => {
-          this.$refs.form.reset()
+          this.$refs.form.resetFields()
         })
       })
     },

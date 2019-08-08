@@ -370,7 +370,7 @@ export default {
     )
     const getColFromSlot = () => {
       return (this.$slots.default || [])
-        .filter((item) => item.componentOptions.tag === 'eap-table-col')
+        .filter((item) => item.componentOptions && item.componentOptions.tag === 'eap-table-col')
         .map((item) => {
           return { ...item.data.attrs }
         })

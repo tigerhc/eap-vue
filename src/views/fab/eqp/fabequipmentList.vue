@@ -1,14 +1,14 @@
 <template>
   <div class="app-container calendar-list-container">
     <eap-table v-bind="table">
-      <!--<eap-table-col name="eqpId" label="设备号" align="left" />-->
-      <!--<eap-table-col name="officeName" label="部门" align="left"/>-->
-      <!--<eap-table-col name="bcCode" label="BC号" align="center"/>-->
-      <!--<eap-table-col name="ip" label="机台IP地址" align="center"/>-->
-      <!--<eap-table-col name="modelName" label="设备型号名称" align="left"/>-->
-      <!--<eap-table-col name="location" label="位置号" align="center"/>-->
-      <!--<eap-table-col name="activeFlag" label="有效标志" align="center"/>-->
-      <!--<eap-table-col name="updateDate" label="更新时间" align="center"/>-->
+      <eap-table-col name="eqpId" label="设备号" align="left" formatter.handler="view" query="true" queryMode="input" condition="like"/>
+      <eap-table-col name="officeName" label="部门" align="left"/>
+      <eap-table-col name="bcCode" label="BC号" align="center" query="true" queryMode="input" condition="like" />
+      <eap-table-col name="ip" label="机台IP地址" align="center"/>
+      <eap-table-col name="modelName" label="设备型号名称" align="left" query="true" queryMode="input" condition="like" />
+      <eap-table-col name="location" label="位置号" align="center"/>
+      <eap-table-col name="activeFlag" label="有效标志" align="center" formatter.dict="ACTIVE_FLAG"/>
+      <eap-table-col name="updateDate" label="更新时间" align="center"/>
 
     </eap-table>
 
@@ -17,7 +17,7 @@
 
 <script>
   export default {
-    name: 'Eqpmodel',
+    name: 'Eqp',
     data() {
       return {
         table: {
@@ -31,16 +31,16 @@
             batchDelete: true
           },
           sort: 'updateDate',
-          columns: [
-            {name: 'eqpId',            label: '设备号',       align: 'left',  'formatter.handler': 'view', query: 'true', queryMode: 'input', condition: 'like'},
-            {name: 'officeName',     label: '部门',         align: 'left'  },
-            {name: 'bcCode',           label: 'BC号',         align: 'center' , query: 'true', queryMode: 'input', condition: 'like'},
-            {name: 'ip',               label: '机台IP地址',   align: 'center'},
-            {name: 'modelName',        label: '设备型号名称', align: 'left', query: 'true', queryMode: 'input', condition: 'like'},
-            {name: 'location',         label: '位置号',       align: 'center'},
-            {name: 'activeFlag',       label: '有效标志',     align: 'center', 'formatter.dict': 'ACTIVE_FLAG'},
-            {name: 'updateDate',       label: '更新时间',     align: 'center'}
-          ]
+//          columns: [
+//            {name: 'eqpId',            label: '设备号',       align: 'left',  'formatter.handler': 'view', query: 'true', queryMode: 'input', condition: 'like'},
+//            {name: 'officeName',     label: '部门',         align: 'left'  },
+//            {name: 'bcCode',           label: 'BC号',         align: 'center' , query: 'true', queryMode: 'input', condition: 'like'},
+//            {name: 'ip',               label: '机台IP地址',   align: 'center'},
+//            {name: 'modelName',        label: '设备型号名称', align: 'left', query: 'true', queryMode: 'input', condition: 'like'},
+//            {name: 'location',         label: '位置号',       align: 'center'},
+//            {name: 'activeFlag',       label: '有效标志',     align: 'center', 'formatter.dict': 'ACTIVE_FLAG'},
+//            {name: 'updateDate',       label: '更新时间',     align: 'center'}
+//          ]
         }
       }
     }

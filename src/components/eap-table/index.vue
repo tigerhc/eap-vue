@@ -59,7 +59,7 @@ export default {
       return this.columns.filter((i) => !i.hidden)
     },
     queryFields: function() {
-      return this.colSet.filter((i) => i.query && i.queryMode)
+      return this.colSet.filter((i) => i.query && i.querymode)
     },
     queryName: function() {
       return this.colSet.map((i) => i.name).join() + ','
@@ -92,15 +92,29 @@ export default {
       if (col.formatter && typeof col.formatter === 'function') {
         return col.formatter(val, col, this, row)
       }
-      const handler = col['formatter.handler']
-      if (handler && typeof this[handler] === 'function') {
+      const handler = col['formatter.handler'] || col['handler']
+      if (handler && (typeof this[handler] === 'function' || typeof this.$vnode.context[handler])) {
+        const h = this[handler] || this.$vnode.context[handler]
+        const fn = () => {
+          if (col.tip) {
+            this.$confirm(col.tip).then(
+              () => {
+                h && h.call(this, row, this)
+              },
+              (e) => e
+            )
+          } else {
+            h && h.call(this, row, col, this)
+          }
+        }
+
         return (
-          <el-button type='text' size='mini' on-click={this[handler].bind(this, row)}>
+          <el-button type='text' size='mini' on-click={fn.bind(this)}>
             {val}
           </el-button>
         )
       }
-      const dict = col['formatter.dict'] // 字典转化
+      const dict = col['formatter.dict'] || col['dict'] // 字典转化
       if (dict) {
         const dictList = this.dictList(dict) || []
         const v = dictList.find((i) => i.value === val)
@@ -210,9 +224,16 @@ export default {
     // 默认取设置的类型  没有取其他类型
     getRedirectPath(type = '') {
       type = type.toLowerCase()
-      const assets = [type, 'ADD', 'EDIT', 'VIEW']
+      const assets = [type, 'ADD', 'EDIT', 'VIEW'].map((i) => (i || '').toLowerCase())
+      const settedPath = this.getSlotsByType().reduce((re, i) => {
+        if (assets.includes(i.handler || i.name)) {
+          re[i.handler || i.name] = i.url
+        }
+        return re
+      }, {})
+      // .map((i) => i.handler || i.name)
       return assets.reduce((res, t) => {
-        const p = this.handler[t.toLowerCase()] || this.handler[t.toUpperCase()]
+        const p = this.handler[t.toLowerCase()] || this.handler[t.toUpperCase()] || settedPath[t.toLowerCase()]
         if (!res && p) {
           return p
         }
@@ -220,8 +241,8 @@ export default {
       }, '')
     },
     // 新建
-    add() {
-      const name = this.getRedirectPath('ADD')
+    add({ url }) {
+      const name = url || this.getRedirectPath('ADD')
       if (!name) {
         throw Error('未设置新增跳转路径')
       }
@@ -248,6 +269,7 @@ export default {
     },
     view(item) {
       const name = this.getRedirectPath('VIEW')
+      console.info(name)
       if (!name) {
         throw Error('未设置查看跳转路径')
       }
@@ -269,7 +291,7 @@ export default {
       return this.queryFields.map((field) => {
         const key = `query.${field.name}||${field.condition}`
         // 处理其他控件
-        return h('el-' + field.queryMode, {
+        return h('el-' + field.querymode, {
           attrs: { placeholder: field.label },
           props: { value: this.query[key] },
           style: { width: '200px', marginRight: '5px' },
@@ -284,8 +306,158 @@ export default {
           }
         })
       })
+    },
+    getColumns() {
+      return this.getSlotsByType('eap-table-column')
+    },
+    getToolbar() {
+      return this.getSlotsByType('eap-table-toolbar')
+    },
+    getButtons() {
+      return this.getSlotsByType('eap-table-button')
+    },
+    isEl(item, type = null) {
+      const tag = item.componentOptions && item.componentOptions.tag
+      return type ? tag === type : !!tag
+    },
+    getSlotsByType(type) {
+      const f = (item) => {
+        return this.isEl(item, type)
+      }
+      return (this.$slots.default || []).filter(f).map((item) => ({ ...item.data.attrs }))
+    },
+    // 操作列按钮
+    renderButtons() {
+      const opConf = {
+        scopedSlots: {
+          default: (scope) => {
+            const deft = {
+              edit: { type: 'primary', name: 'edit', label: this.$t('table.edit') },
+              delete: { name: 'delete', label: this.$t('table.delete'), type: 'danger' }
+            }
+            const creator = (conf) => {
+              if (conf.name in deft) {
+                conf = { ...deft[conf.name], ...conf }
+                delete deft[conf.name]
+              }
+              if (conf.hidden || 'hidden' in conf) {
+                return null
+              }
+              const event = this.$vnode.context[conf.name] || this[conf.name]
+              const confirm = () => {
+                const p = [
+                  conf['tip'],
+                  {
+                    type: 'warning'
+                  }
+                ]
+                if (conf['tip']) {
+                  this.$confirm(...p)
+                    .then((_) => {
+                      event && event.apply(this, [scope.row, conf, this])
+                    })
+                    .catch((e) => 0)
+                } else {
+                  event && event.apply(this, [scope.row, conf, this])
+                }
+              }
+              return (
+                <el-button on-click={confirm.bind(this)} size='mini' icon={conf.icon} type={conf.type}>
+                  {conf.label}
+                </el-button>
+              )
+            }
+            const btns = this.getButtons().map(creator)
+            const deftBtns = Object.keys(deft)
+              .map((key) => deft[key])
+              .map(creator)
+            return <div style='color: red;white-space: nowrap;'>{[...btns, ...deftBtns]}</div>
+          }
+        }
+      }
+      return (
+        <el-table-column
+          {...opConf}
+          label={this.$t('table.actions')}
+          align='center'
+          class-name='small-padding fixed-width'
+        ></el-table-column>
+      )
+    },
+    renderToobar() {
+      const add = {
+        name: 'add',
+        type: 'primary',
+        icon: 'el-icon-edit',
+        label: this.$t('table.add')
+      }
+
+      const batchDelete = {
+        name: 'batchDelete',
+        type: 'primary',
+        icon: 'el-icon-delete',
+        label: '批量删除'
+      }
+      const search = {
+        name: 'search',
+        type: 'primary',
+        icon: 'el-icon-search',
+        label: this.$t('table.search')
+      }
+
+      const deft = {
+        search,
+        batchDelete,
+        add
+      }
+
+      const creator = (conf) => {
+        if (conf.name in deft) {
+          conf = { ...deft[conf.name], ...conf }
+          delete deft[conf.name]
+        }
+        if (conf.hidden || 'hidden' in conf) {
+          return null
+        }
+        const event = this.$vnode.context[conf.name] || this[conf.name]
+        const confirm = () => {
+          const p = [
+            conf.tip,
+            {
+              type: 'warning'
+            }
+          ]
+          if (conf['tip']) {
+            this.$confirm(...p)
+              .then((_) => {
+                event && event.apply(this, [conf, this])
+              })
+              .catch((e) => 0)
+          } else {
+            event && event.apply(this, [conf, this])
+          }
+        }
+        return (
+          <el-button
+            v-waves
+            class='filter-item'
+            style='margin-left: 10px;'
+            on-click={confirm.bind(this)}
+            icon={conf.icon}
+            type={conf.type}
+          >
+            {conf.label}
+          </el-button>
+        )
+      }
+      const btns = this.getToolbar().map(creator)
+      const deftToolbar = Object.keys(deft)
+        .map((k) => deft[k])
+        .map(creator)
+      return [...btns, ...deftToolbar]
     }
   },
+
   render(h) {
     const tableConf = {
       props: { data: this.list, ...this.conf },
@@ -300,24 +472,6 @@ export default {
       }
     }
 
-    const opConf = {
-      scopedSlots: {
-        default: (scope) => (
-          <slot name='options'>
-            {this.handler.edit !== false && (
-              <el-button type='primary' size='mini' on-click={this.edit.bind(this, scope.row)}>
-                {this.$t('table.edit')}
-              </el-button>
-            )}
-            {this.handler.delete !== false && (
-              <el-button type='danger' size='mini' on-click={this.delete.bind(this, scope.row)}>
-                {this.$t('table.delete')}
-              </el-button>
-            )}
-          </slot>
-        )
-      }
-    }
     const paginationConf = {
       props: {
         'current-page': this.query.page,
@@ -339,44 +493,10 @@ export default {
       </div>
     )
 
-    const create = (
-      <el-button
-        class='filter-item'
-        style='margin-left: 10px;'
-        type='primary'
-        icon='el-icon-edit'
-        on-click={this.add.bind(this)}
-      >
-        {this.$t('table.add')}
-      </el-button>
-    )
-
-    const batchDelete = (
-      <el-button
-        class='filter-item'
-        style='margin-left: 10px;'
-        type='primary'
-        icon='el-icon-delete'
-        on-click={this.batchDelete.bind(this)}
-      >
-        批量删除
-      </el-button>
-    )
-
-    const search = (
-      <el-button v-waves class='filter-item' type='primary' icon='el-icon-search' on-click={this.search.bind(this)}>
-        {this.$t('table.search')}
-      </el-button>
-    )
     const getColFromSlot = () => {
-      return (this.$slots.default || [])
-        .filter((item) => item.componentOptions && item.componentOptions.tag === 'eap-table-col')
-        .map((item) => {
-          return { ...item.data.attrs }
-        })
-        .filter((i) => !i.hidden)
+      return this.getColumns().filter((i) => !i.hidden)
     }
-    const newCols = [...this.tableColumns, ...getColFromSlot()]
+    const newCols = [...getColFromSlot(), ...this.tableColumns]
 
     if (JSON.stringify(newCols) !== JSON.stringify(this.colSet)) {
       this.colSet = newCols
@@ -386,9 +506,7 @@ export default {
       <div>
         <div class='filter-container'>
           {this.renderQuery(h)}
-          {this.handler.search !== false && search}
-          {this.handler.create !== false && create}
-          {this.handler.batchDelete !== false && batchDelete}
+          {this.renderToobar()}
         </div>
         <el-table {...tableConf} v-loading={this.isLoading}>
           <el-table-column type='selection' width='36' />
@@ -402,12 +520,7 @@ export default {
             }
             return <el-table-column {...conf} key={col.id}></el-table-column>
           })}
-          <el-table-column
-            {...opConf}
-            label={this.$t('table.actions')}
-            align='center'
-            class-name='small-padding fixed-width'
-          ></el-table-column>
+          {this.renderButtons()}
         </el-table>
         {pagination}
       </div>

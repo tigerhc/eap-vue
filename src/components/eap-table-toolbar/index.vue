@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'EapTableColumn',
+  name: 'EapTableToolbar',
   props: {},
   data: function() {
     return {}

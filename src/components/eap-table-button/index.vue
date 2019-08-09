@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'EapTableColumn',
+  name: 'EapTableButton',
   props: {},
   data: function() {
     return {}

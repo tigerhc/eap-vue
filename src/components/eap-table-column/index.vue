@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'EapTableColumn',
+  name: 'WTableCol',
   props: {},
   data: function() {
     return {}

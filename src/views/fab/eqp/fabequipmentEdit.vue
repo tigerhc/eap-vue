@@ -1,13 +1,13 @@
 <template>
-  <eap-form v-bind="formConf" :col="3" :model="model">
+  <w-form v-bind="formConf" :col="3" :model="model">
     <el-input v-model="model.eqpId" label="设备号" />
-    <eap-select-dept v-model="model.officeIds" label="部门" />
+    <w-select-dept v-model="model.officeIds" label="部门" />
     <el-input v-model="model.bcCode" label="BC号" />
     <el-input v-model="model.ip" label="机台IP地址" />
-    <eap-select-device v-model="model.modelName" label="设备型号名称" />
+    <w-select-device v-model="model.modelName" label="设备型号名称" />
     <el-input v-model="model.location" label="位置号" />
-    <eap-select-dic v-model="model.activeFlag" style="width:100%" label="有效标志" dict="ACTIVE_FLAG" />
-  </eap-form>
+    <w-select-dic v-model="model.activeFlag" style="width:100%" label="有效标志" dict="ACTIVE_FLAG" />
+  </w-form>
 </template>
 <script>
 export default {

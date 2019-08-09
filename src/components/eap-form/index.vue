@@ -1,7 +1,7 @@
 <script>
 import fetch from '@/components/eap-table/fetch'
 export default {
-  name: 'EapForm',
+  name: 'WForm',
   props: {
     title: {
       type: Object,

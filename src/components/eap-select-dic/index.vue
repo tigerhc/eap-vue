@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'EapSelectDic',
+  name: 'WSelectDic',
   props: {
     dict: {
       type: String,

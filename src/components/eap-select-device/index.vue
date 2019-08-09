@@ -11,7 +11,7 @@
 import SelectDevice from '@/views/fab/eqpmodel/eqpmodelLook'
 console.info(SelectDevice)
 export default {
-  name: 'EapSelectDevice',
+  name: 'WSelectDevice',
   components: { SelectDevice },
   props: {
     disabled: {

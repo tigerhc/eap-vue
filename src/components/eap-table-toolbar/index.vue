@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'EapTableToolbar',
+  name: 'WTableToolbar',
   props: {},
   data: function() {
     return {}

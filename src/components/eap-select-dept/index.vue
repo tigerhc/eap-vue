@@ -25,7 +25,7 @@
 <script>
 import { fetchOrganizationList } from '@/api/sys/organization'
 export default {
-  name: 'EapSelectDept',
+  name: 'WSelectDept',
   props: {
     value: {
       type: undefined,

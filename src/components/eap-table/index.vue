@@ -1,7 +1,7 @@
 <script>
 import api from './fetch'
 export default {
-  name: 'EapTable',
+  name: 'WTable',
   props: {
     tableConf: {
       type: Object,
@@ -308,13 +308,13 @@ export default {
       })
     },
     getColumns() {
-      return this.getSlotsByType('eap-table-column')
+      return this.getSlotsByType('w-table-column')
     },
     getToolbar() {
-      return this.getSlotsByType('eap-table-toolbar')
+      return this.getSlotsByType('w-table-toolbar')
     },
     getButtons() {
-      return this.getSlotsByType('eap-table-button')
+      return this.getSlotsByType('w-table-button')
     },
     isEl(item, type = null) {
       const tag = item.componentOptions && item.componentOptions.tag

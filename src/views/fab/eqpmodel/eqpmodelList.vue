@@ -1,7 +1,7 @@
 <template>
   <div class="app-container calendar-list-container">
-    <eap-table v-bind="table" url="/fab/fabequipmentmodel">
-      <eap-table-column
+    <w-table v-bind="table" url="/fab/fabequipmentmodel">
+      <w-table-col
         name="manufacturerName"
         label="设备厂家"
         handler="view"
@@ -10,12 +10,12 @@
         querymode="input"
         condition="like"
       />
-      <eap-table-column name="updateDate" label="更新时间" />
-      <!-- <eap-table-button name="stop" tip="确认终止？" label="终止" /> -->
-      <!-- <eap-table-toolbar name="dowhat" label="干啥" tip="你想干啥？" icon="el-icon-delete" type="warning" /> -->
-      <eap-table-toolbar name="add" url="views/fab/eqpmodel/eqpmodelAdd" />
-      <eap-table-toolbar name="batchDelete" hidden />
-    </eap-table>
+      <w-table-col name="updateDate" label="更新时间" />
+      <!-- <w-table-button name="stop" tip="确认终止？" label="终止" /> -->
+      <!-- <w-table-toolbar name="dowhat" label="干啥" tip="你想干啥？" icon="el-icon-delete" type="warning" /> -->
+      <w-table-toolbar name="add" url="views/fab/eqpmodel/eqpmodelAdd" />
+      <w-table-toolbar name="batchDelete" hidden />
+    </w-table>
   </div>
 </template>
 
@@ -62,3 +62,5 @@ export default {
   }
 }
 </script>
+<style>
+</style>

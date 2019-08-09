@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'EapTableButton',
+  name: 'WTableButton',
   props: {},
   data: function() {
     return {}

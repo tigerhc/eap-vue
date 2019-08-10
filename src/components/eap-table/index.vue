@@ -488,7 +488,7 @@ export default {
       const deftToolbar = Object.keys(deft)
         .map((k) => deft[k])
         .map(creator)
-      return [...btns, ...deftToolbar]
+      return [...deftToolbar, ...btns]
     }
   },
 
@@ -543,7 +543,7 @@ export default {
     )
 
     const getColFromSlot = () => {
-      return this.getColumns().filter((i) => !isHidden(i))
+      return this.getColumns() // .filter((i) => !isHidden(i))
     }
     const newCols = [...getColFromSlot(), ...this.tableColumns]
 
@@ -567,6 +567,9 @@ export default {
       op
     }
     const renderCol = newCols.map((col) => {
+      if (col.hidden) {
+        return null
+      }
       confCache[col.name] = col
       console.info(col)
       if (col.name in deft) {

@@ -150,7 +150,6 @@ export default {
       Object.keys(query).map((i) => {
         Array.isArray(query[i]) && (query[i] = query[i].toString())
       })
-      console.info(query)
       const { page, limit, ...rest } = this.query
       const sortA = this.sortQuery.ascs.reduce((res, prop) => {
         res[`sort${prop}`] = 'asc'
@@ -493,6 +492,7 @@ export default {
       }
 
       const creator = (conf) => {
+        // console.info(conf.name)
         if (conf.name in deft) {
           conf = { ...deft[conf.name], ...conf }
           delete deft[conf.name]
@@ -536,7 +536,8 @@ export default {
       const deftToolbar = Object.keys(deft)
         .map((k) => deft[k])
         .map(creator)
-      return [...deftToolbar, ...btns]
+      const re = [...deftToolbar, ...btns]
+      return re
     }
   },
 

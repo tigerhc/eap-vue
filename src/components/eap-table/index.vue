@@ -1,5 +1,12 @@
 <script>
 import api from './fetch'
+
+function remove(val) {
+  var index = this.indexOf(val)
+  if (index > -1) {
+    this.splice(index, 1)
+  }
+}
 export default {
   name: 'WTable',
   props: {
@@ -43,7 +50,8 @@ export default {
       list: [],
       tableKey: Math.random(),
       api: api(this.url),
-      multipleSelection: []
+      multipleSelection: [],
+      sortQuery: { ascs: [], descs: [] }
     }
   },
   computed: {
@@ -59,7 +67,7 @@ export default {
       return this.columns.filter((i) => !i.hidden)
     },
     queryFields: function() {
-      return this.colSet.filter((i) => i.query && i.querymode)
+      return this.colSet.filter((i) => i.query || i.query === '')
     },
     queryName: function() {
       return this.colSet.map((i) => i.name).join() + ','
@@ -142,15 +150,24 @@ export default {
     },
     getParams(query) {
       const { page, limit, ...rest } = this.query
+      const sortA = this.sortQuery.ascs.reduce((res, prop) => {
+        res[`sort.${prop}`] = 'asc'
+        return res
+      }, {})
+      const sortD = this.sortQuery.descs.reduce((res, prop) => {
+        res[`sort.${prop}`] = 'desc'
+        return res
+      }, {})
       return {
         'page.pn': page,
         'page.size': limit,
         sort: this.sort,
-        ...rest
+        ...rest,
+        ...sortA,
+        ...sortD
       }
     },
     onSelect(row) {
-      debugger
       this.$emit('select', row)
       this.multipleSelection = row
     },
@@ -159,8 +176,6 @@ export default {
         '此操作将永久删除数据, 是否继续?',
         '提示',
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
           type: 'warning'
         }
       ]
@@ -185,8 +200,6 @@ export default {
           '此操作将永久删除数据, 是否继续?',
           '提示',
           {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
             type: 'warning'
           }
         ]
@@ -269,7 +282,6 @@ export default {
     },
     view(item) {
       const name = this.getRedirectPath('VIEW')
-      console.info(name)
       if (!name) {
         throw Error('未设置查看跳转路径')
       }
@@ -287,13 +299,29 @@ export default {
     search() {
       this.refresh()
     },
+    queryModeCreator(mode = 'input', conf) {
+      const r = mode
+      if ('dict' in conf) {
+        mode = 'w-select'
+      }
+      if (conf.dict) {
+        mode = 'w-select-dic'
+      }
+      // 默认使用element 组件
+      if (r === mode) {
+        mode = 'el-' + mode
+      }
+      return mode
+    },
     renderQuery(h) {
       return this.queryFields.map((field) => {
         const key = `query.${field.name}||${field.condition}`
         // 处理其他控件
-        return h('el-' + field.querymode, {
+        const mode = this.queryModeCreator(field.querymode, field)
+        // console.info(mode, JSON.stringify(field))
+        return h(mode, {
           attrs: { placeholder: field.label },
-          props: { value: this.query[key] },
+          props: { value: this.query[key], ...field },
           style: { width: '200px', marginRight: '5px' },
           class: { 'filter-item': true },
           on: {
@@ -308,7 +336,7 @@ export default {
       })
     },
     getColumns() {
-      return this.getSlotsByType('w-table-column')
+      return this.getSlotsByType('w-table-col')
     },
     getToolbar() {
       return this.getSlotsByType('w-table-toolbar')
@@ -340,7 +368,7 @@ export default {
                 conf = { ...deft[conf.name], ...conf }
                 delete deft[conf.name]
               }
-              if (conf.hidden || 'hidden' in conf) {
+              if (isHidden(conf)) {
                 return null
               }
               const event = this.$vnode.context[conf.name] || this[conf.name]
@@ -416,7 +444,8 @@ export default {
           conf = { ...deft[conf.name], ...conf }
           delete deft[conf.name]
         }
-        if (conf.hidden || 'hidden' in conf) {
+        console.warn(conf)
+        if (isHidden(conf)) {
           return null
         }
         const event = this.$vnode.context[conf.name] || this[conf.name]
@@ -427,7 +456,7 @@ export default {
               type: 'warning'
             }
           ]
-          if (conf['tip']) {
+          if (conf.tip) {
             this.$confirm(...p)
               .then((_) => {
                 event && event.apply(this, [conf, this])
@@ -468,7 +497,18 @@ export default {
       on: {
         select: this.onSelect,
         'select-all': this.onSelect,
-        'selection-change': this.onSelect
+        'selection-change': this.onSelect,
+        'sort-change': ({ column, prop, order }) => {
+          if (order === 'descending' && !this.sortQuery.descs.includes(prop)) {
+            this.sortQuery.descs.push(prop)
+            remove.bind(this.sortQuery.ascs)(prop)
+          }
+          if (order === 'ascending' && !this.sortQuery.ascs.includes(prop)) {
+            this.sortQuery.ascs.push(prop)
+            remove.bind(this.sortQuery.descs)(prop)
+          }
+          this.refresh()
+        }
       }
     }
 
@@ -494,7 +534,7 @@ export default {
     )
 
     const getColFromSlot = () => {
-      return this.getColumns().filter((i) => !i.hidden)
+      return this.getColumns().filter((i) => !isHidden(i))
     }
     const newCols = [...getColFromSlot(), ...this.tableColumns]
 
@@ -513,7 +553,7 @@ export default {
           <el-table-column type='index' label='序号' width='50px' align='center' />
           {newCols.map((col) => {
             const conf = {
-              props: { align: 'center', ...col },
+              props: { align: 'center', ...col, prop: col.name, sortable: col.sort || col.sort === '' },
               scopedSlots: {
                 default: (scope) => this.renderColumn(scope.row, col)
               }
@@ -526,6 +566,10 @@ export default {
       </div>
     )
   }
+}
+
+function isHidden(conf) {
+  return conf.hidden || conf.hidden === ''
 }
 </script>
 

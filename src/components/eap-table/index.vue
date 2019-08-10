@@ -90,18 +90,13 @@ export default {
       })
       this.refresh(1) // 初始加载第一页
     },
-    excludeBindProps(col) {
-      const { formatter, ...rest } = col
-      console.info(formatter)
-      return rest
-    },
     renderColumn(row, col) {
       const val = row[col.name]
       if (col.formatter && typeof col.formatter === 'function') {
         return col.formatter(val, col, this, row)
       }
       const handler = col['formatter.handler'] || col['handler']
-      if (handler && (typeof this[handler] === 'function' || typeof this.$vnode.context[handler])) {
+      if (handler && (typeof this.$vnode.context[handler] === 'function' || typeof this[handler] === 'function')) {
         const h = this[handler] || this.$vnode.context[handler]
         const fn = () => {
           if (col.tip) {
@@ -151,11 +146,11 @@ export default {
     getParams(query) {
       const { page, limit, ...rest } = this.query
       const sortA = this.sortQuery.ascs.reduce((res, prop) => {
-        res[`sort.${prop}`] = 'asc'
+        res[`sort${prop}`] = 'asc'
         return res
       }, {})
       const sortD = this.sortQuery.descs.reduce((res, prop) => {
-        res[`sort.${prop}`] = 'desc'
+        res[`sort${prop}`] = 'desc'
         return res
       }, {})
       return {
@@ -304,7 +299,7 @@ export default {
       if ('dict' in conf) {
         mode = 'w-select'
       }
-      if (conf.dict) {
+      if (conf.dict && typeof conf.dict === 'string') {
         mode = 'w-select-dic'
       }
       // 默认使用element 组件
@@ -352,11 +347,23 @@ export default {
       const f = (item) => {
         return this.isEl(item, type)
       }
-      return (this.$slots.default || []).filter(f).map((item) => ({ ...item.data.attrs }))
+      return (this.$slots.default || []).filter(f).map((item) => {
+        const re = { ...item.data.attrs }
+        Object.keys(re).map((key) => {
+          re[key] = re[key] === '' ? true : re[key]
+        })
+        return re
+      })
     },
     // 操作列按钮
-    renderButtons() {
+    renderButtons(deftConf) {
+      console.info(deftConf)
       const opConf = {
+        props: {
+          ...deftConf,
+          fixed: deftConf.fixed === true ? 'right' : deftConf.fixed,
+          align: 'center'
+        },
         scopedSlots: {
           default: (scope) => {
             const deft = {
@@ -399,7 +406,7 @@ export default {
             const deftBtns = Object.keys(deft)
               .map((key) => deft[key])
               .map(creator)
-            return <div style='color: red;white-space: nowrap;'>{[...btns, ...deftBtns]}</div>
+            return <div style=''>{[...btns, ...deftBtns]}</div>
           }
         }
       }
@@ -407,7 +414,6 @@ export default {
         <el-table-column
           {...opConf}
           label={this.$t('table.actions')}
-          align='center'
           class-name='small-padding fixed-width'
         ></el-table-column>
       )
@@ -444,7 +450,6 @@ export default {
           conf = { ...deft[conf.name], ...conf }
           delete deft[conf.name]
         }
-        console.warn(conf)
         if (isHidden(conf)) {
           return null
         }
@@ -488,6 +493,7 @@ export default {
   },
 
   render(h) {
+    const confCache = {}
     const tableConf = {
       props: { data: this.list, ...this.conf },
       style: {
@@ -499,6 +505,9 @@ export default {
         'select-all': this.onSelect,
         'selection-change': this.onSelect,
         'sort-change': ({ column, prop, order }) => {
+          console.info(prop, column)
+          const sortNum = +confCache[prop].sort
+          prop = `${sortNum}.${prop}`
           if (order === 'descending' && !this.sortQuery.descs.includes(prop)) {
             this.sortQuery.descs.push(prop)
             remove.bind(this.sortQuery.ascs)(prop)
@@ -541,7 +550,51 @@ export default {
     if (JSON.stringify(newCols) !== JSON.stringify(this.colSet)) {
       this.colSet = newCols
     }
+    const selection = {
+      type: 'selection',
+      width: '36'
+    }
+    const index = {
+      type: 'index',
+      label: '序号',
+      width: '50px',
+      align: 'center'
+    }
+    const op = {}
+    const deft = {
+      selection,
+      index,
+      op
+    }
+    const renderCol = newCols.map((col) => {
+      confCache[col.name] = col
+      console.info(col)
+      if (col.name in deft) {
+        Object.assign(deft[col.name], col)
+        console.info(col)
+        return null
+      }
 
+      const conf = {
+        props: { align: 'center', ...col, prop: col.name, sortable: col.sort || col.sort === '' },
+        scopedSlots: {
+          default: (scope) => this.renderColumn(scope.row, col)
+        }
+      }
+      return <el-table-column {...conf} key={col.id}></el-table-column>
+    })
+    const renderDeft = Object.keys(deft).map((key) => {
+      if (key === 'op') {
+        return null
+      }
+      const conf = deft[key]
+      if (!conf) {
+        return null
+      }
+      return <el-table-column type={conf.type} label={conf.label} width={conf.width} align={conf.align} />
+    })
+    const allCols = [...renderDeft, ...renderCol, deft.op && this.renderButtons(deft.op)]
+    console.info(allCols)
     return (
       <div>
         <div class='filter-container'>
@@ -549,18 +602,7 @@ export default {
           {this.renderToobar()}
         </div>
         <el-table {...tableConf} v-loading={this.isLoading}>
-          <el-table-column type='selection' width='36' />
-          <el-table-column type='index' label='序号' width='50px' align='center' />
-          {newCols.map((col) => {
-            const conf = {
-              props: { align: 'center', ...col, prop: col.name, sortable: col.sort || col.sort === '' },
-              scopedSlots: {
-                default: (scope) => this.renderColumn(scope.row, col)
-              }
-            }
-            return <el-table-column {...conf} key={col.id}></el-table-column>
-          })}
-          {this.renderButtons()}
+          {allCols}
         </el-table>
         {pagination}
       </div>

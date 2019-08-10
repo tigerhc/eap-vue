@@ -430,7 +430,8 @@ export default {
         name: 'batchDelete',
         type: 'primary',
         icon: 'el-icon-delete',
-        label: '批量删除'
+        label: '批量删除',
+        type: 'danger'
       }
       const search = {
         name: 'search',

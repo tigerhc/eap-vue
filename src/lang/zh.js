@@ -114,7 +114,7 @@ export default {
     remark: '点评',
     search: '搜索',
     add: '添加',
-    export: '导出',
+    export: '导出Excel',
     reviewer: '审核人',
     id: '序号',
     date: '时间',

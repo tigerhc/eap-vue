@@ -51,7 +51,10 @@ export default {
       tableKey: Math.random(),
       api: api(this.url),
       multipleSelection: [],
-      sortQuery: { ascs: [], descs: [] }
+      sortQuery: { ascs: [], descs: [] },
+      toolbarStatus: {
+        exportsLoading: false
+      }
     }
   },
   computed: {
@@ -144,6 +147,10 @@ export default {
       })
     },
     getParams(query) {
+      Object.keys(query).map((i) => {
+        Array.isArray(query[i]) && (query[i] = query[i].toString())
+      })
+      console.info(query)
       const { page, limit, ...rest } = this.query
       const sortA = this.sortQuery.ascs.reduce((res, prop) => {
         res[`sort${prop}`] = 'asc'
@@ -288,6 +295,33 @@ export default {
         }
       })
     },
+    exports() {
+      if (this.toolbarStatus.exportsLoading) {
+        return
+      }
+      this.toolbarStatus.exportsLoading = true
+      const q = this.getParams(this.query)
+      this.api
+        .export(q)
+        .then((response) => {
+          if (response.data.code === 0) {
+            return import('@/vendor/Export2Excel').then((excel) => {
+              excel.export_byte_to_excel(response.data.bytes, response.data.title)
+              this.toolbarStatus.exportsLoading = false
+            })
+          } else {
+            this.$notify.error({
+              title: '失败',
+              message: response.data.errmsg,
+              duration: 2000
+            })
+            this.toolbarStatus.exportsLoading = false
+          }
+        })
+        .catch((e) => {
+          this.toolbarStatus.exportsLoading = false
+        })
+    },
     // 重置搜索表单
     reset() {},
     // 搜索
@@ -295,6 +329,7 @@ export default {
       this.refresh()
     },
     queryModeCreator(mode = 'input', conf) {
+      const re = { ...conf }
       const r = mode
       if ('dict' in conf) {
         mode = 'w-select'
@@ -302,22 +337,28 @@ export default {
       if (conf.dict && typeof conf.dict === 'string') {
         mode = 'w-select-dic'
       }
+      if (mode === 'date') {
+        mode = 'el-date-picker'
+        if (re.condition === 'between') {
+          re.type = 'daterange'
+          re.valueFormat = 'yyyy-MM-dd'
+        }
+      }
       // 默认使用element 组件
       if (r === mode) {
         mode = 'el-' + mode
       }
-      return mode
+      return { mode, ...re }
     },
     renderQuery(h) {
       return this.queryFields.map((field) => {
         const key = `query.${field.name}||${field.condition}`
         // 处理其他控件
-        const mode = this.queryModeCreator(field.querymode, field)
-        // console.info(mode, JSON.stringify(field))
+        const { mode, ...newConf } = this.queryModeCreator(field.querymode, field)
         return h(mode, {
-          attrs: { placeholder: field.label },
-          props: { value: this.query[key], ...field },
-          style: { width: '200px', marginRight: '5px' },
+          attrs: { placeholder: newConf.label },
+          props: { value: this.query[key], ...newConf },
+          style: { width: newConf.condition === 'between' ? '250px' : '200px', marginRight: '5px' },
           class: { 'filter-item': true },
           on: {
             input: (e) => {
@@ -357,7 +398,6 @@ export default {
     },
     // 操作列按钮
     renderButtons(deftConf) {
-      console.info(deftConf)
       const opConf = {
         props: {
           ...deftConf,
@@ -428,7 +468,6 @@ export default {
 
       const batchDelete = {
         name: 'batchDelete',
-        type: 'primary',
         icon: 'el-icon-delete',
         label: '批量删除',
         type: 'danger'
@@ -439,11 +478,18 @@ export default {
         icon: 'el-icon-search',
         label: this.$t('table.search')
       }
+      const exports = {
+        name: 'exports',
+        icon: 'fa-download',
+        type: 'success',
+        label: this.$t('table.export')
+      }
 
       const deft = {
         search,
         batchDelete,
-        add
+        add,
+        exports
       }
 
       const creator = (conf) => {
@@ -474,6 +520,7 @@ export default {
         }
         return (
           <el-button
+            v-loading={this.toolbarStatus.exportsLoading && conf.name === 'exports'}
             v-waves
             class='filter-item'
             style='margin-left: 10px;'
@@ -506,7 +553,6 @@ export default {
         'select-all': this.onSelect,
         'selection-change': this.onSelect,
         'sort-change': ({ column, prop, order }) => {
-          console.info(prop, column)
           const sortNum = +confCache[prop].sort
           prop = `${sortNum}.${prop}`
           if (order === 'descending' && !this.sortQuery.descs.includes(prop)) {
@@ -572,10 +618,8 @@ export default {
         return null
       }
       confCache[col.name] = col
-      console.info(col)
       if (col.name in deft) {
         Object.assign(deft[col.name], col)
-        console.info(col)
         return null
       }
 
@@ -595,10 +639,12 @@ export default {
       if (!conf) {
         return null
       }
-      return <el-table-column type={conf.type} label={conf.label} width={conf.width} align={conf.align} />
+      const atr = {
+        props: { ...conf }
+      }
+      return <el-table-column {...atr} />
     })
     const allCols = [...renderDeft, ...renderCol, deft.op && this.renderButtons(deft.op)]
-    console.info(allCols)
     return (
       <div>
         <div class='filter-container'>

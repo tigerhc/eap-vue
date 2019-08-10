@@ -51,6 +51,13 @@ export default function(url) {
         method: `post`,
         data
       })
+    },
+    export: (query) => {
+      return request({
+        url: `${url}/export`,
+        method: 'get',
+        params: query
+      })
     }
   }
 }

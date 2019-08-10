@@ -29,7 +29,7 @@ export default {
   methods: {
     getData() {
       this.loading = true
-      this.api.ajaxList({ queryFields: [this.namekey, this.valuekey, ''].join() }).then(
+      this.api.ajaxList({ 'page.size': 99999, queryFields: [this.namekey, this.valuekey, ''].join() }).then(
         (resp) => {
           this.data = (resp && resp.data && resp.data.results) || []
           this.loading = false
@@ -42,7 +42,7 @@ export default {
   },
   render() {
     return (
-      <el-select clearable value={this.value} {...{ props: this.$attrs }} onInput={e => this.$emit('input', e)}>
+      <el-select clearable value={this.value} {...{ props: this.$attrs }} onInput={(e) => this.$emit('input', e)}>
         {this.data.map((op) => {
           return <el-option key={op.id} label={op[this.namekey]} value={op[this.valuekey]}></el-option>
         })}

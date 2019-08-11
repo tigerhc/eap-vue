@@ -454,7 +454,7 @@ export default {
                   icon={conf.icon}
                   type={conf.type}
                 >
-                  {!conf.icon && conf.label}
+                  {!conf.icon || conf.fold && conf.label}
                 </el-button>
               )
             }

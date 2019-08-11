@@ -147,6 +147,7 @@ export default {
       })
     },
     getParams(query) {
+      query = { ...query }
       Object.keys(query).map((i) => {
         Array.isArray(query[i]) && (query[i] = query[i].toString())
       })
@@ -341,6 +342,9 @@ export default {
         if (re.condition === 'between') {
           re.type = 'daterange'
           re.valueFormat = 'yyyy-MM-dd'
+          re.rangeSeparator = '-'
+          re.startPlaceholder = conf.label + '起'
+          re.endPlaceholder = conf.label + '止'
         }
       }
       // 默认使用element 组件
@@ -406,14 +410,20 @@ export default {
         scopedSlots: {
           default: (scope) => {
             const deft = {
-              edit: { type: 'primary', name: 'edit', label: this.$t('table.edit') },
-              delete: { name: 'delete', label: this.$t('table.delete'), type: 'danger' }
+              edit: { type: 'primary', icon: 'el-icon-edit', name: 'edit', label: this.$t('table.edit') },
+              delete: { name: 'delete', icon: 'el-icon-delete', label: this.$t('table.delete'), type: 'danger' }
             }
-            const creator = (conf) => {
+            const confMerge = (conf) => {
+              console.info(conf)
               if (conf.name in deft) {
-                conf = { ...deft[conf.name], ...conf }
-                delete deft[conf.name]
+                // conf = { ...deft[conf.name], ...conf }
+                Object.assign(deft, conf)
+                // delete deft[conf.name]
+                return false
               }
+              return true // doRender(conf)
+            }
+            const doRender = (conf) => {
               if (isHidden(conf)) {
                 return null
               }
@@ -436,16 +446,39 @@ export default {
                 }
               }
               return (
-                <el-button on-click={confirm.bind(this)} size='mini' icon={conf.icon} type={conf.type}>
-                  {conf.label}
+                <el-button
+                  circle={!!conf.icon && !conf.fold}
+                  title={conf.label}
+                  on-click={confirm.bind(this)}
+                  size='mini'
+                  icon={conf.icon}
+                  type={conf.type}
+                >
+                  {!conf.icon && conf.label}
                 </el-button>
               )
             }
-            const btns = this.getButtons().map(creator)
-            const deftBtns = Object.keys(deft)
-              .map((key) => deft[key])
-              .map(creator)
-            return <div style=''>{[...btns, ...deftBtns]}</div>
+            const btns = this.getButtons().filter(confMerge)
+            // .map(doRender)
+            const deftBtns = Object.keys(deft).map((key) => deft[key])
+            // .map(doRender)
+
+            const allBtns = [...btns, ...deftBtns]
+            const foldBtns = allBtns.filter((i) => i.fold).map(doRender)
+            const unfoldBtns = allBtns.filter((i) => !i.fold).map(doRender)
+            const pop = !!foldBtns.length && (
+              <el-popover placement='right' popper-class='unfold-pop' trigger='hover'>
+                {foldBtns.map((b, i) => [i > 0 && <p />, b])}
+                <el-button size='mini' slot='reference' icon='el-icon-more' circle></el-button>
+              </el-popover>
+            )
+
+            return (
+              <div style=''>
+                {[...unfoldBtns]}&nbsp;&nbsp;
+                {pop}
+              </div>
+            )
           }
         }
       }
@@ -520,7 +553,7 @@ export default {
         }
         return (
           <el-button
-            v-loading={this.toolbarStatus.exportsLoading && conf.name === 'exports'}
+            loading={this.toolbarStatus.exportsLoading && conf.name === 'exports'}
             v-waves
             class='filter-item'
             style='margin-left: 10px;'
@@ -606,7 +639,8 @@ export default {
       type: 'index',
       label: '序号',
       width: '50px',
-      align: 'center'
+      align: 'center',
+      fixed: true
     }
     const op = {}
     const deft = {
@@ -666,5 +700,9 @@ function isHidden(conf) {
 }
 </script>
 
-<style>
+<style lang="scss">
+.unfold-pop {
+  min-width: unset;
+  background-color: #ffe;
+}
 </style>

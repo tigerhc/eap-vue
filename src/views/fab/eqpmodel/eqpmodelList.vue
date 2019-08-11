@@ -14,11 +14,12 @@
       />
       <w-table-col name="activeFlag" sort="2" label="有效标志" dict="ACTIVE_FLAG" />
       <w-table-col name="updateDate" sort label="更新时间" query querymode="date" condition ="between" />
-      <w-table-col name="op" fixed width="200" />
+      <!-- <w-table-col name="op" fixed width="200" /> -->
       <w-table-toolbar name="add" url="views/fab/eqpmodel/eqpmodelAdd" />
       <!-- <w-table-toolbar hidden name="batchDelete" /> -->
       <w-table-toolbar name="dowhat" label="干啥" tip="你想干啥？" icon="el-icon-delete" type="warning" />
-      <!-- <w-table-button name="stop" tip="确认终止？" label="终止" /> -->
+      <w-table-button name="stop" tip="确认终止？" fold label="终止" />
+      <w-table-button name="stop" tip="确认终止？" fold label="终止sss" />
     </w-table>
   </div>
 </template>

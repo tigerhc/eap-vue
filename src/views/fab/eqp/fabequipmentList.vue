@@ -18,7 +18,7 @@
       <!--<w-table-toolbar name="add" hidden url="views/fab/eqpmodel/eqpmodelAdd" />-->
       <!--hidden属性: 隐藏默认button url: 修改默认url-->
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
-      <w-table-button name="stop" tip="确认终止？" label="终止" />
+      <w-table-button name="stop" label="停用设备" tip="确认停用设备？" icon="el-icon-close"  />
 
     </w-table>
 
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import request from '@/utils/request'
 export default {
   name: 'Eqp',
   data() {
@@ -55,8 +56,21 @@ export default {
     }
   },
   methods: {
+
     stop(row, table) {
-      console.info(row, table)
+      request({
+        url: '/fab/fabequipment/' + row.id + '/inactiveeqp',
+        method: 'post'
+      }).then(() => {
+          this.$notify({
+            title: '成功',
+            message: '删除成功',
+            type: 'success',
+            duration: 2000
+          })
+        })
+//    })
+
     }
   }
 }

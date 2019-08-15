@@ -2,16 +2,16 @@
   <div class="app-container calendar-list-container">
     <w-table url="/fab/fabequipmentmodel">
       <!--tip="确认查看"-->
-      <w-table-col name="manufacturerName" label="设备厂家" width="200" query condition="like" fixed handler="view"/>
-      <w-table-col name="classCode" label="设备类型" width="200" query condition="like"/>
-      <w-table-col name="activeFlag" sort="2" label="有效标志" width="200" dict="ACTIVE_FLAG" />
-      <w-table-col name="updateDate" sort label="更新时间" width="200" query querymode="date" condition ="between" />
+      <w-table-col name="manufacturerName" label="设备厂家" width="300" query condition="like" fixed handler="view"/>
+      <w-table-col name="classCode" label="设备类型" width="300" query condition="like"/>
+      <w-table-col name="activeFlag"  label="有效标志" width="200" dict="ACTIVE_FLAG" />
+      <w-table-col name="updateDate"  label="更新时间" width="200" sort query querymode="date" condition ="between" />
       <!--<w-table-col name="op" fixed width="200" />-->
       <w-table-toolbar name="add" url="views/fab/eqpmodel/eqpmodelAdd" />
       <!-- <w-table-toolbar hidden name="batchDelete" /> -->
-      <w-table-toolbar name="dowhat" label="干啥" tip="你想干啥？" icon="el-icon-delete" type="warning" />
+      <w-table-toolbar name="dowhat" label="干啥" tip="你想干啥？" icon="el-icon-setting" type="warning" />
       <w-table-button name="stop" icon="el-icon-setting" tip="确认终止？" label="终止" />
-      <w-table-button name="test" icon="el-icon-setting" fold label="终止2" />
+      <w-table-button name="test" icon="el-icon-setting" fold label="终止(fold)" />
 
     </w-table>
   </div>

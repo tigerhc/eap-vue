@@ -34,7 +34,7 @@ export default {
     },
     sort: {
       type: String,
-      default: undefined
+      default: ''
     }
   },
   data: function() {
@@ -52,9 +52,13 @@ export default {
       api: api(this.url),
       multipleSelection: [],
       sortQuery: { ascs: [], descs: [] },
+      defaultSortQuery: { ascs: [], descs: [] },
       toolbarStatus: {
         exportsLoading: false
-      }
+      },
+      single: null,
+      opHide: null,
+      searchOnly: null
     }
   },
   computed: {
@@ -99,7 +103,12 @@ export default {
         return col.formatter(val, col, this, row)
       }
       const handler = col['formatter.handler'] || col['handler']
-      if (handler && (typeof this.$vnode.context[handler] === 'function' || typeof this[handler] === 'function')) {
+
+      if (
+        !this.opHide &&
+        handler &&
+        (typeof this.$vnode.context[handler] === 'function' || typeof this[handler] === 'function')
+      ) {
         const h = this[handler] || this.$vnode.context[handler]
         const fn = () => {
           if (col.tip) {
@@ -160,10 +169,22 @@ export default {
         res[`sort${prop}`] = 'desc'
         return res
       }, {})
+      const defaultSort = this.sort.split(',')
+      let dft = defaultSort.map((item) => {
+        const [fd, order] = item.split('.')
+        console.info(fd, order)
+        const exist = Object.keys(sortA).find((k) => k.includes(fd)) || Object.keys(sortD).find((k) => k.includes(fd))
+        if (exist) {
+          return {}
+        }
+        return { [`sort.${fd}`]: order || 'desc' }
+      })
+      dft = Object.assign.apply({}, dft)
       return {
         'page.pn': page,
         'page.size': limit,
-        sort: this.sort,
+        // sort: this.sort,
+        ...dft,
         ...rest,
         ...sortA,
         ...sortD
@@ -396,11 +417,17 @@ export default {
         Object.keys(re).map((key) => {
           re[key] = re[key] === '' ? true : re[key]
         })
+        // if (re.sort === 'desc') {
+        //   this.defaultSortQuery.descs.push()
+        // }
         return re
       })
     },
     // 操作列按钮
     renderButtons(deftConf) {
+      if (this.opHide) {
+        return null
+      }
       const opConf = {
         props: {
           ...deftConf,
@@ -454,7 +481,7 @@ export default {
                   icon={conf.icon}
                   type={conf.type}
                 >
-                  {!conf.icon || conf.fold && conf.label}
+                  {!conf.icon || (conf.fold && conf.label)}
                 </el-button>
               )
             }
@@ -567,9 +594,15 @@ export default {
       }
       const btns = this.getToolbar().map(creator)
       const deftToolbar = Object.keys(deft)
+        .filter((i) => {
+          return this.searchOnly ? i === 'search' : true
+        })
         .map((k) => deft[k])
         .map(creator)
       const re = [...deftToolbar, ...btns]
+      if (this.searchOnly) {
+        return [...deftToolbar]
+      }
       return re
     }
   },

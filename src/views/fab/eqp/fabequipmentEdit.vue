@@ -4,7 +4,16 @@
     <w-select-dept v-model="model.officeIds" label="部门" />
     <el-input v-model="model.bcCode" label="BC号" />
     <el-input v-model="model.ip" label="机台IP地址" />
-    <w-select-device v-model="model.modelName" label="设备型号名称" />
+    <!-- <w-select-device v-model="model.modelId" :display="model.modelName" label="设备型号名称" /> -->
+    <w-lookup
+      v-model="model.modelId"
+      :display.sync="model.modelName"
+      label="设备型号名称"
+      displaykey="modelName"
+      idkey="id"
+      title="选择设备型号"
+      module="views/fab/eqp/fabequipmentList"
+    />
     <el-input v-model="model.location" label="位置号" />
     <w-select-dic v-model="model.activeFlag" style="width:100%" label="有效标志" dict="ACTIVE_FLAG" />
   </w-form>
@@ -20,6 +29,7 @@ export default {
         bcCode: '',
         ip: '',
         modelName: '',
+        modelId: '',
         location: '',
         activeFlag: '',
         delFlag: 0,
@@ -51,6 +61,11 @@ export default {
           return re
         }
       }
+    }
+  },
+  methods: {
+    onDisplayChange(e) {
+      this.model.modelName = e
     }
   }
 }

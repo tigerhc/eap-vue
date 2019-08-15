@@ -105,7 +105,7 @@ allModules.keys().forEach((file) => {
   const asyncCompt = () => allModules(file).then((r) => r.default)
   moduleComponents['views' + RegExp.$1] = asyncCompt
 })
-
+export const modules = moduleComponents // 导出所有异步模块
 const page404 = () => import('@/views/errorPage/404')
 const routerView = () => import('@/components/RouterMeta')
 export function processRouter(routerMap, isTopLevel = true) {

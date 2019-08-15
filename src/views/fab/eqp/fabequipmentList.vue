@@ -12,7 +12,7 @@
       <w-table-col name="location" label="位置号" align="center"/>
       <w-table-col name="activeFlag" label="有效标志" align="center" dict="ACTIVE_FLAG"/>
       <!--todo date 点击查询后,时间控件值消失-->
-      <w-table-col name="updateDate" label="更新时间" align="center" query querymode="date" condition="between"/>
+      <w-table-col name="updateDate" label="更新时间" align="center" sort="1" query querymode="date" condition="between"/>
 
       <!--hidden属性: 隐藏默认button url: 修改默认url 没有url,则默认调用属性name值的方法-->
       <!--<w-table-toolbar name="add" hidden url="views/fab/eqpmodel/eqpmodelAdd" />-->

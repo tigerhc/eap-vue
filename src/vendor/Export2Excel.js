@@ -212,11 +212,12 @@ function hex2ab(value) {
   }))
   var buffer = typedArray.buffer;
   var bufLen = buffer.byteLength;
-  if (Math.floor(bufLen % 20) != 0) {
-    var fillBuffer = new Uint8Array(Math.ceil(bufLen / 20) * 20);
-    fillBuffer.set(typedArray);
-    buffer = fillBuffer.buffer;
-  }
+  //强制补全,不理解 --张伟江 20190821
+  // if (Math.floor(bufLen % 20) != 0) {
+  //   var fillBuffer = new Uint8Array(Math.ceil(bufLen / 20) * 20);
+  //   fillBuffer.set(typedArray);
+  //   buffer = fillBuffer.buffer;
+  // }
   return buffer;
 }
 

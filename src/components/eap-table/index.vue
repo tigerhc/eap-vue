@@ -35,6 +35,12 @@ export default {
     sort: {
       type: String,
       default: ''
+    },
+    onloadsuccess: {
+      type: Function,
+      default: function(i) {
+        return i
+      }
     }
   },
   data: function() {
@@ -112,12 +118,9 @@ export default {
         const h = this[handler] || this.$vnode.context[handler]
         const fn = () => {
           if (col.tip) {
-            this.$confirm(col.tip).then(
-              () => {
-                h && h.call(this, row, this)
-              },
-              (e) => e
-            )
+            this.$confirm(col.tip).then(() => {
+              h && h.call(this, row, this)
+            }, (e) => e)
           } else {
             h && h.call(this, row, col, this)
           }
@@ -150,8 +153,9 @@ export default {
     getList(query) {
       this.isLoading = true
       this.api.ajaxList(this.getParams(query)).then((resp) => {
-        this.list = resp.data.results
-        this.total = resp.data.total
+        this.list = resp.results.map((item) => this.onloadsuccess(item))
+        this.total = resp.total
+      }).finally(() => {
         this.isLoading = false
       })
     },
@@ -496,7 +500,7 @@ export default {
             const pop = !!foldBtns.length && (
               <el-popover placement='right' popper-class='unfold-pop' trigger='hover'>
                 {foldBtns.map((b, i) => [i > 0 && <p />, b])}
-                <el-button size='mini' slot='reference' icon='el-icon-more' circle></el-button>
+                <el-button size='mini' slot='reference' icon='el-icon-more' circle />
               </el-popover>
             )
 
@@ -509,13 +513,7 @@ export default {
           }
         }
       }
-      return (
-        <el-table-column
-          {...opConf}
-          label={this.$t('table.actions')}
-          class-name='small-padding fixed-width'
-        ></el-table-column>
-      )
+      return <el-table-column {...opConf} label={this.$t('table.actions')} class-name='small-padding fixed-width' />
     },
     renderToobar() {
       const add = {
@@ -615,7 +613,11 @@ export default {
         width: '100%'
       },
       key: this.tableKey,
+      ref: 'table',
       on: {
+        'cell-dblclick': (row, column, cell, event) => {
+          this.$refs.table.toggleRowSelection(row)
+        },
         select: this.onSelect,
         'select-all': this.onSelect,
         'selection-change': this.onSelect,
@@ -697,7 +699,7 @@ export default {
           default: (scope) => this.renderColumn(scope.row, col)
         }
       }
-      return <el-table-column {...conf} key={col.id}></el-table-column>
+      return <el-table-column {...conf} key={col.id} />
     })
     const renderDeft = Object.keys(deft).map((key) => {
       if (key === 'op') {

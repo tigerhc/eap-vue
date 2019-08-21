@@ -1,4 +1,25 @@
-import request from '@/utils/request'
+import r from '@/utils/request'
+import Vue from 'vue'
+
+const request = (p) => {
+  return r(p).then((resp) => {
+    if (resp.data) {
+      if (resp.data.code === 0) {
+        return resp.data
+      } else {
+        new Vue().$notify({
+          showClose: true,
+          message: resp.data.msg,
+          type: 'error',
+          duration: 2000
+        })
+      }
+    } else {
+      //
+      console.warn('network error')
+    }
+  })
+}
 
 export default function(url) {
   return {

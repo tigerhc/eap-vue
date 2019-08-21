@@ -47,7 +47,7 @@ export default function(url) {
     },
     detail: (id) => {
       return request({
-        url: `${url}/` + id + '/get',
+        url: `${url}/` + id + '/find',
         method: 'get',
         id
       })

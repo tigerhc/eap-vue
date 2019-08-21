@@ -85,7 +85,7 @@ export default {
         return
       }
       this.api.detail(id).then((resp) => {
-        let m = resp.data
+        let m = resp.results
         // const { detail } = this.$vnode.context
         // m = (detail && detail.call(this, m)) || m
         m = this.onLoadData(m) || m

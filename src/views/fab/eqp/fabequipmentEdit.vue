@@ -8,11 +8,11 @@
     <w-lookup
       v-model="model.modelId"
       :display.sync="model.modelName"
-      label="设备型号名称"
-      displaykey="modelName"
       idkey="id"
+      displaykey="manufacturerName"
+      label="设备型号名称"
       title="选择设备型号"
-      module="views/fab/eqp/fabequipmentList"
+      module="views/fab/eqpmodel/eqpmodelLook"
     />
     <el-input v-model="model.location" label="位置号" />
     <w-select-dic v-model="model.activeFlag" style="width:100%" label="有效标志" dict="ACTIVE_FLAG" />

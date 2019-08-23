@@ -114,7 +114,7 @@ export default {
     },
     add(params) {
       this.api.create(params).then((res) => {
-        if (res.data.code === 0) {
+        if (res.code === 0) {
           this.cancel()
           this.$notify({
             title: '成功',
@@ -134,7 +134,7 @@ export default {
     },
     edit(params) {
       this.api.update(params).then((res) => {
-        if (res.data.code === 0) {
+        if (res.code === 0) {
           this.cancel()
           this.$notify({
             title: '成功',

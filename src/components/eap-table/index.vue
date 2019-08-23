@@ -176,6 +176,9 @@ export default {
       const defaultSort = this.sort.split(',')
       let dft = defaultSort.map((item) => {
         const [fd, order] = item.split('.')
+        if (!fd) {
+          return {}
+        }
         console.info(fd, order)
         const exist = Object.keys(sortA).find((k) => k.includes(fd)) || Object.keys(sortD).find((k) => k.includes(fd))
         if (exist) {
@@ -329,15 +332,15 @@ export default {
       this.api
         .export(q)
         .then((response) => {
-          if (response.data.code === 0) {
+          if (response.code === 0) {
             return import('@/vendor/Export2Excel').then((excel) => {
-              excel.export_byte_to_excel(response.data.bytes, response.data.title)
+              excel.export_byte_to_excel(response.bytes, response.title)
               this.toolbarStatus.exportsLoading = false
             })
           } else {
             this.$notify.error({
               title: '失败',
-              message: response.data.errmsg,
+              message: response && response.errmsg || '导出失败!',
               duration: 2000
             })
             this.toolbarStatus.exportsLoading = false

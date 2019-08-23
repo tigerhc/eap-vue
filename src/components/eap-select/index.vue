@@ -31,7 +31,7 @@ export default {
       this.loading = true
       this.api.ajaxList({ 'page.size': 99999, queryFields: [this.namekey, this.valuekey, ''].join() }).then(
         (resp) => {
-          this.data = (resp && resp.data && resp.data.results) || []
+          this.data = (resp && resp.results) || []
           this.loading = false
         },
         (e) => {

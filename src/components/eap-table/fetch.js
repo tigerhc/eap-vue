@@ -32,7 +32,7 @@ export default function(url) {
     },
     ajaxList: (query) => {
       return request({
-        url: `${url}/ajaxList`,
+        url: `${url}/page`,
         method: `get`,
         params: query
       })

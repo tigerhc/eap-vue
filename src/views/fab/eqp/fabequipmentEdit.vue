@@ -1,9 +1,12 @@
 <template>
   <w-form v-bind="formConf" :col="3" :model="model">
     <el-input v-model="model.eqpId" label="设备号" />
+    <el-input v-model="model.fab" label="厂别" />
+    <el-input v-model="model.lineNo" label="线别" />
     <w-select-dept v-model="model.officeIds" label="部门" />
     <el-input v-model="model.bcCode" label="BC号" />
     <el-input v-model="model.ip" label="机台IP地址" />
+
     <!-- <w-select-device v-model="model.modelId" :display="model.modelName" label="设备型号名称" /> -->
     <w-lookup
       v-model="model.modelId"
@@ -16,6 +19,11 @@
     />
     <el-input v-model="model.location" label="位置号" />
     <w-select-dic v-model="model.activeFlag" style="width:100%" label="有效标志" dict="ACTIVE_FLAG" />
+    <el-input v-model="model.sortCode" label="排序号" />
+    <el-input v-model="model.createByName" :disabled="true" label="创建人" />
+    <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
+    <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
+    <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
   </w-form>
 </template>
 <script>

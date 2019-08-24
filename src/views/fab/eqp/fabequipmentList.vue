@@ -1,25 +1,25 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-bind="table">
+    <w-table v-bind="table" sort="sortCode.asc" >
       <!--todo fixed属性导致当前列变为第一列-->
       <w-table-col name="eqpId" label="设备号" sort="2" fixed align="left" handler="view" query condition="like"/>
       <w-table-col name="officeName" label="部门" align="left"/>
       <w-table-col name="modelName" label="设备型号" align="left" />
       <w-table-col name="bcCode" label="BC号" align="center" />
       <w-table-col name="ip" label="机台IP地址" align="center"/>
-      <w-table-col name="sortCode" label="排序号" hidden sort/>
+      <!--<w-table-col name="sortCode" label="排序号" sort/>-->
       <!-- todo filterable 属性-->
-      <w-table-col name="modelId" label="设备型号" hidden query dict url="/fab/fabequipmentmodel" namekey="manufacturerName" condition="eq" filterable />
-      <w-table-col name="location" label="位置号" align="center"/>
+      <w-table-col name="modelId" label="设备型号" hidden query dict url="/fab/fabequipmentmodel/list" namekey="modelName" condition="eq" filterable />
+      <!--<w-table-col name="location" label="位置号" align="center"/>-->
       <w-table-col name="activeFlag" label="有效标志" align="center" dict="ACTIVE_FLAG"/>
       <!--todo date 点击查询后,时间控件值消失-->
-      <w-table-col name="updateDate" label="更新时间" align="center" sort="1" query querymode="date" condition="between"/>
+      <w-table-col name="updateDate" label="更新时间" width="200" align="center" sort="1" query querymode="date" condition="between"/>
 
       <!--hidden属性: 隐藏默认button url: 修改默认url 没有url,则默认调用属性name值的方法-->
       <!--<w-table-toolbar name="add" hidden url="views/fab/eqpmodel/eqpmodelAdd" />-->
       <!--hidden属性: 隐藏默认button url: 修改默认url-->
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
-      <w-table-button name="stop" label="停用设备" tip="确认停用设备？" icon="el-icon-close"  />
+      <w-table-button name="stop" label="停用设备" tip="确认停用设备？" icon="el-icon-close" />
 
     </w-table>
 
@@ -42,7 +42,7 @@ export default {
           // search: true,
           batchDelete: true
         }
-//        sort: 'updateDate'
+        //        sort: 'updateDate'
         //          columns: [
         //            {name: 'eqpId',            label: '设备号',       align: 'left',  'formatter.handler': 'view', query: 'true', queryMode: 'input', condition: 'like'},
         //            {name: 'officeName',     label: '部门',         align: 'left'  },
@@ -63,15 +63,14 @@ export default {
         url: '/fab/fabequipment/' + row.id + '/inactiveeqp',
         method: 'post'
       }).then(() => {
-          this.$notify({
-            title: '成功',
-            message: '删除成功',
-            type: 'success',
-            duration: 2000
-          })
+        this.$notify({
+          title: '成功',
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
         })
-//    })
-
+      })
+      //    })
     }
   }
 }

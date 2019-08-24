@@ -62,9 +62,10 @@ export default {
         url: '/fab/fabequipment/' + row.id + '/inactiveeqp',
         method: 'post'
       }).then(() => {
+        //        this.getList()
         this.$notify({
           title: '成功',
-          message: '删除成功',
+          message: '已禁用',
           type: 'success',
           duration: 2000
         })

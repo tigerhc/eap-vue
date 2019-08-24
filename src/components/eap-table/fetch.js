@@ -23,6 +23,13 @@ const request = (p) => {
 
 export default function(url) {
   return {
+    anylist: (query) => {
+      return request({
+        url: `${url}`,
+        method: `get`,
+        params: query
+      })
+    },
     ajaxList: (query) => {
       return request({
         url: `${url}/ajaxList`,

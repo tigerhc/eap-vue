@@ -29,7 +29,7 @@ export default {
   methods: {
     getData() {
       this.loading = true
-      this.api.ajaxList({ 'page.size': 99999, queryFields: [this.namekey, this.valuekey, ''].join() }).then(
+      this.api.anylist({ 'page.size': 99999, queryFields: [this.namekey, this.valuekey, ''].join() }).then(
         (resp) => {
           this.data = (resp && resp.results) || []
           this.loading = false

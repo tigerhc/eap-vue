@@ -204,7 +204,9 @@ export default {
         // const { label, prop } = propsData
         const { label } = { ...attrs, ...propsData }
         if (tag && label && expression) {
-          const [path] = expression.match(/(?<=(^[^\.]*\.))(.*)/g)
+          let [path = ''] = expression.match(/(?![^\.]).*/g)
+          path = path.split('.').filter(Boolean).join('.')
+          console.info(path)
           return (
             <el-form-item label={label} prop={path}>
               {v}

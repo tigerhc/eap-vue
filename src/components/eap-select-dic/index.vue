@@ -1,5 +1,5 @@
 <template>
-  <el-select :value="value" :disabled="disabled" @input="onValueChange">
+  <el-select :value="value" :disabled="disabled" clearable filterable @input="onValueChange">
     <el-option v-for="op in options" :label="op.label" :value="op.value" :key="op.value" />
   </el-select>
 </template>

@@ -522,7 +522,7 @@ export default {
       const add = {
         name: 'add',
         type: 'primary',
-        icon: 'el-icon-edit',
+        icon: 'el-icon-circle-plus-outline',
         label: this.$t('table.add')
       }
 

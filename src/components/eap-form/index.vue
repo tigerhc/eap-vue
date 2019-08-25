@@ -225,7 +225,7 @@ export default {
     wrapCol(v, s) {
       const { col } = this.getPropAndAttrs(v)
       return (
-        <el-col xs={24} span={col || s}>
+        <el-col xs={24} span={+col || s}>
           {this.formItem(v)}
         </el-col>
       )
@@ -237,7 +237,7 @@ export default {
       const rowVnodes = []
       const arrayCols = slots.map((s) => {
         const { col } = this.getPropAndAttrs(s)
-        return col
+        return +col
       })
       arrayCols.reduce((t, v, i) => {
         const re = (v || eachCol) + t

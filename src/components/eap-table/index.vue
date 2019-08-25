@@ -1,12 +1,12 @@
 <script>
 import api from './fetch'
 
-function remove(val) {
-  var index = this.indexOf(val)
-  if (index > -1) {
-    this.splice(index, 1)
-  }
-}
+// function remove(val) {
+//   var index = this.indexOf(val)
+//   if (index > -1) {
+//     this.splice(index, 1)
+//   }
+// }
 export default {
   name: 'WTable',
   props: {
@@ -196,6 +196,9 @@ export default {
           rest[key] = v.join(',')
         }
       })
+      if (Object.keys(sortA).length || Object.keys(sortD).length) {
+        dft = {}
+      }
       return {
         'page.pn': page,
         'page.size': limit,
@@ -457,7 +460,7 @@ export default {
               delete: { name: 'delete', icon: 'el-icon-delete', label: this.$t('table.delete'), type: 'danger' }
             }
             const confMerge = (conf) => {
-              console.info(conf)
+              // console.info(conf)
               if (conf.name in deft) {
                 // conf = { ...deft[conf.name], ...conf }
                 Object.assign(deft, conf)
@@ -634,15 +637,20 @@ export default {
         'select-all': this.onSelect,
         'selection-change': this.onSelect,
         'sort-change': ({ column, prop, order }) => {
-          const sortNum = +confCache[prop].sort
-          prop = `${sortNum}.${prop}`
-          if (order === 'descending' && !this.sortQuery.descs.includes(prop)) {
-            this.sortQuery.descs.push(prop)
-            remove.bind(this.sortQuery.ascs)(prop)
-          }
-          if (order === 'ascending' && !this.sortQuery.ascs.includes(prop)) {
-            this.sortQuery.ascs.push(prop)
-            remove.bind(this.sortQuery.descs)(prop)
+          if (!prop) {
+            this.sortQuery.descs = []
+            this.sortQuery.ascs = []
+          } else {
+            const sortNum = +confCache[prop].sort
+            prop = `${sortNum}.${prop}`
+            if (order === 'descending' && !this.sortQuery.descs.includes(prop)) {
+              this.sortQuery.descs = [prop] // .push(prop)
+            // remove.bind(this.sortQuery.ascs)(prop)
+            }
+            if (order === 'ascending' && !this.sortQuery.ascs.includes(prop)) {
+              this.sortQuery.ascs = [prop] // .push(prop)
+            // remove.bind(this.sortQuery.descs)(prop)
+            }
           }
           this.refresh()
         }

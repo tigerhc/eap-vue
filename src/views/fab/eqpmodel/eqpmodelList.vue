@@ -24,19 +24,17 @@ export default {
     return {
       table: {
         handler: {
-          add: 'views/fab/eqpmodel/eqpmodelEdit',
+          add: 'views/fab/eqpmodel/eqpmodelEdit'
           // edit: 'views/fab/eqpmodel/fabequipmentEdit',
           // view: 'views/fab/eqpmodel/fabequipmentEdit'
-          // delete: true,
-          // search: true,
-          batchDelete: false
         }
       }
     }
   },
   methods: {
-    stop(row, table) {
+    stop(row, table, ctx) {
       console.info(row, table)
+      ctx.refresh()
     },
     dowhat(table) {
       console.info(table)

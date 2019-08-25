@@ -119,7 +119,7 @@ export default {
         const fn = () => {
           if (col.tip) {
             this.$confirm(col.tip).then(() => {
-              h && h.call(this, row, this)
+              h && h.call(this, row, col, this)
             }, (e) => e)
           } else {
             h && h.call(this, row, col, this)
@@ -152,12 +152,15 @@ export default {
     },
     getList(query) {
       this.isLoading = true
-      this.api.ajaxList(this.getParams(query)).then((resp) => {
-        this.list = resp.results.map((item) => this.onloadsuccess(item))
-        this.total = resp.total
-      }).finally(() => {
-        this.isLoading = false
-      })
+      this.api
+        .ajaxList(this.getParams(query))
+        .then((resp) => {
+          this.list = resp.results.map((item) => this.onloadsuccess(item))
+          this.total = resp.total
+        })
+        .finally(() => {
+          this.isLoading = false
+        })
     },
     getParams(query) {
       query = { ...query }
@@ -187,6 +190,12 @@ export default {
         return { [`sort.${fd}`]: order || 'desc' }
       })
       dft = Object.assign.apply({}, dft)
+      Object.keys(rest).map((key) => {
+        const v = rest[key]
+        if (Array.isArray(v)) {
+          rest[key] = v.join(',')
+        }
+      })
       return {
         'page.pn': page,
         'page.size': limit,
@@ -340,7 +349,7 @@ export default {
           } else {
             this.$notify.error({
               title: '失败',
-              message: response && response.errmsg || '导出失败!',
+              message: (response && response.errmsg) || '导出失败!',
               duration: 2000
             })
             this.toolbarStatus.exportsLoading = false

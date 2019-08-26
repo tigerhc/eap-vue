@@ -37,12 +37,12 @@ export default {
   },
   methods: {
 
-    stop(row, table) {
+    stop(row, table, ctx) {
       request({
         url: '/fab/fabequipment/' + row.id + '/inactiveeqp',
         method: 'post'
       }).then(() => {
-        // ctx.refresh()
+        ctx.refresh()
         this.$notify({
           title: '成功',
           message: '已禁用',

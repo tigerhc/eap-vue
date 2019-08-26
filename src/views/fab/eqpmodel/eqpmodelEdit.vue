@@ -2,16 +2,18 @@
   <w-form v-bind="formConf" :col="3" :model="model">
     <el-input v-model="model.manufacturerName" label="设备厂家" />
     <el-input v-model="model.classCode" label="设备类型" />
-    <!--todo 此属性需要占用两列该怎么没写-->
-    <el-input v-model="model.smlPath" label="SML文件路径" />
-    <el-input v-model="model.hostJavaClass" label="设备对应的JAVA类" />
-    <el-input v-model="model.iconPath" label="hostJavaClass" />
     <w-select-dic v-model="model.activeFlag" style="width:100%" label="有效标志" dict="ACTIVE_FLAG" />
+    <!--todo 此属性需要占用两列该怎么没写-->
+    <el-input v-model="model.smlPath" label="SML文件路径" col="24" />
+    <el-input v-model="model.hostJavaClass" label="设备对应的JAVA类" col="24" />
+    <el-input v-model="model.iconPath" label="图标路径" col="24" />
+
     <!--todo 显示异常,应该写法有问题,不需要写宽度,是否也可以写成占用几列 style="width:540px"-->
-    <el-input v-model="model.remarks" :autosize="{ minRows: 4}" label="备注" type="textarea" placeholder="请输入内容"/>
+    <el-input v-model="model.remarks" :autosize="{ minRows: 4}" col="24" label="备注" type="textarea" placeholder="请输入内容"/>
 
     <el-input v-model="model.createByName" :disabled="true" label="创建人" />
     <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
+    <el-row col="24" />
     <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
     <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
 

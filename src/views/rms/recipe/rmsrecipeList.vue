@@ -28,6 +28,22 @@
 
     </w-table>
 
+    <el-dialog :visible.sync="dialogFormUploadRecipeVisible" title="上传recipe">
+      <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
+      <el-form ref="dataModifyForm" :model="uploadRecipe" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="设备号" prop="eqpId">
+          <el-input v-model="uploadRecipe.eqpId"/>
+        </el-form-item>
+        <el-form-item label="程序名称" prop="recipeName">
+          <el-input v-model="uploadRecipe.recipeName"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormUploadRecipeVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="doUploadRecipe">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -38,12 +54,18 @@ export default {
   data() {
     return {
       table: {
-      }
+      },
+      dialogFormUploadRecipeVisible: false
     }
   },
   methods: {
+
     // 弹出一个input框,输入后发送请求
     uploadRecipe(row, table, ctx) {
+      this.dialogFormUploadRecipeVisible = true
+    },
+
+    doUploadRecipe(row, table, ctx) {
       request({
         url: 'rms/rmsrecipe/' + row.id + '/uploadrecipe',
         method: 'post'
@@ -57,6 +79,7 @@ export default {
         })
       })
     }
+
   }
 }
 </script>

@@ -20,8 +20,10 @@
     <el-input v-model="model.location" label="位置号" />
     <w-select-dic v-model="model.activeFlag" style="width:100%" label="有效标志" dict="ACTIVE_FLAG" />
     <el-input v-model="model.sortCode" label="排序号" />
+    <el-row col="24" />
     <el-input v-model="model.createByName" :disabled="true" label="创建人" />
     <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
+    <el-row col="24" />
     <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
     <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
   </w-form>

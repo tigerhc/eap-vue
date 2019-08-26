@@ -398,8 +398,9 @@ export default {
         const key = `query.${field.name}||${field.condition}`
         // 处理其他控件
         const { mode, ...newConf } = this.queryModeCreator(field.querymode, field)
+        console.info(newConf)
         return h(mode, {
-          attrs: { placeholder: newConf.label },
+          attrs: { placeholder: newConf.label, ...newConf },
           props: { value: this.query[key], ...newConf },
           style: { width: newConf.condition === 'between' ? '250px' : '200px', marginRight: '5px' },
           class: { 'filter-item': true },
@@ -463,7 +464,7 @@ export default {
               // console.info(conf)
               if (conf.name in deft) {
                 // conf = { ...deft[conf.name], ...conf }
-                Object.assign(deft, conf)
+                Object.assign(deft[conf.name], conf)
                 // delete deft[conf.name]
                 return false
               }

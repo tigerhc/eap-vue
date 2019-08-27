@@ -53,11 +53,17 @@ Vue.prototype.dictList = function(code) {
 Vue.prototype.checkPermission = checkPermission
 
 Vue.config.productionTip = false
-
-new Vue({
+Vue.prototype._i18n = i18n
+const app = new Vue({
   el: '#app',
   router,
   store,
   i18n,
   render: (h) => h(App)
+})
+
+Object.defineProperty(Vue.prototype, '_route', {
+  get: function get() {
+    return app.$route
+  }
 })

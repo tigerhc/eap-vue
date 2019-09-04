@@ -77,6 +77,12 @@ export default {
       }
     })
   },
+  activated() {
+    console.info('actived')
+    if (this.type === 'VIEW' || this.type === 'EDIT') {
+      this.getDeteils()
+    }
+  },
   methods: {
     getDeteils() {
       const id = this.$route.query.id
@@ -90,6 +96,8 @@ export default {
         // m = (detail && detail.call(this, m)) || m
         m = this.onLoadData(m) || m
         Object.assign(this.model, m)
+        // this.model = { ...this.model, ...m }
+        // this.$set(this, 'model', this.model)
         setTimeout(() => {
           this.$refs.form.resetFields()
         })
@@ -205,7 +213,10 @@ export default {
         const { label } = { ...attrs, ...propsData }
         if (tag && label && expression) {
           let [path = ''] = expression.match(/(?![^\.]).*/g)
-          path = path.split('.').filter(Boolean).join('.')
+          path = path
+            .split('.')
+            .filter(Boolean)
+            .join('.')
           console.info(path)
           return (
             <el-form-item label={label} prop={path}>

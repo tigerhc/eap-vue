@@ -118,9 +118,12 @@ export default {
         const h = this[handler] || this.$vnode.context[handler]
         const fn = () => {
           if (col.tip) {
-            this.$confirm(col.tip).then(() => {
-              h && h.call(this, row, col, this)
-            }, (e) => e)
+            this.$confirm(col.tip).then(
+              () => {
+                h && h.call(this, row, col, this)
+              },
+              (e) => e
+            )
           } else {
             h && h.call(this, row, col, this)
           }
@@ -304,7 +307,8 @@ export default {
       this.$router.push({
         name, // 'views/fab/eqpmodel/addDevice'
         query: {
-          type: 'ADD'
+          type: 'ADD',
+          t: ~~(Math.random() * 1e3)
         }
       })
     },
@@ -646,11 +650,11 @@ export default {
             prop = `${sortNum}.${prop}`
             if (order === 'descending' && !this.sortQuery.descs.includes(prop)) {
               this.sortQuery.descs = [prop] // .push(prop)
-            // remove.bind(this.sortQuery.ascs)(prop)
+              // remove.bind(this.sortQuery.ascs)(prop)
             }
             if (order === 'ascending' && !this.sortQuery.ascs.includes(prop)) {
               this.sortQuery.ascs = [prop] // .push(prop)
-            // remove.bind(this.sortQuery.descs)(prop)
+              // remove.bind(this.sortQuery.descs)(prop)
             }
           }
           this.refresh()

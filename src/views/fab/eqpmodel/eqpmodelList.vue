@@ -30,7 +30,7 @@
       <w-table-button name="test" icon="el-icon-setting" fold label="终止(fold)" />
     </w-table>
     <w-msgbox>
-      <w-form-render :col="1" :model="model" label-width="" >
+      <w-form-render :col="1" :model="model" label-width="5em" >
         <el-input v-model="model.manufacturerName" label="设备厂家" />
         <el-input v-model="model.classCode" label="设备类型" />
         <w-select-dic
@@ -92,40 +92,6 @@ export default {
           console.info(error)
         }
       )
-      // const h = this.$createElement
-      // this.$msgbox({
-      //   title: '消息',
-      //   customClass: 'eap-msgbox',
-      //   message: <w-table url='/fab/fabequipmentmodel'>
-      //     <w-table-col name='classCode' label='设备类型' width='300' query condition='like' />
-      //     <w-table-col name='activeFlag' label='有效标志' width='200' dict='ACTIVE_FLAG' />
-      //     <w-table-toolbar name='dowhat' label='干啥' tip='你想干啥？' icon='el-icon-setting' type='warning' />
-      //     <w-table-button name='stop' icon='el-icon-setting' tip='确认终止？' label='终止' />
-      //     <w-table-button name='test' icon='el-icon-setting' fold label='终止(fold)' />
-      //   </w-table>,
-      //   showCancelButton: true,
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   beforeClose: (action, instance, done) => {
-      //     if (action === 'confirm') {
-      //       instance.confirmButtonLoading = true
-      //       instance.confirmButtonText = '执行中...'
-      //       setTimeout(() => {
-      //         done()
-      //         setTimeout(() => {
-      //           instance.confirmButtonLoading = false
-      //         }, 300)
-      //       }, 3000)
-      //     } else {
-      //       done()
-      //     }
-      //   }
-      // }).then((action) => {
-      //   this.$message({
-      //     type: 'info',
-      //     message: 'action: ' + action
-      //   })
-      // })
     },
     deal(row) {
       return { ...row, addfield: row.manufacturerName + '-' + row.classCode }

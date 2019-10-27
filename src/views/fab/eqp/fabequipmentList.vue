@@ -16,6 +16,7 @@
 
       <!--hidden属性: 隐藏默认button url: 修改默认url 没有url,则默认调用属性name值的方法-->
       <w-table-toolbar name="add" url="views/fab/eqp/fabequipmentEdit" />
+      <w-table-toolbar name="initStatus" />
       <!--hidden属性: 隐藏默认button url: 修改默认url-->
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
       <w-table-button name="stop" label="停用设备" tip="确认停用设备？" icon="el-icon-close" />
@@ -51,7 +52,57 @@ export default {
         })
       })
       //    })
+    },
+
+    initStatus(row, table, ctx) {
+      if (this.multipleSelection.length > 0) {
+        this.$confirm('此操作将初始化设备状态数据, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          const obj = {
+            ids: ''
+          }
+          const ids = []
+          for (const item of this.multipleSelection) {
+            ids.push(item.id)
+          }
+          obj.ids = ids.join(',')
+          initStatus2(obj).then(() => {
+            this.getList()
+            this.$notify({
+              title: '成功',
+              message: '初始化成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }).catch(() => {
+          this.$notify({
+            type: 'info',
+            message: '已取消初始化',
+            duration: 2000
+          })
+        })
+      } else {
+        this.$notify({
+          showClose: true,
+          message: '请选择至少一条数据删除',
+          type: 'error',
+          duration: 2000
+        })
+      }
+    },
+
+    initStatus2(data) {
+      return request({
+        url: `${url}/batch/initstatus`,
+        method: `post`,
+        data
+      })
     }
+
   }
 }
 </script>

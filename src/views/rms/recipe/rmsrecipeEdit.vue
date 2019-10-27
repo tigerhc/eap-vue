@@ -18,8 +18,8 @@
           <el-form-item label="程序版本" prop="versionNo">
             <el-input v-model="editList.versionNo"/>
           </el-form-item>
-          <el-form-item label="设备号" prop="eqpCode">
-            <el-input v-model="editList.eqpCode"/>
+          <el-form-item label="设备号" prop="eqpId">
+            <el-input v-model="editList.eqpId"/>
           </el-form-item>
           <el-form-item label="状态" prop="status">
             <el-select v-model="editList.status" filterable placeholder="请选择程序状态">
@@ -151,13 +151,13 @@ import { fetchList, create, update, del, deteils, batchDelete, fetchDict } from 
 import { fetchDeviceList } from '@/api/sys/device'
 import waves from '@/directive/waves' // 水波纹指令
 export default {
-  name: 'programEdit',
+  name: 'ProgramEdit',
   data() {
     return {
       load: false,
       activeName: 'first',
       editList: {
-        eqpCode: undefined,
+        eqpId: undefined,
         recipeCode: undefined,
         versionType: undefined,
         eqpModelName: undefined,
@@ -306,7 +306,7 @@ export default {
         recipeCode: this.editList.recipeCode,
         versionType: this.editList.versionType,
         versionNo: this.editList.versionNo,
-        eqpCode: this.editList.eqpCode,
+        eqpId: this.editList.eqpId,
         eqpModelId: this.editList.eqpModelId,
         eqpModelName,
         status: this.editList.status,

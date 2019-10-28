@@ -6,15 +6,7 @@
           <el-form-item label="程序名称" prop="recipeCode">
             <el-input v-model="editList.recipeCode"/>
           </el-form-item>
-          <el-form-item label="设备类型" prop="versionType">
-            <el-select v-model="editList.versionType" filterable placeholder="请选择程序版本">
-              <el-option
-                v-for="item in dictList.versionTypeList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"/>
-            </el-select>
-          </el-form-item>
+          
           <el-form-item label="程序版本" prop="versionNo">
             <el-input v-model="editList.versionNo"/>
           </el-form-item>
@@ -57,6 +49,12 @@
                 :value="item.id"/>
             </el-select>
           </el-form-item>
+          <el-form-item label="升级类型" prop="versionType">
+            <el-radio-group v-model="versionType">
+              <el-radio :label="2">设备</el-radio>
+              <el-radio :label="3">通用</el-radio>
+            </el-radio-group>
+          </el-form-item>
           <el-form-item label="程序描述" prop="recipeDesc">
             <el-input
               :autosize="{ minRows: 4}"
@@ -72,8 +70,11 @@
       </el-tab-pane>
       <el-tab-pane label="参数信息" name="second">
         <div style="margin-bottom:20px">
-          <el-button type="primary" icon="el-icon-plus" @click="add">新增</el-button>
-          <el-button type="primary" icon="el-icon-delete" @click="del">删除</el-button>
+          <el-button type="primary" size="small" icon="el-icon-plus" >新增</el-button>
+          <el-button type="primary" size="small" icon="el-icon-delete" >删除</el-button>
+          <el-button type="primary" size="small" @click="setCopy">设定值复制</el-button>
+          <el-button type="primary" size="small" @click="maxCopy" >最大值复制</el-button>
+          <el-button type="primary" size="small" @click="minCopy">最小值复制</el-button>
         </div>
         <el-form
           ref="ruleForm"
@@ -91,57 +92,60 @@
             fit
             style="width: 100%"
             highlight-current-row
+            :cell-class-name="color"
             @row-click="rowClick"
             @row-dblclick="doubleClick"
           >
             <el-table-column type="index" label="序号" width="50px" align="center"/>
             <el-table-column prop="paraCode" label="参数CODE" align="center">
-              <template slot-scope="{row}">
-                <el-input
-                  v-if="row.index === doubleClickIndex"
-                  v-model="row.paraCode"
-                />
-                <span v-if="row.index !== doubleClickIndex" class="cell-text">{{ row.paraCode }}</span>
-              </template>
+              
             </el-table-column>
             <el-table-column prop="paraName" label="参数名称" align="center">
-              <template slot-scope="{row}">
-                <el-input
-                  v-if="row.index === doubleClickIndex"
-                  v-model="row.paraName"
-                />
-                <span v-if="row.index !== doubleClickIndex" class="cell-text">{{ row.paraName }}</span>
-              </template>
             </el-table-column>
-            <el-table-column prop="setValue" label="设定值" align="center">
-              <template slot-scope="{row}">
+            <el-table-column  label="设定值" align="center">
+              <el-table-column prop="setValue" label="New Value" align="center">
+                <template slot-scope="{row}">
                 <el-input
                   v-if="row.index === doubleClickIndex"
                   v-model="row.setValue"
                 />
                 <span v-if="row.index !== doubleClickIndex" class="cell-text">{{ row.setValue }}</span>
               </template>
+              </el-table-column>
+               <el-table-column prop="setValueOld" label="Old Value" align="center"></el-table-column>
+              
             </el-table-column>
-            <el-table-column prop="min_value" label="规格最小值" align="center">
-              <template slot-scope="{row}">
+            <el-table-column  label="最小值" align="center">
+               <el-table-column  prop="minValue" label="New Value" align="center">
+                 <template  slot-scope="{row}">
+                  <el-input
+                    v-if="row.index === doubleClickIndex"
+                    v-model="row.minValue"
+                  />
+                  <span v-if="row.index !== doubleClickIndex" class="cell-text">{{ row.minValue }}</span>
+              </template>
+               </el-table-column>
+               <el-table-column prop="minValueOld" label="Old Value" align="center"></el-table-column>
+              
+            </el-table-column>
+            <el-table-column  label="最大值" align="center">
+              <el-table-column prop="maxValue" label="New Value" align="center">
+                <template slot-scope="{row}">
                 <el-input
                   v-if="row.index === doubleClickIndex"
-                  v-model="row.min_value"
+                  v-model="row.maxValue"
                 />
-                <span v-if="row.index !== doubleClickIndex" class="cell-text">{{ row.min_value }}</span>
+                <span v-if="row.index !== doubleClickIndex" class="cell-text">{{ row.maxValue }}</span>
               </template>
-            </el-table-column>
-            <el-table-column prop="max_value" label="规格最大值" align="center">
-              <template slot-scope="{row}">
-                <el-input
-                  v-if="row.index === doubleClickIndex"
-                  v-model="row.max_value"
-                />
-                <span v-if="row.index !== doubleClickIndex" class="cell-text">{{ row.max_value }}</span>
-              </template>
+               </el-table-column>
+               <el-table-column prop="maxValueOld" label="Old Value" align="center"></el-table-column>
+              
             </el-table-column>
           </el-table>
         </el-form>
+      </el-tab-pane>
+      <el-tab-pane label="附件" name="third">
+
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -149,6 +153,7 @@
 <script>
 import { fetchList, create, update, del, deteils, batchDelete, fetchDict } from '@/api/public'
 import { fetchDeviceList } from '@/api/sys/device'
+import request from '@/utils/request'
 import waves from '@/directive/waves' // 水波纹指令
 export default {
   name: 'ProgramEdit',
@@ -159,15 +164,14 @@ export default {
       editList: {
         eqpId: undefined,
         recipeCode: undefined,
-        versionType: undefined,
         eqpModelName: undefined,
         status: undefined,
         approveStep: undefined,
         approveResult: undefined,
         versionNo: undefined
       },
+      versionType: 2,
       dictList: {
-        versionTypeList: [],
         statusList: [],
         approveStepList: [],
         approveResultList: []
@@ -186,7 +190,8 @@ export default {
       rulesTab: {},
       showFlag: true,
       id: '',
-      rules: {}
+      rules: {},
+      oldId: ''
     }
   },
   created() {
@@ -200,14 +205,23 @@ export default {
   methods: {
     // 获取详情
     getDeteils() {
-      deteils(this.tab, this.id).then(res => {
-        this.editList = res.data
-        this.ruleForm.tableData = res.data.rmsRecipeBodyDtlList
+      request({
+        url: 'rms/rmsrecipe/' + this.id + '/findCompareRecipe',
+        method: 'get',
+        params: this.uploadRecipe1
+      }).then((res) => {
+        this.editList = res.data.results
+        this.ruleForm.tableData = res.data.results.rmsRecipeBodyDtlList
+        this.oldId = res.data.results.oldId
       })
+      // deteils(this.tab, this.id).then(res => {
+      //   this.editList = res.data
+      //   this.ruleForm.tableData = res.data.rmsRecipeBodyDtlList
+      // })
     },
     getDictValue() {
       const typeList = ['RECIPE_VERSION_TYPE', 'RECIPE_STATUS', 'RECIPE_APPROVE_STEP', 'RECIPE_APPROVE_RESULT']
-      const list = ['versionTypeList', 'statusList', 'approveStepList', 'approveResultList']
+      const list = ['statusList', 'approveStepList', 'approveResultList']
       for (let i = 0; i < typeList.length; i++) {
         this.getDictList(typeList[i], list[i])
       }
@@ -216,18 +230,18 @@ export default {
     },
     getDevice() {
       const obj = {
-        'sort': 'updateDate',
+        sort: 'updateDate',
         'page.pn': 1,
         'page.size': 999999,
-        'queryFields': 'id,manufacturerName,classCode,smlPath,hostJavaClass,activeFlag,iconPath,updateDate,'
+        queryFields: 'id,manufacturerName,classCode,smlPath,hostJavaClass,activeFlag,iconPath,updateDate,'
       }
-      fetchDeviceList(obj).then(response => {
+      fetchDeviceList(obj).then((response) => {
         this.eqpModelNameList = response.data.results
       })
     },
     // 获取字典list
     getDictList(type, name) {
-      fetchDict(type).then(response => {
+      fetchDict(type).then((response) => {
         this.dictList[name] = response.data
       })
     },
@@ -296,7 +310,7 @@ export default {
     },
     save() {
       let eqpModelName = ''
-      this.eqpModelNameList.forEach(item => {
+      this.eqpModelNameList.forEach((item) => {
         if (item.id == this.editList.eqpModelId) {
           eqpModelName = item.classCode
         }
@@ -304,7 +318,7 @@ export default {
       const params = {
         id: this.id,
         recipeCode: this.editList.recipeCode,
-        versionType: this.editList.versionType,
+        versionType: this.versionType,
         versionNo: this.editList.versionNo,
         eqpId: this.editList.eqpId,
         eqpModelId: this.editList.eqpModelId,
@@ -346,20 +360,81 @@ export default {
       this.$store.dispatch('delView', this.viewObj).then(({ visitedViews }) => {
         this.$router.push({ name: 'views/rms/recipe/rmsrecipeList' })
       })
+    },
+    setCopy() {
+      request({
+        url: 'rms/rmsrecipe/copySetValue',
+        method: 'get',
+        params: { recipeIdNew: this.id, recipeIdOld: this.oldId }
+      }).then((res) => {
+        this.getDeteils()
+        this.$notify({
+          title: '成功',
+          message: res.data.msg,
+          type: 'success',
+          duration: 2000
+        })
+      })
+    },
+    maxCopy() {
+      request({
+        url: 'rms/rmsrecipe/copyMaxValue',
+        method: 'get',
+        params: { recipeIdNew: this.id, recipeIdOld: this.oldId }
+      }).then((res) => {
+        this.getDeteils()
+        this.$notify({
+          title: '成功',
+          message: res.data.msg,
+          type: 'success',
+          duration: 2000
+        })
+      })
+    },
+    minCopy() {
+      request({
+        url: 'rms/rmsrecipe/copyMinValue',
+        method: 'get',
+        params: { recipeIdNew: this.id, recipeIdOld: this.oldId }
+      }).then((res) => {
+        this.getDeteils()
+        this.$notify({
+          title: '成功',
+          message: res.data.msg,
+          type: 'success',
+          duration: 2000
+        })
+      })
+    },
+    color({ row, column, rowIndex, columnIndex }) {
+      
+      if (row.minValue !== row.minValueOld && columnIndex == 5) {
+        return 'warning-cell'
+      }
+      if (row.setValue !== row.setValueOld && columnIndex == 3) {
+        return 'warning-cell'
+      }
+      if (row.maxValue !== row.maxValueOld && columnIndex == 7) {
+        return 'warning-cell'
+      }
+      return ''
     }
   }
 }
 </script>
 <style lang="scss">
 .programEdit {
-    .editForm {
-        .el-select {
-            width: 185px;
-        }
+  .editForm {
+    .el-select {
+      width: 185px;
     }
-   .cell-text {
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+  }
+  .cell-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .el-table .warning-cell {
+    background: yellow;
+  }
 }
 </style>

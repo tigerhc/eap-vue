@@ -98,17 +98,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'sidebar',
-      'name',
-      'avatar',
-      'device',
-      'addRouters',
-      'project'
-    ])
+    ...mapGetters(['sidebar', 'name', 'avatar', 'device', 'addRouters', 'project'])
   },
   mounted() {
-    getProject('2').then(res => {
+    getProject('2').then((res) => {
       const obj = res.data
       this.$store.dispatch('getProject', obj)
     })
@@ -118,7 +111,7 @@ export default {
   methods: {
     getHome(item) {
       if (item === 'home') {
-        fetchHome().then(res => {
+        fetchHome().then((res) => {
           this.home = res.data
           window.open(this.home)
         })
@@ -129,7 +122,7 @@ export default {
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {
-        location.reload()// In order to re-instantiate the vue-router object to avoid bugs
+        location.reload() // In order to re-instantiate the vue-router object to avoid bugs
       })
     },
     // 切换系统
@@ -140,7 +133,7 @@ export default {
     // 查询项目
     getList() {
       const params = this.changeParams()
-      fetchProList(params).then(response => {
+      fetchProList(params).then((response) => {
         this.projectList = response.data
       })
     },
@@ -149,9 +142,9 @@ export default {
       const params = {
         'page.pn': 1,
         'page.size': 99999,
-        'status': 1,
-        'delFlag': 0,
-        'queryFields': 'id,projectName,projectDetail,projectUrl,projectPhotoUrl,'
+        status: 1,
+        delFlag: 0,
+        queryFields: 'id,projectName,projectDetail,projectUrl,projectPhotoUrl,'
       }
       return params
     },
@@ -160,7 +153,7 @@ export default {
       const params = {
         projectId: '2'
       }
-      fetchMenuList(params).then(response => {
+      fetchMenuList(params).then((response) => {
         this.firstLeave = response.data
         this.activeName = this.firstLeave[0].id
         this.getSecondLeave(this.activeName)
@@ -175,7 +168,7 @@ export default {
       const params = {
         id
       }
-      fetchMeunRouterList(params).then(response => {
+      fetchMeunRouterList(params).then((response) => {
         this.$store.commit('SET_MEUNROUTES', response.data)
         this.$store.commit('SET_ACTIVENAME', id)
         if (!this.$store.state.app.sidebar.opened) {
@@ -194,9 +187,9 @@ export default {
   border-radius: 0px !important;
   display: flex;
   width: 100%;
-  .headerSur{
+  .headerSur {
     display: inline-block;
-   // width: 40%;
+    // width: 40%;
     line-height: 50px;
 
     flex: 1;
@@ -208,26 +201,26 @@ export default {
     float: left;
     padding: 0 10px;
   }
-  .breadcrumb-container{
+  .breadcrumb-container {
     float: left;
   }
   .errLog-container {
     display: inline-block;
     vertical-align: top;
   }
-  .right-menu{
+  .right-menu {
     display: flex;
     align-items: center;
-    &:focus{
-     outline: none;
+    &:focus {
+      outline: none;
     }
     .right-menu-item {
       display: inline-block;
       margin: 0 8px;
     }
-    .sys-dw{
-      font-size:16px;
-      font-weight:bold;
+    .sys-dw {
+      font-size: 16px;
+      font-weight: bold;
     }
     .avatar-container {
       // height: 50px;
@@ -251,59 +244,64 @@ export default {
 }
 </style>
 <style>
-    /*覆写一级菜单样式*/
-   .headerSur .el-tabs__header{
-        margin: 0;
-        margin-right:10px;
-
-    }
-   .headerSur .el-tabs__nav-wrap::after{
-        height: 0;
-    }
-   .headerSur .el-tabs__active-bar{
-        height: 0;
-    }
-   .headerSur .el-tabs__item{
-        font-size: 17px;
-        height:50px;
-        line-height:50px;
-    }
-   .headerSur .el-tabs__item.is-active {
-      border-bottom: 2px solid #409EFF;
-    }
-   .headerSur .el-tabs__nav{
-        /* margin-top:-3px; */
-        /* float: right; */
-    }
-   .headerSur .el-tabs__nav-prev{
-        line-height: 50px;
-    }
-    .headerSur .el-tabs__item  + .el-tabs__item{
-      margin-left:20px;
-    }
-    .headerSur .el-tabs__item {
-      padding:0;
-    }
-   .headerSur .el-tabs--bottom .el-tabs__item.is-bottom:nth-child(2), .el-tabs--bottom .el-tabs__item.is-top:nth-child(2), .el-tabs--top .el-tabs__item.is-bottom:nth-child(2), .el-tabs--top .el-tabs__item.is-top:nth-child(2){
-        /* padding-left:20px; */
-    }
-   .headerSur .el-tabs--bottom .el-tabs__item.is-bottom:last-child, .el-tabs--bottom .el-tabs__item.is-top:last-child, .el-tabs--top .el-tabs__item.is-bottom:last-child, .el-tabs--top .el-tabs__item.is-top:last-child{
-        /* padding-right:20px; */
-    }
-   .headerSur .el-tabs__item:hover{
-        /* color: white; */
-        border-bottom: 2px solid #409EFF;
-    }
-    .mar-top-20{
-        margin-top:20px
-    }
-    .wid160{
-        width:160px
-    }
-    @media (max-width: 800px) {
-        .headerSur .menu-name{
-          display: none;
-        }
-    }
+/*覆写一级菜单样式*/
+.headerSur .el-tabs__header {
+  margin: 0;
+  margin-right: 10px;
+}
+.headerSur .el-tabs__nav-wrap::after {
+  height: 0;
+}
+.headerSur .el-tabs__active-bar {
+  height: 0;
+}
+.headerSur .el-tabs__item {
+  font-size: 17px;
+  height: 50px;
+  line-height: 50px;
+}
+.headerSur .el-tabs__item.is-active {
+  border-bottom: 2px solid #409eff;
+}
+.headerSur .el-tabs__nav {
+  /* margin-top:-3px; */
+  /* float: right; */
+}
+.headerSur .el-tabs__nav-prev {
+  line-height: 50px;
+}
+.headerSur .el-tabs__item + .el-tabs__item {
+  margin-left: 20px;
+}
+.headerSur .el-tabs__item {
+  padding: 0;
+}
+.headerSur .el-tabs--bottom .el-tabs__item.is-bottom:nth-child(2),
+.el-tabs--bottom .el-tabs__item.is-top:nth-child(2),
+.el-tabs--top .el-tabs__item.is-bottom:nth-child(2),
+.el-tabs--top .el-tabs__item.is-top:nth-child(2) {
+  /* padding-left:20px; */
+}
+.headerSur .el-tabs--bottom .el-tabs__item.is-bottom:last-child,
+.el-tabs--bottom .el-tabs__item.is-top:last-child,
+.el-tabs--top .el-tabs__item.is-bottom:last-child,
+.el-tabs--top .el-tabs__item.is-top:last-child {
+  /* padding-right:20px; */
+}
+.headerSur .el-tabs__item:hover {
+  /* color: white; */
+  border-bottom: 2px solid #409eff;
+}
+.mar-top-20 {
+  margin-top: 20px;
+}
+.wid160 {
+  width: 160px;
+}
+@media (max-width: 800px) {
+  .headerSur .menu-name {
+    display: none;
+  }
+}
 </style>
 

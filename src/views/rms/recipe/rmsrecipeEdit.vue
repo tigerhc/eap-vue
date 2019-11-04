@@ -145,7 +145,25 @@
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="附件" name="third">
-
+        <div style="margin-bottom:20px">
+          <el-button type="primary" size="small" >上传</el-button>
+        </div>
+        <el-table
+        :data="fileData"
+        fit
+        style="width: 100%"
+        highlight-current-row
+        >
+        <el-table-column type="index" label="序号" width="50px" align="center"/>
+        <el-table-column prop="paraCode" label="附件名称" align="center">
+        </el-table-column>
+        <el-table-column prop="paraCode" label="附件类型" align="center">
+        </el-table-column>
+        <el-table-column prop="paraCode" label="附件大小" align="center">
+        </el-table-column>
+        <el-table-column prop="paraCode" label="创建时间" align="center">
+        </el-table-column>
+        </el-table>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -180,6 +198,7 @@ export default {
       ruleForm: {
         tableData: []
       },
+      fileData:[],
       // 动态设置table高度
       tableHeight: document.body.scrollHeight - 210,
       tab: 'rms/rmsrecipe/',
@@ -270,7 +289,10 @@ export default {
       this.doubleClickIndex = this.ruleForm.tableData.length - 1
     },
     handleClick(tab, event) {
-      console.log(tab, event)
+      if(tab.index === '2') {
+        //查询附件
+        this.queryFiles()
+      }
     },
     // 获取index
     tableRowClassName({ row, rowIndex }) {
@@ -307,6 +329,15 @@ export default {
           duration: 2000
         })
       }
+    },
+    queryFiles(){
+      request({
+        url: 'rms/rmsrecipefile/'+this.id +'/findFileByRecipeId',
+        method: 'get',
+        params: { }
+      }).then((res) => {
+        this.fileData = res.data.results
+      })
     },
     save() {
       let eqpModelName = ''

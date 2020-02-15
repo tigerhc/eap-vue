@@ -9,12 +9,12 @@
         class="filter-item"
         type="datetime"
         placeholder="选择开始时间"/>
-      <!--<el-date-picker-->
-      <!--style="width: 200px;" class="filter-item"-->
-      <!--v-model="listQuery.endDate"-->
-      <!--type="datetime"-->
-      <!--placeholder="选择结束时间">-->
-      <!--</el-date-picker>-->
+      <el-date-picker
+      style="width: 200px;" class="filter-item"
+      v-model="listQuery.endDate"
+      type="datetime"
+      placeholder="选择结束时间">
+      </el-date-picker>
       <br>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
       <el-button :loading="downloadLoading" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
@@ -36,9 +36,14 @@
           <span>{{ scope.row.eqpId }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="事件ID" width="500px">
+      <el-table-column align="center" label="事件ID" width="300px">
         <template slot-scope="scope">
           <span>{{ scope.row.eventId }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="left" label="事件参数" width="500px">
+        <template slot-scope="scope">
+          <span>{{ scope.row.eventParams }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="开始时间" width="200px">
@@ -125,7 +130,7 @@ export default {
         'query.eventId||like': obj.eventId || '',
         'query.startDate||ge': obj.startDate || '',
         'query.endDate||le': obj.endDate || '',
-        'queryFields': 'id,eqpId,alarmName,eventId,startDate,endDate,createDate,'
+        'queryFields': 'id,eqpId,alarmName,eventId,eventParams,startDate,endDate,createDate,'
       }
       return params
     },

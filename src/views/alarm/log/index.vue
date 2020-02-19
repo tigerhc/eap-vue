@@ -2,7 +2,7 @@
   <div class="app-container calendar-list-container">
     <div class="filter-container">
       <el-input v-model="listQuery.eqpId" style="width: 200px;" class="filter-item" placeholder="请输入设备号" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.alarmId" style="width: 200px;" class="filter-item" placeholder="请输入ALID" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.alarmCode" style="width: 200px;" class="filter-item" placeholder="请输入ALID" @keyup.enter.native="handleFilter"/>
       <!-- <el-select v-model="listQuery.eqpModelName" filterable style="width: 200px;" class="filter-item" placeholder="请选择设备类型">
         <el-option
           v-for="item in eqpModelNameList"
@@ -49,9 +49,9 @@
           <span>{{ scope.row.eqpModelName }}</span>
         </template>
       </el-table-column> -->
-      <el-table-column align="left" label="报警ID" width="150px">
+      <el-table-column align="left" label="报警编码" width="150px">
         <template slot-scope="scope">
-          <span>{{ scope.row.alarmId }}</span>
+          <span>{{ scope.row.alarmCode}}</span>
         </template>
       </el-table-column>
       <el-table-column align="left" label="报警名称">
@@ -143,12 +143,12 @@ export default {
         'page.pn': obj.page,
         'page.size': obj.limit,
         'query.eqpId||like': obj.eqpId || '',
-        'query.alarmId||like': obj.alarmId || '',
+        'query.alarmCode||like': obj.alarmCode || '',
         'query.alarmName||like': obj.alarmName || '',
         // 'query.eqpModelName||eq': obj.eqpModelName || '',
         'query.startDate||ge': obj.startDate || '',
         'query.endDate||le': obj.endDate || '',
-        'queryFields': 'id,eqpId,alarmName,alarmId,eqpModelName,eqpModelName,startDate,endDate,createDate,'
+        'queryFields': 'id,eqpId,alarmName,alarmCode,eqpModelName,eqpModelName,startDate,endDate,createDate,'
       }
       return params
     },

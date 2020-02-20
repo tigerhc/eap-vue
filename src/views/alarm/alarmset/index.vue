@@ -153,16 +153,18 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
+          <el-button type="text" @click="edit(scope.row)">{{ $t('table.edit') }}</el-button>
+          <el-button type="text" @click="del(scope.row)">{{ $t('table.delete') }}</el-button>
           <el-button
-            type="primary"
-            size="mini"
-            @click="handleUpdate(scope.row)"
-          >{{ $t('table.edit') }}</el-button>
+            v-if="scope.row.monitorFlag ==1"
+            type="text"
+            @click="handleEnable(scope.row,0)"
+          >启用</el-button>
           <el-button
-            type="primary"
-            size="mini"
-            @click="handleUpdate(scope.row)"
-          >{{ $t('table.delete') }}</el-button>
+            v-if="scope.row.monitorFlag ==0"
+            type="text"
+            @click="handleEnable(scope.row,1)"
+          >停用</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -183,7 +185,7 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/alarm/alarmSet'
+import { fetchList, fetchEnable, deleteList } from '@/api/alarm/alarmSet'
 import waves from '@/directive/waves' // 水波纹指令
 import { fetchDeviceList } from '@/api/sys/device'
 export default {
@@ -239,7 +241,6 @@ export default {
     // 转换入参
     changeParams(obj) {
       const params = {
-
         sort: 'updateDate',
         'page.pn': obj.page,
         'page.size': obj.limit,
@@ -249,7 +250,8 @@ export default {
         'query.eqpModelName||eq': obj.eqpModelName || '',
         'query.monitorFlag||eq': obj.monitorFlag || '',
         // 'query.classCode||like': obj.classCode || '',
-        queryFields: 'id,alarmId,classCode,alarmCode,alarmCategory,alarmDesc,alarmType,monitorFlag,eqpModelId,eqpModelName,edcAmsRecordList,alarmId,alarmName,'
+        queryFields:
+          'id,alarmId,classCode,alarmCode,alarmCategory,alarmDesc,alarmType,monitorFlag,eqpModelId,eqpModelName,edcAmsRecordList,alarmId,alarmName,'
       }
       return params
     },
@@ -279,15 +281,61 @@ export default {
     chooseAll(row) {
       this.multipleSelection = row
     },
+    handleEnable(item, id) {
+      fetchEnable(item.id, id).then((res) => {
+        if (res.code === 0) {
+          this.$notify({
+            title: '成功',
+            message: res.msg,
+            type: 'success',
+            duration: 2000
+          })
+        } else {
+          this.$notify({
+            title: '失败',
+            message: '操作失败',
+            type: 'error',
+            duration: 2000
+          })
+        }
+      })
+    },
     // 新增
     handleOperating() {
       this.$router.push({ name: 'views/alarm/alarmset/add' })
     },
-    openDeteils(item) {
-      this.$router.push({ name: 'views/rms/recipetemplate/rmsrecipetemplateView', query: { item }})
+    // 修改
+    edit(item) {
+      this.$router.push({ name: 'views/alarm/alarmset/edit', query: { item }, editFlag: true })
     },
-    handleUpdate(item) {
-      this.$router.push({ name: 'views/rms/recipetemplate/rmsrecipetemplateView', query: { item }})
+    openDeteils(item) {
+      this.$router.push({ name: 'views/alarm/alarmset/edit', query: { item, editFlag: false }})
+    },
+    del(item) {
+      this.$confirm('是否确定删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          deleteList(item.id).then(res => {
+            if (res.code === 0) {
+              this.getList()
+              this.$notify({
+                title: '成功',
+                message: '删除成功',
+                type: 'success',
+                duration: 2000
+              })
+            }
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     }
   }
 }

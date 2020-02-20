@@ -15,3 +15,33 @@ export function addDevice(data) {
     data
   })
 }
+
+export function fetchEnable(alarmId, flag) {
+  return request({
+    url: '/edc/edcamsdefine/active_flag/' + alarmId + '/' + flag,
+    method: 'put'
+  })
+}
+
+export function fetchDeteils(id) {
+  return request({
+    url: '/edc/edcamsdefine/' + id + '/get',
+    method: 'get',
+    id
+  })
+}
+
+export function update(data) {
+  return request({
+    url: '/edc/edcamsdefine/' + data.id + '/update',
+    method: 'post',
+    data
+  })
+}
+
+export function deleteList(id) {
+  return request({
+    url: '/edc/edcamsdefine/' + id + '/delete',
+    method: 'post'
+  })
+}

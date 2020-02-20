@@ -7,3 +7,11 @@ export function fetchList(query) {
     params: query
   })
 }
+
+export function addDevice(data) {
+  return request({
+    url: '/edc/edcamsdefine/create',
+    method: 'post',
+    data
+  })
+}

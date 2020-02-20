@@ -6,12 +6,14 @@
         style="width: 200px;"
         class="filter-item"
         placeholder="ALID"
+        clearable
         @keyup.enter.native="handleFilter"
       />
       <el-select
         v-model="listQuery.eqpModelName"
         filterable
         style="width: 200px;"
+        clearable
         class="filter-item"
         placeholder="请选择设备类型"
       >
@@ -19,39 +21,42 @@
           v-for="item in eqpModelNameList"
           :key="item.id"
           :label="item.classCode"
-          :value="item.id"
+          :value="item.classCode"
         />
       </el-select>
       <el-select
-        v-model="listQuery.eqpModelName"
+        v-model="listQuery.alarmType"
         filterable
+        clearable
         style="width: 200px;"
         class="filter-item"
         placeholder="请选择Alarm类型"
       >
         <el-option
-          v-for="item in eqpModelNameList"
-          :key="item.id"
-          :label="item.classCode"
-          :value="item.id"
+          v-for="item in dictList('AMS_ALARM_TYPE')"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
         />
       </el-select>
       <el-select
-        v-model="listQuery.eqpModelName"
+        v-model="listQuery.monitorFlag"
         filterable
+        clearable
         style="width: 200px;"
         class="filter-item"
         placeholder="请选择状态"
       >
         <el-option
-          v-for="item in eqpModelNameList"
-          :key="item.id"
-          :label="item.classCode"
-          :value="item.id"
+          v-for="item in dictList('MONITOR_FLAG')"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
         />
       </el-select>
       <el-input
-        v-model="listQuery.alid"
+        v-model="listQuery.alarmDesc"
+        clearable
         style="width: 200px;"
         class="filter-item"
         placeholder="ALID描述"
@@ -64,7 +69,14 @@
         icon="el-icon-search"
         @click="handleFilter"
       >{{ $t('table.search') }}</el-button>
+      <el-button
+        class="filter-item"
+        type="primary"
+        icon="el-icon-circle-plus-outline"
+        @click="handleOperating('addModel')"
+      >{{ $t('table.add') }}</el-button>
     </div>
+
     <el-table
       v-loading="listLoading"
       :key="tableKey"
@@ -95,8 +107,8 @@
       </el-table-column>
       <el-table-column align="center" label="状态">
         <template slot-scope="scope">
-           <span v-if="scope.row.activeFlag == 1">有效</span>
-          <span v-else>无效</span>
+          <span v-if="scope.row.monitorFlag == 0">已启用</span>
+          <span v-else>已禁用</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="设备类型">
@@ -106,7 +118,7 @@
       </el-table-column>
       <el-table-column align="center" label="Alarm类型">
         <template slot-scope="scope">
-          <span>{{ scope.row.classCode }}</span>
+          <span>{{ scope.row.alarmType }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="发布时间">
@@ -173,7 +185,7 @@
 <script>
 import { fetchList } from '@/api/alarm/alarmSet'
 import waves from '@/directive/waves' // 水波纹指令
-
+import { fetchDeviceList } from '@/api/sys/device'
 export default {
   name: 'AlarmSet',
   directives: {
@@ -191,7 +203,10 @@ export default {
         page: 1,
         limit: 10,
         alarmId: undefined,
+        alarmType: undefined,
         classCode: undefined,
+        monitorFlag: undefined,
+        alarmDesc: '',
         sort: 'updateDate'
       }
     }
@@ -208,19 +223,37 @@ export default {
         this.total = response.data.total
         this.listLoading = false
       })
+      this.getDevice()
+    },
+    getDevice() {
+      const obj = {
+        sort: 'updateDate',
+        'page.pn': 1,
+        'page.size': 999999,
+        queryFields: 'id,manufacturerName,classCode,smlPath,hostJavaClass,activeFlag,iconPath,updateDate,'
+      }
+      fetchDeviceList(obj).then((response) => {
+        this.eqpModelNameList = response.data.results
+      })
     },
     // 转换入参
     changeParams(obj) {
       const params = {
+
         sort: 'updateDate',
         'page.pn': obj.page,
         'page.size': obj.limit,
         'query.alarmId||like': obj.alarmId || '',
+        'query.alarmDesc||like': obj.alarmDesc || '',
+        'query.alarmType||eq': obj.alarmType || '',
+        'query.eqpModelName||eq': obj.eqpModelName || '',
+        'query.monitorFlag||eq': obj.monitorFlag || '',
         // 'query.classCode||like': obj.classCode || '',
         queryFields: 'id,alarmId,classCode,alarmCode,alarmCategory,alarmDesc,alarmType,monitorFlag,eqpModelId,eqpModelName,edcAmsRecordList,alarmId,alarmName,'
       }
       return params
     },
+    selectEqp() {},
     handleFilter() {
       this.listQuery.page = 1
       this.getList()
@@ -245,6 +278,10 @@ export default {
     // 全选
     chooseAll(row) {
       this.multipleSelection = row
+    },
+    // 新增
+    handleOperating() {
+      this.$router.push({ name: 'views/alarm/alarmset/add' })
     },
     openDeteils(item) {
       this.$router.push({ name: 'views/rms/recipetemplate/rmsrecipetemplateView', query: { item }})

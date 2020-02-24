@@ -162,6 +162,7 @@ export default {
     }
   },
   activated() {
+    debugger
     this.fromInfo = this.$route.query.item || {}
     this.editFlag = this.$route.query.editFlag
     this.getDevice()

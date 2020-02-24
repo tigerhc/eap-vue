@@ -283,7 +283,8 @@ export default {
     },
     handleEnable(item, id) {
       fetchEnable(item.id, id).then((res) => {
-        if (res.code === 0) {
+        if (res.data.code === 0) {
+          this.getList()
           this.$notify({
             title: '成功',
             message: res.msg,
@@ -306,7 +307,7 @@ export default {
     },
     // 修改
     edit(item) {
-      this.$router.push({ name: 'views/alarm/alarmset/edit', query: { item }, editFlag: true })
+      this.$router.push({ name: 'views/alarm/alarmset/edit', query: { item, editFlag: true }})
     },
     openDeteils(item) {
       this.$router.push({ name: 'views/alarm/alarmset/edit', query: { item, editFlag: false }})
@@ -319,7 +320,7 @@ export default {
       })
         .then(() => {
           deleteList(item.id).then(res => {
-            if (res.code === 0) {
+            if (res.data.code === 0) {
               this.getList()
               this.$notify({
                 title: '成功',

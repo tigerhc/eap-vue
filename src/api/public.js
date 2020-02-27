@@ -78,3 +78,11 @@ export function batchUpdate(tab, data) {
     data
   })
 }
+
+export function rpteqpstateday(data) {
+  return request({
+    url: 'edc/rpteqpstateday/eqp',
+    method: 'get',
+    params: data
+  })
+}

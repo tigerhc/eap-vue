@@ -20,8 +20,8 @@
         <el-option
           v-for="item in eqpModelNameList"
           :key="item.id"
-          :label="item.classCode"
-          :value="item.classCode"
+          :label="item.model_name"
+          :value="item.id"
         />
       </el-select>
       <el-select
@@ -187,7 +187,7 @@
 <script>
 import { fetchList, fetchEnable, deleteList } from '@/api/alarm/alarmSet'
 import waves from '@/directive/waves' // 水波纹指令
-import { fetchDeviceList } from '@/api/sys/device'
+import { fetchLookup } from '@/api/sys/device'
 export default {
   name: 'AlarmSet',
   directives: {
@@ -228,14 +228,14 @@ export default {
       this.getDevice()
     },
     getDevice() {
-      const obj = {
-        sort: 'updateDate',
-        'page.pn': 1,
-        'page.size': 999999,
-        queryFields: 'id,manufacturerName,classCode,smlPath,hostJavaClass,activeFlag,iconPath,updateDate,'
-      }
-      fetchDeviceList(obj).then((response) => {
-        this.eqpModelNameList = response.data.results
+      // const obj = {
+      //   sort: 'updateDate',
+      //   'page.pn': 1,
+      //   'page.size': 999999,
+      //   queryFields: 'id,manufacturerName,classCode,smlPath,hostJavaClass,activeFlag,iconPath,updateDate,'
+      // }
+      fetchLookup().then((response) => {
+        this.eqpModelNameList = response.data
       })
     },
     // 转换入参

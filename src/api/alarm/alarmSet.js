@@ -25,7 +25,7 @@ export function fetchEnable(alarmId, flag) {
 
 export function fetchDeteils(id) {
   return request({
-    url: '/edc/edcamsdefine/' + id + '/get',
+    url: '/edc/edcamsdefine/' + id + '/find',
     method: 'get',
     id
   })

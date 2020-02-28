@@ -10,7 +10,7 @@
       size="small"
     >
       <el-row>
-        <el-col :span="12">
+        <el-col :span="9">
           <el-form-item label="日期" prop="dateTime">
             <el-date-picker
               v-model="form.dateTime"
@@ -22,12 +22,12 @@
             />
           </el-form-item>
         </el-col>
-        <el-col :span="10">
-          <el-form-item label="eqpId(请用逗号分开)" prop="eqpId">
+        <el-col :span="8">
+          <el-form-item label="设备号(请用逗号或回车分开)" prop="eqpId">
             <el-input
               :autosize="{ minRows: 4}"
               v-model="form.eqpId"
-              style="width:400px"
+              style="width:300px"
               type="textarea"
               placeholder="请输入内容"
             />
@@ -40,6 +40,14 @@
     <alarm-cake
       v-if="showFlag"
       id="eqpoee"
+      ref="AlarmCake"
+      :begin-time="form.dateTime[0]"
+      :end-time="form.dateTime[1]"
+      :list="list"
+    />
+    <alarm-cake
+      v-if="showFlag"
+      id="eqpsoee"
       ref="AlarmCake"
       :begin-time="form.dateTime[0]"
       :end-time="form.dateTime[1]"
@@ -62,6 +70,7 @@ export default {
         eqpId: ''
       },
       list: [],
+      list2: [],
       showFlag: false,
       formRules: {
         dateTime: [{ required: true, message: '请选择时间！', trigger: 'change' }],
@@ -80,14 +89,10 @@ export default {
             endTime: this.form.dateTime[1],
             eqpId: this.form.eqpId
           }).then((res) => {
-            if (res.data.code === 0) {
-              const data = res.data.data
-              const arr = Object.keys(data)
-              if (arr.length === 1) {
-                this.showFlag = true
-                this.list = data[arr[0]]
-              }
-            }
+            const data = res.data
+            this.showFlag = true
+            this.list = data.eqpOee
+            this.list2 = data.eqpsOee
           })
         }
       })

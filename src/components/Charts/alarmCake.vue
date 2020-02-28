@@ -135,6 +135,18 @@ export default {
             }
           },
           radius: 40,
+          itemStyle: {
+              emphasis: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              },
+              color:function(params) {
+                var colorList = ['#999fa7','#43ca17','#cfe60c'];
+                return colorList[params.dataIndex]
+              }
+            
+          },
           data: [
             { name: 'RUN', value: item[1] },
             { name: 'IDLE', value: item[2] },

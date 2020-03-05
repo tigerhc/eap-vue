@@ -63,7 +63,9 @@
           handler="view"
           query
           condition="like"
-        />>
+        >
+        <el-input v-model="table.model.alarmCode" />
+        </w-table-col>
         <w-table-col name="eqpModelName" label="设备类型" align="left" />
         <w-table-col name="alarmName" label="名称" align="left" />
         <w-table-col name="alarmCategory" label="种类" align="center" />

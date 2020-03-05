@@ -162,7 +162,7 @@ export default {
     }
   },
   activated() {
-    debugger
+    // debugger
     this.fromInfo = this.$route.query.item || {}
     this.editFlag = this.$route.query.editFlag
     this.getDevice()
@@ -182,8 +182,8 @@ export default {
     },
     getDeatails() {
       fetchDeteils(this.fromInfo.id).then((res) => {
-        this.editList = res.data
-        this.list = res.data.edcAmsRecordList
+        this.editList = res.data.results
+        this.list = res.data.results.edcAmsRecordList
       })
     },
     save() {

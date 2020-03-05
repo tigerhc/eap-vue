@@ -8,6 +8,14 @@ export function fetchDeviceList(query) {
   })
 }
 
+export function fetchLookup(query) {
+  return request({
+    url: '/fab/fabequipmentmodel/lookup',
+    method: 'get',
+    params: query
+  })
+}
+
 export function addDevice(data) {
   return request({
     url: '/fab/fabequipmentmodel/create',

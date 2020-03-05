@@ -96,13 +96,9 @@
 </template>
 
 <script>
-import { fetchDeteils, update } from '@/api/alarm/alarmSet'
-import waves from '@/directive/waves' // 水波纹指令
-import { fetchDeviceList } from '@/api/sys/device'
 export default {
   name: 'AlarmsetAdd',
   directives: {
-    waves
   },
   data() {
     return {
@@ -147,73 +143,74 @@ export default {
     this.getDeatails()
   },
   methods: {
-    getDevice() {
-      const obj = {
-        sort: 'updateDate',
-        'page.pn': 1,
-        'page.size': 999999,
-        queryFields: 'id,manufacturerName,classCode,smlPath,hostJavaClass,activeFlag,iconPath,updateDate,'
-      }
-      fetchDeviceList(obj).then((response) => {
-        this.eqpModelNameList = response.data.results
-      })
-    },
-    getDeatails() {
-      fetchDeteils(this.fromInfo.id).then((res) => {
-        this.editList = res.data
-        this.list = res.data.edcAmsRecordList
-      })
-    },
-    save() {
-      const { monitorFlag, eqpModelId, alarmName, alarmCode, eqpModelName, id } = this.editList
-      const parmas = {
-        monitorFlag,
-        alarmName,
-        eqpModelId,
-        eqpModelName,
-        alarmCode,
-        id,
-        _detail: JSON.stringify(this.list)
-      }
-      this.$refs['modelForm'].validate((valid) => {
-        if (valid) {
-          update(parmas).then((res) => {
-            if (res.data.code === 0) {
-              this.cancel()
-              this.$notify({
-                title: '成功',
-                message: '添加成功',
-                type: 'success',
-                duration: 2000
-              })
-            } else {
-              this.$notify({
-                title: '失败',
-                message: '添加失败',
-                type: 'error',
-                duration: 2000
-              })
-            }
-          })
-        } else {
-          return
-        }
-      })
-    },
-    getView() {
-      const List = this.$store.state.tagsView.visitedViews
-      for (const item of List) {
-        if (item.name === 'views/alarm/alarmset/edit') {
-          this.viewObj = item
-        }
-      }
-    },
-    cancel() {
-      this.getView()
-      this.$store.dispatch('delView', this.viewObj).then(({ visitedViews }) => {
-        this.$router.push({ name: 'views/alarm/alarmset/index' })
-      })
-    },
+    // getDevice() {
+    //   const obj = {
+    //     sort: 'updateDate',
+    //     'page.pn': 1,
+    //     'page.size': 999999,
+    //     queryFields: 'id,manufacturerName,classCode,smlPath,hostJavaClass,activeFlag,iconPath,updateDate,'
+    //   }
+    //   fetchDeviceList(obj).then((response) => {
+    //     this.eqpModelNameList = response.data.results
+    //   })
+    // },
+    // getDeatails() {
+    //   fetchDeteils(this.fromInfo.id).then((res) => {
+    //     this.editList = res.data
+    //     this.list = res.data.edcAmsRecordList
+    //   })
+    // },
+    // save() {
+    //   const { monitorFlag, eqpModelId, alarmName, alarmCode, eqpModelName, id } = this.editList
+    //   const parmas = {
+    //     monitorFlag,
+    //     alarmName,
+    //     eqpModelId,
+    //     eqpModelName,
+    //     alarmCode,
+    //     id,
+    //     _detail: JSON.stringify(this.list)
+    //   }
+    //   this.$refs['modelForm'].validate((valid) => {
+    //     if (valid) {
+    //       update(parmas).then((res) => {
+    //         if (res.data.code === 0) {
+    //           this.cancel()
+    //           this.$notify({
+    //             title: '成功',
+    //             message: '添加成功',
+    //             type: 'success',
+    //             duration: 2000
+    //           })
+    //         } else {
+    //           this.$notify({
+    //             title: '失败',
+    //             message: '添加失败',
+    //             type: 'error',
+    //             duration: 2000
+    //           })
+    //         }
+    //       })
+    //     } else {
+    //       return
+    //     }
+    //   })
+    // },
+    // getView() {
+    //   const List = this.$store.state.tagsView.visitedViews
+    //   for (const item of List) {
+    //     if (item.name === 'views/alarm/alarmset/edit') {
+    //       this.viewObj = item
+    //     }
+    //   }
+    // },
+    // cancel() {
+    //   debugger
+    //   this.getView()
+    //   this.$store.dispatch('delView', this.viewObj).then(({ visitedViews }) => {
+    //     this.$router.push({ name: 'views/alarm/alarmset/index' })
+    //   })
+    // },
     selectEqp(val) {
       let obj = {}
       obj = this.eqpModelNameList.find((item) => {

@@ -420,23 +420,28 @@ export default {
       })
     },
     getColumns() {
-      return this.getSlotsByType('w-table-col')
+      return this.getSlotsByType('w-table-col', { row: {}})
     },
     getToolbar() {
-      return this.getSlotsByType('w-table-toolbar')
+      return this.getSlotsByType('w-table-toolbar', { row: {}})
     },
-    getButtons() {
-      return this.getSlotsByType('w-table-button')
+    getButtons(scope) {
+      return this.getSlotsByType('w-table-button', scope)
     },
     isEl(item, type = null) {
       const tag = item.componentOptions && item.componentOptions.tag
       return type ? tag === type : !!tag
     },
-    getSlotsByType(type) {
+    getSlotsByType(type, scope) {
       const f = (item) => {
         return this.isEl(item, type)
       }
-      return (this.$slots.default || []).filter(f).map((item) => {
+      let slots = this.$slots.default || []
+      if (typeof this.$scopedSlots.default === 'function') {
+        slots = this.$scopedSlots.default(scope)
+      }
+
+      return slots.filter(f).map((item) => {
         const re = { ...item.data.attrs }
         Object.keys(re).map((key) => {
           re[key] = re[key] === '' ? true : re[key]
@@ -509,7 +514,7 @@ export default {
                 </el-button>
               )
             }
-            const btns = this.getButtons().filter(confMerge)
+            const btns = this.getButtons(scope).filter(confMerge)
             // .map(doRender)
             const deftBtns = Object.keys(deft).map((key) => deft[key])
             // .map(doRender)

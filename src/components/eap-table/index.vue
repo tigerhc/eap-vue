@@ -432,7 +432,7 @@ export default {
       const tag = item.componentOptions && item.componentOptions.tag
       return type ? tag === type : !!tag
     },
-    getSlotsByType(type, scope) {
+    getSlotsByType(type, scope = { row: {}}) {
       const f = (item) => {
         return this.isEl(item, type)
       }

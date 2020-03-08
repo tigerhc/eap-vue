@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-bind="table" url="/edc/edcamsdefine" sort="alarmCode.asc" >
+    <w-table v-bind="table" url="/edc/edcamsdefine" v-slot="{row}" sort="alarmCode.asc" >
       <!--todo fixed属性导致当前列变为第一列-->
       <w-table-col name="alarmCode" label="编码" width="120" sort fixed align="left" handler="view" query condition="like"/>
       <w-table-col name="eqpModelName" label="设备类型" align="left"/>
@@ -16,8 +16,8 @@
       <w-table-toolbar name="add" url="views/ams/define/alarmdefineEdit" />
       <!--hidden属性: 隐藏默认button url: 修改默认url-->
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
-      <w-table-button name="enable" label="启用" tip="确认启用报警？" icon="el-icon-check" />
-      <w-table-button name="diable" label="停用" tip="确认停用报警？" icon="el-icon-close" />
+      <w-table-button name="enable" label="启用" tip="确认启用报警？" icon="el-icon-check" v-if="row.monitorFlag == 0" />
+      <w-table-button name="diable" label="停用" tip="确认停用报警？" icon="el-icon-close" v-if="row.monitorFlag == 1" />
 
     </w-table>
 

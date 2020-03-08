@@ -698,7 +698,7 @@ export default {
     }
     const selection = {
       type: 'selection',
-      width: '36'
+      width: '39'
     }
     const index = {
       type: 'index',

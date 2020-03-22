@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-form :col="3" :model="editList" url="/edc/edcamsdefine">
+    <w-form :title="title" :col="3" :on-load-data="onFormLoadData" :model="editList" url="/edc/edcamsdefine">
       <el-input :disabled="!editFlag" v-model="editList.alarmName" label="报警名称" />
       <el-select
         :disabled="!editFlag"
@@ -115,6 +115,11 @@ export default {
       },
       fromInfo: {},
       ruleForm: {},
+      title: {
+        ADD: '新增xxx',
+        EDIT: '修改xxx',
+        VIEW: '查看xxx'
+      },
       rules: {
         alarmName: [{ required: true, message: '报警名称必填', trigger: 'blur' }],
         eqpModelId: [{ required: true, message: '设备类型必选', trigger: 'change' }],
@@ -129,7 +134,8 @@ export default {
         },
         model: {
           alarmCode: ''
-        }
+        },
+        datas: []
       }
     }
   },
@@ -140,6 +146,9 @@ export default {
     // this.getDeatails()
   },
   methods: {
+    onFormLoadData(data) {
+      this.table.datas = data.edcAmsRecordList
+    },
     // getDevice() {
     //   const obj = {
     //     sort: 'updateDate',

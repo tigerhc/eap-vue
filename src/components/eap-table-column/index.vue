@@ -4,6 +4,9 @@ export default {
   props: {},
   data: function() {
     return {}
+  },
+  render() {
+    return this.$slots.default
   }
 }
 </script>

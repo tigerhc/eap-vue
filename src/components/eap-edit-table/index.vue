@@ -5,6 +5,10 @@ export default {
   name: 'WEdtTable',
   props: {
     // -------------------
+    datas: {
+      type: Array,
+      default: null
+    },
     rules: {
       type: Object,
       default: null
@@ -101,12 +105,23 @@ export default {
     },
     queryName: function() {
       return this.colSet.map((i) => i.name).join() + ','
+    },
+    isDatasMode: function() {
+      return !!this.datas
     }
   },
   watch: {
     colSet: function(n, o) {
       if (n && n.length) {
         this.doFetchData()
+      }
+    },
+    datas: function(val) {
+      console.error(val)
+      if (Array.isArray(val)) {
+        this.list = val
+      } else {
+        this.list = []
       }
     }
   },
@@ -174,6 +189,11 @@ export default {
       this.getList(this.query)
     },
     getList(query) {
+      // 外部直接传入数据 无需求情api。 不开启分页，不开启搜索查询
+      if (this.datas) {
+        this.list = this.datas
+        return
+      }
       this.isLoading = true
       this.api
         .ajaxList(this.getParams(query))
@@ -637,6 +657,11 @@ export default {
         exports
       }
 
+      if (this.isDatasMode) {
+        delete deft.search
+        delete deft.exports
+      }
+
       const creator = (conf) => {
         if (conf.name in deft) {
           conf = { ...deft[conf.name], ...conf }
@@ -844,7 +869,7 @@ export default {
     return (
       <div>
         <div class='filter-container'>
-          {this.renderQuery(h)}
+          {!this.isDatasMode && this.renderQuery(h)}
           {this.renderToobar()}
         </div>
         <el-form ref='form' model={this.model} rules={this.rules}>
@@ -853,7 +878,7 @@ export default {
           </el-table>
         </el-form>
         <span id='test'></span>
-        {pagination}
+        {!this.isDatasMode && pagination}
       </div>
     )
   }

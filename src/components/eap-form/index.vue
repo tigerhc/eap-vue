@@ -35,6 +35,7 @@ export default {
       type: Function,
       default: (v) => v
     },
+    // 获取详情数据后回调函数
     onLoadData: {
       type: Function,
       default: (v) => v
@@ -217,7 +218,6 @@ export default {
             .split('.')
             .filter(Boolean)
             .join('.')
-          console.info(path)
           return (
             <el-form-item label={label} prop={path}>
               {v}

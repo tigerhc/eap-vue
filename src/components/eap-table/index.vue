@@ -153,6 +153,7 @@ export default {
       this.query.queryFields = this.queryName
       this.getList(this.query)
     },
+    // 调用api 获取数据
     getList(query) {
       this.isLoading = true
       this.api
@@ -165,6 +166,7 @@ export default {
           this.isLoading = false
         })
     },
+    // 请求api 参数封装
     getParams(query) {
       query = { ...query }
       Object.keys(query).map((i) => {
@@ -212,10 +214,12 @@ export default {
         ...sortD
       }
     },
+    // 表格数据选中
     onSelect(row) {
       this.$emit('select', row)
       this.multipleSelection = row
     },
+    // 删除行数据
     delete(row) {
       const p = [
         '此操作将永久删除数据, 是否继续?',
@@ -339,6 +343,7 @@ export default {
         }
       })
     },
+    // 导出
     exports() {
       if (this.toolbarStatus.exportsLoading) {
         return
@@ -397,6 +402,7 @@ export default {
       }
       return { mode, ...re }
     },
+    // 生成查询条件表单
     renderQuery(h) {
       return this.queryFields.map((field) => {
         const key = `query.${field.name}||${field.condition}`

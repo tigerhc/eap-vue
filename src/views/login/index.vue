@@ -324,7 +324,7 @@ $light_gray:#eee;
     .login-container .login-introduce {
       width: 50%!important;
       height: 100%!important;
-      overflow-y: scroll;
+      /* overflow-y: scroll; */
     }
     .login-container .login-introduce::-webkit-scrollbar {
       display:none

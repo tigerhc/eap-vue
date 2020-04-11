@@ -1,49 +1,60 @@
 <template>
   <div class="login-container">
+    <div class="login-main">
+      <div class="login-introduce">
+        <div class="title">云端软件开发协作平台</div>
+        <div class="content">
+          王安 DCloud CEO不少国内的好产品，因为用户的迷外心理而不被重视。其实一个友好的中文界面，可以让用户快速掌握软件的所有功能，实实在在地提升效率。期待更多开发者能重视 Gitee，重视国内认真做事的产品团队，他们会给你惊喜。logo
+          云端软件开发协作平王安 DCloud CEO不少国内的好产品，因为用户的迷外心理而不被重视。其实一个友好的中文界面，可以让用户快速掌握软件的所有功能，实实在在地提升效率。期待更多开发者能重视 Gitee，重视国内认真做事的产品团队，他们会给你惊喜。logo
+          云端软件开发协作平王安 DCloud CEO不少国内的好产品，因为用户的迷外心理而不被重视。其实一个友好的中文界面，可以让用户快速掌握软件的所有功能，实实在在地提升效率。期待更多开发者能重视 Gitee，重视国内认真做事的产品团队，他们会给你惊喜。logo
+          云端软件开发协作平
 
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
-      <div class="title-container">
-        <h3 class="title">{{ $t('login.title') }}</h3>
-        <lang-select class="set-language"/>
+        </div>
       </div>
+      <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
-      <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          v-model="loginForm.username"
-          :placeholder="$t('login.username')"
-          name="username"
-          type="text"
-          auto-complete="on"
-        />
-      </el-form-item>
+        <div class="title-container">
+          <h3 class="title">{{ $t('login.title') }}</h3>
+          <lang-select class="set-language"/>
+        </div>
 
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
-        <el-input
-          :type="passwordType"
-          v-model="loginForm.password"
-          :placeholder="$t('login.password')"
-          name="password"
-          auto-complete="on"
-          @keyup.enter.native="handleLogin" />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon icon-class="eye" />
-        </span>
-      </el-form-item>
+        <el-form-item prop="username">
+          <span class="svg-container">
+            <svg-icon icon-class="user" />
+          </span>
+          <el-input
+            v-model="loginForm.username"
+            :placeholder="$t('login.username')"
+            name="username"
+            type="text"
+            auto-complete="on"
+          />
+        </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
+        <el-form-item prop="password">
+          <span class="svg-container">
+            <svg-icon icon-class="password" />
+          </span>
+          <el-input
+            :type="passwordType"
+            v-model="loginForm.password"
+            :placeholder="$t('login.password')"
+            name="password"
+            auto-complete="on"
+            @keyup.enter.native="handleLogin" />
+          <span class="show-pwd" @click="showPwd">
+            <svg-icon icon-class="eye" />
+          </span>
+        </el-form-item>
 
-      <div class="tips">
-        <span>{{ $t('login.username') }} : admin</span>
-        <span>{{ $t('login.password') }} : 123456</span>
-      </div>
-    </el-form>
+        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
+
+        <div class="tips">
+          <span>{{ $t('login.username') }} : admin</span>
+          <span>{{ $t('login.password') }} : 123456</span>
+        </div>
+      </el-form>
+    </div>
 
   </div>
 </template>
@@ -206,74 +217,122 @@ $light_gray:#eee;
 
 .login-container {
 
-//   background:url(../../assets/img/login.png) no-repeat;
-// background-size:100% 100%;
-background-attachment:fixed;
+  // filter:  opacity(50%);
+  // -webkit-filter: opacity(50%);
+  // background-color: #fff;
+  background-attachment:fixed;
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: $bg;
-  .login-form {
-    position: absolute;
-    left: 0;
-    right: 0;
-    width: 520px;
-    max-width: 100%;
-    padding: 35px 35px 15px 35px;
-    margin: 120px auto;
-  }
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-    span {
-      &:first-of-type {
-        margin-right: 16px;
+  overflow-y: scroll;
+  background-color: #fff;
+  //  background:url(../../assets/img/beijing1.jpg) no-repeat;
+  //   background-size:100% 100%;
+  .login-main {
+    width: 70%;
+    // background-color: red;
+    height: 80%;
+    margin: 5% auto;
+    // display: flex;
+    position: relative;
+    .login-introduce {
+      float: left;
+      width: 100%;
+      color: #000;
+      text-align: center;
+      text-indent:2em;
+      // height: 50%;
+      // background-color: green;
+      background:url(../../assets/img/beijing1.jpg) no-repeat;
+      // filter:  opacity(50%);
+      // -webkit-filter: opacity(50%);
+      // opacity: 0.9;
+      background-size:100% 100%;
+      padding: 20px;
+      .title {
+        margin-top: 20px;
+        font-size: 20px;
+        padding: 10px;
       }
     }
-  }
-  .svg-container {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
-  }
-  .title-container {
-    position: relative;
-    .title {
-      font-size: 26px;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
+    .login-form {
+      float: left;
+      width: 100%;
+      // height: 50%;
+      left: 0;
+      right: 0;
+      // width: 300px;
+      max-width: 100%;
+      padding: 35px 35px 15px 35px;
+      // margin: 120px auto;
+      background-color: #545353;
+      box-sizing: border-box;
     }
-    .set-language {
+    .tips {
+      font-size: 14px;
       color: #fff;
+      margin-bottom: 10px;
+      span {
+        &:first-of-type {
+          margin-right: 16px;
+        }
+      }
+    }
+    .svg-container {
+      padding: 6px 5px 6px 15px;
+      color: $dark_gray;
+      vertical-align: middle;
+      width: 30px;
+      display: inline-block;
+    }
+    .title-container {
+      position: relative;
+      .title {
+        font-size: 26px;
+        color: $light_gray;
+        margin: 0px auto 40px auto;
+        text-align: center;
+        font-weight: bold;
+      }
+      .set-language {
+        color: #fff;
+        position: absolute;
+        top: 5px;
+        right: 0px;
+      }
+    }
+    .show-pwd {
       position: absolute;
-      top: 5px;
-      right: 0px;
+      right: 10px;
+      top: 7px;
+      font-size: 16px;
+      color: $dark_gray;
+      cursor: pointer;
+      user-select: none;
+    }
+    .thirdparty-button {
+      position: absolute;
+      right: 35px;
+      bottom: 28px;
     }
   }
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $dark_gray;
-    cursor: pointer;
-    user-select: none;
-  }
-  .thirdparty-button {
-    position: absolute;
-    right: 35px;
-    bottom: 28px;
-  }
+
 }
 </style>
 <style scoped>
-.login-container{
-
+@media (min-width: 768px) {
+    .login-container .login-introduce {
+      width: 50%!important;
+      height: 100%!important;
+      overflow-y: scroll;
+    }
+    .login-container .login-introduce::-webkit-scrollbar {
+      display:none
+    }
+    .login-container .login-form {
+      width: 50%!important;
+      height: 100%!important;
+    }
 }
 
 </style>

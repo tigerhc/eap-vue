@@ -2,8 +2,8 @@
   <div class="login-container">
     <div class="login-main">
       <div class="login-introduce">
-        <div class="title">云端软件开发协作平台</div>
-        <div class="content">
+        <div class="title" style="color:#fff">云端软件开发协作平台</div>
+        <div class="content" style="color:#fff">
           王安 DCloud CEO不少国内的好产品，因为用户的迷外心理而不被重视。其实一个友好的中文界面，可以让用户快速掌握软件的所有功能，实实在在地提升效率。期待更多开发者能重视 Gitee，重视国内认真做事的产品团队，他们会给你惊喜。logo
           云端软件开发协作平王安 DCloud CEO不少国内的好产品，因为用户的迷外心理而不被重视。其实一个友好的中文界面，可以让用户快速掌握软件的所有功能，实实在在地提升效率。期待更多开发者能重视 Gitee，重视国内认真做事的产品团队，他们会给你惊喜。logo
           云端软件开发协作平王安 DCloud CEO不少国内的好产品，因为用户的迷外心理而不被重视。其实一个友好的中文界面，可以让用户快速掌握软件的所有功能，实实在在地提升效率。期待更多开发者能重视 Gitee，重视国内认真做事的产品团队，他们会给你惊喜。logo

@@ -257,37 +257,27 @@ $light_gray: #eee;
       background-size: 100% 100%;
       padding: 20px;
       position: relative;
-      &::before {
+     &::before {
+        content: '';
         position: absolute;
-          top: 0;
-          left: 0;
-          bottom: 0;
-          right: 0;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
         background: url(../../assets/img/left-1.png) no-repeat 0 0;
       }
       &::after {
-        content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          bottom: 0;
-          right: 0;
+            content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
         background: url(../../assets/img/left-2.png) no-repeat right bottom;
+
       }
-      .title {
-        margin-top: 20px;
-        font-size: 20px;
-        padding: 10px;
-      }
+
     }
-
-    // .login-introduce::before{
-    //   background:url(../../assets/img/left-1.png) no-repeat;
-    // }
-
-    // .login-introduce::after{
-    //   background:url(../../assets/img/left-2.png) no-repeat right bottom;
-    // }
     .login-form {
       float: left;
       width: 100%;

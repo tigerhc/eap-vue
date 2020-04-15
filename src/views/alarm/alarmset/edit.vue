@@ -183,7 +183,7 @@ export default {
     getDeatails() {
       fetchDeteils(this.fromInfo.id).then((res) => {
         this.editList = res.data.results
-        this.list = res.data.results.edcAmsRecordList
+        this.list = res.data.results.edcAmsDefineI18nList
       })
     },
     save() {
@@ -195,7 +195,7 @@ export default {
         eqpModelName,
         alarmCode,
         id,
-        _detail: JSON.stringify(this.list)
+        edcAmsDefineI18nList: this.list
       }
       this.$refs['modelForm'].validate((valid) => {
         if (valid) {

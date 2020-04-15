@@ -3,7 +3,7 @@
     <div class="login-main">
       <div class="login-introduce">
         <div class="title" style="color:#fff">DSK CIM</div>
-        <div class="content" style="color:#fff">DSK CIM</div>
+        <div class="content" style="color:#fff">DSK CIM,当前采集SIM线 PRINTER, DM , GAZO, REFLOW生产和操作日志</div>
       </div>
       <el-form
         ref="loginForm"

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-bind="table" url="/fab/fabequipment" sort="sortCode.asc" >
+    <w-table v-slot="{row}" v-bind="table" url="/fab/fabequipment" sort="sortCode.asc" >
       <!--todo fixed属性导致当前列变为第一列-->
       <w-table-col name="eqpId" label="设备号" sort fixed align="left" handler="view" query condition="like"/>
       <w-table-col name="officeName" label="部门" align="left"/>
@@ -16,10 +16,11 @@
 
       <!--hidden属性: 隐藏默认button url: 修改默认url 没有url,则默认调用属性name值的方法-->
       <w-table-toolbar name="add" url="views/fab/eqp/fabequipmentEdit" />
-      <w-table-toolbar name="initStatus" />
+      <!-- <w-table-toolbar name="initStatus" /> -->
       <!--hidden属性: 隐藏默认button url: 修改默认url-->
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
-      <w-table-button name="stop" label="停用设备" tip="确认停用设备？" icon="el-icon-close" />
+      <w-table-button v-if="row.activeFlag == 0" name="enable" label="启用" tip="确认启用设备？" icon="el-icon-check" />
+      <w-table-button v-if="row.activeFlag == 1" name="diable" label="停用" tip="确认停用设备？" icon="el-icon-circle-close" type="warning" />
 
     </w-table>
 
@@ -69,15 +70,15 @@ export default {
             ids.push(item.id)
           }
           obj.ids = ids.join(',')
-          initStatus2(obj).then(() => {
-            this.getList()
-            this.$notify({
-              title: '成功',
-              message: '初始化成功',
-              type: 'success',
-              duration: 2000
-            })
-          })
+          // initStatus2(obj).then(() => {
+          //   this.getList()
+          //   this.$notify({
+          //     title: '成功',
+          //     message: '初始化成功',
+          //     type: 'success',
+          //     duration: 2000
+          //   })
+          // })
         }).catch(() => {
           this.$notify({
             type: 'info',
@@ -93,15 +94,15 @@ export default {
           duration: 2000
         })
       }
-    },
-
-    initStatus2(data) {
-      return request({
-        url: `${url}/batch/initstatus`,
-        method: `post`,
-        data
-      })
     }
+
+    // initStatus2(data) {
+    //   return request({
+    //     url: `${url}/batch/initstatus`,
+    //     method: `post`,
+    //     data
+    //   })
+    // }
 
   }
 }

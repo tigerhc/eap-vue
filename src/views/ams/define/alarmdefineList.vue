@@ -16,8 +16,9 @@
       <w-table-toolbar name="add" url="views/ams/define/alarmdefineEdit" />
       <!--hidden属性: 隐藏默认button url: 修改默认url-->
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
-      <w-table-button v-if="row.monitorFlag == 0" name="enable" label="启用" tip="确认启用报警？" icon="el-icon-check" />
-      <w-table-button v-if="row.monitorFlag == 1" name="diable" label="停用" tip="确认停用报警？" icon="el-icon-close" />
+      <w-table-button v-if="row.monitorFlag == 0" name="enable" label="启用" tip="确认启用报警？" icon="el-icon-bell" />
+      <!-- type='danger'  -->
+      <w-table-button v-if="row.monitorFlag == 1" name="diable" label="停用" tip="确认停用报警？" icon="el-icon-circle-close" type="warning" />
 
     </w-table>
 

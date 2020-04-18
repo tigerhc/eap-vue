@@ -16,7 +16,7 @@
 
       <!--hidden属性: 隐藏默认button url: 修改默认url 没有url,则默认调用属性name值的方法-->
       <w-table-toolbar name="add" url="views/fab/eqp/fabequipmentEdit" />
-      <!-- <w-table-toolbar name="initStatus" /> -->
+      <w-table-toolbar name="initStatus" />
       <!--hidden属性: 隐藏默认button url: 修改默认url-->
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
       <w-table-button v-if="row.activeFlag == 0" name="enable" label="启用" tip="确认启用设备？" icon="el-icon-check" />

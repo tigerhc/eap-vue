@@ -681,7 +681,7 @@ export default {
       return <el-table-column {...opConf} label={this.$t('table.actions')} class-name='small-padding fixed-width' />
     },
     renderToobar() {
-      if (this.readonlyMode) {
+      if (!this.readonlyMode) {
         return null
       }
       const add = {

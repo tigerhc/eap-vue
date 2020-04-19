@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-form :title="title" :col="3" :on-load-data="onFormLoadData" :model="editList" url="/edc/edcamsdefine">
+    <w-form :title="title" :col="3" :before-submit="beforeSubmit" :on-load-data="onFormLoadData" :model="editList" url="/edc/edcamsdefine">
       <el-input v-model="editList.alarmName" label="报警名称" />
       <w-lookup
         v-model="editList.eqpModelId"
@@ -38,7 +38,7 @@
 
     </w-form>
     <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
-    <w-edt-table v-slot="{row}" v-bind="table" url="/edc/edcamsdefine">
+    <w-edt-table v-slot="{row}" ref="language" v-bind="table" url="/edc/edcamsdefine">
       <!--todo fixed属性导致当前列变为第一列-->
       <w-table-col name="alarmLanguage" required label="语言类型" sort fixed align="left" handler="view" query condition="like">
         <!-- <el-input v-model="table.model.alarmLanguage" /> -->
@@ -65,15 +65,8 @@
 <script>
 export default {
   name: 'AlarmsetAdd',
-  directives: {},
   data() {
     return {
-      tableKey: 0,
-      list: [],
-      total: null,
-      listLoading: true,
-      eqpModelNameList: [],
-      id: '',
       editFlag: true,
       editList: {
         monitorFlag: '',
@@ -82,8 +75,6 @@ export default {
         eqpModelName: '',
         alarmName: ''
       },
-      fromInfo: {},
-      ruleForm: {},
       title: {
         ADD: '新增报警定义',
         EDIT: '修改报警定义',
@@ -108,15 +99,18 @@ export default {
       }
     }
   },
-  activated() {
-    this.fromInfo = this.$route.query.item || {}
-    this.editFlag = this.$route.query.editFlag
-    // this.getDevice()
-    // this.getDeatails()
-  },
   methods: {
     onFormLoadData(data) {
       this.table.datas = data.edcAmsDefineI18nList
+    },
+    beforeSubmit(model) {
+      delete model['edcAmsDefineI18nList']
+      const lang = this.$refs.language.tranformData('edcAmsDefineI18nList')
+      console.error(lang)
+      debugger
+      const re = { ...model, ...lang }
+      console.info(re)
+      return re
     }
   }
 }

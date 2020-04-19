@@ -1,7 +1,9 @@
 <script>
 import fetch from '@/components/eap-table/fetch'
+import mixins from './mixins'
 export default {
   name: 'WForm',
+  mixins: [mixins],
   props: {
     title: {
       type: Object,
@@ -50,17 +52,6 @@ export default {
     }
   },
   computed: {
-    flag: function() {
-      const type = this.type
-      if (!type || type === 'VIEW') {
-        // 查看处理
-        return false
-      }
-      return true
-    },
-    type: function() {
-      return this.$route.query.type
-    },
     realModel: function() {
       return { ...this.initModel, ...this.model }
     }
@@ -279,7 +270,7 @@ export default {
         <el-form
           model={this.realModel}
           inline={false}
-          disabled={!this.flag}
+          disabled={this.readonlyMode}
           rules={this.rules}
           label-width={this.labelWidth}
           class='modelForm'
@@ -289,7 +280,7 @@ export default {
         </el-form>
         <div slot='footer' class='add-footer'>
           <el-button on-click={this.cancel.bind(this)}>返回</el-button>
-          {this.flag && (
+          {!this.readonlyMode && (
             <el-button type='primary' on-click={this.operating.bind(this)}>
               {this.$t('table.confirm')}
             </el-button>
@@ -299,6 +290,7 @@ export default {
     )
   }
 }
+
 </script>
 
 <style lang="scss">

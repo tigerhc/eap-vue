@@ -1,10 +1,13 @@
 <script>
 import api from './fetch'
 import scrollTo from './scroll'
+import mixins from '../eap-form/mixins'
 export default {
   name: 'WEdtTable',
+  mixins: [mixins],
   props: {
     // -------------------
+    // 数据来源不通过接口获取，直接外部传入
     datas: {
       type: Array,
       default: null
@@ -81,7 +84,7 @@ export default {
         exportsLoading: false
       },
       single: null,
-      opHide: null,
+      opHide: null, // 隐藏操作列
       searchOnly: null,
       colChildrenSet: {}, // 存放对应name 的 列的children；
       editId: '', // 正在编辑的id
@@ -125,7 +128,9 @@ export default {
       }
     }
   },
-  created() {},
+  created() {
+    this.opHide = this.readonlyMode
+  },
   mounted() {
     this.restoreModel = JSON.parse(JSON.stringify(this.model))
   },
@@ -263,8 +268,15 @@ export default {
           type: 'warning'
         }
       ]
+
       this.$confirm(...p)
         .then((_) => {
+          if (this.isDatasMode) {
+            const i = this.list.indexOf(row)
+            console.error(i)
+            this.list.splice(i, 1)
+            return
+          }
           this.api.delete(row.id).then(() => {
             this.getList()
             this.$notify({
@@ -292,6 +304,16 @@ export default {
             const obj = {
               ids: this.multipleSelection.map((i) => i.id).join(',')
             }
+
+            if (this.isDatasMode) {
+              this.multipleSelection.map((row) => {
+                const i = this.list.indexOf(row)
+                console.error(i)
+                this.list.splice(i, 1)
+              })
+              return
+            }
+
             this.api.batchDelete(obj).then(() => {
               this.getList()
               this.$notify({
@@ -369,6 +391,11 @@ export default {
     },
     // 行新建
     create() {
+      if (this.isDatasMode) {
+        this.list.pop()
+        this.list.push({ ...this.model })
+        return
+      }
       this.api.create(this.model).then((res) => {
         if (res.code === 0) {
           this.cancel()
@@ -389,11 +416,30 @@ export default {
       })
     },
     createCancel() {
+      this.list.pop()
       this.cancel()
+    },
+    // 获取表格数据
+    getTableList() {
+      return this.list
+    },
+    // 转换数据格式
+    tranformData(key) {
+      debugger
+      return this.list.reduce((re, item, i) => {
+        Object.keys(item).forEach((k) => {
+          re[`${key}[${i}].${k}`] = item[k]
+        })
+        return re
+      }, {})
     },
     // 新建 表格最后一行新增编辑
     add({ url }) {
+      debugger
       this.editId = null
+      if (!this.list.lenght) {
+        this.list.push({ __id: Math.random })
+      }
       scrollTo('#test')
     },
     // 编辑
@@ -580,6 +626,19 @@ export default {
         },
         scopedSlots: {
           default: (scope) => {
+            if (scope.row.__id) {
+              const deft = {
+                save: { type: 'primary', icon: 'el-icon-check', name: 'create', label: this.$t('table.confirm') },
+                cancel: { name: 'createCancel', icon: 'el-icon-close', label: this.$t('table.cancel'), type: '' }
+              }
+              return (
+                <div>
+                  {Object.values(deft).map((conf) => {
+                    return this.buttonrender({ row: {}})(conf)
+                  })}
+                </div>
+              )
+            }
             let deft = {
               edit: { type: 'primary', icon: 'el-icon-edit', name: 'edit', label: this.$t('table.edit') },
               delete: { name: 'delete', icon: 'el-icon-delete', label: this.$t('table.delete'), type: 'danger' }
@@ -624,6 +683,9 @@ export default {
       return <el-table-column {...opConf} label={this.$t('table.actions')} class-name='small-padding fixed-width' />
     },
     renderToobar() {
+      if (this.readonlyMode) {
+        return null
+      }
       const add = {
         name: 'add',
         type: 'primary',
@@ -693,6 +755,7 @@ export default {
             loading={this.toolbarStatus.exportsLoading && conf.name === 'exports'}
             v-waves
             class='filter-item'
+            size='mini'
             style='margin-left: 10px;'
             on-click={confirm.bind(this)}
             icon={conf.icon}
@@ -721,6 +784,9 @@ export default {
     const confCache = {}
     const tableConf = {
       props: {
+        /**
+         * 废弃
+         */
         summaryMethod: (param) => {
           const { columns } = param
           const sums = []
@@ -748,7 +814,7 @@ export default {
 
           return sums
         },
-        showSummary: this.editId === null,
+        showSummary: false, // this.editId === null,
         data: this.list,
         ...this.conf
       },
@@ -783,7 +849,6 @@ export default {
         }
       }
     }
-
     const paginationConf = {
       props: {
         'current-page': this.query.page,
@@ -812,6 +877,7 @@ export default {
     if (JSON.stringify(newCols) !== JSON.stringify(this.colSet)) {
       this.colSet = newCols
     }
+    // 列默认值设置
     const selection = {
       type: 'selection',
       width: '40'
@@ -843,14 +909,16 @@ export default {
         props: { align: 'center', ...col, prop: col.name, sortable: col.sort || col.sort === '' },
         scopedSlots: {
           default: (scope) => {
-            if (this.editId === scope.row.id && this.colChildrenSet[col.name]) {
+            // 编辑模式
+            if ((this.editId === scope.row.id || scope.row.__id) && this.colChildrenSet[col.name]) {
               return <el-form-item prop={col.name}>{this.colChildrenSet[col.name]}</el-form-item>
             }
+            // 显示模式
             return this.renderColumn(scope.row, col)
           }
         }
       }
-      return <el-table-column {...conf} key={col.id}></el-table-column>
+      return <el-table-column {...conf} key={col.id} />
     })
     const renderDeft = Object.keys(deft).map((key) => {
       if (key === 'op') {
@@ -877,7 +945,7 @@ export default {
             {allCols}
           </el-table>
         </el-form>
-        <span id='test'></span>
+        <span id='test' />
         {!this.isDatasMode && pagination}
       </div>
     )

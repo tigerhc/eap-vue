@@ -2,6 +2,7 @@
 import api from './fetch'
 import scrollTo from './scroll'
 import mixins from '../eap-form/mixins'
+const ADDID = -1
 export default {
   name: 'WEdtTable',
   mixins: [mixins],
@@ -87,7 +88,7 @@ export default {
       opHide: null, // 隐藏操作列
       searchOnly: null,
       colChildrenSet: {}, // 存放对应name 的 列的children；
-      editId: '', // 正在编辑的id
+      editId: '', // 正在编辑的id -1 表示新增
       restoreModel: {}
     }
   },
@@ -120,7 +121,6 @@ export default {
       }
     },
     datas: function(val) {
-      console.error(val)
       if (Array.isArray(val)) {
         this.list = val
       } else {
@@ -273,7 +273,6 @@ export default {
         .then((_) => {
           if (this.isDatasMode) {
             const i = this.list.indexOf(row)
-            console.error(i)
             this.list.splice(i, 1)
             return
           }
@@ -308,7 +307,6 @@ export default {
             if (this.isDatasMode) {
               this.multipleSelection.map((row) => {
                 const i = this.list.indexOf(row)
-                console.error(i)
                 this.list.splice(i, 1)
               })
               return
@@ -359,7 +357,13 @@ export default {
         return res
       }, '')
     },
-    save() {
+    // 修改保存
+    save(row) {
+      if (this.isDatasMode) {
+        Object.assign(row, this.model)
+        this.cancel()
+        return
+      }
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.api.update(this.model).then((res) => {
@@ -393,7 +397,8 @@ export default {
     create() {
       if (this.isDatasMode) {
         this.list.pop()
-        this.list.push({ ...this.model })
+        this.list.push({ __id: Math.random(), ...this.model })
+        this.cancel()
         return
       }
       this.api.create(this.model).then((res) => {
@@ -432,17 +437,18 @@ export default {
         return re
       }, {})
     },
-    // 新建 表格最后一行新增编辑
+    // 新建按钮 表格最后一行新增编辑
     add({ url }) {
-      this.editId = null
-      if (!this.list.lenght) {
-        this.list.push({ __id: Math.random })
+      if (this.editId) {
+        return
       }
+      this.editId = ADDID
+      this.list.push({ __id: ADDID })
       scrollTo('#test')
     },
-    // 编辑
+    // 编辑编辑按钮
     edit(item, flag) {
-      this.editId = item.id
+      this.editId = item.id || item.__id
       Object.assign(this.model, item)
     },
     view(item) {
@@ -624,28 +630,31 @@ export default {
         },
         scopedSlots: {
           default: (scope) => {
-            if (scope.row.__id) {
-              const deft = {
-                save: { type: 'primary', icon: 'el-icon-check', name: 'create', label: this.$t('table.confirm') },
-                cancel: { name: 'createCancel', icon: 'el-icon-close', label: this.$t('table.cancel'), type: '' }
-              }
-              return (
-                <div>
-                  {Object.values(deft).map((conf) => {
-                    return this.buttonrender({ row: {}})(conf)
-                  })}
-                </div>
-              )
-            }
             let deft = {
               edit: { type: 'primary', icon: 'el-icon-edit', name: 'edit', label: this.$t('table.edit') },
               delete: { name: 'delete', icon: 'el-icon-delete', label: this.$t('table.delete'), type: 'danger' }
             }
-            if (this.editId && this.editId === scope.row.id) {
+
+            // 行编辑
+            if (this.editId && (this.editId === scope.row.id || this.editId === scope.row.__id)) {
               deft = {
                 save: { type: 'primary', icon: 'el-icon-check', name: 'save', label: this.$t('table.confirm') },
                 cancel: { name: 'cancel', icon: 'el-icon-close', label: this.$t('table.cancel'), type: '' }
               }
+            }
+            // 行新增
+            if (this.editId && this.editId === ADDID) {
+              deft = {
+                save: { type: 'primary', icon: 'el-icon-check', name: 'create', label: this.$t('table.confirm') },
+                cancel: { name: 'createCancel', icon: 'el-icon-close', label: this.$t('table.cancel'), type: '' }
+              }
+              // return (
+              //   <div>
+              //     {Object.values(deft).map((conf) => {
+              //       return this.buttonrender({ row: {}})(conf)
+              //     })}
+              //   </div>
+              // )
             }
             const confMerge = (conf) => {
               if (conf.name in deft) {
@@ -782,36 +791,6 @@ export default {
     const confCache = {}
     const tableConf = {
       props: {
-        /**
-         * 废弃
-         */
-        summaryMethod: (param) => {
-          const { columns } = param
-          const sums = []
-          columns.forEach((column, index) => {
-            if (index === 0) {
-              sums[index] = '+'
-              return
-            }
-            if (column.type === '__op') {
-              const deft = {
-                save: { type: 'primary', icon: 'el-icon-check', name: 'create', label: this.$t('table.confirm') },
-                cancel: { name: 'createCancel', icon: 'el-icon-close', label: this.$t('table.cancel'), type: '' }
-              }
-              sums[index] = (
-                <div>
-                  {Object.values(deft).map((conf) => {
-                    return this.buttonrender({ row: {}})(conf)
-                  })}
-                </div>
-              )
-              return
-            }
-            sums[index] = this.colChildrenSet[column.property]
-          })
-
-          return sums
-        },
         showSummary: false, // this.editId === null,
         data: this.list,
         ...this.conf
@@ -908,7 +887,7 @@ export default {
         scopedSlots: {
           default: (scope) => {
             // 编辑模式
-            if ((this.editId === scope.row.id || scope.row.__id) && this.colChildrenSet[col.name]) {
+            if ((this.editId === scope.row.id || this.editId === scope.row.__id) && this.colChildrenSet[col.name]) {
               return <el-form-item prop={col.name}>{this.colChildrenSet[col.name]}</el-form-item>
             }
             // 显示模式

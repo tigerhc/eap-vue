@@ -70,10 +70,7 @@ export default {
     }
   },
   render() {
-    console.info(this.disabled)
-    console.info()
     const Com = modules[this.module]
-    // console.info(Com, modules)
     const dialogConf = {
       props: {
         visible: this.show,

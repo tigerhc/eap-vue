@@ -45,14 +45,7 @@
       :end-time="form.dateTime[1]"
       :list="list"
     />
-    <alarm-cake
-      v-if="showFlag"
-      id="eqpsoee"
-      ref="AlarmCake"
-      :begin-time="form.dateTime[0]"
-      :end-time="form.dateTime[1]"
-      :list="list"
-    />
+
   </div>
 </template>
 <script>

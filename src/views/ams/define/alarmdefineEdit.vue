@@ -5,7 +5,6 @@
       <w-lookup
         v-model="editList.eqpModelId"
         :display.sync="editList.eqpModelName"
-
         idkey="id"
         displaykey="manufacturerName"
         label="设备型号名称"
@@ -34,13 +33,13 @@
         placeholder="选择日期"
         style="width:100%"
       />
-      <w-select-dic v-model="editList.i18nCode" style="width:100%" label="状态" dict="I18N_CODE" />
+      <w-select-dic v-model="editList.monitorFlag" style="width:100%" label="监控标记" dict="MONITOR_FLAG" />
 
     </w-form>
     <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
     <w-edt-table v-slot="{row}" ref="language" v-bind="table" url="/edc/edcamsdefine">
       <!--todo fixed属性导致当前列变为第一列-->
-      <w-table-col name="alarmLanguage" required label="语言类型" sort fixed align="left" handler="view" query condition="like">
+      <w-table-col name="alarmLanguage" required label="语言类型" dict="I18N_CODE" sort fixed align="left" >
         <!-- <el-input v-model="table.model.alarmLanguage" /> -->
         <w-select-dic v-model="table.model.alarmLanguage" style="width:100%" label="状态" dict="I18N_CODE" />
       </w-table-col>

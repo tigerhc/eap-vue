@@ -41,6 +41,10 @@ export default {
       default: function(i) {
         return i
       }
+    },
+    opHide: {
+      type: Boolean,
+      default: null
     }
   },
   data: function() {
@@ -63,7 +67,6 @@ export default {
         exportsLoading: false
       },
       single: null,
-      opHide: null,
       searchOnly: null
     }
   },

@@ -425,7 +425,6 @@ export default {
     },
     // 转换数据格式
     tranformData(key) {
-      debugger
       return this.list.reduce((re, item, i) => {
         Object.keys(item).forEach((k) => {
           re[`${key}[${i}].${k}`] = item[k]
@@ -435,7 +434,6 @@ export default {
     },
     // 新建 表格最后一行新增编辑
     add({ url }) {
-      debugger
       this.editId = null
       if (!this.list.lenght) {
         this.list.push({ __id: Math.random })

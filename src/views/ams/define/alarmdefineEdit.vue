@@ -103,14 +103,11 @@ export default {
     onFormLoadData(data) {
       this.table.datas = data.edcAmsDefineI18nList
     },
-    beforeSubmit(model) {
-      delete model['edcAmsDefineI18nList']
-      const lang = this.$refs.language.tranformData('edcAmsDefineI18nList')
-      console.error(lang)
-      debugger
-      const re = { ...model, ...lang }
-      console.info(re)
-      return re
+    beforeSubmit(model) { // model 将被保存的表单模型
+      delete model['edcAmsDefineI18nList'] // 删除原数据模型里的多语言数组
+      const lang = this.$refs.language.tranformData('edcAmsDefineI18nList') // 获取被转换格式的所有细表数据
+      const re = { ...model, ...lang } // 合并细表数据
+      return re // 返回新的数据模型
     }
   }
 }

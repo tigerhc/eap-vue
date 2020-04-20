@@ -69,7 +69,7 @@ export default {
 
     initStatus(row, table, ctx) {
       debugger
-      if (this.multipleSelection.length > 0) {
+      if (table.multipleSelection.length > 0) {
         this.$confirm('此操作将初始化设备状态数据, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -79,23 +79,27 @@ export default {
             ids: ''
           }
           const ids = []
-          for (const item of this.multipleSelection) {
+          for (const item of table.multipleSelection) {
             ids.push(item.id)
           }
           obj.ids = ids.join(',')
-          // initStatus2(obj).then(() => {
-          //   this.getList()
-          //   this.$notify({
-          //     title: '成功',
-          //     message: '初始化成功',
-          //     type: 'success',
-          //     duration: 2000
-          //   })
-          // })
+          request({
+            url: `/fab/fabequipmentstatus/batch/initstatus`,
+            method: `post`,
+            data: obj
+          }).then(() => {
+            this.getList()
+            this.$notify({
+              title: '成功',
+              message: '初始化成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
         }).catch(() => {
           this.$notify({
             type: 'info',
-            message: '已取消初始化',
+            message: '已取消设备状态初始化',
             duration: 2000
           })
         })

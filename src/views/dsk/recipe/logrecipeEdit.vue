@@ -3,7 +3,7 @@
     <w-form v-bind="formConf" :col="3" :model="model" :on-load-data="onFormLoadData">
       <el-input v-model="model.eqpId" label="设备号" />
       <el-input v-model="model.recipeCode" label="配方名" />
-      <el-input v-model="model.happenDate" label="发生时间" />
+      <el-input v-model="model.startTime" label="发生时间" />
     </w-form>
 
     <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />

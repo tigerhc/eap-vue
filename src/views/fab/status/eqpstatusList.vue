@@ -61,7 +61,7 @@ export default {
         'queryFields': 'eqpId,controlState,lotId,eqpStatus,connectionStatus,recipeName,lockFlag,'
       }
       fetchDataList(params).then(res => {
-        this.tabData = res.data.results
+        this.tabData = res.data
       })
     },
     initChart() {
@@ -92,6 +92,10 @@ export default {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
                 shadowColor: 'rgba(0, 0, 0, 0.5)'
+              },
+              color: function(params) {
+                var colorList = ['#FF0000', '#808080', '#FFFF00', '#43ca17', '#8B0000']
+                return colorList[params.dataIndex]
               }
             }
           }
@@ -129,6 +133,9 @@ export default {
 }
 .span-IDLE {
   background-color: yellow;
+}
+.span-STOP {
+  background-color: DarkRed;
 }
 .monitor {
     .content {

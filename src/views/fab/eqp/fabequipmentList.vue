@@ -16,7 +16,7 @@
 
       <!--hidden属性: 隐藏默认button url: 修改默认url 没有url,则默认调用属性name值的方法-->
       <w-table-toolbar name="add" url="views/fab/eqp/fabequipmentEdit" />
-      <w-table-toolbar name="initStatus" />
+      <w-table-toolbar name="initStatus" label="初始化所有状态" type="warning" />
       <!--hidden属性: 隐藏默认button url: 修改默认url-->
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
       <w-table-button v-if="row.activeFlag == 0" name="enable" label="启用" tip="确认启用设备？" icon="el-icon-check" />
@@ -38,11 +38,24 @@ export default {
     }
   },
   methods: {
-
-    stop(row, table, ctx) {
+    enable(row, table, ctx) {
       request({
-        url: '/fab/fabequipment/' + row.id + '/inactiveeqp',
-        method: 'post'
+        url: '/fab/fabequipment/active_flag/' + row.id + '/1',
+        method: 'put'
+      }).then(() => {
+        ctx.refresh()
+        this.$notify({
+          title: '成功',
+          message: '已启用',
+          type: 'success',
+          duration: 2000
+        })
+      })
+    },
+    diable(row, table, ctx) {
+      request({
+        url: '/fab/fabequipment/active_flag/' + row.id + '/0',
+        method: 'put'
       }).then(() => {
         ctx.refresh()
         this.$notify({
@@ -52,10 +65,10 @@ export default {
           duration: 2000
         })
       })
-      //    })
     },
 
     initStatus(row, table, ctx) {
+      debugger
       if (this.multipleSelection.length > 0) {
         this.$confirm('此操作将初始化设备状态数据, 是否继续?', '提示', {
           confirmButtonText: '确定',

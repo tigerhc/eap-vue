@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchList() {
   return request({
-    url: '/oven/ovnbatchlot/listEqp',
+    url: '/fab/fabequipmentstatus/listEqpStatus',
     method: 'get'
   })
 }

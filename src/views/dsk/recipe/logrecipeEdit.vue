@@ -8,7 +8,7 @@
 
     <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
 
-    <w-edt-table v-bind="table" url="111">
+    <w-edt-table v-bind="table" url="111" sort="sortNo.asc">
     <!--todo fixed属性导致当前列变为第一列-->
       <w-table-col name="paraCode" required label="参数CODE" sort />
       <w-table-col name="paraName" label="参数名称" align="left" />

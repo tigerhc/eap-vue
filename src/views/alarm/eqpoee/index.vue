@@ -23,9 +23,9 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="设备号(请用逗号或回车分开)" prop="eqpId">
+          <el-form-item label="设备号" prop="eqpId">
             <el-input
-              :autosize="{ minRows: 4}"
+              :autosize="{ minRows: 3}"
               v-model="form.eqpId"
               style="width:300px"
               type="textarea"
@@ -71,7 +71,14 @@ export default {
       }
     }
   },
-  mounted() {},
+  mounted() {
+    // var now = new Date();
+
+    // var startDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10);
+    // alert(startDate)
+    // this.form.dateTime[0] = startDate
+
+  },
   methods: {
     serch() {
       this.showFlag = false

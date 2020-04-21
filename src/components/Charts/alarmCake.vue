@@ -142,7 +142,7 @@ export default {
               shadowColor: 'rgba(0, 0, 0, 0.5)'
             },
             color: function(params) {
-              var colorList = ['#999fa7', '#43ca17', '#cfe60c']
+              var colorList = ['#43ca17', '#FFFF00', '#FF0000']
               return colorList[params.dataIndex]
             }
 

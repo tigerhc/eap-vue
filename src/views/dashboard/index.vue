@@ -7,7 +7,7 @@
     <div class="content">
       <div v-for="(item,index) in tabData" :key="index" class="item">
         <div class="item-text">
-          <label>程序位置</label> <span>{{ item.ptNo }}</span>
+          <label>设备号</label> <span>{{ item.eqpId }}</span>
         </div>
         <div class="item-text">
           <label>当前段位</label> <span>{{ item.segNo }}</span>
@@ -24,7 +24,7 @@
         <div class="item-text">
           <label>程序号</label> <span>{{ item.ptNo }}</span>
         </div>
-        <div style="text-align: center;display: inline;" class="item-text" :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</div>
+        <div :class="statusText[item.eqpStatus]" style="text-align: center;display: inline;" class="item-text">{{ item.eqpStatus }}</div>
       </div>
     </div>
   </div>
@@ -34,7 +34,7 @@ import echarts from 'echarts'
 import { fetchList, fetchChart } from '@/api/dashboard/dashboard'
 import Screenfull from '@/components/Screenfull'
 export default {
-  name: 'dashboard',
+  name: 'Dashboard',
   components: {
     Screenfull
   },
@@ -131,8 +131,8 @@ export default {
                 shadowOffsetX: 0,
                 shadowColor: 'rgba(0, 0, 0, 0.5)'
               },
-              color:function(params) {
-                var colorList = ['#999fa7','#43ca17','#e81818','#cfe60c'];
+              color: function(params) {
+                var colorList = ['#999fa7', '#43ca17', '#e81818', '#cfe60c']
                 return colorList[params.dataIndex]
               }
             }

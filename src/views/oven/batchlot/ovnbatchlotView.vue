@@ -217,7 +217,11 @@ export default {
     loadTempDataPV() {
       var option = this.chart.getOption()
       let length = 0
-      option.series = option.series.slice(0, 4)
+      // option.series = option.series.slice(0, 4)
+      while (option.series.length > 4) {
+        option.series.pop()
+      }
+      var newseries = option.series.slice(0, 4)
       this.charLegend = this.charLegend.slice(0, 4)
       for (let index = 0; index < this.otherTempsTitles.length; index++) {
         if (this.otherTempsTitles[index].indexOf('MAX') !== -1 || this.otherTempsTitles[index].indexOf('MIN') !== -1) {
@@ -251,10 +255,18 @@ export default {
           othterSeries.itemStyle.normal.lineStyle.type = 'dotted'
         }
         othterSeries.data = this.produceOther(this.resultList, index)
-        option.series.push(othterSeries)
+        newseries.push(othterSeries)
       }
-      option.legend[0].data = this.charLegend
-      this.chart.setOption(option)
+      // option.legend[0].data = this.charLegend
+      // this.chart.setOption(option)
+      alert(newseries)
+      this.chart.setOption({
+        legend: {
+          data: this.charLegend
+        },
+        series: newseries
+      })
+      // this.chart.clear()
       return option
     },
 
@@ -294,25 +306,8 @@ export default {
         othterSeries.data = this.produceOther(this.resultList, index)
         option.series.push(othterSeries)
       }
-      // this.otherTempsTitles.forEach(function(value, index, array) {
-      //   charLegend2.push(value)
-
-      //           let othterSeries =  {
-      //       name: value,
-      //       smooth: true,
-      //       type: 'line',
-      //       data: [],
-      //       animationDuration: 3000,
-      //       animationEasing: 'quadraticOut'
-      // }
-      // othterSeries.data = this.produce(this.resultList, 'tempPv');
-      // option.series.push( othterSeries);
-      // })
-
       option.legend[0].data = this.charLegend
       this.chart.setOption(option)
-      // option.series.push( othterSeries);
-      // this.chart.setOption(this.loadCureData(Cureoption))
       return option
     },
 

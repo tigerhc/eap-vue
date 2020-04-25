@@ -22,8 +22,9 @@
       </el-form-item>
     </el-form>
     <div class="filter-container">
-      <el-button type="primary" icon="el-icon-search" @click="loadCureDataOther">加载其他数据</el-button>
-      <el-button type="primary" icon="el-icon-search" @click="loadCureDataAll">加载所有数据</el-button>
+      <el-button type="primary" icon="el-icon-arrow-right" @click="loadTempDataPV">加载测量数据</el-button>
+      <el-button type="primary" icon="el-icon-arrow-right" @click="loadTempDataPart">加载测定数据</el-button>
+      <el-button type="primary" icon="el-icon-d-arrow-right" @click="loadTempDataAll">加载所有数据</el-button>
     </div>
     <div id="tempChart" :style="{width: '100%', height: '500px'}" />
   </div>
@@ -51,8 +52,7 @@ export default {
         startTime: '',
         endTime: ''
       },
-      charLegend: ['运行温度', '设定温度', '低温报警', '高温报警'],
-      charLegendDefault: ['运行温度', '设定温度', '低温报警', '高温报警']
+      charLegend: ['运行温度', '设定温度', '低温报警', '高温报警']
     }
   },
   mounted() {
@@ -203,9 +203,9 @@ export default {
           }
         ]
       }
-      this.chart.setOption(this.loadCureData(Cureoption))
+      this.chart.setOption(this.loadTempDataFirst(Cureoption))
     },
-    loadCureData(option) {
+    loadTempDataFirst(option) {
       option.xAxis.data = this.produce(this.resultList, 'createDate')
       option.series[0].data = this.produce(this.resultList, 'tempPv')
       option.series[1].data = this.produce(this.resultList, 'tempSp')
@@ -214,8 +214,54 @@ export default {
       return option
     },
 
-    loadCureDataOther() {
+    loadTempDataPV() {
       var option = this.chart.getOption()
+      let length = 0
+      option.series = option.series.slice(0, 4)
+      this.charLegend = this.charLegend.slice(0, 4)
+      for (let index = 0; index < this.otherTempsTitles.length; index++) {
+        if (this.otherTempsTitles[index].indexOf('MAX') !== -1 || this.otherTempsTitles[index].indexOf('MIN') !== -1) {
+          continue
+        }
+        if (this.otherTempsTitles[index].indexOf('SET') !== -1) {
+          continue
+        }
+        length++
+        if (length > 8) {
+          break
+        }
+        const element = this.otherTempsTitles[index]
+        this.charLegend.push(element)
+        const othterSeries = {
+          name: element,
+          smooth: true,
+          type: 'line',
+          data: [],
+          animationDuration: 3000,
+          animationEasing: 'quadraticOut',
+          itemStyle: {
+            normal: {
+              lineStyle: {
+                width: 2
+              }
+            }
+          }
+        }
+        if (this.otherTempsTitles[index].indexOf('SET') !== -1) {
+          othterSeries.itemStyle.normal.lineStyle.type = 'dotted'
+        }
+        othterSeries.data = this.produceOther(this.resultList, index)
+        option.series.push(othterSeries)
+      }
+      option.legend[0].data = this.charLegend
+      this.chart.setOption(option)
+      return option
+    },
+
+    loadTempDataPart() {
+      var option = this.chart.getOption()
+      option.series = option.series.slice(0, 4)
+      this.charLegend = this.charLegend.slice(0, 4)
       let length = 8
       if (this.otherTempsTitles.length >= 8) {
         length = 8
@@ -224,7 +270,6 @@ export default {
       }
       for (let index = 0; index < length; index++) {
         const element = this.otherTempsTitles[index]
-        this.charLegend = this.charLegendDefault
         this.charLegend.push(element)
         const othterSeries = {
           name: element,
@@ -271,12 +316,12 @@ export default {
       return option
     },
 
-    loadCureDataAll() {
+    loadTempDataAll() {
       var option = this.chart.getOption()
-
+      option.series = option.series.slice(0, 4)
+      this.charLegend = this.charLegend.slice(0, 4)
       for (let index = 0; index < this.otherTempsTitles.length; index++) {
         const element = this.otherTempsTitles[index]
-        this.charLegend = this.charLegendDefault
         this.charLegend.push(element)
 
         const othterSeries = {

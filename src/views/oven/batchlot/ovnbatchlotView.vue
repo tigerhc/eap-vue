@@ -3,38 +3,47 @@
     <el-form ref="modelForm" :inline="true" :rules="rules" :model="modelList" class="modelForm" label-width="150px">
       <el-form-item label="批次号" prop="lotId">
         <!--:autosize="{ minRows: 2, maxRows: 4}"-->
-        <el-input v-model="modelList.lotId" style="width:530px" type="textarea" />
+        <el-input v-model="modelList.lotId" style="width:530px" type="textarea"/>
       </el-form-item>
       <el-form-item label="站别" prop="officeName">
-        <el-input v-model="modelList.officeName" />
+        <el-input v-model="modelList.officeName"/>
       </el-form-item>
       <el-form-item label="设备号" prop="eqpId">
-        <el-input v-model="modelList.eqpId" />
+        <el-input v-model="modelList.eqpId"/>
       </el-form-item>
       <el-form-item label="程序名" prop="recipeCode">
-        <el-input v-model="modelList.recipeCode" />
+        <el-input v-model="modelList.recipeCode"/>
       </el-form-item>
       <el-form-item label="作业开始时间" prop="startTime">
-        <el-input v-model="modelList.startTime" />
+        <el-input v-model="modelList.startTime"/>
       </el-form-item>
       <el-form-item label="作业结束时间" prop="endTime">
-        <el-input v-model="modelList.endTime" />
+        <el-input v-model="modelList.endTime"/>
       </el-form-item>
     </el-form>
-    <div class="filter-container">
-      <el-button type="primary" icon="el-icon-arrow-right" @click="loadTempDataPV">加载测量数据</el-button>
-      <el-button type="primary" icon="el-icon-arrow-right" @click="loadTempDataPart">加载测定数据</el-button>
-      <el-button type="primary" icon="el-icon-d-arrow-right" @click="loadTempDataAll">加载所有数据</el-button>
-    </div>
-    <div id="tempChart" :style="{width: '100%', height: '500px'}" />
+    <div class="filter-container"/>
+    <el-button
+v-for="tempName in otherTempsTitles"
+v-if="tempName.indexOf('PV') != -1"
+:key="tempName.id"
+               type="primary"
+icon="el-icon-arrow-right"
+style="margin:5px;"
+               @click="loadTempDataPart(tempName)"> {{ tempName.replace("PV","") }}
+    </el-button>
+    <el-button type="primary" round icon="el-icon-arrow-right" @click="loadTempDataPV">加载测量数据</el-button>
+    <el-button type="primary" round icon="el-icon-d-arrow-right" @click="loadTempDataAll">加载所有数据</el-button>
+    <div id="tempChart" :style="{width: '100%', height: '500px'}"/>
   </div>
 
 </template>
 
 <script>
 import echarts from 'echarts'
+
 require('echarts/theme/macarons') // echarts theme
 import { fetchEcharts } from '@/api/sys/temperature'
+
 export default {
   name: 'TempModel',
   data() {
@@ -73,7 +82,7 @@ export default {
       this.chart = echarts.init(document.getElementById('tempChart'))
       var Cureoption = {
         title: {
-          text: '温度曲线',
+          text: '数据曲线',
           padding: [20, 20]
         },
         tooltip: {
@@ -259,7 +268,6 @@ export default {
       }
       // option.legend[0].data = this.charLegend
       // this.chart.setOption(option)
-      alert(newseries)
       this.chart.setOption({
         legend: {
           data: this.charLegend
@@ -270,18 +278,17 @@ export default {
       return option
     },
 
-    loadTempDataPart() {
+    loadTempDataPart(tempName) {
+      tempName = tempName.replace('PV', '')
       var option = this.chart.getOption()
       option.series = option.series.slice(0, 4)
       this.charLegend = this.charLegend.slice(0, 4)
-      let length = 8
-      if (this.otherTempsTitles.length >= 8) {
-        length = 8
-      } else {
-        length = this.otherTempsTitles.length
-      }
+      const length = this.otherTempsTitles.length
       for (let index = 0; index < length; index++) {
         const element = this.otherTempsTitles[index]
+        if (element.indexOf(tempName) === -1) {
+          continue
+        }
         this.charLegend.push(element)
         const othterSeries = {
           name: element,
@@ -363,7 +370,6 @@ export default {
       var result = []
       for (var i = 0, len = data.length; i < len; i++) {
         var otherTempsValues = data[i].otherTempsValue.split(',')
-        // alert(otherTempsValues[index])
         result.push(otherTempsValues[index])
       }
       return result
@@ -372,8 +378,8 @@ export default {
 }
 </script>
 <style scoped>
-.modelForm {
-  margin-top: 20px;
-}
+  .modelForm {
+    margin-top: 20px;
+  }
 </style>
 

@@ -23,13 +23,13 @@
     </el-form>
     <div class="filter-container"/>
     <el-button
-v-for="tempName in otherTempsTitles"
-v-if="tempName.indexOf('PV') != -1"
-:key="tempName.id"
-               type="primary"
-icon="el-icon-arrow-right"
-style="margin:5px;"
-               @click="loadTempDataPart(tempName)"> {{ tempName.replace("PV","") }}
+      v-for="tempName in otherTempsTitles"
+      v-if="tempName.indexOf('PV') != -1"
+      :key="tempName"
+      type="primary"
+      icon="el-icon-arrow-right"
+      style="margin:5px;"
+      @click="loadTempDataPart(tempName)"> {{ tempName.replace("PV","") }}
     </el-button>
     <el-button type="primary" round icon="el-icon-arrow-right" @click="loadTempDataPV">加载测量数据</el-button>
     <el-button type="primary" round icon="el-icon-d-arrow-right" @click="loadTempDataAll">加载所有数据</el-button>

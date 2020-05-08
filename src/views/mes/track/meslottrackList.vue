@@ -1,13 +1,15 @@
 <template>
   <div class="app-container calendar-list-container">
     <w-table v-bind="table" url="/mes/meslottrack" sort="startTime.desc" >
+      <w-table-col name="eqpId" label="设备号" width="120" sort fixed align="center" query condition="like"/>
       <w-table-col name="lotNo" label="批次号" align="center" query condition="like" />
-      <w-table-col name="productionNo" label="机种" align="center" />
+      <w-table-col name="productionName" label="品名" align="center" />
+      <w-table-col name="productionNo" label="品番" align="center" />
       <w-table-col name="orderNo" label="订单号" align="center" />
-      <w-table-col name="eqpId" label="设备号" sort fixed align="center" query condition="like"/>
-      <w-table-col name="lotYield" label="批次产量" align="right"/>
-      <w-table-col name="startTime" label="开始时间" width="200" align="center" sort="1" query querymode="date" condition="between"/>
-      <w-table-col name="endTime" label="结束时间" width="200" align="center" />
+      <w-table-col name="lotYield" label="批次产量" width="80" align="right"/>
+      <w-table-col name="lotYieldEqp" label="设备产量" width="80" align="right"/>
+      <w-table-col name="startTime" label="开始时间" width="180" align="center" sort="1" query querymode="date" condition="between"/>
+      <w-table-col name="endTime" label="结束时间" width="180" align="center" />
       <w-table-toolbar name="add" url="views/dsk/operation/logoperationEdit" hidden/>
       <w-table-toolbar name="batchDelete" hidden />
       <w-table-button name="delete" hidden />

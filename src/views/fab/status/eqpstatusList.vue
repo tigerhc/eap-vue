@@ -8,8 +8,8 @@
     <div class="content">
       <div v-for="(item,index) in tabData" :key="index" class="item">
         <span>{{ item.eqpId }}</span>
-        <span>{{ item.lotId }}</span>
-        <span>{{ item.recipeName }}</span>
+        <span>{{ item.lotNo }}</span>
+        <span>{{ item.recipeCode }}</span>
         <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
       </div>
     </div>
@@ -35,7 +35,15 @@ export default {
         DOWN: 'span-DOWN',
         RUN: 'span-RUN',
         IDLE: 'span-IDLE'
-      }// 显示状态
+      }, // 显示状态
+      statusColor: {
+        ALARM: '#FF0000',
+        DOWN: '#808080',
+        RUN: '#FFFF00',
+        IDLE: '#43ca17',
+        IDLE2: '#8B0000'
+      }
+
     }
   },
   mounted() {
@@ -58,7 +66,7 @@ export default {
         'page.pn': 1,
         'page.size': 999999,
         'delFlag': 0,
-        'queryFields': 'eqpId,controlState,lotId,eqpStatus,connectionStatus,recipeName,lockFlag,'
+        'queryFields': 'eqpId,controlState,lotNo,eqpStatus,connectionStatus,recipeCode,lockFlag,'
       }
       fetchDataList(params).then(res => {
         this.tabData = res.data
@@ -94,8 +102,18 @@ export default {
                 shadowColor: 'rgba(0, 0, 0, 0.5)'
               },
               color: function(params) {
-                var colorList = ['#FF0000', '#808080', '#FFFF00', '#43ca17', '#8B0000']
-                return colorList[params.dataIndex]
+                // debugger
+                // alert(this.statusColor[params.name]);
+                // var colorList = ['#FF0000', '#808080', '#FFFF00', '#43ca17', '#8B0000']
+                // statusText[item.eqpStatus]
+                var statusColor2 = {
+                  ALARM: '#FF0000',
+                  DOWN: '#808080',
+                  IDLE: '#FFFF00',
+                  RUN: '#43ca17',
+                  IDLE2: '#8B0000'
+                }
+                return statusColor2[params.name]
               }
             }
           }

@@ -96,7 +96,7 @@ export default {
         'page.pn': 1,
         'page.size': 999999,
         'delFlag': 0,
-        'queryFields': 'eqpId,controlState,lotId,eqpStatus,connectionStatus,recipeName,lockFlag,'
+        'queryFields': 'eqpId,controlState,lotId,eqpStatus,connectionStatus,recipeCode,lockFlag,'
       }
       fetchList(params).then(res => {
         this.tabData = res.data

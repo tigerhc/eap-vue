@@ -2,7 +2,7 @@
   <w-form v-bind="formConf" :col="3" :model="model">
     <el-input v-model="model.eqpId" label="设备号" />
     <el-input v-model="model.eqpNo" label="设备序号" />
-    <el-input v-model="model.eqpName" label="设备简写" />
+    <el-input v-model="model.eqpName" label="设备说明" />
     <el-input v-model="model.fab" label="厂别" />
     <el-input v-model="model.lineNo" label="线别" />
     <w-select-dept v-model="model.officeIds" label="部门" />

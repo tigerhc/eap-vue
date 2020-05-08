@@ -4,14 +4,14 @@
       <!--todo fixed属性导致当前列变为第一列-->
       <w-table-col name="eqpId" label="设备号" sort fixed align="left" handler="view" query condition="like"/>
       <w-table-col name="eqpName" label="设备说明" align="left"/>
-      <w-table-col name="officeName" label="部门" align="left"/>
+      <w-table-col name="officeName" label="部门" width="100" align="left"/>
       <w-table-col name="modelName" label="设备型号" align="left" />
       <w-table-col name="bcCode" label="BC号" align="center" />
       <w-table-col name="ip" label="机台IP地址" align="center"/>
       <!--<w-table-col name="sortCode" label="排序号" sort/>-->
       <!-- todo filterable 属性-->
       <w-table-col name="modelId" label="设备型号" hidden query dict url="/fab/fabequipmentmodel/list" namekey="modelName" condition="eq" filterable />
-      <w-table-col name="activeFlag" label="有效标志" align="center" dict="ACTIVE_FLAG" query condition="eq" />
+      <w-table-col name="activeFlag" label="有效标志" width="80" align="center" dict="ACTIVE_FLAG" query condition="eq" />
       <!--todo date 点击查询后,时间控件值消失-->
       <!--<w-table-col name="updateDate" label="更新时间" width="200" align="center" sort="1" query querymode="date" condition="between"/>-->
 

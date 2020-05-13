@@ -10,11 +10,11 @@
         type="datetime"
         placeholder="选择开始时间"/>
       <el-date-picker
-      style="width: 200px;" class="filter-item"
       v-model="listQuery.endDate"
+style="width: 200px;"
+      class="filter-item"
       type="datetime"
-      placeholder="选择结束时间">
-      </el-date-picker>
+      placeholder="选择结束时间"/>
       <br>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
       <el-button :loading="downloadLoading" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
@@ -31,22 +31,27 @@
     >
       <el-table-column type="index" label="序号" width="50px" align="center"/>
 
-      <el-table-column align="center" label="设备号" width="150">
+      <el-table-column align="center" label="设备号" width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.eqpId }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="事件ID" width="300px">
+      <el-table-column align="center" label="事件ID" width="120">
         <template slot-scope="scope">
           <span>{{ scope.row.eventId }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="left" label="事件参数" width="500px">
+      <el-table-column align="left" label="描述" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.eventDesc }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="left" label="事件参数" width="300">
         <template slot-scope="scope">
           <span>{{ scope.row.eventParams }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="开始时间" width="200px">
+      <el-table-column align="center" label="开始时间" width="180">
         <template slot-scope="scope">
           <span>{{ scope.row.startDate }}</span>
         </template>
@@ -78,12 +83,11 @@
 </template>
 
 <script>
-import { fetchList, create, update, del, getDeteils, batchDelete, exportLoginLog } from '@/api/public'
-import { fetchDeviceList } from '@/api/sys/device'
+import { fetchList, exportLoginLog } from '@/api/public'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
-  name: 'eventLog',
+  name: 'EventLog',
   directives: {
     waves
   },
@@ -130,7 +134,7 @@ export default {
         'query.eventId||like': obj.eventId || '',
         'query.startDate||ge': obj.startDate || '',
         'query.endDate||le': obj.endDate || '',
-        'queryFields': 'id,eqpId,alarmName,eventId,eventParams,startDate,endDate,createDate,'
+        'queryFields': 'id,eqpId,eventDesc,eventId,eventParams,startDate,endDate,createDate,'
       }
       return params
     },

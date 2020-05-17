@@ -76,6 +76,9 @@ export default {
         border: true,
         'element-loading-text': '给我一点时间',
         fit: true,
+        'class': 'jk-table-container',
+        'cell-class-name': 'jk-table-column',
+        'header-cell-class-name': 'jk-table-column',
         ...this.tableConf
       }
     },
@@ -778,5 +781,14 @@ function isHidden(conf) {
 .unfold-pop {
   min-width: unset;
   background-color: #ffe;
+}
+.el-table--medium td.jk-table-column, .el-table--medium th.jk-table-column{
+  padding: 5px 0px;
+}
+.jk-table-container {
+  min-height: calc(100vh - 84px) ;
+}
+.el-table{
+  min-height: calc(100vh - 84px - 96px - 42px ) ;
 }
 </style>

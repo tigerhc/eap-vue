@@ -55,7 +55,7 @@ a:hover {
 
 div:focus{
   outline: none;
- }
+}
 
 .fr {
   float: right;
@@ -129,6 +129,17 @@ code {
 //main-container全局样式
 .app-container {
   padding: 20px;
+  min-height: calc(100vh - 84px) ;
+}
+
+.el-checkbox__original {
+  opacity: 0;
+  outline: none;
+  position: absolute;
+  margin: 0;
+  width: 0;
+  height: 0;
+  z-index: -1;
 }
 
 .components-container {
@@ -137,7 +148,7 @@ code {
 }
 
 .pagination-container {
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .text-center {
@@ -202,7 +213,7 @@ code {
 }
 .add-footer {
   text-align: center;
-    margin-top: 20px;
+  margin-top: 20px;
 }
 .textLink{
   color: #409eff;

@@ -13,3 +13,10 @@ export function fetchChart() {
     method: 'get'
   })
 }
+
+export function fetchEqpList() {
+  return request({
+    url: '/fab/fabequipment/eqpIdlist',
+    method: 'get'
+  })
+}

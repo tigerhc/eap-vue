@@ -24,13 +24,14 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="设备号" prop="eqpId">
-            <el-input
-              :autosize="{ minRows: 3}"
-              v-model="form.eqpId"
-              style="width:300px"
-              type="textarea"
-              placeholder="请输入内容"
-            />
+            <w-select-eqp :span="8" :value="eqpNameList" :disabled="false" @onValueChange="onValueChange($event)"/>
+<!--            <el-input-->
+<!--              :autosize="{ minRows: 3}"-->
+<!--              v-model="form.eqpId"-->
+<!--              style="width:300px"-->
+<!--              type="textarea"-->
+<!--              placeholder="请输入内容"-->
+<!--            />-->
           </el-form-item>
         </el-col>
         <el-button type="primary" @click="serch">查询</el-button>
@@ -44,17 +45,19 @@
       :end-time="form.dateTime[1]"
       :list="list"
     />
-    <div v-if="showFlag2" id="eqpsoee" style="width: 800px;height: 600px;overflow: hidden;"/>
+    <div v-show="showFlag2" id="eqpsoee" style="width: 800px;height: 600px;overflow: hidden;"/>
   </div>
 </template>
 <script>
 import AlarmCake from '@/components/Charts/alarmCake'
 import { rpteqpstateday } from '@/api/public'
 import echarts from 'echarts'
+import WSelectEqp from '../../../components/eap-select-eqp/eap-select-eqp'
 
 export default {
   name: 'Eqpoee',
   components: {
+    WSelectEqp,
     AlarmCake
   },
   data() {
@@ -63,6 +66,7 @@ export default {
         dateTime: [],
         eqpId: ''
       },
+      eqpNameList: [],
       list: [],
       list2: [],
       runlist: [],
@@ -85,8 +89,12 @@ export default {
     // this.form.dateTime[0] = startDate
 
   },
+  created() {
+    this.onValueChange()
+  },
   methods: {
     serch() {
+      // console('eqpNameList->' + this.eqpNameList)
       // SIM-DM1,SIM-DM2
       this.$refs['form'].validate((valid) => {
         if (valid) {
@@ -99,9 +107,9 @@ export default {
             this.list = data.eqpOee
             this.list2 = data.eqpsOee
             if (this.list2 && this.list2.length > 1) {
-              this.initChatrs2()
               this.showFlag2 = true
               this.showFlag = false
+              this.initChatrs2()
             } else {
               this.showFlag = true
               this.showFlag2 = false
@@ -109,6 +117,14 @@ export default {
           })
         }
       })
+    },
+    onValueChange(data) {
+      this.eqpNameList = data
+      if (data == null || data === undefined || data.length <= 0) {
+        this.form.eqpId = ''
+      } else {
+        this.form.eqpId = data.join(',')
+      }
     },
     getDate(datestr) {
       var temp = datestr.split('-')

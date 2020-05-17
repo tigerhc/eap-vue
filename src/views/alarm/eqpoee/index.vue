@@ -191,6 +191,9 @@ export default {
           type: 'category',
           data: this.yAxis
         },
+        textStyle: {
+          color: '#777AAA'
+        },
         series: [
           {
             name: 'RUN',
@@ -199,6 +202,11 @@ export default {
             label: {
               show: true,
               position: 'insideRight'
+            },
+            itemStyle: {
+              color: function(params) {
+                return '#43ca17'
+              }
             },
             data: this.runlist
           },
@@ -210,6 +218,11 @@ export default {
               show: true,
               position: 'insideRight'
             },
+            itemStyle: {
+              color: function(params) {
+                return '#FFFF00'
+              }
+            },
             data: this.idlelist
           },
           {
@@ -219,6 +232,11 @@ export default {
             label: {
               show: true,
               position: 'insideRight'
+            },
+            itemStyle: {
+              color: function(params) {
+                return '#FF0000'
+              }
             },
             data: this.downlist
           }

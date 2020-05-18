@@ -86,3 +86,11 @@ export function rpteqpstateday(data) {
     params: data
   })
 }
+
+export function rtplotyieldday(data) {
+  return request({
+    url: 'edc/rptlotyieldday/pdtChart',
+    method: 'get',
+    params: data
+  })
+}

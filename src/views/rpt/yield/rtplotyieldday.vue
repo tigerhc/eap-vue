@@ -1,5 +1,5 @@
 <template>
-  <div class="Eqpoee">
+  <div class="Rtplotyieldday">
     <el-form
       ref="form"
       :model="form"
@@ -22,43 +22,22 @@
             />
           </el-form-item>
         </el-col>
-        <el-col :span="8">
-          <el-form-item label="设备号" prop="eqpId">
-            <w-select-eqp :span="8" :value="eqpNameList" :disabled="false" @onValueChange="onValueChange($event)"/>
-<!--            <el-input-->
-<!--              :autosize="{ minRows: 3}"-->
-<!--              v-model="form.eqpId"-->
-<!--              style="width:300px"-->
-<!--              type="textarea"-->
-<!--              placeholder="请输入内容"-->
-<!--            />-->
-          </el-form-item>
-        </el-col>
+
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>
     </el-form>
-    <alarm-cake
-      v-if="showFlag"
-      id="eqpoee"
-      ref="AlarmCake"
-      :begin-time="form.dateTime[0]"
-      :end-time="form.dateTime[1]"
-      :list="list"
-    />
     <div v-show="showFlag2" id="eqpsoee" style="width: 800px;height: 600px;overflow: hidden;"/>
   </div>
 </template>
 <script>
-import AlarmCake from '@/components/Charts/alarmCake'
-import { rpteqpstateday } from '@/api/public'
+import { rtplotyieldday } from '@/api/public'
 import echarts from 'echarts'
 import WSelectEqp from '../../../components/eap-select-eqp/eap-select-eqp'
 
 export default {
-  name: 'Eqpoee',
+  name: 'Rtplotyieldday',
   components: {
-    WSelectEqp,
-    AlarmCake
+    WSelectEqp
   },
   data() {
     return {
@@ -76,8 +55,7 @@ export default {
       showFlag2: true,
       yAxis: [],
       formRules: {
-        dateTime: [{ required: true, message: '请选择时间！', trigger: 'change' }],
-        eqpId: [{ required: true, message: '请选择设备号！', trigger: 'change' }]
+        dateTime: [{ required: true, message: '请选择时间！', trigger: 'change' }]
       }
     }
   },
@@ -98,22 +76,15 @@ export default {
       // SIM-DM1,SIM-DM2
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          rpteqpstateday({
+          rtplotyieldday({
             beginTime: this.form.dateTime[0],
             endTime: this.form.dateTime[1],
-            eqpId: this.form.eqpId
+            eqpId: this.form.eqpId,
+            lineNo: 'SIM'
           }).then((res) => {
             const data = res.data
-            this.list = data.eqpOee
-            this.list2 = data.eqpsOee
-            if (this.list2 && this.list2.length > 1) {
-              this.showFlag2 = true
-              this.showFlag = false
-              this.initChatrs2()
-            } else {
-              this.showFlag = true
-              this.showFlag2 = false
-            }
+            this.list = data.yield
+            this.initChatrs2()
           })
         }
       })
@@ -171,74 +142,79 @@ export default {
       const option = {
         tooltip: {
           trigger: 'axis',
-          axisPointer: { // 坐标轴指示器，坐标轴触发有效
-            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+          axisPointer: {
+            type: 'cross',
+            crossStyle: {
+              color: '#999'
+            }
+          }
+        },
+        toolbox: {
+          feature: {
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ['line', 'bar'] },
+            restore: { show: true },
+            saveAsImage: { show: true }
           }
         },
         legend: {
-          data: ['RUN', 'IDLE', 'DOWN']
+          data: ['MES产量', '设备产量', 'MES达标率', '设备达标率']
         },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        xAxis: {
-          type: 'value'
-        },
-        yAxis: {
-          type: 'category',
-          data: this.yAxis
-        },
-        textStyle: {
-          color: '#777AAA'
-        },
+        xAxis: [
+          {
+            type: 'category',
+            data: ['0501', '0502', '0503', '0504', '0506', '0507', '0508', '0509', '0510', '0511', '0512', '0513'],
+            axisPointer: {
+              type: 'shadow'
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            name: '日产量',
+            min: 0,
+            // max: 250,
+            interval: 50,
+            axisLabel: {
+              formatter: '{value} K'
+            }
+          },
+          {
+            type: 'value',
+            name: '完成率',
+            min: 0,
+            max: 100,
+            interval: 5,
+            axisLabel: {
+              formatter: '{value} %'
+            }
+          }
+        ],
         series: [
           {
-            name: 'RUN',
+            name: 'MES产量',
             type: 'bar',
-            stack: '总量',
-            label: {
-              show: true,
-              position: 'insideRight'
-            },
-            itemStyle: {
-              color: function(params) {
-                return '#43ca17'
-              }
-            },
-            data: this.runlist
+            barWidth: 10,
+            data: [130.6, 120.9, 110.0, 110.4, 110.7, 50.7, 175.6, 60.2, 110.7, 120.8, 130.0, 120.3]
           },
           {
-            name: 'IDLE',
+            name: '设备产量',
             type: 'bar',
-            stack: '总量',
-            label: {
-              show: true,
-              position: 'insideRight'
-            },
-            itemStyle: {
-              color: function(params) {
-                return '#FFFF00'
-              }
-            },
-            data: this.idlelist
+            barWidth: 10,
+            data: [100.6, 100.9, 100.0, 100.4, 100.7, 60.7, 175.6, 60.2, 100.7, 100.8, 100.0, 100.3]
           },
           {
-            name: 'DOWN',
-            type: 'bar',
-            stack: '总量',
-            label: {
-              show: true,
-              position: 'insideRight'
-            },
-            itemStyle: {
-              color: function(params) {
-                return '#FF0000'
-              }
-            },
-            data: this.downlist
+            name: 'MES达标率',
+            type: 'line',
+            yAxisIndex: 1,
+            data: [99, 78.2, 78.3, 97.3, 97.2, 97.5, 97.7, 97.4, 98.0, 91.5, 97.0, 98.2]
+          },
+          {
+            name: '设备达标率',
+            type: 'line',
+            yAxisIndex: 1,
+            data: [100, 98.2, 98.3, 98.3, 98.2, 98.5, 98.7, 98.4, 98.0, 91.5, 98.0, 98.2]
           }
         ]
       }
@@ -248,7 +224,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.Eqpoee {
+.Rtplotyieldday {
   width: 100%;
   height: 100%;
   margin: 0 auto;

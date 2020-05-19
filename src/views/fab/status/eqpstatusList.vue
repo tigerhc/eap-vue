@@ -9,7 +9,7 @@
       <div v-for="(item,index) in tabData" :key="index" class="item">
         <span>{{ item.eqpId }}</span>
         <span>{{ item.lotNo }}</span>
-        <span>{{ item.recipeCode }}</span>
+        <span class="littlefont">{{ item.recipeCode }}</span>
         <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
       </div>
     </div>
@@ -175,6 +175,9 @@ export default {
               text-align: center;
               height: 50px;
               border-bottom:1px solid #dcdfe6;
+            }
+            span.littlefont {
+              font-size:12px;
             }
         }
     }

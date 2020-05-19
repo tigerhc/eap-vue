@@ -140,6 +140,11 @@ export default {
       var ec = document.getElementById('eqpsoee')
       var myChart = echarts.init(ec)
       const option = {
+        title: {
+          text: 'SIM日产量分析'
+
+          // padding: [20, 20]
+        },
         tooltip: {
           trigger: 'axis',
           axisPointer: {

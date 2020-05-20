@@ -40,7 +40,7 @@ export default {
 
     enable(row, table, ctx) {
       request({
-        url: '/edc/edcamsdefine/active_flag/' + row.id + '/1',
+        url: '/edc/edcamsrptdefine/active_flag/' + row.id + '/1',
         method: 'put'
       }).then(() => {
         ctx.refresh()
@@ -54,7 +54,7 @@ export default {
     },
     diable(row, table, ctx) {
       request({
-        url: '/edc/edcamsdefine/active_flag/' + row.id + '/0',
+        url: '/edc/edcamsrptdefine/active_flag/' + row.id + '/0',
         method: 'put'
       }).then(() => {
         ctx.refresh()

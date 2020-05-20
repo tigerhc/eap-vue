@@ -1,24 +1,29 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-slot="{row}" v-bind="table" url="/edc/edcamsdefine" sort="alarmCode.asc" >
+    <w-table v-slot="{row}" v-bind="table" url="/edc/edcamsrptrecord" sort="createDate.desc" >
       <!--todo fixed属性导致当前列变为第一列-->
-      <w-table-col name="alarmCode" label="编码" width="120" sort fixed align="left" handler="view" query condition="like"/>
-      <w-table-col name="eqpModelName" label="设备类型" align="left"/>
-      <w-table-col name="alarmName" label="名称" align="left" />
-      <w-table-col name="alarmCategory" label="等级" width="80" align="center" />
-      <w-table-col name="alarmType" label="种类" width="80" align="center" dict="AMS_ALARM_TYPE" />
-      <!--<w-table-col name="sortCode" label="排序号" sort/>-->
-      <!-- todo filterable 属性-->
-      <w-table-col name="eqpModelId" label="设备型号" hidden query dict url="/fab/fabequipmentmodel/list" namekey="modelName" condition="eq" filterable />
-      <w-table-col name="monitorFlag" label="监控" width="80" align="center" dict="MONITOR_FLAG" query condition="eq" />
 
+      <w-table-col name="createDate" label="报警时间" width="180" align="center"/>
+      <w-table-col name="eqpId" label="设备号" width="120" align="left"/>
+      <w-table-col name="productionNo" label="品番" width="100" align="center" />
+      <w-table-col name="lotNo" label="批次" width="80" align="center" dict="AMS_ALARM_TYPE" />
+      <w-table-col name="alarmCode" label="报警" width="80" sort align="left" query condition="like"/>
+      <w-table-col name="eqpModelName" label="设备类型" align="left"/>
+      <w-table-col name="eqpModelId" label="设备型号" hidden query dict url="/fab/fabequipmentmodel/list" namekey="modelName" condition="eq" filterable />
+      <w-table-col name="dealUserName" label="处理人" width="80" align="left" />
+      <w-table-col name="dealDate" label="处理时间" width="180" align="center"/>
+      <w-table-col name="dealFlag" label="结果" align="center" width="50" />
       <!--hidden属性: 隐藏默认button url: 修改默认url 没有url,则默认调用属性name值的方法-->
-      <w-table-toolbar name="add" url="views/ams/define/alarmdefineEdit" />
+      <w-table-toolbar name="add" hidden url="111"/>
+      <w-table-toolbar name="batchDelete" hidden />
+      <w-table-button name="delete" hidden />
       <!--hidden属性: 隐藏默认button url: 修改默认url-->
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
-      <w-table-button v-if="row.monitorFlag == 0" name="enable" label="启用" tip="确认启用报警？" icon="el-icon-bell" />
+      <!--<w-table-button v-if="row.dealFlag == 'N'" name="edit" label="处理"  url="views/ams/rpt/rptrecordEdit"  icon="el-icon-success" />-->
+      <w-table-button v-if="row.dealFlag == 'N'" name="edit" label="处理" url="views/ams/rpt/rptrecordEdit" icon="el-icon-setting" />
+      <w-table-button v-if="row.dealFlag == 'Y'" name="edit" hidden />
       <!-- type='danger'  -->
-      <w-table-button v-if="row.monitorFlag == 1" name="diable" label="停用" tip="确认停用报警？" icon="el-icon-circle-close" type="warning" />
+      <w-table-button v-if="row.dealFlag == 'Y'" name="diable" label="作为标准模式" tip="作为标准模式？" icon="el-icon-star-on" type="warning" />
 
     </w-table>
 

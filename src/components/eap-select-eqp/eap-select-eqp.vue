@@ -1,5 +1,5 @@
 <template>
-  <el-select :value="value" :disabled="disabled" multiple placeholder="请选择" @change="onValueChange">
+  <el-select :value="value" :disabled="disabled" multiple filterable placeholder="请选择" @change="onValueChange">
     <el-option
       v-for="item in options"
       :key="item"

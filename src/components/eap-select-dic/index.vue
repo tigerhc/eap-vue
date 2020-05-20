@@ -1,5 +1,5 @@
 <template>
-  <el-select v-bind="$attrs" :value="value" :disabled="disabled" clearable filterable @input="onValueChange">
+  <el-select v-bind="$attrs" :value="value" :disabled="disabled" :multiple="multiple" clearable filterable @input="onValueChange">
     <el-option v-for="op in options" :label="op.label" :value="op.value" :key="op.value" />
   </el-select>
 </template>
@@ -13,10 +13,14 @@ export default {
       default: ''
     },
     value: {
-      type: String,
+      type: undefined,
       default: ''
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    multiple: {
       type: Boolean,
       default: false
     }

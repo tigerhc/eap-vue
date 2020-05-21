@@ -44,6 +44,10 @@ export default {
       type: String,
       default: process.env.BASE_API + '/attach/upload'
     },
+    findurl: {
+      type: String,
+      default: process.env.BASE_API + '/attach/findfile'
+    },
     removeurl: {
       type: String,
       default: process.env.BASE_API + '/attach/{id}/delete'
@@ -71,7 +75,7 @@ export default {
     }
   },
   watch: {
-    a: {
+    access_token: {
       handler: function(val) {
         console.log(val)
       }
@@ -83,7 +87,7 @@ export default {
   methods: {
     getFileList() {
       request({
-        url: process.env.BASE_API + '/attach/find?biz=' + this.biz,
+        url: this.findurl + '?biz=' + this.biz,
         method: 'get'
       }).then((res) => {
         console.log(res)

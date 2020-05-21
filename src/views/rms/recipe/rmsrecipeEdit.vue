@@ -143,53 +143,28 @@
       </el-tab-pane>
       <el-tab-pane label="附件" name="third">
         <attachment-select :uploadurl="uploadurl" :biz="biz" @onSuccess="handleSuccessFile" />
-<!--        <div style="margin-bottom:20px">-->
-<!--          <el-button type="primary" size="small" >上传</el-button>-->
-<!--          <el-button type="primary" size="small" >批量删除</el-button>-->
-<!--        </div>-->
-<!--        <el-table-->
-<!--        :data="fileData"-->
-<!--        fit-->
-<!--        style="width: 100%"-->
-<!--        highlight-current-row>-->
-<!--        <el-table-column type="index" label=" " width="50px" align="center"/>-->
-<!--          <el-table-column-->
-<!--            type="selection"-->
-<!--            width="55">-->
-<!--          </el-table-column>-->
-<!--        <el-table-column prop="paraCode" label="附件名称" align="center"/>-->
-<!--        <el-table-column prop="paraCode" label="附件类型" align="center"/>-->
-<!--        <el-table-column prop="paraCode" label="附件大小" align="center"/>-->
-<!--        <el-table-column prop="paraCode" label="上传者" align="center"/>-->
-<!--          <el-table-column prop="paraCode" label="上传时间" align="center"/>-->
-<!--          <el-table-column prop="paraCode" label="操作" align="center">-->
-<!--            <template slot-scope="scope">-->
-<!--              <i class="el-icon-download"/>-->
-<!--              <i class="el-icon-delete"/>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--        </el-table>-->
       </el-tab-pane>
       <el-tab-pane label="图片" name="fourth">
-        <div style="margin-bottom:20px">
-          <el-upload
-            :action="uploadimageurl"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-            :limit="12"
-            :on-exceed="handleExceed"
-            :file-list="imageList"
-            class="upload-demo"
-            list-type="picture-card"
-            multiple>
-            <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible" width="500px" height="500px">
-            <img :src="dialogImageUrl" width="100%" height="100%" alt="">
-          </el-dialog>
-        </div>
+        <picutre-select :uploadurl="uploadimageurl" :biz="biz"/>
+<!--        <div style="margin-bottom:20px">-->
+<!--          <el-upload-->
+<!--            :action="uploadimageurl"-->
+<!--            :on-preview="handlePreview"-->
+<!--            :on-remove="handleRemove"-->
+<!--            :before-remove="beforeRemove"-->
+<!--            :limit="12"-->
+<!--            :on-exceed="handleExceed"-->
+<!--            :file-list="imageList"-->
+<!--            class="upload-demo"-->
+<!--            list-type="picture-card"-->
+<!--            multiple>-->
+<!--            <el-button size="small" type="primary">点击上传</el-button>-->
+<!--            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+<!--          </el-upload>-->
+<!--          <el-dialog :visible.sync="dialogVisible" width="500px" height="500px">-->
+<!--            <img :src="dialogImageUrl" width="100%" height="100%" alt="">-->
+<!--          </el-dialog>-->
+<!--        </div>-->
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -199,10 +174,11 @@ import { update, fetchDict } from '@/api/public'
 import { fetchDeviceList } from '@/api/sys/device'
 import request from '@/utils/request'
 import AttachmentSelect from '../../../components/AttachmentSelect/index'
+import PicutreSelect from '../../../components/PicutreSelect/index'
 
 export default {
   name: 'ProgramEdit',
-  components: { AttachmentSelect },
+  components: { PicutreSelect, AttachmentSelect },
   data() {
     return {
       load: false,

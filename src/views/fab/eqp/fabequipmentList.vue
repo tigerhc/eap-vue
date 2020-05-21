@@ -2,7 +2,7 @@
   <div class="app-container calendar-list-container">
     <w-table v-slot="{row}" v-bind="table" url="/fab/fabequipment" sort="sortCode.asc" >
       <!--todo fixed属性导致当前列变为第一列-->
-      <w-table-col name="eqpId" label="设备号" sort fixed align="left" handler="view" query condition="like"/>
+      <w-table-col name="eqpId" label="设备号" sort fixed align="left" dict2 handler="view" query condition="like"/>
       <w-table-col name="eqpName" label="设备说明" align="left"/>
       <w-table-col name="officeName" label="部门" width="100" align="left"/>
       <w-table-col name="modelName" label="设备型号" align="left" />
@@ -20,8 +20,8 @@
       <w-table-toolbar name="initStatus" label="初始化所有状态" type="warning" />
       <!--hidden属性: 隐藏默认button url: 修改默认url-->
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
-      <w-table-button v-if="row.activeFlag == 0" name="enable" label="启用" tip="确认启用设备？" icon="el-icon-check" />
-      <w-table-button v-if="row.activeFlag == 1" name="diable" label="停用" tip="确认停用设备？" icon="el-icon-circle-close" type="warning" />
+<!--      <w-table-button v-if="row.activeFlag == 0" name="enable" label="启用" tip="确认启用设备？" icon="el-icon-check" />-->
+<!--      <w-table-button v-if="row.activeFlag == 1" name="diable" label="停用" tip="确认停用设备？" icon="el-icon-circle-close" type="warning" />-->
 
     </w-table>
 

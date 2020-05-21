@@ -52,7 +52,7 @@
 import AlarmCake from '@/components/Charts/alarmCake'
 import { rpteqpstateday } from '@/api/public'
 import echarts from 'echarts'
-import WSelectEqp from '../../../components/eap-select-eqp/eap-select-eqp'
+import WSelectEqp from '../../../components/eap-select-eqp/index'
 
 export default {
   name: 'Eqpoee',

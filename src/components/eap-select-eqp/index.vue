@@ -43,6 +43,7 @@ export default {
   methods: {
     onValueChange(e) {
       this.$emit('onValueChange', e)
+      this.$emit('input', e)
     }
   }
 }

@@ -389,6 +389,9 @@ export default {
       if ('dict' in conf) {
         mode = 'w-select'
       }
+      if ('dict2' in conf) {
+        mode = 'w-select-eqp'
+      }
       if (conf.dict && typeof conf.dict === 'string') {
         mode = 'w-select-dic'
       }
@@ -422,10 +425,23 @@ export default {
           class: { 'filter-item': true },
           on: {
             input: (e) => {
-              setTimeout(() => {
+              if (mode === 'w-select-eqp') {
+                console.info('ss->' + e)
                 this.$set(this.query, key, e)
-                this.query[key] = e
-              })
+                // this.query[key] = e
+                // if (e == null || e === undefined || e.length <= 0) {
+                //   this.$set(this.query, key, '')
+                //   this.query[key] = ''
+                // } else {
+                //   this.$set(this.query, key, e.join(','))
+                //   this.query[key] = e.join(',')
+                // }
+              } else {
+                setTimeout(() => {
+                  this.$set(this.query, key, e)
+                  this.query[key] = e
+                })
+              }
             }
           }
         })

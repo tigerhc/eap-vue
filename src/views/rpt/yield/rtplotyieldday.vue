@@ -32,7 +32,7 @@
 <script>
 import { rtplotyieldday } from '@/api/public'
 import echarts from 'echarts'
-import WSelectEqp from '../../../components/eap-select-eqp/eap-select-eqp'
+import WSelectEqp from '../../../components/eap-select-eqp/index'
 
 export default {
   name: 'Rtplotyieldday',

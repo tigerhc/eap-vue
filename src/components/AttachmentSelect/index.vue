@@ -9,7 +9,7 @@
         class="upload-demo">
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
-      <el-button size="small" type="primary" @click="deleteAll">批量删除</el-button>
+      <el-button size="small" type="primary" style="margin-left: 10px;" @click="deleteAll">批量删除</el-button>
     </div>
     <el-table
       :data="fileList"

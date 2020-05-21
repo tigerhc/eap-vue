@@ -142,21 +142,33 @@
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="附件" name="third">
-        <div style="margin-bottom:20px">
-          <el-button type="primary" size="small" >上传</el-button>
-        </div>
-        <el-table
-        :data="fileData"
-        fit
-        style="width: 100%"
-        highlight-current-row
-        >
-        <el-table-column type="index" label="序号" width="50px" align="center"/>
-        <el-table-column prop="paraCode" label="附件名称" align="center"/>
-        <el-table-column prop="paraCode" label="附件类型" align="center"/>
-        <el-table-column prop="paraCode" label="附件大小" align="center"/>
-        <el-table-column prop="paraCode" label="创建时间" align="center"/>
-        </el-table>
+        <attachment-select :uploadurl="uploadurl" :biz="biz" @onSuccess="handleSuccessFile" />
+<!--        <div style="margin-bottom:20px">-->
+<!--          <el-button type="primary" size="small" >上传</el-button>-->
+<!--          <el-button type="primary" size="small" >批量删除</el-button>-->
+<!--        </div>-->
+<!--        <el-table-->
+<!--        :data="fileData"-->
+<!--        fit-->
+<!--        style="width: 100%"-->
+<!--        highlight-current-row>-->
+<!--        <el-table-column type="index" label=" " width="50px" align="center"/>-->
+<!--          <el-table-column-->
+<!--            type="selection"-->
+<!--            width="55">-->
+<!--          </el-table-column>-->
+<!--        <el-table-column prop="paraCode" label="附件名称" align="center"/>-->
+<!--        <el-table-column prop="paraCode" label="附件类型" align="center"/>-->
+<!--        <el-table-column prop="paraCode" label="附件大小" align="center"/>-->
+<!--        <el-table-column prop="paraCode" label="上传者" align="center"/>-->
+<!--          <el-table-column prop="paraCode" label="上传时间" align="center"/>-->
+<!--          <el-table-column prop="paraCode" label="操作" align="center">-->
+<!--            <template slot-scope="scope">-->
+<!--              <i class="el-icon-download"/>-->
+<!--              <i class="el-icon-delete"/>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
+<!--        </el-table>-->
       </el-tab-pane>
       <el-tab-pane label="图片" name="fourth">
         <div style="margin-bottom:20px">
@@ -165,7 +177,7 @@
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
-            :limit="3"
+            :limit="12"
             :on-exceed="handleExceed"
             :file-list="imageList"
             class="upload-demo"
@@ -186,9 +198,11 @@
 import { update, fetchDict } from '@/api/public'
 import { fetchDeviceList } from '@/api/sys/device'
 import request from '@/utils/request'
+import AttachmentSelect from '../../../components/AttachmentSelect/index'
 
 export default {
   name: 'ProgramEdit',
+  components: { AttachmentSelect },
   data() {
     return {
       load: false,
@@ -208,7 +222,8 @@ export default {
         approveStepList: [],
         approveResultList: []
       },
-      uploadurl: process.env.BASE_API + '/attach/upload?access_token=' + this.$store.getters.token,
+      biz: this.$route.query.id,
+      uploadurl: process.env.BASE_API + '/attach/upload?access_token=' + this.$store.getters.token + '&biz=' + this.$route.query.id,
       dialogImageUrl: '',
       dialogVisible: false,
       imageList: [
@@ -243,6 +258,8 @@ export default {
     this.gePictureList()
   },
   methods: {
+    handleSuccessFile(file) {
+    },
     handleRemove(file, fileList) {
       console.log(file, fileList)
     },

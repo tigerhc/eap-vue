@@ -9,12 +9,15 @@
         class="upload-demo">
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
-      <el-button size="small" type="primary">批量删除</el-button>
+      <el-button size="small" type="primary" @click="deleteAll">批量删除</el-button>
     </div>
     <el-table
       :data="fileList"
       style="width: 100%"
-      highlight-current-row>
+      highlight-current-row
+      @selection-change="onSelect"
+      @select="onSelect"
+      @select-all="onSelect">
       <el-table-column type="index" width="50" align="center"/>
       <el-table-column type="selection" width="55"/>
       <el-table-column prop="fileName" label="附件名称" align="center"/>
@@ -45,6 +48,10 @@ export default {
       type: String,
       default: process.env.BASE_API + '/attach/{id}/delete'
     },
+    removeurls: {
+      type: String,
+      default: process.env.BASE_API + '/attach/batch/delete'
+    },
     biz: {
       type: String,
       default: ''
@@ -54,6 +61,7 @@ export default {
     return {
       fileList: [],
       showlist: false,
+      multipleSelection: [],
       host: process.env.BASE_API
     }
   },
@@ -95,15 +103,76 @@ export default {
       this.$emit('onError', file)
       this.list = []
     },
+    onSelect(row) {
+      this.multipleSelection = row
+    },
+    deleteAll() {
+      if (this.multipleSelection.length > 0) {
+        const p = [
+          '此操作将永久删除数据, 是否继续?',
+          '提示',
+          {
+            type: 'warning'
+          }
+        ]
+        this.$confirm(...p)
+          .then(() => {
+            const ids = this.multipleSelection.map((i) => i.id).join(',')
+            request({
+              url: this.removeurls + '?access_token=' + this.access_token + '&ids=' + ids,
+              method: 'post'
+            }).then((res) => {
+              this.getFileList()
+              this.$notify({
+                title: '成功',
+                message: '删除成功',
+                type: 'success',
+                duration: 2000
+              })
+            })
+          })
+          .catch(() => {
+            this.$notify({
+              type: 'info',
+              message: '已取消删除',
+              duration: 2000
+            })
+          })
+      } else {
+        this.$notify({
+          showClose: true,
+          message: '请选择至少一条数据删除',
+          type: 'error',
+          duration: 2000
+        })
+      }
+    },
     onDelete(row) {
-      request({
-        url: this.removeurl.replace('{id}', row.id) + '?access_token=' + this.access_token,
-        method: 'post'
-      }).then((res) => {
-        console.log(res)
-        // this.fileList.remove(row)
-        this.getFileList()
-      })
+      const p = [
+        '此操作将永久删除数据, 是否继续?',
+        '提示',
+        {
+          type: 'warning'
+        }
+      ]
+      this.$confirm(...p)
+        .then((_) => {
+          request({
+            url: this.removeurl.replace('{id}', row.id) + '?access_token=' + this.access_token,
+            method: 'post'
+          }).then((res) => {
+            console.log(res)
+            // this.fileList.remove(row)
+            this.getFileList()
+            this.$notify({
+              title: '成功',
+              message: '删除成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        })
+        .catch((e) => e)
     }
   }
 }

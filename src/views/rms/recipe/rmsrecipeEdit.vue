@@ -173,7 +173,7 @@
       <el-tab-pane label="图片" name="fourth">
         <div style="margin-bottom:20px">
           <el-upload
-            :action="uploadurl"
+            :action="uploadimageurl"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
@@ -224,6 +224,7 @@ export default {
       },
       biz: this.$route.query.id,
       uploadurl: process.env.BASE_API + '/attach/upload?access_token=' + this.$store.getters.token + '&biz=' + this.$route.query.id,
+      uploadimageurl: process.env.BASE_API + '/attach/uploadImg?access_token=' + this.$store.getters.token + '&biz=' + this.$route.query.id,
       dialogImageUrl: '',
       dialogVisible: false,
       imageList: [

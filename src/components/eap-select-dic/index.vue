@@ -13,8 +13,8 @@ export default {
       default: ''
     },
     value: {
-      type: undefined,
-      default: ''
+      type: Array,
+      default: () => []
     },
     disabled: {
       type: Boolean,

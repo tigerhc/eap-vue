@@ -6,7 +6,7 @@
           <el-form-item label="程序名称" prop="recipeCode">
             <el-input v-model="editList.recipeCode"/>
           </el-form-item>
-          
+
           <el-form-item label="程序版本" prop="versionNo">
             <el-input v-model="editList.versionNo"/>
           </el-form-item>
@@ -88,21 +88,18 @@
             :data="ruleForm.tableData"
             :row-class-name="tableRowClassName"
             :height="tableHeight"
+            :cell-class-name="color"
             border
             fit
             style="width: 100%"
             highlight-current-row
-            :cell-class-name="color"
             @row-click="rowClick"
             @row-dblclick="doubleClick"
           >
             <el-table-column type="index" label="序号" width="50px" align="center"/>
-            <el-table-column prop="paraCode" label="参数CODE" align="center">
-              
-            </el-table-column>
-            <el-table-column prop="paraName" label="参数名称" align="center">
-            </el-table-column>
-            <el-table-column  label="设定值" align="center">
+            <el-table-column prop="paraCode" label="参数CODE" align="center"/>
+            <el-table-column prop="paraName" label="参数名称" align="center"/>
+            <el-table-column label="设定值" align="center">
               <el-table-column prop="setValue" label="New Value" align="center">
                 <template slot-scope="{row}">
                 <el-input
@@ -112,12 +109,12 @@
                 <span v-if="row.index !== doubleClickIndex" class="cell-text">{{ row.setValue }}</span>
               </template>
               </el-table-column>
-               <el-table-column prop="setValueOld" label="Old Value" align="center"></el-table-column>
-              
+               <el-table-column prop="setValueOld" label="Old Value" align="center"/>
+
             </el-table-column>
-            <el-table-column  label="最小值" align="center">
-               <el-table-column  prop="minValue" label="New Value" align="center">
-                 <template  slot-scope="{row}">
+            <el-table-column label="最小值" align="center">
+               <el-table-column prop="minValue" label="New Value" align="center">
+                 <template slot-scope="{row}">
                   <el-input
                     v-if="row.index === doubleClickIndex"
                     v-model="row.minValue"
@@ -125,10 +122,10 @@
                   <span v-if="row.index !== doubleClickIndex" class="cell-text">{{ row.minValue }}</span>
               </template>
                </el-table-column>
-               <el-table-column prop="minValueOld" label="Old Value" align="center"></el-table-column>
-              
+               <el-table-column prop="minValueOld" label="Old Value" align="center"/>
+
             </el-table-column>
-            <el-table-column  label="最大值" align="center">
+            <el-table-column label="最大值" align="center">
               <el-table-column prop="maxValue" label="New Value" align="center">
                 <template slot-scope="{row}">
                 <el-input
@@ -138,8 +135,8 @@
                 <span v-if="row.index !== doubleClickIndex" class="cell-text">{{ row.maxValue }}</span>
               </template>
                </el-table-column>
-               <el-table-column prop="maxValueOld" label="Old Value" align="center"></el-table-column>
-              
+               <el-table-column prop="maxValueOld" label="Old Value" align="center"/>
+
             </el-table-column>
           </el-table>
         </el-form>
@@ -155,24 +152,41 @@
         highlight-current-row
         >
         <el-table-column type="index" label="序号" width="50px" align="center"/>
-        <el-table-column prop="paraCode" label="附件名称" align="center">
-        </el-table-column>
-        <el-table-column prop="paraCode" label="附件类型" align="center">
-        </el-table-column>
-        <el-table-column prop="paraCode" label="附件大小" align="center">
-        </el-table-column>
-        <el-table-column prop="paraCode" label="创建时间" align="center">
-        </el-table-column>
+        <el-table-column prop="paraCode" label="附件名称" align="center"/>
+        <el-table-column prop="paraCode" label="附件类型" align="center"/>
+        <el-table-column prop="paraCode" label="附件大小" align="center"/>
+        <el-table-column prop="paraCode" label="创建时间" align="center"/>
         </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="图片" name="fourth">
+        <div style="margin-bottom:20px">
+          <el-upload
+            :action="uploadurl"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            :limit="3"
+            :on-exceed="handleExceed"
+            :file-list="imageList"
+            class="upload-demo"
+            list-type="picture-card"
+            multiple>
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible" width="500px" height="500px">
+            <img :src="dialogImageUrl" width="100%" height="100%" alt="">
+          </el-dialog>
+        </div>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 <script>
-import { fetchList, create, update, del, deteils, batchDelete, fetchDict } from '@/api/public'
+import { update, fetchDict } from '@/api/public'
 import { fetchDeviceList } from '@/api/sys/device'
 import request from '@/utils/request'
-import waves from '@/directive/waves' // 水波纹指令
+
 export default {
   name: 'ProgramEdit',
   data() {
@@ -194,11 +208,17 @@ export default {
         approveStepList: [],
         approveResultList: []
       },
+      uploadurl: process.env.BASE_API + '/attach/upload?access_token=' + this.$store.getters.token,
+      dialogImageUrl: '',
+      dialogVisible: false,
+      imageList: [
+
+      ],
       eqpModelNameList: [],
       ruleForm: {
         tableData: []
       },
-      fileData:[],
+      fileData: [],
       // 动态设置table高度
       tableHeight: document.body.scrollHeight - 210,
       tab: 'rms/rmsrecipe/',
@@ -216,12 +236,27 @@ export default {
   created() {
     this.getDictValue()
     this.id = this.$route.query.id
-    if (this.$route.query.type == 'deteils') {
+    if (this.$route.query.type === 'deteils') {
       this.showFlag = false
     }
     this.getDeteils()
+    this.gePictureList()
   },
   methods: {
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePreview(file) {
+      console.log(file)
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`)
+    },
     // 获取详情
     getDeteils() {
       request({
@@ -264,6 +299,14 @@ export default {
         this.dictList[name] = response.data
       })
     },
+    gePictureList() {
+      request({
+        url: 'attach/find?biz=' + this.id,
+        method: 'get'
+      }).then((res) => {
+        console.log(res)
+      })
+    },
     add() {
       if (this.ruleForm.tableData.length > 0) {
         this.$refs['ruleForm'].validate((valid) => {
@@ -289,8 +332,8 @@ export default {
       this.doubleClickIndex = this.ruleForm.tableData.length - 1
     },
     handleClick(tab, event) {
-      if(tab.index === '2') {
-        //查询附件
+      if (tab.index === '2') {
+        // 查询附件
         this.queryFiles()
       }
     },
@@ -319,7 +362,7 @@ export default {
       })
     },
     del() {
-      if (this.selectIndex != '') {
+      if (this.selectIndex !== '') {
         this.ruleForm.tableData.splice(this.selectIndex, 1)
       } else {
         this.$notify({
@@ -330,9 +373,9 @@ export default {
         })
       }
     },
-    queryFiles(){
+    queryFiles() {
       request({
-        url: 'rms/rmsrecipefile/'+this.id +'/findFileByRecipeId',
+        url: 'rms/rmsrecipefile/' + this.id + '/findFileByRecipeId',
         method: 'get',
         params: { }
       }).then((res) => {
@@ -342,7 +385,7 @@ export default {
     save() {
       let eqpModelName = ''
       this.eqpModelNameList.forEach((item) => {
-        if (item.id == this.editList.eqpModelId) {
+        if (item.id === this.editList.eqpModelId) {
           eqpModelName = item.classCode
         }
       })
@@ -360,7 +403,7 @@ export default {
         _detail: JSON.stringify(this.ruleForm.tableData)
       }
       update(this.tab, params).then((res) => {
-        if (res.data.code == 0) {
+        if (res.data.code === 0) {
           this.cancel()
           this.$notify({
             title: '成功',
@@ -381,7 +424,7 @@ export default {
     getView() {
       const List = this.$store.state.tagsView.visitedViews
       for (const item of List) {
-        if (item.name == 'programAdd') {
+        if (item.name === 'programAdd') {
           this.viewObj = item
         }
       }
@@ -438,14 +481,13 @@ export default {
       })
     },
     color({ row, column, rowIndex, columnIndex }) {
-      
-      if (row.minValue !== row.minValueOld && columnIndex == 5) {
+      if (row.minValue !== row.minValueOld && columnIndex === 5) {
         return 'warning-cell'
       }
-      if (row.setValue !== row.setValueOld && columnIndex == 3) {
+      if (row.setValue !== row.setValueOld && columnIndex === 3) {
         return 'warning-cell'
       }
-      if (row.maxValue !== row.maxValueOld && columnIndex == 7) {
+      if (row.maxValue !== row.maxValueOld && columnIndex === 7) {
         return 'warning-cell'
       }
       return ''

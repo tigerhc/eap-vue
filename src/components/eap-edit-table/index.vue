@@ -58,6 +58,10 @@ export default {
       type: String,
       default: ''
     },
+    opHide: {
+      type: Boolean,
+      default: null
+    },
     onloadsuccess: {
       type: Function,
       default: function(i) {
@@ -85,7 +89,7 @@ export default {
         exportsLoading: false
       },
       single: null,
-      opHide: null, // 隐藏操作列
+      // opHide: null, // 隐藏操作列
       searchOnly: null,
       colChildrenSet: {}, // 存放对应name 的 列的children；
       editId: '', // 正在编辑的id -1 表示新增

@@ -1,5 +1,12 @@
 import request from '@/utils/request'
 
+export function fetchHeader() {
+  return request({
+    url: '/sysProject/indexFour',
+    method: 'get'
+  })
+}
+
 export function fetchList() {
   return request({
     url: '/fab/fabequipmentstatus/listEqpStatus',

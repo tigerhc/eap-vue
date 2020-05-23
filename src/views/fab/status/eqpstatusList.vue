@@ -1,9 +1,33 @@
 <template>
   <div class="monitor">
-    <div style="height: 300px;">
-      <div id="monitorChart" :style="{width: '80%', height: '300px',float:'left'}"/>
-      <el-button style="float:right" type="text" @click="maxFull">最大化</el-button>
-    </div>
+    <el-row>
+      <el-col :span="8">
+        <el-button style="float:left" type="text" @click="maxFull"><date/></el-button>
+        <div style="height: 300px;">
+          <div id="monitorChart" :style="{width: '80%', height: '300px',float:'left'}"/>
+
+        </div>
+      </el-col>
+      <el-col :span="16">
+        <div><H3>工程成产情报</H3></div>
+        <div class="grid-content bg-purple-dark pdttable">
+
+          <panel-group @handleSetLineChartData="handleSetLineChartData"/>
+          <div class="item">
+            <span class="bigfont">站点</span>
+            <span class="bigfont">批次|数量</span>
+            <span class="bigfont">式挂|数量</span>
+            <span class="bigfont">稼动状况</span>
+          </div>
+          <div v-for="(item,index) in yieldList" :key="index" class="item">
+            <span class="bigfont">{{ item.step_code }}</span>
+            <span>{{ item.lot_no +"-"+item.lot_yield }}</span>
+            <span class="littlefont">{{ item.recipeCode }}</span>
+            <span :class="statusText[item.eqp_status]">{{ item.eqp_status }}</span>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
 
     <div class="content">
       <div v-for="(item,index) in tabData" :key="index" class="item">
@@ -17,12 +41,37 @@
 </template>
 <script>
 import echarts from 'echarts'
-import { fetchGetChart, fetchDataList } from '@/api/sys/monitor'
+import Date from '../../../components/Date/index'
+import { fetchGetChart, fetchDataList, fetchYield } from '@/api/sys/monitor'
 import Screenfull from '@/components/Screenfull'
+import PanelGroup from './components/PanelGroup'
+
+const lineChartData = {
+  newVisitis: {
+    expectedData: [100, 120, 161, 134, 105, 160, 165],
+    actualData: [120, 82, 91, 154, 162, 140, 145]
+  },
+  messages: {
+    expectedData: [200, 192, 120, 144, 160, 130, 140],
+    actualData: [180, 160, 151, 106, 145, 150, 130]
+  },
+  purchases: {
+    expectedData: [80, 100, 121, 104, 105, 90, 100],
+    actualData: [120, 90, 100, 138, 142, 130, 130]
+  },
+  shoppings: {
+    expectedData: [130, 140, 141, 142, 145, 150, 160],
+    actualData: [120, 82, 91, 154, 162, 140, 130]
+  }
+}
+
 export default {
   name: 'Monitor',
   components: {
-    Screenfull
+    Screenfull,
+    Date,
+    PanelGroup
+
   },
   data() {
     return {
@@ -30,6 +79,7 @@ export default {
       tabData: [],
       dataList: [],
       statusList: [],
+      yieldList: [],
       statusText: {
         ALARM: 'span-ALARM',
         DOWN: 'span-DOWN',
@@ -49,8 +99,12 @@ export default {
   mounted() {
     this.getData()
     this.getList()
+    this.getYield()
   },
   methods: {
+    handleSetLineChartData(type) {
+      this.lineChartData = lineChartData[type]
+    },
     getData() {
       fetchGetChart().then(response => {
         for (const item of response.data) {
@@ -60,6 +114,15 @@ export default {
         this.initChart()
       })
     },
+
+    getYield() {
+      fetchYield({
+        lineNo: 'SIM'
+      }).then(response => {
+        this.yieldList = response.data
+      })
+    },
+
     getList() {
       const params = {
         'sort': 'updateDate',
@@ -156,28 +219,60 @@ export default {
   background-color: DarkRed;
 }
 .monitor {
+  .pdttable {
+    border-top : 1px solid #dcdfe6;
+    /*padding-top: 10px;*/
+    display: flex;
+    //  justify-content: center;
+    flex-wrap: wrap;
+    .item {
+      display: flex;
+      width: 100px;
+      height: 80px;
+      border: 1px solid #500f0f;
+      flex-direction: column ;
+      margin-left: 0px;
+      margin-top: 0px;
+      span {
+        line-height: 20px;
+        text-align: center;
+        height: 20px;
+        border-bottom:1px solid #dcdfe6;
+        font-size:12px;
+      }
+      span.littlefont {
+        font-size:6px;
+      }
+      span.bigfont {
+        font-size:14px;
+        font-weight:bold;
+      }
+    }
+  }
+
     .content {
         border-top : 1px solid #dcdfe6;
-        padding-top: 20px;
+        padding-top: 10px;
         display: flex;
       //  justify-content: center;
         flex-wrap: wrap;
         .item {
             display: flex;
-            width: 150px;
-            height: 200px;
+            width: 100px;
+            height: 80px;
             border: 1px solid #500f0f;
             flex-direction: column ;
-            margin-left: 20px;
+            margin-left: 10px;
             margin-top: 20px;
             span {
-              line-height: 50px;
+              line-height: 20px;
               text-align: center;
-              height: 50px;
+              height: 20px;
               border-bottom:1px solid #dcdfe6;
+              font-size:12px;
             }
             span.littlefont {
-              font-size:12px;
+              font-size:6px;
             }
         }
     }

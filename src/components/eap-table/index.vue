@@ -117,7 +117,7 @@ export default {
       const handler = col['formatter.handler'] || col['handler']
 
       if (
-        !this.opHide &&
+        // !this.opHide &&
         handler &&
         (typeof this.$vnode.context[handler] === 'function' || typeof this[handler] === 'function')
       ) {

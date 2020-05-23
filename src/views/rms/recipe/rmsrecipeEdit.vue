@@ -200,7 +200,7 @@ export default {
       },
       biz: this.$route.query.id,
       uploadurl: process.env.BASE_API + '/attach/upload?access_token=' + this.$store.getters.token + '&biz=' + this.$route.query.id,
-      uploadimageurl: process.env.BASE_API + '/attach/uploadImg?access_token=' + this.$store.getters.token + '&biz=' + this.$route.query.id,
+      uploadimageurl: process.env.BASE_API + '/attach/uploadimg?access_token=' + this.$store.getters.token + '&biz=' + this.$route.query.id,
       dialogImageUrl: '',
       dialogVisible: false,
       imageList: [

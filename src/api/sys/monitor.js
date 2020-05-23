@@ -13,3 +13,11 @@ export function fetchDataList(query) {
     params: query
   })
 }
+
+export function fetchYield(data) {
+  return request({
+    url: '/fab/fabequipmentstatus/listPdtStatus',
+    method: 'get',
+    params: data
+  })
+}

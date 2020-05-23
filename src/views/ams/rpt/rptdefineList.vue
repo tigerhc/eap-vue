@@ -7,18 +7,11 @@
       <w-table-col name="eqpModelName" label="设备类型" align="left"/>
       <w-table-col name="repeatCycle" label="周期" width="80" align="center" dict="AMS_ALARM_TYPE" />
       <w-table-col name="repeatNum" label="累计次数" width="80" align="center" />
-
-      <!--<w-table-col name="sortCode" label="排序号" sort/>-->
-      <!-- todo filterable 属性-->
       <w-table-col name="eqpModelId" label="设备型号" hidden query dict url="/fab/fabequipmentmodel/list" namekey="modelName" condition="eq" filterable />
       <w-table-col name="activeFlag" label="激活状态" width="80" align="center" dict="MONITOR_FLAG" query condition="eq" />
       <w-table-col name="activeDate" label="激活时间" width="200" align="center" sort="1"/>
-      <!--hidden属性: 隐藏默认button url: 修改默认url 没有url,则默认调用属性name值的方法-->
       <w-table-toolbar name="add" url="views/ams/rpt/rptdefineEdit" />
-      <!--hidden属性: 隐藏默认button url: 修改默认url-->
-      <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
       <w-table-button v-if="row.activeFlag == 0" name="enable" label="启用" tip="确认启用？" icon="el-icon-bell" />
-      <!-- type='danger'  -->
       <w-table-button v-if="row.activeFlag == 1" name="diable" label="停用" tip="确认停用？" icon="el-icon-circle-close" type="warning" />
 
     </w-table>

@@ -3,18 +3,20 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+          <svg-icon icon-class="documentation" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">{{ dataList[0].name }}</div>
-          <count-to :start-val="0" :end-val="dataList[0].number" :duration="3000" class="card-panel-num"/>
+          <div class="card-panel-num">{{ dataList[0].number }}</div>
+          <!--{{dataList[0].number}}-->
+          <!--<count-to :start-val="0" :end-val="dataList[0].number" :duration="3000" class="card-panel-num"/>-->
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="message" class-name="card-panel-icon" />
+          <svg-icon icon-class="example" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">{{ dataList[1].name }}</div>
@@ -25,7 +27,7 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
+          <svg-icon icon-class="nested" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">{{ dataList[2].name }}</div>
@@ -35,11 +37,13 @@
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
-        <div class="card-panel-icon-wrapper icon-shopping">
-          <svg-icon icon-class="shopping" class-name="card-panel-icon" />
+        <div class="card-panel-icon-wrapper2 icon-shopping">
+          <!--<svg-icon icon-class="dashboard" class-name="card-panel-icon" />-->
+          <img v-if="dataList[3].number>=60" src="./1.jpg" class-name="card-panel-icon">
+          <img v-if="dataList[3].number<60" src="./2.jpg" class-name="card-panel-icon">
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">{{ dataList[3].name }}</div>
+          <div class="card-panel-text">{{ dataList[3].name }}%</div>
           <count-to :start-val="0" :end-val="dataList[3].number" :duration="3000" class="card-panel-num"/>
         </div>
       </div>
@@ -123,6 +127,13 @@ export default {
     .card-panel-icon-wrapper {
       float: left;
       margin: 14px 0 0 14px;
+      padding: 16px;
+      transition: all 0.38s ease-out;
+      border-radius: 6px;
+    }
+    .card-panel-icon-wrapper2 {
+      float: left;
+      margin: 4px 0 0 4px;
       padding: 16px;
       transition: all 0.38s ease-out;
       border-radius: 6px;

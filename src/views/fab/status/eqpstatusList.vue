@@ -2,30 +2,39 @@
   <div class="monitor">
     <el-row>
       <el-col :span="8">
-        <el-button style="float:left" type="text" @click="maxFull"><date/></el-button>
+        <el-button style="float:left" type="text" @click="maxFull"/>
         <div style="height: 300px;">
           <div id="monitorChart" :style="{width: '80%', height: '300px',float:'left'}"/>
 
         </div>
       </el-col>
       <el-col :span="16">
-        <div><H3>工程成产情报</H3></div>
-        <div class="grid-content bg-purple-dark pdttable">
+        <div><span style="font-size: 20px"><strong>SIM工程生产情报</strong></span>  <date/></div>
 
-          <panel-group @handleSetLineChartData="handleSetLineChartData"/>
-          <div class="item">
-            <span class="bigfont">站点</span>
-            <span class="bigfont">批次|数量</span>
-            <span class="bigfont">式挂|数量</span>
-            <span class="bigfont">稼动状况</span>
-          </div>
-          <div v-for="(item,index) in yieldList" :key="index" class="item">
-            <span class="bigfont">{{ item.step_code }}</span>
-            <span>{{ item.lot_no +"-"+item.lot_yield }}</span>
-            <span class="littlefont">{{ item.recipeCode }}</span>
-            <span :class="statusText[item.eqp_status]">{{ item.eqp_status }}</span>
-          </div>
-        </div>
+          <el-row>
+            <el-col :span="24">
+              <eqp-panel-group @handleSetLineChartData="handleSetLineChartData"/>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="24">
+              <div class="grid-content bg-purple-dark pdttable">
+              <div class="item">
+                <span class="bigfont">站点</span>
+                <span class="bigfont">批次|数量</span>
+                <span class="bigfont">式挂|数量</span>
+                <span class="bigfont">稼动状况</span>
+              </div>
+              <div v-for="(item,index) in yieldList" :key="index" class="item">
+                <span class="bigfont">{{ item.step_code }}</span>
+                <span>{{ item.lot_no +"-"+item.lot_yield }}</span>
+                <span class="littlefont">{{ item.recipeCode }}</span>
+                <span :class="statusText[item.eqp_status]">{{ item.eqp_status }}</span>
+              </div>
+            </div>
+            </el-col>
+          </el-row>
       </el-col>
     </el-row>
 
@@ -44,7 +53,7 @@ import echarts from 'echarts'
 import Date from '../../../components/Date/index'
 import { fetchGetChart, fetchDataList, fetchYield } from '@/api/sys/monitor'
 import Screenfull from '@/components/Screenfull'
-import PanelGroup from './components/PanelGroup'
+import EqpPanelGroup from './components/EqpPanelGroup'
 
 const lineChartData = {
   newVisitis: {
@@ -70,7 +79,7 @@ export default {
   components: {
     Screenfull,
     Date,
-    PanelGroup
+    EqpPanelGroup
 
   },
   data() {
@@ -220,7 +229,7 @@ export default {
 }
 .monitor {
   .pdttable {
-    border-top : 1px solid #dcdfe6;
+    /*border-top : 1px solid #dcdfe6;*/
     /*padding-top: 10px;*/
     display: flex;
     //  justify-content: center;

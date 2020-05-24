@@ -1,7 +1,5 @@
-<template>
-  <el-container id="box">
-    {{ date | formaDate }}
-  </el-container>
+<template><span>{{ date | formaDate }}</span>
+
 </template>
 <script>
 // 创建一个函数来增加月日时小于10在前面加0

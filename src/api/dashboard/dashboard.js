@@ -2,6 +2,13 @@ import request from '@/utils/request'
 
 export function fetchHeader() {
   return request({
+    url: '/aps/apsplanpdtyield/indexFour',
+    method: 'get'
+  })
+}
+
+export function fetchEqpHeader() {
+  return request({
     url: '/sysProject/indexFour',
     method: 'get'
   })

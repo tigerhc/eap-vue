@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: 'Eqp',
+  name: 'ApsplanpdtyieldList',
   data() {
     return {
       table: {

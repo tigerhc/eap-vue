@@ -1,27 +1,10 @@
 <template>
   <w-form v-bind="formConf" :col="3" :model="model">
-    <el-input v-model="model.eqpId" label="设备号" />
-    <el-input v-model="model.eqpNo" label="设备序号" />
-    <el-input v-model="model.eqpName" label="设备说明" />
-    <el-input v-model="model.fab" label="厂别" />
-    <el-input v-model="model.lineNo" label="线别" />
-    <w-select-dept v-model="model.officeIds" label="部门" />
-    <el-input v-model="model.bcCode" label="BC号" />
-    <el-input v-model="model.ip" label="机台IP地址" />
-
-    <!-- <w-select-device v-model="model.modelId" :display="model.modelName" label="设备型号名称" /> -->
-    <w-lookup
-      v-model="model.modelId"
-      :display.sync="model.modelName"
-      idkey="id"
-      displaykey="manufacturerName"
-      label="设备型号名称"
-      title="选择设备型号"
-      module="views/fab/eqpmodel/eqpmodelLook"
-    />
-    <el-input v-model="model.location" label="位置号" />
-    <w-select-dic v-model="model.activeFlag" style="width:100%" label="有效标志" dict="ACTIVE_FLAG" />
-    <el-input v-model="model.sortCode" label="排序号" />
+    <el-input v-model="model.productionNo" label="品番" />
+    <el-input v-model="model.productionName" label="品名" />
+    <el-input v-model="model.planDate" label="投入日期" />
+    <el-input v-model="model.lotQty" label="批次数量" />
+    <el-input v-model="model.planQty" label="投入数" />
     <el-row col="24" />
     <el-input v-model="model.createByName" :disabled="true" label="创建人" />
     <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
@@ -32,7 +15,7 @@
 </template>
 <script>
 export default {
-  name: 'MachineModel',
+  name: 'ApsplanpdtyieldEdit',
   data() {
     return {
       model: {
@@ -52,9 +35,9 @@ export default {
       formConf: {
         url: '/fab/fabequipment/',
         title: {
-          ADD: '新增设备',
-          EDIT: '修改设备',
-          VIEW: '设备详情'
+          ADD: '新增生产计划',
+          EDIT: '修改生产计划',
+          VIEW: '生产计划详情'
         },
         rules: {
           eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],

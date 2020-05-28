@@ -1,7 +1,19 @@
 <template>
   <div class="app-container calendar-list-container">
     <w-table v-bind="table" url="/dsk/edcdsklogproduction" sort="startTime.desc" >
-      <w-table-col name="eqpId" label="设备号" sort fixed align="left" handler="view" query condition="eq"/>
+      <w-table-col
+name="eqpId"
+label="设备号"
+sort
+fixed
+align="left"
+handler="view"
+query
+dict
+multiple
+url="/fab/fabequipment/eqpIdlist"
+namekey="id"
+condition="in"/>
       <w-table-col name="eqpModelName" label="设备型号" align="left" />
       <w-table-col name="lotNo" label="批号" align="center" query condition="like" />
       <w-table-col name="recipeCode" label="配方名" align="center" />

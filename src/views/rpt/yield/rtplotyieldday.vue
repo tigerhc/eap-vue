@@ -2,6 +2,18 @@
   <div class="Rtplotyieldday">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
+        <el-col :span="6">
+          <el-form-item label="线别" prop="lineNo">
+            <el-select v-model="form.lineNo">
+              <el-option
+v-for="item in lineNoOptions"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value"
+                         :disabled="item.disabled" />
+            </el-select>
+          </el-form-item>
+        </el-col>
         <el-col :span="9">
           <el-form-item label="日期" prop="dateTime">
             <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
@@ -23,13 +35,36 @@ export default {
   data() {
     return {
       form: {
+        lineNo: undefined,
         dateTime: []
       },
       formRules: {
+        lineNo: [{ required: true, message: '请选择线别！', trigger: 'change' }],
         dateTime: [{ required: true, message: '请选择时间！', trigger: 'change' }]
       },
       list: [],
-      source: []
+      source: [],
+      // 先写死
+      lineNoOptions: [{
+        value: 'SIM',
+        label: 'SIM'
+      }, {
+        value: 'SMA',
+        label: 'SMA',
+        disabled: true
+      }, {
+        value: 'SX',
+        label: 'SX',
+        disabled: true
+      }, {
+        value: '5GI',
+        label: '5GI',
+        disabled: true
+      }, {
+        value: '6GI',
+        label: '6GI',
+        disabled: true
+      }]
     }
   },
   mounted() {
@@ -47,7 +82,7 @@ export default {
           rtplotyieldday({
             beginTime: this.form.dateTime[0],
             endTime: this.form.dateTime[1],
-            lineNo: 'SIM'
+            lineNo: this.form.lineNo
           }).then((res) => {
             const data = res.data
             this.source = data.yield

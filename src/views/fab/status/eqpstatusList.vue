@@ -40,7 +40,7 @@
 
     <div class="content">
       <div v-for="(item,index) in tabData" :key="index" class="item">
-        <span>{{ item.eqpId }}</span>
+        <span :class="{ first: item.eqpId=='SIM-WB-1A' || item.eqpId=='SIM-PRINTER1' || item.eqpId=='SIM-TRM1' }" >{{ item.eqpId }}</span>
         <span>{{ item.lotNo }}</span>
         <span class="littlefont">{{ item.recipeCode }}</span>
         <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
@@ -272,16 +272,23 @@ export default {
             border: 1px solid #500f0f;
             flex-direction: column ;
             margin-left: 10px;
-            margin-top: 20px;
+            margin-top: 10px;
             span {
-              line-height: 20px;
+              /*line-height: 20px;*/
               text-align: center;
               height: 20px;
-              border-bottom:1px solid #dcdfe6;
+              border-bottom:0.5px solid #dcdfe6;
               font-size:12px;
             }
             span.littlefont {
               font-size:6px;
+            }
+            span.bigfont {
+              font-size:14px;
+              font-weight:bold;
+            }
+            span.first {
+              background-color: #24f506;
             }
         }
     }

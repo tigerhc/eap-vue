@@ -29,7 +29,7 @@
               <div v-for="(item,index) in yieldList" :key="index" class="item">
                 <span class="bigfont">{{ item.step_code }}</span>
                 <span>{{ item.lot_no +"-"+item.lot_yield }}</span>
-                <span class="littlefont">{{ item.recipeCode }}</span>
+                <span class="littlefont">{{ item.waitwip }}</span>
                 <span :class="statusText[item.eqp_status]">{{ item.eqp_status }}</span>
               </div>
             </div>
@@ -39,11 +39,13 @@
     </el-row>
 
     <div class="content">
-      <div v-for="(item,index) in tabData" :key="index" class="item">
+      <div v-for="(item,index) in tabData" :key="index" >
+        <div :class="{ firstItem: item.eqpId=='SIM-WB-1A' || item.eqpId=='SIM-PRINTER1' || item.eqpId=='SIM-TRM1' }" class="item" >
         <span :class="{ first: item.eqpId=='SIM-WB-1A' || item.eqpId=='SIM-PRINTER1' || item.eqpId=='SIM-TRM1' }" >{{ item.eqpId }}</span>
         <span>{{ item.lotNo }}</span>
         <span class="littlefont">{{ item.recipeCode }}</span>
         <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -240,7 +242,7 @@ export default {
       height: 80px;
       border: 1px solid #500f0f;
       flex-direction: column ;
-      margin-left: 0px;
+      margin-left: 2px;
       margin-top: 0px;
       span {
         line-height: 20px;
@@ -288,8 +290,14 @@ export default {
               font-weight:bold;
             }
             span.first {
-              background-color: #24f506;
+              background-color: #d4f54e;
             }
+        }
+        .firstItem {
+          /*margin-left: 120px;*/
+          word-break: normal;
+          word-wrap: break-word;
+          border: 1px solid #d4f54e;
         }
     }
 }

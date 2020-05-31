@@ -2,9 +2,9 @@
   <el-select :value="value" :disabled="disabled" multiple filterable placeholder="请选择" @change="onValueChange">
     <el-option
       v-for="item in options"
-      :key="item"
-      :label="item"
-      :value="item"/>
+      :key="item.id"
+      :label="item.id"
+      :value="item.id"/>
   </el-select>
 </template>
 
@@ -34,7 +34,8 @@ export default {
   mounted() {
     fetchEqpList()
       .then((response) => {
-        this.options = response.data
+        debugger
+        this.options = response.data.results
       })
       .finally(() => {
 

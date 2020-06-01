@@ -39,7 +39,7 @@
     </el-row>
 
     <!--<el-divider content-position="left"> 设备详细</el-divider>-->
-    <HR style="FILTER:alpha(opacity=100,finishopacity=0,style=3)" width="90%" color="#987cb9" SIZE="3" >
+    <hr style="FILTER:alpha(opacity=100,finishopacity=0,style=3)" width="90%" color="#987cb9" SIZE="3" >
 
     <div class="content">
       <div v-for="(item,index) in tabData2[0]" :key="index" >

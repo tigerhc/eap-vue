@@ -19,8 +19,8 @@ v-for="item in lineNoOptions"
       </el-row>
     </el-form>
     <el-table :data="tableData" style="width: 100%" >
-      <el-table-column v-for="col in cols" :key="col.prop" :fixed="col.fixed" :prop="col.prop" :label="col.label" :class-name="col.color">
-        <el-table-column v-for="(son, k) in col.child" :key="k" :prop="son.prop" :label="son.label" :class-name="son.color"/>
+      <el-table-column v-for="col in cols" :key="col.prop" :fixed="col.fixed" :prop="col.prop" :label="col.label" :class-name="col.color" :width="col.width">
+        <el-table-column v-for="(son, k) in col.child" :key="k" :prop="son.prop" :label="son.label" :class-name="son.color" :width="col.width"/>
       </el-table-column>
     </el-table>
   </div>
@@ -39,7 +39,7 @@ export default {
         { 'prop': 'lot_no', 'label': 'NO' }
       ],
       cols: [
-        { 'fixed': true, 'prop': 'production_name', 'label': '品名' },
+        { 'fixed': true, 'prop': 'production_name', 'label': '品名', 'width': '210' },
         { 'fixed': true, 'prop': 'lot_no', 'label': 'NO' }
       ], // 列集合
       lineNo: '',

@@ -38,16 +38,42 @@
       </el-col>
     </el-row>
 
+    <!--<el-divider content-position="left"> 设备详细</el-divider>-->
+    <HR style="FILTER:alpha(opacity=100,finishopacity=0,style=3)" width="90%" color="#987cb9" SIZE="3" >
+
     <div class="content">
-      <div v-for="(item,index) in tabData" :key="index" >
-        <div :class="{ firstItem: item.eqpId=='SIM-WB-1A' || item.eqpId=='SIM-PRINTER1' || item.eqpId=='SIM-TRM1' }" class="item" >
-        <span :class="{ first: item.eqpId=='SIM-WB-1A' || item.eqpId=='SIM-PRINTER1' || item.eqpId=='SIM-TRM1' }" >{{ item.eqpId }}</span>
-        <span>{{ item.lotNo }}</span>
-        <span class="littlefont">{{ item.recipeCode }}</span>
-        <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
+      <div v-for="(item,index) in tabData2[0]" :key="index" >
+        <div class="item" >
+          <span >{{ item.eqpId }}</span>
+          <span>{{ item.lotNo }}</span>
+          <span class="littlefont">{{ item.recipeCode }}</span>
+          <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
         </div>
       </div>
     </div>
+
+    <div class="content">
+      <div v-for="(item,index) in tabData2[1]" :key="index" >
+        <div class="item" >
+          <span >{{ item.eqpId }}</span>
+          <span>{{ item.lotNo }}</span>
+          <span class="littlefont">{{ item.recipeCode }}</span>
+          <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div v-for="(item,index) in tabData2[2]" :key="index" >
+        <div class="item" >
+          <span >{{ item.eqpId }}</span>
+          <span>{{ item.lotNo }}</span>
+          <span class="littlefont">{{ item.recipeCode }}</span>
+          <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 <script>
@@ -88,6 +114,7 @@ export default {
     return {
       chart: null,
       tabData: [],
+      tabData2: [[]],
       dataList: [],
       statusList: [],
       yieldList: [],
@@ -144,6 +171,26 @@ export default {
       }
       fetchDataList(params).then(res => {
         this.tabData = res.data
+        var lineIndex = 0
+        this.tabData2[1] = []
+        this.tabData2[2] = []
+        this.tabData2[3] = []
+        this.tabData.forEach(item => {
+          if (item.eqpId === 'SIM-WB-1A') {
+            lineIndex = 1
+          }
+          if (item.eqpId === 'SIM-TRM1') {
+            lineIndex = 2
+          }
+          this.tabData2[lineIndex].push(item)
+        })
+
+        // this.dataList.forEach(item => {
+        //   const obj = {}
+        //   obj.name = item.EQP_STATUS
+        //   obj.value = item.COUNT
+        //   arry.push(obj)
+        // })
       })
     },
     initChart() {
@@ -262,8 +309,9 @@ export default {
   }
 
     .content {
-        border-top : 1px solid #dcdfe6;
-        padding-top: 10px;
+      /*margin-top: 1px;*/
+        /*border-top : 1px solid #dcdfe6;*/
+        padding-top: 5px;
         display: flex;
       //  justify-content: center;
         flex-wrap: wrap;

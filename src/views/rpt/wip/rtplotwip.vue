@@ -20,7 +20,7 @@ v-for="item in lineNoOptions"
     </el-form>
     <el-table :data="tableData" style="width: 100%" >
       <el-table-column v-for="col in cols" :key="col.prop" :fixed="col.fixed" :prop="col.prop" :label="col.label" :class-name="col.color" :width="col.width">
-        <el-table-column v-for="(son, k) in col.child" :key="k" :prop="son.prop" :label="son.label" :class-name="son.color" :width="col.width"/>
+        <el-table-column v-for="(son, k) in col.child" :key="k" :prop="son.prop" :label="son.label" :class-name="son.color" :width="son.width"/>
       </el-table-column>
     </el-table>
   </div>

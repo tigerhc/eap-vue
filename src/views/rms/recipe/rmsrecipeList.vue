@@ -20,12 +20,12 @@
       <!--hidden属性: 隐藏默认button url: 修改默认url 没有url,则默认调用属性name值的方法-->
       <w-table-toolbar name="add" hidden url="views/rms/recipe/rmsrecipeEdit" />
       <w-table-toolbar hidden name="batchDelete" />
-      
+
       <w-table-button hidden name="delete" />
 
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
       <w-table-toolbar name="uploadRecipe" label="上传recipe" type="primary" tip="上传recipe？" icon="el-icon-circle-plus-outline" />
-      <w-table-button name="edit" label="升级" url="views/rms/recipe/rmsrecipeEdit" icon="el-icon-setting"  />
+      <w-table-button name="edit" label="升级" url="views/rms/recipe/rmsrecipeEdit" icon="el-icon-setting" />
 
     </w-table>
 
@@ -85,9 +85,9 @@ export default {
         })
       })
     },
-    //升级
-    upgrade(){
-      debugger
+    // 升级
+    upgrade() {
+      // debugger
     }
 
   }

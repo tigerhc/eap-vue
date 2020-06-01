@@ -40,7 +40,7 @@ export default {
       ],
       cols: [
         { 'fixed': true, 'prop': 'production_name', 'label': '品名', 'width': '210' },
-        { 'fixed': true, 'prop': 'lot_no', 'label': 'NO' }
+        { 'fixed': true, 'prop': 'lot_no', 'label': 'NO', 'width': '100' }
       ], // 列集合
       lineNo: '',
       form: {

@@ -34,7 +34,7 @@ export default {
   mounted() {
     fetchEqpList()
       .then((response) => {
-        debugger
+        // debugger
         this.options = response.data.results
       })
       .finally(() => {

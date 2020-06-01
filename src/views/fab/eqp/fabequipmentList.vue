@@ -82,7 +82,7 @@ export default {
     },
 
     initStatus(row, table, ctx) {
-      debugger
+      // debugger
       if (table.multipleSelection.length > 0) {
         this.$confirm('此操作将初始化设备状态数据, 是否继续?', '提示', {
           confirmButtonText: '确定',

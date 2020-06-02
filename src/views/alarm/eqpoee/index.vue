@@ -24,14 +24,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="设备号" prop="eqpId">
-            <w-select-eqp :span="8" :value="eqpNameList" :disabled="false" @onValueChange="onValueChange($event)"/>
-<!--            <el-input-->
-<!--              :autosize="{ minRows: 3}"-->
-<!--              v-model="form.eqpId"-->
-<!--              style="width:300px"-->
-<!--              type="textarea"-->
-<!--              placeholder="请输入内容"-->
-<!--            />-->
+            <w-select-eqp :span="8" :str="form.eqpId" :disabled="false" @input="onValueChange($event)"/>
           </el-form-item>
         </el-col>
         <el-button type="primary" @click="serch">查询</el-button>
@@ -119,7 +112,6 @@ export default {
       })
     },
     onValueChange(data) {
-      this.eqpNameList = data
       if (data == null || data === undefined || data.length <= 0) {
         this.form.eqpId = ''
       } else {

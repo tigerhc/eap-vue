@@ -1,49 +1,68 @@
 <template>
-  <el-select :value="value" :disabled="disabled" multiple filterable placeholder="请选择" @change="onValueChange">
+  <el-select v-bind="$attrs" :value="asyncValue" multiple filterable placeholder="请选择" @change="onValueChange">
     <el-option
-      v-for="item in options"
+      v-for="item in data"
       :key="item.id"
-      :label="item.id"
-      :value="item.id"/>
+      :label="item[namekey]"
+      :value="item[valuekey]"/>
   </el-select>
 </template>
 
 <script>
-import { fetchEqpList } from '@/api/dashboard/dashboard'
+import api from '../eap-table/fetch'
 export default {
   name: 'WSelectEqp',
   props: {
-    value: {
+    ary: {
       type: Array,
       default: () => []
     },
-    disabled: {
-      type: Boolean,
-      default: false
-    }
+    str: {
+      type: String,
+      default: ''
+    },
+    url: {
+      type: String,
+      default: '/fab/fabequipment/eqpIdlist'
+    },
+    namekey: { type: String, default: 'name' },
+    valuekey: { type: String, default: 'id' }
   },
   data: function() {
     return {
-      options: []
+      data: []
     }
   },
-  computed: {},
-  watch: {
-    value: function(v, o) {}
+  computed: {
+    api: function() {
+      return api(this.url)
+    },
+    asyncValue: function() {
+      if (this.ary && this.ary.length > 0) {
+        return this.ary
+      }
+      return this.str === '' ? [] : this.str.split(',')
+    }
   },
   mounted() {
-    fetchEqpList()
-      .then((response) => {
-        // debugger
-        this.options = response.data.results
-      })
-      .finally(() => {
-
-      })
+    this.api.anylist({ 'page.size': 99999 }).then(
+      (resp) => {
+        this.data = (resp && resp.results) || []
+      },
+      (e) => {
+      }
+    )
+    // fetchEqpList()
+    //   .then((response) => {
+    //     // debugger
+    //     this.options = response.data.results
+    //   })
+    //   .finally(() => {
+    //
+    //   })
   },
   methods: {
     onValueChange(e) {
-      this.$emit('onValueChange', e)
       this.$emit('input', e)
     }
   }

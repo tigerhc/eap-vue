@@ -94,3 +94,19 @@ export function rtplotyieldday(data) {
     params: data
   })
 }
+
+export function selectAlarmCountByLine(data) {
+  return request({
+    url: 'edc/edcamsrecord/selectAlarmCountByLine',
+    method: 'get',
+    params: data
+  })
+}
+
+export function selectAlarmCountByEqp(data) {
+  return request({
+    url: 'edc/edcamsrecord/selectAlarmCountByEqp',
+    method: 'get',
+    params: data
+  })
+}

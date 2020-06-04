@@ -23,7 +23,7 @@
               <div class="item">
                 <span class="bigfont">站点</span>
                 <span class="bigfont">批次|数量</span>
-                <span class="bigfont">式挂|数量</span>
+                <span class="bigfont">仕挂|数量</span>
                 <span class="bigfont">稼动状况</span>
               </div>
               <div v-for="(item,index) in yieldList" :key="index" class="item">
@@ -67,7 +67,7 @@
     <div class="content">
       <div v-for="(item,index) in tabData2[2]" :key="index" >
         <div class="item" >
-          <span >{{ item.eqpId }}</span>
+          <span :class="{ first: item.eqpId=='SIM-TRM1' }">{{ item.eqpId }}</span>
           <span>{{ item.lotNo }}</span>
           <span class="littlefont">{{ item.recipeCode }}</span>
           <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
@@ -180,7 +180,7 @@ export default {
           if (item.eqpId === 'SIM-WB-1A') {
             lineIndex = 1
           }
-          if (item.eqpId === 'SIM-TRM1') {
+          if (item.eqpId === 'SIM-AOI1') {
             lineIndex = 2
           }
           this.tabData2[lineIndex].push(item)
@@ -300,7 +300,7 @@ export default {
         font-size:12px;
       }
       span.littlefont {
-        font-size:6px;
+        font-size:10px;
       }
       span.bigfont {
         font-size:14px;
@@ -332,7 +332,7 @@ export default {
               font-size:12px;
             }
             span.littlefont {
-              font-size:6px;
+              font-size:8px;
             }
             span.bigfont {
               font-size:14px;

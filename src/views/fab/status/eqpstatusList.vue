@@ -309,45 +309,45 @@ export default {
     }
   }
 
-    .content {
-      /*margin-top: 1px;*/
-        /*border-top : 1px solid #dcdfe6;*/
-        padding-top: 5px;
-        display: flex;
-      //  justify-content: center;
-        flex-wrap: wrap;
-        .item {
-            display: flex;
-            width: 100px;
-            height: 80px;
-            border: 1px solid #500f0f;
-            flex-direction: column ;
-            margin-left: 10px;
-            margin-top: 10px;
-            span {
-              /*line-height: 20px;*/
-              text-align: center;
-              height: 20px;
-              border-bottom:0.5px solid #dcdfe6;
-              font-size:12px;
-            }
-            span.littlefont {
-              font-size:8px;
-            }
-            span.bigfont {
-              font-size:14px;
-              font-weight:bold;
-            }
-            span.first {
-              background-color: #d4f54e;
-            }
-        }
-        .firstItem {
-          /*margin-left: 120px;*/
-          word-break: normal;
-          word-wrap: break-word;
-          border: 1px solid #d4f54e;
-        }
-    }
+  .content {
+    /*margin-top: 1px;*/
+      /*border-top : 1px solid #dcdfe6;*/
+      padding-top: 5px;
+      display: flex;
+    //  justify-content: center;
+      flex-wrap: wrap;
+      .item {
+          display: flex;
+          width: 100px;
+          height: 80px;
+          border: 1px solid #500f0f;
+          flex-direction: column ;
+          margin-left: 10px;
+          margin-top: 10px;
+          span {
+            /*line-height: 20px;*/
+            text-align: center;
+            height: 20px;
+            border-bottom:0.5px solid #dcdfe6;
+            font-size:12px;
+          }
+          span.littlefont {
+            font-size:8px;
+          }
+          span.bigfont {
+            font-size:14px;
+            font-weight:bold;
+          }
+          span.first {
+            background-color: #d4f54e;
+          }
+      }
+      .firstItem {
+        /*margin-left: 120px;*/
+        word-break: normal;
+        word-wrap: break-word;
+        border: 1px solid #d4f54e;
+      }
+  }
 }
 </style>

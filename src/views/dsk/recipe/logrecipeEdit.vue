@@ -13,6 +13,7 @@
       <w-table-col name="paraCode" required label="参数CODE" sort />
       <w-table-col name="paraName" label="参数名称" align="left" />
       <w-table-col name="setValue" label="设定值" align="left" />
+      <w-table-col name="preValue" label="设定旧值" align="left" />
       <w-table-toolbar name="search" hidden/>
       <w-table-toolbar name="add" hidden/>
       <w-table-toolbar name="batchDelete" hidden />

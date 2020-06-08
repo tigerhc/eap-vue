@@ -41,6 +41,10 @@ export default {
     onLoadData: {
       type: Function,
       default: (v) => v
+    },
+    bottomBtn: {
+      type: Boolean,
+      default: false
     }
   },
   data: function() {
@@ -278,7 +282,7 @@ export default {
         >
           {this.wrapRow(this.resized || this.col)}
         </el-form>
-        <div slot='footer' class='add-footer'>
+        <div slot='footer' class='add-footer' hidden={this.bottomBtn}>
           <el-button on-click={this.cancel.bind(this)}>返回</el-button>
           {!this.readonlyMode && (
             <el-button type='primary' on-click={this.operating.bind(this)}>

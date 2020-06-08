@@ -1,37 +1,56 @@
 <template>
   <div>
-    <w-form v-bind="formConf" :col="3" :model="model">
-      <el-input v-model="model.recordId" label="流水号" />
-      <el-input v-model="model.eqpId" label="设备号" />
-      <el-input v-model="model.lotNo" label="批号" />
-      <el-input v-model="model.waferId" label="晶圆ID" />
-      <el-input v-model="model.timing" label="时机" />
-<!--      <w-select-dept v-model="model.sampleCount" label="采样数" />-->
-      <el-input v-model="model.status" label="状态" />
-      <el-input v-model="model.approveResult" label="判定结果" />
-      <el-row col="24" />
-      <el-input v-model="model.createByName" :disabled="true" label="创建人" />
-      <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
+    <w-form v-bind="formConf" :col="3" :model="model" :bottom-btn="true">
+      <el-input v-model="model.recordId" label="流水号"/>
+      <el-input v-model="model.eqpId" label="设备号"/>
+      <el-input v-model="model.lotNo" label="批号"/>
+      <el-input v-model="model.waferId" label="晶圆ID"/>
+      <el-input v-model="model.timing" label="时机"/>
+      <el-input v-model="model.sampleCount" label="采样数"/>
+      <el-input v-model="model.status" label="状态"/>
+      <el-input v-model="model.approveResult" label="判定结果"/>
+      <!--      <el-row col="24" />-->
+      <!--      <el-input v-model="model.createByName" :disabled="true" label="创建人" />-->
+      <!--      <el-input v-model="model.createDate" :disabled="true" label="创建日期" />-->
     </w-form>
-    <el-form v-if="rowData.length > 0" :model="model" disabled="true">
-      <div v-for="(item,index) in rowData" :key="item.id">
-        <el-row v-if="index%2==0">
-          <el-col :xs="24" :span="8">
-            <el-form-item :label="item.itemName" label-width="150px">
-              <el-input v-model="item.itemValue"/>
-            </el-form-item>
-          </el-col>
-          <el-col v-if="index < rowData.length" :xs="24" :span="8">
-            <el-form-item :label="rowData[index+1].itemName" label-width="150px">
-              <el-input v-model="rowData[index+1].itemValue"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
+    <div class="model">
+      <el-form v-if="rowData.length > 0" :model="model" disabled>
+        <div v-for="(item,index) in rowData" :key="item.id">
+          <el-row v-if="index%2==0">
+            <el-col :xs="24" :span="8">
+              <el-form-item :label="item.itemName" label-width="150px">
+                <el-input v-model="item.itemValue"/>
+              </el-form-item>
+            </el-col>
+            <el-col v-if="index < rowData.length" :xs="24" :span="8">
+              <el-form-item :label="rowData[index+1].itemName" label-width="150px">
+                <el-input v-model="rowData[index+1].itemValue"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+      </el-form>
+    </div>
+    <div class="model">
+      <div v-for="item in gridData" :key="item.id" style="margin-left: 150px;">
+        <el-table
+          :data="item.data"
+          stripe
+          style="width: 100%">
+          <div v-for="col in item.head" :key="col">
+            <el-table-column
+              :prop="col"
+              :label="col"
+              width="180"/>
+          </div>
+        </el-table>
       </div>
-    </el-form>
+    </div>
   </div>
 </template>
 <script>
+import Vue from 'vue'
+
 export default {
   name: 'MachineModel',
   data() {
@@ -50,33 +69,8 @@ export default {
         officeId: '',
         projectId: '2'
       },
-      rowData: [{
-        'delFlag': '0',
-        'id': '111',
-        'itemName': 'Range',
-        'itemResult': 'Y',
-        'itemValue': '10.1875',
-        'limitMax': '15',
-        'limitMin': '6',
-        'msRecordId': '41ac7f6818654f6eb48de5b96f31aafd',
-        'sampleNo': 1,
-        'showType': 'input',
-        'sortNo': 1
-      }, {
-        'delFlag': '0',
-        'id': '222',
-        'itemName': 'Points Tested',
-        'itemResult': 'Y',
-        'itemValue': '37',
-        'limitMax': '10',
-        'limitMin': '',
-        'limitType': '',
-        'msRecordId': '41ac7f6818654f6eb48de5b96f31aafd',
-        'sampleNo': 1,
-        'showType': 'input',
-        'sortNo': 2
-      }],
-      gridData: [],
+      rowData: [],
+      gridData: [], // 多个形式 gridData:[{id:'',head:[],data:[]}]
       formConf: {
         url: '/ms/msmeasurerecord/',
         title: {
@@ -92,14 +86,14 @@ export default {
         onLoadData: (m, type) => {
           console.info(m)
           // m.officeIds = m.officeIds.split(',')
-          // this.rowData = []
+          this.rowData = []
           this.gridData = []
           if (m.detail) {
             for (let i = 0; i < m.detail.length; i++) {
               if (m.detail[i].showType === 'input') {
-                // this.rowData.push(m.detail[i])
+                this.rowData.push(m.detail[i])
               } else if (m.detail[i].showType === 'grid') {
-                this.gridData.push(m.detail[i])
+                this.setGridData(m.detail[i].msRecordId, m.detail[i].itemName, m.detail[i].itemValue)
               }
             }
           }
@@ -117,6 +111,54 @@ export default {
   methods: {
     onDisplayChange(e) {
       this.model.modelName = e
+    },
+    setGridData(id, heads, grids) {
+      if (this.gridData.length <= 0) {
+        const gd = {}
+        gd.id = id
+        gd.head = heads.split(',')
+        const row = {}
+        const grid = grids.split(',')
+        gd.data = []
+        for (let j = 0; j < gd.head.length; j++) {
+          const hd = gd.head[j]
+          if (j < grid.length) {
+            Vue.set(row, hd, grid[j])
+          }
+        }
+        gd.data.push(row)
+        this.gridData.push(gd)
+      } else {
+        for (let i = 0; i < this.gridData.length; i++) {
+          let gd = this.gridData[i]
+          if (id === gd.id) {
+            const row = {}
+            const grid = grids.split(',')
+            for (let j = 0; j < gd.head.length; j++) {
+              const hd = gd.head[j]
+              if (j < grid.length) {
+                Vue.set(row, hd, grid[j])
+              }
+            }
+            gd.data.push(row)
+          } else {
+            gd = {}
+            gd.id = id
+            gd.head = heads.split(',')
+            const row = {}
+            const grid = grids.split(',')
+            gd.data = []
+            for (let j; j < gd.head.length; j++) {
+              const hd = gd.head[j]
+              if (j < grid.length) {
+                Vue.set(row, hd, grid[j])
+              }
+            }
+            gd.data.push(row)
+            this.gridData.push(gd)
+          }
+        }
+      }
     }
   }
 }

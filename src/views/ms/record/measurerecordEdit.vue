@@ -35,13 +35,15 @@
       <div v-for="item in gridData" :key="item.id" style="margin-left: 150px;">
         <el-table
           :data="item.data"
-          stripe
-          style="width: 100%">
+          :header-row-class-name="headStyle"
+          border
+          fit
+          stripe>
+          <el-table-column fixed type="index"/>
           <div v-for="col in item.head" :key="col">
             <el-table-column
               :prop="col"
-              :label="col"
-              width="180"/>
+              :label="col"/>
           </div>
         </el-table>
       </div>
@@ -159,7 +161,16 @@ export default {
           }
         }
       }
+    },
+    headStyle() {
+      return 'headStyle'
     }
   }
 }
 </script>
+<style lang="scss">
+  .el-table th,.headStyle {
+    background-color: #1e6abc;
+    color: white;
+  }
+</style>

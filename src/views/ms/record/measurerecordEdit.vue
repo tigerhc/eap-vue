@@ -19,12 +19,12 @@
           <el-row v-if="index%2==0">
             <el-col :xs="24" :span="8">
               <el-form-item :label="item.itemName" label-width="150px">
-                <el-input v-model="item.itemValue"/>
+                <el-input v-model="item.itemValue" :class="item.itemResult == 'N'?'jk-font-red':''"/>
               </el-form-item>
             </el-col>
             <el-col v-if="index < rowData.length" :xs="24" :span="8">
               <el-form-item :label="rowData[index+1].itemName" label-width="150px">
-                <el-input v-model="rowData[index+1].itemValue"/>
+                <el-input v-model="rowData[index+1].itemValue" :class="item.itemResult == 'N'?'jk-font-red':''"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -40,10 +40,14 @@
           fit
           stripe>
           <el-table-column fixed type="index"/>
-          <div v-for="col in item.head" :key="col">
+          <div v-for="(col, index) in item.head" :key="col">
             <el-table-column
               :prop="col"
-              :label="col"/>
+              :label="col">
+              <template slot-scope="scope">
+                <div :class="scope.row[index].className">{{ scope.row[index][col] }}</div>
+              </template>
+            </el-table-column>
           </div>
         </el-table>
       </div>
@@ -72,7 +76,7 @@ export default {
         projectId: '2'
       },
       rowData: [],
-      gridData: [], // 多个形式 gridData:[{id:'',head:[],data:[]}]
+      gridData: [], // 多个形式 gridData:[{id:'',head:['key1','key2','key3'],data:[[{'key1':'', }, 'key2':'', 'key3': ''],]}]
       formConf: {
         url: '/ms/msmeasurerecord/',
         title: {
@@ -95,7 +99,7 @@ export default {
               if (m.detail[i].showType === 'input') {
                 this.rowData.push(m.detail[i])
               } else if (m.detail[i].showType === 'grid') {
-                this.setGridData(m.detail[i].msRecordId, m.detail[i].itemName, m.detail[i].itemValue)
+                this.setGridData(m.detail[i], m.detail[i].msRecordId, m.detail[i].itemName, m.detail[i].itemValue)
               }
             }
           }
@@ -114,49 +118,45 @@ export default {
     onDisplayChange(e) {
       this.model.modelName = e
     },
-    setGridData(id, heads, grids) {
-      if (this.gridData.length <= 0) {
-        const gd = {}
+    groupData(gd, id, heads, grids, itemResult, limitMin, limitMax) {
+      if (gd === null) {
+        gd = {}
         gd.id = id
-        gd.head = heads.split(',')
-        const row = {}
-        const grid = grids.split(',')
+        gd.head = heads
         gd.data = []
-        for (let j = 0; j < gd.head.length; j++) {
-          const hd = gd.head[j]
-          if (j < grid.length) {
-            Vue.set(row, hd, grid[j])
+      }
+      const row = []
+      for (let j = 0; j < heads.length; j++) {
+        const hd = heads[j]
+        if (j < grids.length) {
+          const cel = {}
+          Vue.set(cel, hd, grids[j])
+          if (itemResult === 'N' && (grids[j] < limitMin[j] || grids[j] > limitMax[j])) {
+            Vue.set(cel, 'className', 'jk-font-red')
           }
+          row.push(cel)
         }
-        gd.data.push(row)
+      }
+      gd.data.push(row)
+      return gd
+    },
+    setGridData(detail) {
+      const id = detail.msRecordId
+      const heads = detail.itemName
+      const grids = detail.itemValue
+      const itemResult = detail.itemResult
+      const limitMin = detail.limitMin ? detail.limitMin.split(',') : []
+      const limitMax = detail.limitMax ? detail.limitMax.split(',') : []
+      if (this.gridData.length <= 0) {
+        const gd = this.groupData(null, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax)
         this.gridData.push(gd)
       } else {
         for (let i = 0; i < this.gridData.length; i++) {
-          let gd = this.gridData[i]
-          if (id === gd.id) {
-            const row = {}
-            const grid = grids.split(',')
-            for (let j = 0; j < gd.head.length; j++) {
-              const hd = gd.head[j]
-              if (j < grid.length) {
-                Vue.set(row, hd, grid[j])
-              }
-            }
-            gd.data.push(row)
+          if (id === this.gridData[i].id) {
+            const gd = this.gridData[i]
+            this.groupData(gd, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax)
           } else {
-            gd = {}
-            gd.id = id
-            gd.head = heads.split(',')
-            const row = {}
-            const grid = grids.split(',')
-            gd.data = []
-            for (let j; j < gd.head.length; j++) {
-              const hd = gd.head[j]
-              if (j < grid.length) {
-                Vue.set(row, hd, grid[j])
-              }
-            }
-            gd.data.push(row)
+            const gd = this.groupData(null, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax)
             this.gridData.push(gd)
           }
         }
@@ -169,8 +169,16 @@ export default {
 }
 </script>
 <style lang="scss">
-  .el-table th,.headStyle {
+  .el-table th, .headStyle {
     background-color: #1e6abc;
     color: white;
+  }
+
+  .el-input.is-disabled.jk-font-red .el-input__inner {
+    color: red;
+  }
+
+  .el-table tr .jk-font-red {
+    color: red;
   }
 </style>

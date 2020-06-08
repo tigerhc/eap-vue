@@ -35,26 +35,27 @@ export default {
       formConf: {
         url: '/ms/msmeasurerecord/',
         title: {
-          ADD: '新增设备',
-          EDIT: '修改设备',
-          VIEW: '设备详情'
+          ADD: '新增记录',
+          EDIT: '修改记录',
+          VIEW: '记录详情'
         },
         rules: {
           eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
           modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
           activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
-        },
-        onLoadData: (m, type) => {
-          console.info(m)
-          m.officeIds = m.officeIds.split(',')
-          return m
-        },
-        beforeSubmit: (params, type) => {
-          const re = { ...params }
-          re.officeId = re.officeIds[re.officeIds.length - 1]
-          re.officeIds = undefined
-          return re
         }
+        // ,
+        // onLoadData: (m, type) => {
+        //   console.info(m)
+        //   m.officeIds = m.officeIds.split(',')
+        //   return m
+        // },
+        // beforeSubmit: (params, type) => {
+        //   const re = { ...params }
+        //   re.officeId = re.officeIds[re.officeIds.length - 1]
+        //   re.officeIds = undefined
+        //   return re
+        // }
       }
     }
   },

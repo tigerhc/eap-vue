@@ -16,7 +16,7 @@
     <div class="model">
       <el-form v-if="rowData.length > 0" :model="model" disabled>
         <div v-for="(item,index) in rowData" :key="item.id">
-          <el-row v-if="index%2==0">
+          <el-row v-if="index%3==0">
             <el-col :xs="24" :span="8">
               <el-form-item :label="item.itemName" label-width="150px">
                 <el-input v-model="item.itemValue" :class="item.itemResult == 'N'?'jk-font-red':''"/>
@@ -24,7 +24,12 @@
             </el-col>
             <el-col v-if="(index+1) < rowData.length" :xs="24" :span="8">
               <el-form-item :label="rowData[index+1].itemName" label-width="150px">
-                <el-input v-model="rowData[index+1].itemValue" :class="item.itemResult == 'N'?'jk-font-red':''"/>
+                <el-input v-model="rowData[index+1].itemValue" :class="rowData[index+1].itemResult == 'N'?'jk-font-red':''"/>
+              </el-form-item>
+            </el-col>
+            <el-col v-if="(index+2) < rowData.length" :xs="24" :span="8">
+              <el-form-item :label="rowData[index+2].itemName" label-width="150px">
+                <el-input v-model="rowData[index+2].itemValue" :class="rowData[index+2].itemResult == 'N'?'jk-font-red':''"/>
               </el-form-item>
             </el-col>
           </el-row>

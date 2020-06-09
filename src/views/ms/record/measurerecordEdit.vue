@@ -22,7 +22,7 @@
                 <el-input v-model="item.itemValue" :class="item.itemResult == 'N'?'jk-font-red':''"/>
               </el-form-item>
             </el-col>
-            <el-col v-if="index < rowData.length" :xs="24" :span="8">
+            <el-col v-if="(index+1) < rowData.length" :xs="24" :span="8">
               <el-form-item :label="rowData[index+1].itemName" label-width="150px">
                 <el-input v-model="rowData[index+1].itemValue" :class="item.itemResult == 'N'?'jk-font-red':''"/>
               </el-form-item>

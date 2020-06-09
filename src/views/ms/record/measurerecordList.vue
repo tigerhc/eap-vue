@@ -4,9 +4,9 @@
       <w-table-col name="recordId" label="流水号" width="200" sort query condition="like" align="left" handler="view"/>
       <w-table-col name="eqpId" label="设备号" align="center" query condition="like" />
       <w-table-col name="lotNo" label="批号" width="180" align="left" query condition="like" />
-      <w-table-col name="waferId" label="晶圆ID" align="left" />
-      <w-table-col name="timing" label="时机" align="center" />
-      <w-table-col name="sampleCount" label="采样数" align="right" />
+      <w-table-col name="waferId" label="晶圆ID" width="180" align="left" />
+      <w-table-col name="timing" label="时机" width="80" align="center" />
+      <w-table-col name="sampleCount" label="采样数" width="80" align="right" />
       <w-table-col name="status" label="状态" align="center" dict="RECORD_STATUS" />
       <w-table-col name="approveResult" label="判定结果" align="center" dict="JUDGE_RESULT" query condition="eq" />
       <w-table-col name="fileFlag" label="采样文件" width="80" align="center" dict="YNYW" />

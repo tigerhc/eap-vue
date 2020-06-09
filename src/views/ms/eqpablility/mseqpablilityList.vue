@@ -1,16 +1,19 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-slot="{row}" v-bind="table" url="/ms/msmeasurerecord" sort="create_date.desc" >
-      <w-table-col name="recordId" label="流水号" sort fixed align="left" handler="view"/>
-      <w-table-col name="eqpId" label="设备号" align="left"/>
-      <w-table-col name="lotNo" label="批号" width="100" align="left"/>
-      <w-table-col name="waferId" label="晶圆ID" align="left" />
-      <w-table-col name="timing" label="时机" align="center" />
-      <w-table-col name="sampleCount" label="采样数" align="center" />
-      <w-table-col name="status" label="状态" align="center"/>
-      <w-table-col name="approveResult" label="判定结果" />
-      <w-table-col name="fileFlag" label="采样文件" width="80" align="center" dict="ACTIVE_FLAG" query condition="eq" />
-      <w-table-toolbar name="add" url="views/ms/record/measurerecordEdit" />
+    <w-table v-slot="{row}" v-bind="table" url="/fab/fabequipmentmodel" sort="create_date.desc" >
+      <w-table-col name="manufacturerName" label="设备厂家" width="300" query condition="like" fixed handler="view"/>
+      <w-table-col name="classCode" label="设备类型" width="300" query condition="like" />
+      <w-table-col name="activeFlag" label="有效标志" width="200" dict="ACTIVE_FLAG" />
+      <w-table-col
+        name="updateDate"
+        label="更新时间"
+        width="200"
+        sort
+        query
+        querymode="date"
+        condition="between"
+      />
+      <w-table-toolbar name="add" url="views/ms/eqpablility/mseqpablilityEdit" />
       <w-table-toolbar name="batchDelete" hidden/>
       <w-table-button name="delete" hidden/>
       <w-table-button name="edit" hidden/>
@@ -22,7 +25,7 @@
 
 <script>
 export default {
-  name: 'MeasurerecordList',
+  name: 'MseqpablilityList',
   data() {
     return {
       table: {

@@ -11,6 +11,7 @@
       <w-table-col name="approveResult" label="判定结果" align="center" dict="JUDGE_RESULT" query condition="eq" />
       <w-table-col name="fileFlag" label="采样文件" width="80" align="center" dict="YNYW" />
       <w-table-col name="imgFlag" label="采样图片" width="80" align="center" dict="YNYW" />
+      <w-table-col name="createDate" label="上报时间" width="200" align="center" sort="1" query querymode="date" condition="between"/>
       <w-table-toolbar name="add" url="views/ms/record/measurerecordEdit" hidden/>
       <w-table-toolbar name="batchDelete" hidden/>
       <w-table-button name="delete" hidden/>

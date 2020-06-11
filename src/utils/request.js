@@ -6,7 +6,7 @@ import qs from 'qs'
 
 // 转换请求方式
 axios.defaults.transformRequest = [function(data) {
-  return qs.stringify(data)
+  return qs.stringify(data, { arrayFormat: 'indices', allowDots: true })
 }]
 // create an axios instance
 const service = axios.create({

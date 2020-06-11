@@ -11,7 +11,6 @@
       <w-table-toolbar name="add" url="views/ms/config/measureconfigEdit" />
       <w-table-toolbar name="batchDelete" hidden/>
       <w-table-button name="delete" hidden/>
-      <w-table-button name="edit" hidden/>
     </w-table>
   </div>
 </template>

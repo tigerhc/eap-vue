@@ -1,43 +1,37 @@
 <template>
   <w-form v-bind="formConf" :col="3" :model="model">
-    <el-input v-model="model.recordId" label="流水号" />
-    <el-input v-model="model.eqpId" label="设备号" />
-    <el-input v-model="model.lotNo" label="批号" />
-    <el-input v-model="model.waferId" label="晶圆ID" />
-    <el-input v-model="model.timing" label="时机" />
-    <w-select-dept v-model="model.sampleCount" label="采样数" />
-    <el-input v-model="model.status" label="状态" />
-    <el-input v-model="model.approveResult" label="判定结果" />
+    <el-input v-model="model.eqpModelName" label="设备型号" />
+    <w-select-dic v-model="model.msGetType" style="width:100%" label="取值方式" dict="MS_GET_TYPE" />
+    <el-row col="24" />
+    <el-input v-model="model.param1" label="参数1" />
+    <el-input v-model="model.param2" label="参数2" />
+    <el-input v-model="model.param3" label="参数3" />
+    <el-input v-model="model.param4" label="参数4" />
+    <el-input v-model="model.param5" label="参数5" />
     <el-row col="24" />
     <el-input v-model="model.createByName" :disabled="true" label="创建人" />
     <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
+    <el-row col="24" />
+    <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
+    <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
   </w-form>
 </template>
 <script>
 export default {
-  name: 'MachineModel',
+  name: 'Mseqpparam',
   data() {
     return {
       model: {
-        eqpId: '',
-        officeIds: [],
-        bcCode: '',
-        ip: '',
-        modelName: '',
-        modelId: '',
-        location: '',
-        activeFlag: '',
-        delFlag: 0,
-        officeId: '',
-        projectId: '2'
+        eqpModelName: '',
+        msGetType: ''
       },
 
       formConf: {
-        url: '/ms/msmeasurerecord/',
+        url: '/ms/mseqpparam/',
         title: {
-          ADD: '新增设备',
-          EDIT: '修改设备',
-          VIEW: '设备详情'
+          ADD: '新增量测设备',
+          EDIT: '修改量测设备',
+          VIEW: '量测设备详情'
         },
         rules: {
           eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
@@ -45,16 +39,17 @@ export default {
           activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
         },
         onLoadData: (m, type) => {
-          console.info(m)
-          m.officeIds = m.officeIds.split(',')
-          return m
-        },
-        beforeSubmit: (params, type) => {
-          const re = { ...params }
-          re.officeId = re.officeIds[re.officeIds.length - 1]
-          re.officeIds = undefined
-          return re
+          // console.info(m)
+          // m.officeIds = m.officeIds.split(',')
+          // return m
         }
+        // ,
+        // beforeSubmit: (params, type) => {
+        //   const re = { ...params }
+        //   re.officeId = re.officeIds[re.officeIds.length - 1]
+        //   re.officeIds = undefined
+        //   return re
+        // }
       }
     }
   },

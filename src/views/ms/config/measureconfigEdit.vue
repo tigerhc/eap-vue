@@ -69,6 +69,7 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-button v-if="type=='EDIT'" type="primary" style="margin-top: 10px;" @click="newGrid">添加</el-button>
       </el-row>
     </w-form>
   </div>
@@ -78,6 +79,7 @@ export default {
   name: 'MachineModel',
   data() {
     return {
+      type: 'View',
       model: {
         eqpModelName: '',
         productionNo: '',
@@ -116,9 +118,16 @@ export default {
       }
     }
   },
+  created() {
+    this.type = this.$route.query.type
+  },
   methods: {
     tableRowClassName({ row, rowIndex }) {
       row.index = rowIndex
+    },
+    newGrid() {
+      const p = { paraName: '', paraCode: '', itemCode: '', itemName: '', limitMax: '', limitMin: '', limitType: '', sampleCount: '' }
+      this.model.detail.push(p)
     }
   }
 }

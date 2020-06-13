@@ -178,7 +178,10 @@ export default {
     background-color: #1e6abc;
     color: white;
   }
-
+  .el-table {
+    /*min-height: calc(100vh - 84px - 96px - 42px);*/
+    min-height: auto;
+  }
   .el-input.is-disabled.jk-font-red .el-input__inner {
     color: red;
   }

@@ -110,6 +110,7 @@ export default {
       this.refresh(1) // 初始加载第一页
     },
     renderColumn(row, col) {
+      const foldcolor = col.foldcolor
       const val = row[col.name]
       if (col.formatter && typeof col.formatter === 'function') {
         return col.formatter(val, col, this, row)
@@ -145,6 +146,9 @@ export default {
       if (dict) {
         const dictList = this.dictList(dict) || []
         const v = dictList.find((i) => i.value === val)
+        if (foldcolor && val === 'N') {
+          return <div class='jk-font-red'>{(v && v.label) || val}</div>
+        }
         return (v && v.label) || val
       }
       return val
@@ -754,7 +758,9 @@ export default {
       const conf = {
         props: { align: 'center', ...col, prop: col.name, sortable: col.sort || col.sort === '' },
         scopedSlots: {
-          default: (scope) => this.renderColumn(scope.row, col)
+          default: (scope) => {
+            return this.renderColumn(scope.row, col)
+          }
         }
       }
       return <el-table-column {...conf} key={col.id} />

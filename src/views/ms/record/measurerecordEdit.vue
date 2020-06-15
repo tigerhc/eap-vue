@@ -8,7 +8,7 @@
       <el-input v-model="model.timing" label="时机"/>
       <el-input v-model="model.sampleCount" label="采样数"/>
       <el-input v-model="model.status" label="状态"/>
-      <el-input v-model="model.approveResult" label="判定结果"/>
+      <w-select-dic v-model="model.approveResult" style="width:100%" label="判定结果" dict="JUDGE_RESULT" />
       <!--      <el-row col="24" />-->
       <!--      <el-input v-model="model.createByName" :disabled="true" label="创建人" />-->
       <!--      <el-input v-model="model.createDate" :disabled="true" label="创建日期" />-->

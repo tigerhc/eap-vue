@@ -814,7 +814,8 @@ function isHidden(conf) {
 .jk-table-container {
   min-height: calc(100vh - 84px) ;
 }
+/*96.4px 所以后面又减了1*/
 .el-table{
-  min-height: calc(100vh - 84px - 96px - 42px ) ;
+  min-height: calc(100vh - 84px - 96px - 42px - 1px ) ;
 }
 </style>

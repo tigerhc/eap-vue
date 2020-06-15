@@ -44,12 +44,12 @@
       </el-table-column>
       <el-table-column align="center" label="是否首页显示">
         <template slot-scope="scope">
-          <el-checkbox v-model="scope.row.showFlag"></el-checkbox>
+          <el-checkbox v-model="scope.row.showFlag"/>
         </template>
       </el-table-column>
       <el-table-column align="center" label="是否监控">
         <template slot-scope="scope">
-          <el-checkbox v-model="scope.row.monitorFlag"></el-checkbox>
+          <el-checkbox v-model="scope.row.monitorFlag"/>
         </template>
       </el-table-column>
       <el-table-column align="center" label="排序号">
@@ -78,11 +78,12 @@
 </template>
 
 <script>
-import { fetchList, create, update, del, deteils, batchDelete,batchUpdate } from '@/api/public'
+// eslint-disable-next-line no-unused-vars
+import { fetchList, create, update, del, deteils, batchDelete, batchUpdate } from '@/api/public'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
-  name: 'ovenEditModel',
+  name: 'OvenEditModel',
   directives: {
     waves
   },
@@ -92,17 +93,17 @@ export default {
       list: null,
       total: null,
       listLoading: true,
-      showFlag:true,
+      showFlag: true,
       multipleSelection: [], // 存放选中的值
-      item:{},
+      item: {},
       tab: '/rms/rmsrecipetemplate/',
-      oldPage:1,
+      oldPage: 1,
       listQuery: {
         page: 1,
         limit: 10,
-        eqpModelId:'',
+        eqpModelId: '',
         paraName: undefined,
-        paraShortName: undefined,
+        paraShortName: undefined
       }
     }
   },
@@ -115,33 +116,33 @@ export default {
     getList() {
       this.listLoading = true
       const params = this.changeParams(this.listQuery)
-      fetchList(this.tab,params).then(response => {
+      fetchList(this.tab, params).then(response => {
         this.list = response.data.results
         this.getNewList()
         this.total = response.data.total
         this.listLoading = false
       })
     },
-    //获取新list
-    getNewList(){
+    // 获取新list
+    getNewList() {
       this.list.forEach(item => {
-        if(item.showFlag == 'N'){
+        if (item.showFlag === 'N') {
           item.showFlag = false
         } else {
           item.showFlag = true
         }
-        if(item.monitorFlag == 'N'){
+        if (item.monitorFlag === 'N') {
           item.monitorFlag = false
         } else {
           item.monitorFlag = true
         }
-      });
+      })
     },
     // 转换入参
     changeParams(obj) {
       const params = {
         'page.pn': obj.page,
-        'query.eqpModelId||eq':obj.eqpModelId,
+        'query.eqpModelId||eq': obj.eqpModelId,
         'page.size': obj.limit,
         'sort.sortNo': 'asc',
         'query.paraName||like': obj.paraName || '',
@@ -150,58 +151,58 @@ export default {
       }
       return params
     },
-    //校验
-    valite(){
+    // 校验
+    valite() {
 
     },
     handleFilter() {
       this.$confirm('此操作会覆盖之前的编辑数据,确定继续吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() =>{
-          this.listQuery.page = 1
-          this.getList()
-        }).catch(() => {
-          this.$notify({
-            type: 'info',
-            message: '已取消操作'
-          })
-        });
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.listQuery.page = 1
+        this.getList()
+      }).catch(() => {
+        this.$notify({
+          type: 'info',
+          message: '已取消操作'
+        })
+      })
     },
     handleSizeChange(val) {
-      let i = this.listQuery.limit
+      const i = this.listQuery.limit
       this.listQuery.limit = val
       this.$confirm('此操作会覆盖之前的编辑数据,确定继续吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() =>{
-          this.getList()
-        }).catch(() => {
-          this.listQuery.limit = i
-          this.$notify({
-            type: 'info',
-            message: '已取消操作'
-          })
-        });
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.getList()
+      }).catch(() => {
+        this.listQuery.limit = i
+        this.$notify({
+          type: 'info',
+          message: '已取消操作'
+        })
+      })
     },
     handleCurrentChange(val) {
-      this.listQuery.page  = val
+      this.listQuery.page = val
       this.$confirm('此操作会覆盖之前的编辑数据,确定继续吗?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() =>{
-          this.oldPage = this.listQuery.page
-          this.getList()
-        }).catch(() => {
-          this.listQuery.page = this.oldPage
-          this.$notify({
-            type: 'info',
-            message: '已取消操作'
-          })
-        });
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.oldPage = this.listQuery.page
+        this.getList()
+      }).catch(() => {
+        this.listQuery.page = this.oldPage
+        this.$notify({
+          type: 'info',
+          message: '已取消操作'
+        })
+      })
     },
     // 选中触发事件
     handleSelectionChange(row) {
@@ -212,26 +213,26 @@ export default {
     chooseOne(row) {
       this.multipleSelection = row
     },
-    updateData(){
+    updateData() {
       this.list.forEach(item => {
-        if(item.showFlag){
+        if (item.showFlag) {
           item.showFlag = 'Y'
         } else {
           item.showFlag = 'N'
         }
-        if(item.monitorFlag){
+        if (item.monitorFlag) {
           item.monitorFlag = 'Y'
         } else {
           item.monitorFlag = 'N'
         }
-      });
+      })
       const params = {
-        recipeTemplateList:JSON.stringify(this.list),
-        id:this.item.id
+        recipeTemplateList: JSON.stringify(this.list),
+        id: this.item.id
       }
       batchUpdate(this.tab, params).then((res) => {
-        if (res.data.code == 0) {
-         // this.cancel()
+        if (res.data.code === 0) {
+          // this.cancel()
           this.$notify({
             title: '成功',
             message: '修改成功',
@@ -257,7 +258,7 @@ export default {
     getView() {
       const List = this.$store.state.tagsView.visitedViews
       for (const item of List) {
-        if (item.name == 'ovenEditModel') {
+        if (item.name === 'OvenEditModel') {
           this.viewObj = item
         }
       }
@@ -265,7 +266,7 @@ export default {
     openDeteils(item) {
 
     },
-    handleUpdate(){
+    handleUpdate() {
 
     }
   }
@@ -281,6 +282,4 @@ export default {
     }
 }
 </style>
-
-
 

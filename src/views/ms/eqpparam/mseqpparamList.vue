@@ -9,9 +9,6 @@
       <w-table-col name="param4" label="参数4" width="100" align="left" />
       <w-table-col name="param4" label="参数5" width="100" align="left"/>
       <w-table-toolbar name="add" url="views/ms/eqpparam/mseqpparamEdit" />
-      <w-table-toolbar name="batchDelete" hidden/>
-      <w-table-button name="delete" hidden/>
-      <w-table-button name="edit" hidden/>
 
     </w-table>
 
@@ -24,7 +21,6 @@ export default {
   data() {
     return {
       table: {
-        opHide: true
       }
     }
   },

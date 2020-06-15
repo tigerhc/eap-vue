@@ -110,6 +110,7 @@ export default {
       this.refresh(1) // 初始加载第一页
     },
     renderColumn(row, col) {
+      const foldcolor = col.foldcolor
       const val = row[col.name]
       if (col.formatter && typeof col.formatter === 'function') {
         return col.formatter(val, col, this, row)
@@ -145,6 +146,13 @@ export default {
       if (dict) {
         const dictList = this.dictList(dict) || []
         const v = dictList.find((i) => i.value === val)
+        if (foldcolor) {
+          if (val === 'Y') {
+            return <el-button type = 'success' plain> {(v && v.label) || val}</el-button>
+          } else if (val === 'N') {
+            return <el-button type = 'danger' plain> {(v && v.label) || val}</el-button>
+          }
+        }
         return (v && v.label) || val
       }
       return val
@@ -754,7 +762,9 @@ export default {
       const conf = {
         props: { align: 'center', ...col, prop: col.name, sortable: col.sort || col.sort === '' },
         scopedSlots: {
-          default: (scope) => this.renderColumn(scope.row, col)
+          default: (scope) => {
+            return this.renderColumn(scope.row, col)
+          }
         }
       }
       return <el-table-column {...conf} key={col.id} />
@@ -804,7 +814,8 @@ function isHidden(conf) {
 .jk-table-container {
   min-height: calc(100vh - 84px) ;
 }
+/*96.4px 所以后面又减了1*/
 .el-table{
-  min-height: calc(100vh - 84px - 96px - 42px ) ;
+  min-height: calc(100vh - 84px - 96px - 42px - 1px ) ;
 }
 </style>

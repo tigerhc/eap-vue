@@ -8,7 +8,7 @@
       <el-input v-model="model.timing" label="时机"/>
       <el-input v-model="model.sampleCount" label="采样数"/>
       <el-input v-model="model.status" label="状态"/>
-      <el-input v-model="model.approveResult" label="判定结果"/>
+      <w-select-dic v-model="model.approveResult" style="width:100%" label="判定结果" dict="JUDGE_RESULT" />
       <!--      <el-row col="24" />-->
       <!--      <el-input v-model="model.createByName" :disabled="true" label="创建人" />-->
       <!--      <el-input v-model="model.createDate" :disabled="true" label="创建日期" />-->
@@ -46,6 +46,11 @@
           stripe>
           <el-table-column fixed type="index"/>
           <div v-for="(col, index) in item.head" :key="col">
+            <el-table-column v-if="index==0" :prop="col.rowName" label="rowName">
+              <template slot-scope="scope">
+                <div>{{ scope.row[index].rowName }}</div>
+              </template>
+            </el-table-column>
             <el-table-column
               :prop="col"
               :label="col">
@@ -81,7 +86,7 @@ export default {
         projectId: '2'
       },
       rowData: [],
-      gridData: [], // 多个形式 gridData:[{id:'',head:['key1','key2','key3'],data:[[{'key1':'', }, 'key2':'', 'key3': ''],]}]
+      gridData: [], // 多个形式 gridData:[{id:'',head:['key1','key2','key3'],data:[[{'rowName':''},{'key1':'', }, 'key2':'', 'key3': ''],]}]
       formConf: {
         url: '/ms/msmeasurerecord/',
         title: {
@@ -123,7 +128,7 @@ export default {
     onDisplayChange(e) {
       this.model.modelName = e
     },
-    groupData(gd, id, heads, grids, itemResult, limitMin, limitMax) {
+    groupData(gd, id, heads, grids, itemResult, limitMin, limitMax, rowName) {
       if (gd === null) {
         gd = {}
         gd.id = id
@@ -139,6 +144,7 @@ export default {
           if (itemResult === 'N' && (grids[j] < limitMin[j] || grids[j] > limitMax[j])) {
             Vue.set(cel, 'className', 'jk-font-red')
           }
+          cel.rowName = rowName
           row.push(cel)
         }
       }
@@ -152,16 +158,17 @@ export default {
       const itemResult = detail.itemResult
       const limitMin = detail.limitMin ? detail.limitMin.split(',') : []
       const limitMax = detail.limitMax ? detail.limitMax.split(',') : []
+      const rowName = detail.rowName
       if (this.gridData.length <= 0) {
-        const gd = this.groupData(null, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax)
+        const gd = this.groupData(null, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax, rowName)
         this.gridData.push(gd)
       } else {
         for (let i = 0; i < this.gridData.length; i++) {
           if (id === this.gridData[i].id) {
             const gd = this.gridData[i]
-            this.groupData(gd, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax)
+            this.groupData(gd, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax, rowName)
           } else {
-            const gd = this.groupData(null, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax)
+            const gd = this.groupData(null, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax, rowName)
             this.gridData.push(gd)
           }
         }
@@ -178,7 +185,10 @@ export default {
     background-color: #1e6abc;
     color: white;
   }
-
+  .el-table {
+    /*min-height: calc(100vh - 84px - 96px - 42px);*/
+    min-height: auto;
+  }
   .el-input.is-disabled.jk-font-red .el-input__inner {
     color: red;
   }

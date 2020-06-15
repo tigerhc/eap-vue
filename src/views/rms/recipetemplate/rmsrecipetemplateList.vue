@@ -61,11 +61,12 @@
 </template>
 
 <script>
+// eslint-disable-next-line no-unused-vars
 import { fetchDeviceList, addDevice, updateDevice, deleteDevice, batchDelete } from '@/api/sys/device'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
-  name: 'ovenModel',
+  name: 'OvenModel',
   directives: {
     waves
   },
@@ -140,8 +141,8 @@ export default {
         query: { item }
       })
     },
-    handleUpdate(item){
-        this.$router.push({ name: 'views/rms/recipetemplate/rmsrecipetemplateView',
+    handleUpdate(item) {
+      this.$router.push({ name: 'views/rms/recipetemplate/rmsrecipetemplateView',
         query: { item }
       })
     }

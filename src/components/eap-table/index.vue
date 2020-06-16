@@ -399,6 +399,7 @@ export default {
       }
       if ('dict2' in conf) {
         mode = 'w-select-eqp'
+        // re.str = conf.value ? conf.value : []
       }
       if (conf.dict && typeof conf.dict === 'string') {
         mode = 'w-select-dic'
@@ -436,7 +437,7 @@ export default {
               if (mode === 'w-select-eqp') {
                 console.info('ss->' + e)
                 this.$set(this.query, key, e)
-                // this.query[key] = e
+                this.query[key] = e
                 // if (e == null || e === undefined || e.length <= 0) {
                 //   this.$set(this.query, key, '')
                 //   this.query[key] = ''

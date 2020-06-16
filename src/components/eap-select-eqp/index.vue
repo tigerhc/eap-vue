@@ -30,7 +30,8 @@ export default {
   },
   data: function() {
     return {
-      data: []
+      data: [],
+      list: this.ary
     }
   },
   computed: {
@@ -38,10 +39,10 @@ export default {
       return api(this.url)
     },
     asyncValue: function() {
-      if (this.ary && this.ary.length > 0) {
-        return this.ary
+      if (this.list && this.list.length > 0) {
+        return this.list
       }
-      return this.str === '' ? [] : this.str.split(',')
+      return this.str === '' ? [] : this.list.split(',')
     }
   },
   mounted() {
@@ -63,6 +64,7 @@ export default {
   },
   methods: {
     onValueChange(e) {
+      this.list = e
       this.$emit('input', e)
     }
   }

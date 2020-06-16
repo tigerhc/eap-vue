@@ -2,8 +2,8 @@
   <div class="app-container calendar-list-container">
     <w-table v-slot="{row}" v-bind="table" url="/fab/fabequipment" sort="sortCode.asc" >
       <!--todo fixed属性导致当前列变为第一列-->
-      <!--<w-table-col name="eqpId" label="设备号" sort fixed align="left" dict2 handler="view" query condition="in"/>-->
-      <w-table-col name="eqpId" label="设备号" sort fixed align="left" handler="view" query dict multiple url="/fab/fabequipment/eqpIdlist" namekey="id" condition="in"/>
+<!--      <w-table-col name="eqpId" label="设备号" sort fixed align="left" handler="view" query condition="in"/>-->
+      <w-table-col name="eqpId" label="设备号" sort fixed align="left" handler="view" query dict2 multiple namekey="id" condition="in"/>
       <w-table-col name="eqpName" label="设备说明" align="left"/>
       <w-table-col name="officeName" label="部门" width="100" align="left"/>
       <w-table-col name="modelName" label="设备型号" align="left" />

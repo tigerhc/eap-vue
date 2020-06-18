@@ -8,28 +8,28 @@
     <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
     <w-edt-table v-slot="{row}" ref="language" v-bind="table" url="/rms/rmsrecipetemplate/">
       <w-table-col name="paraCode" required label="参数代码" query condition="like">
-        <el-input v-model="table.model.paraName" />
-      </w-table-col>
-      <w-table-col name="paraName" label="参数名" query condition="like">
         <el-input v-model="table.model.paraCode" />
       </w-table-col>
+      <w-table-col name="paraName" label="参数名" query condition="like">
+        <el-input v-model="table.model.paraName" />
+      </w-table-col>
       <w-table-col name="paraShortName" label="参数简称" >
-        <el-input v-model="table.model.itemCode" />
+        <el-input v-model="table.model.paraShortName" />
       </w-table-col>
       <w-table-col name="paraUnit" label="单位" >
-        <el-input v-model="table.model.itemName" />
+        <el-input v-model="table.model.paraUnit" />
       </w-table-col>
       <w-table-col name="setValue" label="设定值" >
-        <el-input v-model="table.model.limitMin" />
+        <el-input v-model="table.model.setValue" />
       </w-table-col>
       <w-table-col name="showFlag" label="是否首页显示" dict="SHOW_FLAG" >
-        <el-input v-model="table.model.limitMax" style="width:100%" label="状态" dict="SHOW_FLAG" />
+        <w-select-dic v-model="table.model.showFlag" style="width:100%" label="显示" dict="SHOW_FLAG" />
       </w-table-col>
       <w-table-col name="monitorFlag" label="是否监控" dict="MONITOR_FLAG" >
-        <el-input v-model="table.model.sampleCount" style="width:100%" label="状态" dict="MONITOR_FLAG" />
+        <w-select-dic v-model="table.model.monitorFlag" style="width:100%" label="是否监控" dict="MONITOR_FLAG" />
       </w-table-col>
       <w-table-col name="sortNo" label="排序号" >
-        <w-select-dic v-model="table.model.showType" />
+        <el-input v-model="table.model.sortNo" />
       </w-table-col>
     </w-edt-table>
   </div>

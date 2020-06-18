@@ -41,6 +41,7 @@
         <el-table
           :data="item.data"
           :header-row-class-name="headStyle"
+          :cell-class-name="bodyRowStyle"
           border
           fit
           stripe>
@@ -176,6 +177,9 @@ export default {
     },
     headStyle() {
       return 'headStyle'
+    },
+    bodyRowStyle(row, rowIndex) {
+      return 'rowStyle'
     }
   }
 }
@@ -184,6 +188,10 @@ export default {
   .el-table th, .headStyle {
     background-color: #1e6abc;
     color: white;
+  }
+  .el-table .rowStyle {
+    padding: 2px 0px;
+    margin: 0;
   }
   .el-table {
     /*min-height: calc(100vh - 84px - 96px - 42px);*/

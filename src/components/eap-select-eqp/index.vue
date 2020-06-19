@@ -1,5 +1,5 @@
 <template>
-  <el-select v-bind="$attrs" :value="asyncValue" multiple filterable placeholder="请选择" @change="onValueChange">
+  <el-select v-bind="$attrs" :value="asyncValue" :multiple="multiple" filterable placeholder="请选择" @change="onValueChange">
     <el-option
       v-for="item in data"
       :key="item.id"
@@ -25,6 +25,10 @@ export default {
       type: String,
       default: '/fab/fabequipment/eqpIdlist'
     },
+    multiple: {
+      type: Boolean,
+      default: true
+    },
     namekey: { type: String, default: 'name' },
     valuekey: { type: String, default: 'id' }
   },
@@ -39,10 +43,14 @@ export default {
       return api(this.url)
     },
     asyncValue: function() {
-      if (this.list && this.list.length > 0) {
-        return this.list
+      if (this.multiple) {
+        if (this.list && this.list.length > 0) {
+          return this.list
+        }
+        return this.str === '' ? [] : this.list.split(',')
+      } else {
+        return this.str
       }
-      return this.str === '' ? [] : this.list.split(',')
     }
   },
   mounted() {

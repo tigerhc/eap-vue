@@ -48,7 +48,8 @@ export default {
         eqpId: [{ required: true, message: '请选择设备！', trigger: 'change' }],
         dateTime: [{ required: true, message: '请选择时间！', trigger: 'change' }]
       },
-      list: [] // 数据格式 [{"name":"", "min":"", "max":"",  data :["xdata":[], "ydata": []]}]
+      list: [], // 数据格式 [{"name":"", "min":"", "max":"",  data :["xdata":[], "ydata": []]}]
+      colors: ['#2db7f5', '#ff6600', '#808bc6']
     }
   },
   mounted() {
@@ -77,7 +78,6 @@ export default {
               endTime: this.form.dateTime[1]
             }
           }).then((response) => {
-            // const stations = response.data
             const results = response.data.results
             this.list = []
             this.editableTabs.splice(0, this.editableTabs.length)
@@ -130,23 +130,6 @@ export default {
           g[0].xdata.push(date)
           g[0].ydata.push(rs[i])
         }
-        // if (flag) {
-        //   this.editableTabs.push({ title: head[i], name: i })
-        //   const g = {}
-        //   g.min = min[i]
-        //   g.max = max[i]
-        //   g.name = head[i]
-        //   g.xdata = []
-        //   g.ydata = []
-        //   g.xdata.push(date)
-        //   g.ydata.push(rs[i])
-        //   this.list.push(g)
-        // } else {
-        //   const g = this.list.filter(h => h.name === head[i]) // 获取小组 {"name":"", "min":"", "max":"",  data :["xdata":[], "ydata": []]}
-        //   console.log(g)
-        //   g[0].xdata.push(date)
-        //   g[0].ydata.push(rs[i])
-        // }
       }
     },
     getDate(datestr) {
@@ -186,7 +169,20 @@ export default {
         //   subtext: '纯属虚构'
         // },
         legend: {
-          data: [item.name, '最低气温']
+          orient: 'vertical',
+          x: 'right', // 可设定图例在左、右、居中
+          y: 'center', // 可设定图例在上、下、居中
+          data: [{
+            name: '上限',
+            textStyle: {
+              color: this.colors[0]
+            }
+          }, {
+            name: '下限',
+            textStyle: {
+              color: this.colors[1]
+            }
+          }]
         },
         xAxis: {
           type: 'category',
@@ -197,6 +193,28 @@ export default {
           type: 'value'
         },
         series: [
+          {
+            name: '上限',
+            type: 'bar',
+            data: [],
+            itemStyle: {
+              normal: {
+                areaStyle: { type: 'default', color: this.colors[0] },
+                lineStyle: { color: this.colors[0] }
+              }
+            }
+          },
+          {
+            name: '下限',
+            type: 'bar',
+            data: [],
+            itemStyle: {
+              normal: {
+                areaStyle: { type: 'default', color: this.colors[1] },
+                lineStyle: { color: this.colors[1] }
+              }
+            }
+          },
           {
             name: item.name,
             type: 'line',
@@ -213,12 +231,12 @@ export default {
                 {
                   name: '上限',
                   yAxis: item.max,
-                  lineStyle: { color: '#FFA500' }
+                  lineStyle: { color: this.colors[0], type: 'solid' }
                 },
                 {
                   name: '下限',
                   yAxis: item.min,
-                  lineStyle: { color: '#003366' }
+                  lineStyle: { color: this.colors[1], type: 'solid' }
                 }
               ]
             }

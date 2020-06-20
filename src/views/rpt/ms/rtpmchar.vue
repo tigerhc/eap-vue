@@ -218,6 +218,18 @@ export default {
           {
             name: item.name,
             type: 'line',
+            symbol: 'triangle',
+            symbolSize: 20,
+            lineStyle: {
+              color: 'green',
+              width: 4,
+              type: 'dashed'
+            },
+            itemStyle: {
+              borderWidth: 3,
+              borderColor: 'yellow',
+              color: 'blue'
+            },
             data: item.ydata,
             markPoint: {
               data: [

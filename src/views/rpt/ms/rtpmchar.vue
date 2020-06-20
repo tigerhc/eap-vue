@@ -49,7 +49,7 @@ export default {
         dateTime: [{ required: true, message: '请选择时间！', trigger: 'change' }]
       },
       list: [], // 数据格式 [{"name":"", "min":"", "max":"",  data :["xdata":[], "ydata": []]}]
-      colors: ['#2db7f5', '#ff6600', '#808bc6']
+      colors: ['#2db7f5', '#ff1815', '#c012c6']
     }
   },
   mounted() {
@@ -172,17 +172,7 @@ export default {
           orient: 'vertical',
           x: 'right', // 可设定图例在左、右、居中
           y: 'center', // 可设定图例在上、下、居中
-          data: [{
-            name: '上限',
-            textStyle: {
-              color: this.colors[0]
-            }
-          }, {
-            name: '下限',
-            textStyle: {
-              color: this.colors[1]
-            }
-          }]
+          data: [item.name, '上限(UCL)', '下限(LCL)']
         },
         xAxis: {
           type: 'category',
@@ -193,28 +183,6 @@ export default {
           type: 'value'
         },
         series: [
-          {
-            name: '上限',
-            type: 'bar',
-            data: [],
-            itemStyle: {
-              normal: {
-                areaStyle: { type: 'default', color: this.colors[0] },
-                lineStyle: { color: this.colors[0] }
-              }
-            }
-          },
-          {
-            name: '下限',
-            type: 'bar',
-            data: [],
-            itemStyle: {
-              normal: {
-                areaStyle: { type: 'default', color: this.colors[1] },
-                lineStyle: { color: this.colors[1] }
-              }
-            }
-          },
           {
             name: item.name,
             type: 'line',
@@ -236,21 +204,42 @@ export default {
                 { type: 'max', name: '最大值' },
                 { type: 'min', name: '最小值' }
               ]
-            },
-            markLine: {
-              // symbol: 'none',
-              data: [
-                {
-                  name: '上限',
-                  yAxis: item.max,
-                  lineStyle: { color: this.colors[0], type: 'solid' }
-                },
-                {
-                  name: '下限',
-                  yAxis: item.min,
-                  lineStyle: { color: this.colors[1], type: 'solid' }
-                }
-              ]
+            }
+
+            // ,
+            // markLine: {
+            //   // symbol: 'none',
+            //   data: [
+            //     {
+            //       name: '上限',
+            //       yAxis: item.max,
+            //       lineStyle: { color: this.colors[0], type: 'solid' }
+            //     },
+            //     {
+            //       name: '下限',
+            //       yAxis: item.min,
+            //       lineStyle: { color: this.colors[1], type: 'solid' }
+            //     }
+            //   ]
+            // }
+          }, {
+            name: '上限(UCL)',
+            type: 'line',
+            data: item.max,
+            itemStyle: {
+              normal: {
+                lineStyle: { color: this.colors[1] }
+              }
+            }
+          },
+          {
+            name: '下限(LCL)',
+            type: 'line',
+            data: item.min,
+            itemStyle: {
+              normal: {
+                lineStyle: { color: this.colors[2] }
+              }
             }
           }
         ],

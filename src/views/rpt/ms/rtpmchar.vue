@@ -186,7 +186,7 @@ export default {
         //   subtext: '纯属虚构'
         // },
         legend: {
-          data: ['最高气温', '最低气温']
+          data: [item.name, '最低气温']
         },
         xAxis: {
           type: 'category',
@@ -208,7 +208,7 @@ export default {
               ]
             },
             markLine: {
-              symbol: 'none',
+              // symbol: 'none',
               data: [
                 {
                   name: '上限',

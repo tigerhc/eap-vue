@@ -2,14 +2,14 @@
   <div class="Rtplotyieldday">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="9">
-          <el-form-item label="日期" prop="dateTime">
-            <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
-          </el-form-item>
-        </el-col>
         <el-col :span="8">
           <el-form-item label="设备号" prop="eqpId">
             <w-select-eqp :span="8" :str="form.eqpId" :multiple="false" :disabled="false" @input="onValueChange($event)"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="9">
+          <el-form-item label="日期" prop="dateTime">
+            <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
           </el-form-item>
         </el-col>
         <el-button type="primary" @click="serch">查询</el-button>
@@ -25,7 +25,7 @@
   <!--        {{ item.content }}-->
         </el-tab-pane>
       </el-tabs>
-      <div id="yieldDayChart" style="width: 100%;height: 580px;overflow: hidden;"/>
+      <div id="yieldDayChart" style="width: 100%;height: 500px;overflow: hidden;"/>
     </div>
   </div>
 </template>

@@ -185,9 +185,10 @@ export default {
         //   text: '未来一周气温变化',
         //   subtext: '纯属虚构'
         // },
-        legend: {
-          data: [item.name, '最低气温']
-        },
+        // 无法显示最大值,最小值,先注释
+        // legend: {
+        //   data: [item.name]
+        // },
         xAxis: {
           type: 'category',
           boundaryGap: false,
@@ -200,6 +201,18 @@ export default {
           {
             name: item.name,
             type: 'line',
+            symbol: 'triangle',
+            symbolSize: 20,
+            lineStyle: {
+              color: 'green',
+              width: 4,
+              type: 'dashed'
+            },
+            itemStyle: {
+              borderWidth: 3,
+              borderColor: 'yellow',
+              color: 'blue'
+            },
             data: item.ydata,
             markPoint: {
               data: [

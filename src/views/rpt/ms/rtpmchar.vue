@@ -22,7 +22,7 @@
           :key="item.title"
           :label="item.title"
           :name="item.title">
-  <!--        {{ item.content }}-->
+          <!--        {{ item.content }}-->
         </el-tab-pane>
       </el-tabs>
       <div id="yieldDayChart" style="width: 100%;height: 500px;overflow: hidden;"/>
@@ -186,15 +186,14 @@ export default {
           {
             name: item.name,
             type: 'line',
-            symbol: 'triangle',
+            symbol: 'circle',
             symbolSize: 20,
             lineStyle: {
               color: 'green',
-              width: 4,
-              type: 'dashed'
+              width: 3
             },
             itemStyle: {
-              borderWidth: 3,
+              borderWidth: 2,
               borderColor: 'yellow',
               color: 'blue'
             },
@@ -205,48 +204,32 @@ export default {
                 { type: 'min', name: '最小值' }
               ]
             }
-
-            // ,
-            // markLine: {
-            //   // symbol: 'none',
-            //   data: [
-            //     {
-            //       name: '上限',
-            //       yAxis: item.max,
-            //       lineStyle: { color: this.colors[0], type: 'solid' }
-            //     },
-            //     {
-            //       name: '下限',
-            //       yAxis: item.min,
-            //       lineStyle: { color: this.colors[1], type: 'solid' }
-            //     }
-            //   ]
-            // }
-          }, {
+          },
+          {
             name: '上限(UCL)',
             type: 'line',
-            data: item.max,
-            itemStyle: {
-              normal: {
-                lineStyle: { color: this.colors[1] }
-              }
+            markLine: {
+              data: [
+                {
+                  name: '上限(UCL)',
+                  yAxis: item.max
+                }
+              ]
             }
           },
           {
             name: '下限(LCL)',
             type: 'line',
-            data: item.min,
-            itemStyle: {
-              normal: {
-                lineStyle: { color: this.colors[2] }
-              }
+            markLine: {
+              data: [
+                {
+                  name: '下限(LCL)',
+                  yAxis: item.min
+                }
+              ]
             }
           }
-        ],
-        dataset: {
-          dimensions: ['period_date', 'lot_yield', 'lot_yield_eqp', 'rate', 'eqp_rate'],
-          source: this.source
-        }
+        ]
       }
       yieldDayChart.setOption(option, true)
     }

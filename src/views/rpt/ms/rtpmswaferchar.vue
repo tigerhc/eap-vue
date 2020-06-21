@@ -22,7 +22,28 @@ v-for="item in lineNoOptions"
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>
     </el-form>
-    <div id="yieldDayChart" style="width: 100%;height: 580px;overflow: hidden;"/>
+    <div class="model">
+      <div style="width: 100%;display: flex;flex-direction: row;justify-content: center;align-items: center;">
+        <div class="jk-bg-round-red" style="position: relative; min-width:400px;min-height:400px;display: flex;flex-direction: row;justify-content: center;align-items: center;">
+          <div style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+            <div v-for="item in listleft" :key="item" style="margin-right: 40px;">
+              <div>{{ item }}</div>
+            </div>
+          </div>
+          <div style="display: flex;flex-direction: column;justify-content: space-between;align-items: center;">
+            <div v-for="item in listpre" :key="item" style="line-height: 40px;">
+              <div>{{ item }}</div>
+            </div>
+          </div>
+          <div style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+            <div v-for="item in listright" :key="item" style="margin-left: 40px;">
+              <div>{{ item }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--    <div id="yieldDayChart" style="width: 100%;height: 580px;overflow: hidden;"/>-->
   </div>
 </template>
 <script>
@@ -34,6 +55,15 @@ export default {
   components: {},
   data() {
     return {
+      listpre: [
+        '111', '222', '333', '444', '555'
+      ],
+      listleft: [
+        '666', '777'
+      ],
+      listright: [
+        '888', '999'
+      ],
       form: {
         lineNo: undefined,
         dateTime: []
@@ -72,7 +102,7 @@ export default {
     var endDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10)
     var startDate = endDate.slice(0, 8) + '01'
     this.form.dateTime = [startDate, endDate]
-    this.initChart()
+    // this.initChart()
   },
   created() {
   },
@@ -196,6 +226,10 @@ export default {
     .form {
       margin-top: 20px;
     }
+  }
+  .jk-bg-round-red {
+    background: url("/src/assets/img/yuan.png") no-repeat;
+    background-size: 100%;
   }
 </style>
 <style>

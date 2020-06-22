@@ -4,7 +4,12 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="设备号" prop="eqpId">
-            <w-select-eqp :span="8" :str="form.eqpId" :multiple="false" :disabled="false" @input="onValueChange($event)"/>
+            <w-select-eqp :str="form.eqpId" :multiple="false" :disabled="false" @input="onValueChange($event)"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="类型" prop="eqpId">
+            <w-select :url="'/ms/msmeasureconfig/listProByEqp'+form.eqpId" :str="form.productionNo" :multiple="true" :disabled="false" @input="onValueChange($event)"/>
           </el-form-item>
         </el-col>
         <el-col :span="9">
@@ -46,6 +51,7 @@ export default {
       },
       formRules: {
         eqpId: [{ required: true, message: '请选择设备！', trigger: 'change' }],
+        productionNo: [{ required: true, message: '请选择编号！', trigger: 'change' }],
         dateTime: [{ required: true, message: '请选择时间！', trigger: 'change' }]
       },
       list: [], // 数据格式 [{"name":"", "min":"", "max":"",  data :["xdata":[], "ydata": []]}]
@@ -74,6 +80,7 @@ export default {
             url: 'ms/msmeasurerecord/rptmsrecordbytime/' + this.form.eqpId,
             method: 'get',
             params: {
+              productionNo: this.form.productionNo,
               beginTime: this.form.dateTime[0],
               endTime: this.form.dateTime[1]
             }

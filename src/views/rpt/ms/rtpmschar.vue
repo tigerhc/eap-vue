@@ -2,12 +2,24 @@
   <div class="rtpmschar">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="8">
+        <el-col :span="5">
           <el-form-item label="设备号" prop="eqpId">
-            <w-select-eqp :span="8" :str="form.eqpId" :multiple="false" :disabled="false" @input="onValueChange($event)"/>
+            <w-select-eqp :str="form.eqpId" :multiple="false" :disabled="false" @input="onValueChange($event)"/>
           </el-form-item>
         </el-col>
-        <el-col :span="9">
+        <el-col :span="5">
+          <el-form-item label="类型" prop="productionNo">
+            <el-select v-model="form.productionNo" multiple filterable placeholder="请选择">
+              <el-option
+                v-for="item in noList"
+                :key="item.id"
+                :label="item.productionNo"
+                :value="item.productionNo"/>
+            </el-select>
+<!--            <w-select :str="form.productionNo" :multiple="true" :disabled="false" @input="onNoChange($event)"/>-->
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
           <el-form-item label="日期" prop="dateTime">
             <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
           </el-form-item>
@@ -40,12 +52,15 @@ export default {
     return {
       editableTabsValue: 0,
       editableTabs: [],
+      noList: [],
       form: {
         eqpId: undefined,
+        productionNo: [],
         dateTime: []
       },
       formRules: {
         eqpId: [{ required: true, message: '请选择设备！', trigger: 'change' }],
+        productionNo: [{ required: true, message: '请选择类型！', trigger: 'change' }],
         dateTime: [{ required: true, message: '请选择时间！', trigger: 'change' }]
       },
       list: [], // 数据格式 [{"name":"", "min":"", "max":"",  data :["xdata":[], "ydata": []]}]
@@ -64,8 +79,19 @@ export default {
     handleClick(tab, event) {
       this.initChart(tab.index)
     },
+    onNoChange(v) {
+      this.form.productionNo = v
+    },
     onValueChange(name) {
       this.form.eqpId = name
+      request({
+        url: 'ms/msmeasureconfig/listProByEqp/' + this.form.eqpId,
+        method: 'get'
+      }).then((response) => {
+        const rs = response.data
+        this.noList = rs || []
+        // this.productionNo = rss.split(',')
+      })
     },
     serch() {
       this.$refs['form'].validate((valid) => {
@@ -75,7 +101,8 @@ export default {
             method: 'get',
             params: {
               beginTime: this.form.dateTime[0],
-              endTime: this.form.dateTime[1]
+              endTime: this.form.dateTime[1],
+              productionNo: this.form.productionNo.join(',')
             }
           }).then((response) => {
             const results = response.data.results
@@ -83,7 +110,7 @@ export default {
             this.editableTabs.splice(0, this.editableTabs.length)
             if (results && results.length > 0) {
               for (let i = 0; i < results.length; i++) {
-                const heads = results[i].item_name //
+                const heads = results[i].item_name
                 const vs = results[i].item_value
                 const head = heads.split(',')
                 const rs = vs.split(',')
@@ -99,9 +126,11 @@ export default {
                 }
               }
             }
-            this.initChart(0)
             console.log(results)
             console.log(this.list)
+            if (this.list.length > 0) {
+              this.initChart(0)
+            }
           })
         }
       })

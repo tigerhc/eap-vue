@@ -3,8 +3,8 @@
     <w-table v-slot="{row}" v-bind="table" url="/edc/edcamsrptrecord" sort="createDate.desc" >
       <!--todo fixed属性导致当前列变为第一列-->
 
-      <w-table-col name="createDate" label="报警时间" width="180" align="center"/>
-      <w-table-col name="eqpId" label="设备号" width="120" align="left" query dict multiple url="/fab/fabequipment/eqpIdlist" namekey="id" condition="in" />
+      <w-table-col name="createDate" label="报警时间" width="180" align="center" handler="view"/>
+      <w-table-col name="eqpId" label="设备号" width="120" align="left" query dict multiple eqp namekey="id" condition="in" />
       <w-table-col name="productionNo" label="品番" width="100" align="center" />
       <w-table-col name="lotNo" label="批次" width="80" align="center" dict="AMS_ALARM_TYPE" />
       <w-table-col name="alarmCode" label="报警" width="80" sort align="left" query condition="like"/>

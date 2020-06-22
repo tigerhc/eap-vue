@@ -2,12 +2,12 @@
   <div class="rtpmschar">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="5">
+        <el-col :span="6">
           <el-form-item label="设备号" prop="eqpId">
             <w-select-eqp :str="form.eqpId" :multiple="false" :disabled="false" @input="onValueChange($event)"/>
           </el-form-item>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="6">
           <el-form-item label="类型" prop="productionNo">
             <el-select v-model="form.productionNo" multiple filterable placeholder="请选择">
               <el-option

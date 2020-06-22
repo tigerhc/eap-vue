@@ -2,8 +2,19 @@
   <div class="login-container">
     <div class="login-main">
       <div class="login-introduce">
-        <div class="title" style="color:#fff">DSK CIM</div>
-        <div class="content" style="color:#fff">DSK CIM,当前采集SIM线 PRINTER, DM , GAZO, REFLOW生产和操作日志</div>
+        <!--大连-->
+        <!--<div class="title" style="color:#fff">DSK CIM</div>-->
+        <!--<div class="content" style="color:#fff">DSK CIM,当前采集SIM线 PRINTER, DM , GAZO, REFLOW生产和操作日志</div>-->
+
+        <!--北京-->
+        <div class="title" style="color:#fff">数采平台</div>
+        <div class="content" style="color:#fff">当前支持以下设备类型
+          <br>白光干涉仪
+          <br>方阻测试仪
+          <br>膜厚仪
+          <br>台阶仪
+          <br>椭偏仪
+          <br>原子力显微镜</div>
       </div>
       <el-form
         ref="loginForm"

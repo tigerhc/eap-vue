@@ -163,10 +163,17 @@ export default {
         }
       }
       gd.data.push(row)
-      if (rowName.indexOf('-') < 0) {
+      if (!this.jumpFlag(rowName)) {
         this.sublist.push(row)
       }
       return gd
+    },
+    jumpFlag(rowname) {
+      if (rowname.indexOf('R') >= 0 || rowname.indexOf('A') >= 0 || rowname.indexOf('U') >= 0) {
+        return true
+      } else {
+        return false
+      }
     },
     setGridData(detail) {
       const id = detail.msRecordId
@@ -180,17 +187,17 @@ export default {
         const gd = this.groupData(null, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax, rowName)
         this.circleIndex = 1
         this.gridData.push(gd)
-        if (rowName.indexOf('-') < 0) {
+        if (!this.jumpFlag(rowName)) {
           this.sublist.push(gd.data)
         }
       } else {
         for (let i = 0; i < this.gridData.length; i++) {
           if (id === this.gridData[i].id) {
             const gd = this.gridData[i]
-            if (rowName.indexOf('-') < 0) {
+            if (!this.jumpFlag(rowName)) {
               this.circleIndex++
             }
-            if ((this.circleIndex === 5 || this.circleIndex === 9) && rowName.indexOf('-') > 0) {
+            if ((this.circleIndex === 5 || this.circleIndex === 9) && this.jumpFlag(rowName)) {
               this.groupCircles(heads.split(','), this.sublist)
               console.log(this.circleIndex)
               this.circleIndex = 0
@@ -201,7 +208,7 @@ export default {
             const gd = this.groupData(null, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax, rowName)
             this.circleIndex = 1
             this.gridData.push(gd)
-            if (rowName.indexOf('-') < 0) {
+            if (!this.jumpFlag(rowName)) {
               this.sublist.push(gd.data)
             }
           }

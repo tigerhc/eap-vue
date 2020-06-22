@@ -66,7 +66,7 @@
     <div class="model">
         <div class="jk-grid-9-parent">
           <div v-for="(item,index) in circles" :key="index" class="jk-grid-9-item">
-            <w-circle-jy :ary="item"/>
+            {{ index+1 }}<w-circle-jy :ary="item"/>
           </div>
         </div>
     </div>
@@ -269,9 +269,10 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 10px;
+    margin-left: 10px;
   }
-  .jk-grid-9-item:not(first-child) {
-    margin-left: 50px;
-  }
+  /*.jk-grid-9-item:not(first-child) {*/
+    /*margin-left: 10px;*/
+  /*}*/
 </style>

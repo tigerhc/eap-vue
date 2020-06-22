@@ -5,7 +5,18 @@
 <!--      <el-button type="primary" @click="submit">保存</el-button>-->
 <!--    </div>-->
     <w-form v-bind="formConf" :col="3" :model="model">
-      <el-input v-model="model.eqpModelName" label="设备型号" />
+      <!--<el-input v-model="model.eqpModelName" label="设备型号" />-->
+
+      <w-lookup
+        v-model="model.eqpModelId"
+        :display.sync="model.eqpModelName"
+        idkey="id"
+        displaykey="classCode"
+        label="设备型号名称"
+        title="选择设备型号"
+        module="views/fab/eqpmodel/eqpmodelLook"
+      />
+
       <el-input v-model="model.productionNo" label="机种" />
       <el-input v-model="model.timing" label="时机" />
       <el-input v-model="model.status" label="状态" />

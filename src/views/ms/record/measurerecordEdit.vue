@@ -63,6 +63,13 @@
         </el-table>
       </div>
     </div>
+    <div class="model">
+        <div class="jk-grid-9-parent">
+          <div v-for="(item,index) in circles" :key="index" class="jk-grid-9-item">
+            <w-circle-jy :ary="item"/>
+          </div>
+        </div>
+    </div>
   </div>
 </template>
 <script>
@@ -72,6 +79,9 @@ export default {
   name: 'MachineModel',
   data() {
     return {
+      circleIndex: 0,
+      circles: [],
+      sublist: [],
       model: {
         eqpId: '',
         detail: [],
@@ -105,6 +115,8 @@ export default {
           // m.officeIds = m.officeIds.split(',')
           this.rowData = []
           this.gridData = []
+          this.circles = []
+          this.sublist = []
           if (m.detail) {
             for (let i = 0; i < m.detail.length; i++) {
               if (m.detail[i].showType === 'input') {
@@ -113,6 +125,7 @@ export default {
                 this.setGridData(m.detail[i], m.detail[i].msRecordId, m.detail[i].itemName, m.detail[i].itemValue)
               }
             }
+            console.log(this.gridData)
           }
           return m
         },
@@ -150,6 +163,9 @@ export default {
         }
       }
       gd.data.push(row)
+      if (rowName.indexOf('-') < 0) {
+        this.sublist.push(row)
+      }
       return gd
     },
     setGridData(detail) {
@@ -162,17 +178,45 @@ export default {
       const rowName = detail.rowName
       if (this.gridData.length <= 0) {
         const gd = this.groupData(null, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax, rowName)
+        this.circleIndex = 1
         this.gridData.push(gd)
+        if (rowName.indexOf('-') < 0) {
+          this.sublist.push(gd.data)
+        }
       } else {
         for (let i = 0; i < this.gridData.length; i++) {
           if (id === this.gridData[i].id) {
             const gd = this.gridData[i]
+            if (rowName.indexOf('-') < 0) {
+              this.circleIndex++
+            }
+            if ((this.circleIndex === 5 || this.circleIndex === 9) && rowName.indexOf('-') > 0) {
+              this.groupCircles(heads.split(','), this.sublist)
+              console.log(this.circleIndex)
+              this.circleIndex = 0
+              this.sublist = []
+            }
             this.groupData(gd, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax, rowName)
           } else {
             const gd = this.groupData(null, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax, rowName)
+            this.circleIndex = 1
             this.gridData.push(gd)
+            if (rowName.indexOf('-') < 0) {
+              this.sublist.push(gd.data)
+            }
           }
         }
+      }
+    },
+    groupCircles(heads, datas) {
+      // data:[[{'rowName':''},{'key1':'', }, 'key2':'', 'key3': ''],]}]
+      for (let i = 0; i < heads.length; i++) {
+        // eslint-disable-next-line no-unused-vars
+        const p = []
+        for (const argumentsKey in datas) {
+          p.push(datas[argumentsKey][i][heads[i]])
+        }
+        this.circles.push(p)
       }
     },
     headStyle() {
@@ -203,5 +247,24 @@ export default {
 
   .el-table tr .jk-font-red {
     color: red;
+  }
+  .jk-grid-9-parent {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .jk-grid-9-item {
+    width: calc(100vh - 180px - 50px) / 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+  }
+  .jk-grid-9-item:not(first-child) {
+    margin-left: 50px;
   }
 </style>

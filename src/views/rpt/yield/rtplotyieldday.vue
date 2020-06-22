@@ -22,7 +22,7 @@ v-for="item in lineNoOptions"
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>
     </el-form>
-    <div id="yieldDayChart" style="width: 100%;height: 580px;overflow: hidden;"/>
+    <div id="yieldDayChart" style="width: 100%;height: 500px;overflow: hidden;"/>
   </div>
 </template>
 <script>

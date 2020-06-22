@@ -1,19 +1,10 @@
 <template>
-  <div class="Rtplotyieldday">
+  <div class="tempchar">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="6">
-          <el-form-item label="线别" prop="lineNo">
-            <el-select v-model="form.lineNo">
-              <el-option
-v-for="item in lineNoOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value"
-                         :disabled="item.disabled" />
-            </el-select>
-          </el-form-item>
-        </el-col>
+        <el-form-item label="设备号" prop="eqpId">
+          <w-select-eqp :span="8" :str="form.eqpId" :multiple="false" :disabled="false" @input="onValueChange($event)"/>
+        </el-form-item>
         <el-col :span="9">
           <el-form-item label="日期" prop="dateTime">
             <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
@@ -22,49 +13,39 @@ v-for="item in lineNoOptions"
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>
     </el-form>
-    <div id="yieldDayChart" style="width: 100%;height: 580px;overflow: hidden;"/>
+
+    <el-button
+      v-for="tempName in otherTempsTitles"
+      v-if="tempName.indexOf('PV') != -1"
+      :key="tempName"
+      type="primary"
+      icon="el-icon-arrow-right"
+      style="margin:5px;"
+      @click="loadTempDataPart(tempName)"> {{ tempName.replace("PV","") }}
+    </el-button>
+    <div id="yieldDayChart" style="width: 100%;height: 500px;overflow: hidden;"/>
   </div>
 </template>
 <script>
-import { rtplotyieldday } from '@/api/public'
+import { tempbytime } from '@/api/public'
 import echarts from 'echarts'
 
 export default {
-  name: 'Rtplotyieldday',
+  name: 'Tempchar',
   components: {},
   data() {
     return {
       form: {
-        lineNo: undefined,
+        eqpId: undefined,
         dateTime: []
       },
       formRules: {
-        lineNo: [{ required: true, message: '请选择线别！', trigger: 'change' }],
+        eqpId: [{ required: true, message: '请选择设备！', trigger: 'change' }],
         dateTime: [{ required: true, message: '请选择时间！', trigger: 'change' }]
       },
+      otherTempsTitles: [],
       list: [],
-      source: [],
-      // 先写死
-      lineNoOptions: [{
-        value: 'SIM',
-        label: 'SIM'
-      }, {
-        value: 'SMA',
-        label: 'SMA',
-        disabled: true
-      }, {
-        value: 'SX',
-        label: 'SX',
-        disabled: true
-      }, {
-        value: '5GI',
-        label: '5GI',
-        disabled: true
-      }, {
-        value: '6GI',
-        label: '6GI',
-        disabled: true
-      }]
+      source: []
     }
   },
   mounted() {
@@ -72,21 +53,24 @@ export default {
     var endDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10)
     var startDate = endDate.slice(0, 8) + '01'
     this.form.dateTime = [startDate, endDate]
-    this.initChart()
   },
   created() {
   },
   methods: {
+    onValueChange(name) {
+      this.form.eqpId = name
+    },
     serch() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          rtplotyieldday({
+          tempbytime(this.form.eqpId, {
             beginTime: this.form.dateTime[0],
-            endTime: this.form.dateTime[1],
-            lineNo: this.form.lineNo
+            endTime: this.form.dateTime[1]
           }).then((res) => {
             const data = res.data
-            this.source = data.yield
+            var title = data.title
+            this.otherTempsTitles = title.split(',')
+            this.source = data.results
             this.initChart()
           })
         }
@@ -105,8 +89,8 @@ export default {
       return date
     },
     initChart() {
-      var chart = document.getElementById('yieldDayChart')
-      var yieldDayChart = echarts.init(chart)
+      var chart = document.getElementById('tempChart')
+      var tempChart = echarts.init(chart)
       const option = {
         // title: {
         //   text: 'SIM日产量分析'
@@ -123,58 +107,72 @@ export default {
             }
           }
         },
-        legend: {
-          data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
         toolbox: {
           feature: {
-            saveAsImage: {}
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ['line', 'bar'] },
+            restore: { show: true },
+            saveAsImage: { show: true }
           }
         },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        legend: {
+          data: ['MES产量', '设备产量', 'MES达标率', '设备达标率']
         },
-        yAxis: {
-          type: 'value'
-        },
+        xAxis: [
+          {
+            type: 'category',
+            axisPointer: {
+              type: 'shadow'
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            name: '日产量',
+            min: 0,
+            // max: 60000,
+            // interval: 6000,
+            axisLabel: {
+              formatter: '{value} K'
+            }
+          },
+          {
+            type: 'value',
+            name: '完成率',
+            min: 0,
+            // max: 150,
+            // interval: 5,
+            axisLabel: {
+              formatter: '{value} %'
+            }
+          }
+        ],
         series: [
           {
-            name: '邮件营销',
-            type: 'line',
-            stack: '总量',
-            data: [120, 132, 101, 134, 90, 230, 210]
+            name: 'MES产量',
+            type: 'bar',
+            barGap: 0,
+            label: {
+              formatter: '{c}  {name|{a}}'
+            }
+            // barWidth: 10
           },
           {
-            name: '联盟广告',
-            type: 'line',
-            stack: '总量',
-            data: [220, 182, 191, 234, 290, 330, 310]
+            name: '设备产量',
+            type: 'bar',
+            barGap: 0
+            // barWidth: 10
           },
           {
-            name: '视频广告',
+            name: 'MES达标率',
             type: 'line',
-            stack: '总量',
-            data: [150, 232, 201, 154, 190, 330, 410]
+            yAxisIndex: 1
           },
           {
-            name: '直接访问',
+            name: '设备达标率',
             type: 'line',
-            stack: '总量',
-            data: [320, 332, 301, 334, 390, 330, 320]
-          },
-          {
-            name: '搜索引擎',
-            type: 'line',
-            stack: '总量',
-            data: [820, 932, 901, 934, 1290, 1330, 1320]
+            yAxisIndex: 1
           }
         ],
         dataset: {
@@ -182,13 +180,13 @@ export default {
           source: this.source
         }
       }
-      yieldDayChart.setOption(option, true)
+      tempChart.setOption(option, true)
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-  .Rtplotyieldday {
+  .tempchar {
     width: 100%;
     height: 100%;
     margin: 0 auto;

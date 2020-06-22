@@ -95,6 +95,14 @@ export function rtplotyieldday(data) {
   })
 }
 
+export function tempbytime(eqpId, data) {
+  return request({
+    url: 'oven/ovnbatchlot/tempbytime/' + eqpId,
+    method: 'get',
+    params: data
+  })
+}
+
 export function selectAlarmCountByLine(data) {
   return request({
     url: 'edc/edcamsrecord/selectAlarmCountByLine',

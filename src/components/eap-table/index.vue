@@ -397,7 +397,7 @@ export default {
       if ('dict' in conf) {
         mode = 'w-select'
       }
-      if ('dict2' in conf) {
+      if ('eqp' in conf) {
         mode = 'w-select-eqp'
         // re.str = conf.value ? conf.value : []
       }

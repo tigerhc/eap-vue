@@ -2,7 +2,7 @@
   <div class="app-container calendar-list-container">
     <w-table v-slot="{row}" v-bind="table" url="/ms/msmeasureconfig" sort="create_date.asc" >
       <w-table-col name="eqpModelName" label="设备型号" sort fixed align="left" handler="edit"/>
-      <w-table-col name="productionNo" label="机种" align="left"/>
+      <w-table-col name="productionNo" label="产品" align="left"/>
       <w-table-col name="timing" label="时机" width="100" align="left"/>
       <w-table-col name="status" label="状态" align="left" />
       <w-table-col name="sampleCount" label="采样数" align="center" />

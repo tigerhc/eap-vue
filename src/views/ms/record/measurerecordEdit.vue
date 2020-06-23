@@ -3,6 +3,7 @@
     <w-form v-bind="formConf" :col="3" :model="model" :bottom-btn="true">
       <el-input v-model="model.recordId" label="流水号"/>
       <el-input v-model="model.eqpId" label="设备号"/>
+      <el-input v-model="model.productionNo" label="产品"/>
       <el-input v-model="model.lotNo" label="批号"/>
       <el-input v-model="model.waferId" label="晶圆ID"/>
       <el-input v-model="model.timing" label="时机"/>

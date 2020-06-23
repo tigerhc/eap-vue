@@ -17,7 +17,7 @@
         module="views/fab/eqpmodel/eqpmodelLook"
       />
 
-      <el-input v-model="model.productionNo" label="机种" />
+      <el-input v-model="model.productionNo" label="产品" />
       <el-input v-model="model.timing" label="时机" />
       <el-input v-model="model.status" label="状态" />
       <el-input v-model="model.sampleCount" label="采样数" />

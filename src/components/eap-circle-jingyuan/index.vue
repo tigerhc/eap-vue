@@ -77,7 +77,7 @@ export default {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background: url("/src/assets/img/yuan.png") no-repeat;
+    background: url("../../assets/img/yuan.png") no-repeat;
     background-size: 100%;
     font-size: 11px;
   }

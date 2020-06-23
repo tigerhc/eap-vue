@@ -21,6 +21,7 @@ export default {
   methods: {
     combineModelName(val, col, table, row) {
       // alert(row)
+      // table.modelName  = row.manufacturerName + '-' + row.classCode;
       return row.manufacturerName + '-' + row.classCode
     }
   }

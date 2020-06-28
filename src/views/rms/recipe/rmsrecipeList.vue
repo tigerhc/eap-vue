@@ -33,10 +33,10 @@
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
       <el-form ref="dataModifyForm" :model="uploadRecipe1" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="设备号" prop="eqpId">
-          <el-input v-model="uploadRecipe.eqpId"/>
+          <el-input v-model="uploadRecipe1.eqpId"/>
         </el-form-item>
         <el-form-item label="程序名称" prop="recipeName">
-          <el-input v-model="uploadRecipe.recipeName"/>
+          <el-input v-model="uploadRecipe1.recipeName"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -75,14 +75,22 @@ export default {
         url: 'rms/rmsrecipe/uploadrecipe',
         method: 'post',
         params: this.uploadRecipe1
-      }).then(() => {
-        ctx.refresh()
-        this.$notify({
-          title: '成功',
-          message: '上传recipe成功',
-          type: 'success',
-          duration: 2000
-        })
+      }).then((res) => {
+        if (res.data.code === 0) {
+          this.$notify({
+            title: '成功',
+            message: '上传recipe成功',
+            type: 'success',
+            duration: 2000
+          })
+        } else {
+          this.$notify({
+            title: '失败',
+            message: res.data.msg,
+            type: 'error',
+            duration: 2000
+          })
+        }
       })
     },
     // 升级

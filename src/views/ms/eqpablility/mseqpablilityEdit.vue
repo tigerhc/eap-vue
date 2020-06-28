@@ -59,8 +59,8 @@ export default {
   data() {
     return {
       list: [{
-        eqpModelName: '11',
-        eqpModelId: '123'
+        eqpModelName: '',
+        eqpModelId: ''
       }],
       selectIndex: '-1',
       selectRow: {},
@@ -72,11 +72,12 @@ export default {
     // /ms/mseqpablility/list/e0209f5aa93711ea8f1e08f1eab2c7e1
     // url: '/ms/mseqpablility/list/' + this.$route.query.id,
     request({
-      url: '/ms/mseqpablility/list/e0209f5aa93711ea8f1e08f1eab2c7e1',
+      url: '/ms/mseqpablility/list/' + this.$route.query.id,
       method: 'get'
     }).then((res) => {
       this.list = res.data.results
-      this.eqpModelId
+      this.eqpModelId = res.data.eqpModelId
+      this.eqpModelName = res.data.eqpModelName
       console.log(res)
     })
   },

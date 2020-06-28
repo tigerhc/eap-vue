@@ -1,105 +1,152 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-form v-bind="formConf" :col="3" :model="model">
-      <el-input v-model="model.manufacturerName" label="设备厂家" />
-      <el-input v-model="model.classCode" label="设备类型" />
-      <el-input v-model="model.updateDate" :disabled="true" label="更新时间" />
-    </w-form>
-    <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
-    <w-edt-table v-slot="{row}" ref="language" v-bind="table" url="/rms/rmsrecipetemplate/">
-      <w-table-col name="paraCode" required label="参数代码" query condition="like">
-        <el-input v-model="table.model.paraCode" />
-      </w-table-col>
-      <w-table-col name="paraName" label="参数名" query condition="like">
-        <el-input v-model="table.model.paraName" />
-      </w-table-col>
-      <w-table-col name="paraShortName" label="参数简称" >
-        <el-input v-model="table.model.paraShortName" />
-      </w-table-col>
-      <w-table-col name="paraUnit" label="单位" >
-        <el-input v-model="table.model.paraUnit" />
-      </w-table-col>
-      <w-table-col name="setValue" label="设定值" >
-        <el-input v-model="table.model.setValue" />
-      </w-table-col>
-      <w-table-col name="showFlag" label="是否首页显示" dict="SHOW_FLAG" >
-        <w-select-dic v-model="table.model.showFlag" style="width:100%" label="显示" dict="SHOW_FLAG" />
-      </w-table-col>
-      <w-table-col name="monitorFlag" label="是否监控" dict="MONITOR_FLAG" >
-        <w-select-dic v-model="table.model.monitorFlag" style="width:100%" label="是否监控" dict="MONITOR_FLAG" />
-      </w-table-col>
-      <w-table-col name="sortNo" label="排序号" >
-        <el-input v-model="table.model.sortNo" />
-      </w-table-col>
-    </w-edt-table>
+    <div style="margin:20px 0px;">
+      <el-button type="primary" size="small" icon="el-icon-plus" @click="onNew">新增</el-button>
+      <el-button type="primary" size="small" icon="el-icon-delete" @click="onDelete">删除</el-button>
+    </div>
+    <el-table ref="recipeTemplateForm" :data="list" :row-class-name="tableRowClassName" style="width: 100%" highlight-current-row @row-click="rowClick" @row-dblclick="rowDblclick" @current-change="handleCurrentChange">
+      <el-table-column fixed type="index"/>
+      <el-table-column label="参数代码" prop="paraCode">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.paraCode" :disabled="scope.row.hidden" @input="onChange"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="参数名" prop="paraName">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.paraName" :disabled="scope.row.hidden"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="参数简称" prop="paraShortName">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.paraShortName" :disabled="scope.row.hidden"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="单位" prop="paraUnit">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.paraUnit" :disabled="scope.row.hidden"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="设定值" prop="setValue">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.setValue" :disabled="scope.row.hidden"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="是否首页显示" prop="showFlag" dict="SHOW_FLAG">
+        <template slot-scope="scope">
+          <el-select v-model="scope.row.showFlag" :disabled="scope.row.hidden" dict="SHOW_FLAG"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="是否监控" prop="monitorFlag" dict="MONITOR_FLAG">
+        <template slot-scope="scope">
+          <el-select v-model="scope.row.monitorFlag" :disabled="scope.row.hidden" dict="MONITOR_FLAG"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="排序号" prop="sortNo">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.sortNo" :disabled="scope.row.hidden"/>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 <script>
+import request from '@/utils/request'
 export default {
   name: 'OvenEditModel',
   data() {
     return {
-      type: 'View',
-      model: {
-        manufacturerName: '',
-        classCode: '',
-        activeFlag: '',
-        detail: [],
-        updateDate: ''
-      },
-      table: {
-        rules: {
-          paraName: [{ required: true, message: '设备号必填', trigger: 'blur' }],
-          paraCode: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
-          itemCode: [{ required: true, message: '有效标志必选', trigger: 'change' }]
-        },
-        model: {
-          paraCode: '',
-          paraName: '',
-          paraShortName: '',
-          paraUnit: '',
-          setValue: '',
-          showFlag: '',
-          monitorFlag: '',
-          sortNo: ''
-        },
-        datas: []
-      },
-      formConf: {
-        url: '/fab/fabequipmentmodel/',
-        title: {
-          ADD: '新增配方模板',
-          EDIT: '修改配方模板',
-          VIEW: '配方模板详情'
-        },
-        rules: {
-          eqpModelName: [{ required: true, message: '设备类型必填', trigger: 'blur' }],
-          productionNo: [{ required: true, message: '机种必填', trigger: ['blur', 'change'] }]
-        },
-        onLoadData: (m, type) => {
-          console.log(m)
-          this.table.datas = m.detail
-        },
-        beforeSubmit: (params, type) => {
-          console.log('submit params->' + JSON.stringify(params))
-          delete params['detail'] // 删除原数据模型里的多语言数组
-          const lang = this.$refs.language.tranformData('detail') // 获取被转换格式的所有细表数据
-          const re = { ...params, ...lang } // 合并细表数据
-          return re // 返回新的数据模型
-        }
-      }
+      list: [{
+        eqpModelId: '',
+        eqpModelName: ''
+      }],
+      selectIndex: '-1',
+      selectRow: {},
+      eqpModelId: '',
+      eqpModelName: ''
     }
   },
   created() {
-    this.type = this.$route.query.type
+    // /ms/mseqpablility/list/e0209f5aa93711ea8f1e08f1eab2c7e1
+    // url: '/ms/mseqpablility/list/' + this.$route.query.id,
+    request({
+      url: '/rms/rmsrecipetemplate/list/' + this.$route.query.id,
+      method: 'get'
+    }).then((res) => {
+      this.list = res.data.results
+      this.eqpModelId = res.data.eqpModelId
+      this.eqpModelName = res.data.eqpModelName
+      console.log(res)
+    })
   },
   methods: {
+    onDisplayChange(e) {
+      this.model.modelName = e
+    },
+    rowClick(row, column, event) {
+      var index = row.index
+      this.selectIndex = index // 选中行下标
+      this.selectRow = JSON.parse(JSON.stringify(row)) // 选中的值
+    },
+    rowDblclick(row, column, event) {
+      if (row.hidden) {
+        row.hidden = true
+      } else {
+        row.hidden = !row.hidden
+      }
+    },
     tableRowClassName({ row, rowIndex }) {
       row.index = rowIndex
     },
-    newGrid() {
-      const p = { paraCode: '', paraName: '', paraShortName: '', paraUnit: '', setValue: '', showFlag: '', monitorFlag: '', sortNo: '' }
-      this.model.detail.push(p)
+    handleCurrentChange(val) {
+      this.currentRow = val
+    },
+    onDelete() {
+      if (this.selectIndex !== '-1') {
+        this.$confirm(`确定删除？`, { type: 'warning', center: true }).then(() => {
+          request({
+            url: '/rms/rmsrecipetemplate/' + +'/delete',
+            method: 'get'
+          }).then((res) => {
+            this.list = res.data.results
+            console.log(res)
+          })
+        })
+      } else {
+        this.$message({
+          message: '请先选择要删除的行',
+          type: 'warning'
+        })
+      }
+    },
+    onNew() {
+      const ablility = {
+        'eqpModelId': this.eqpModelId,
+        'eqpModelName': this.eqpModelName,
+        'paraCode': '',
+        'paraName': '',
+        'paraShortName': '',
+        'paraUnit': '',
+        'setValue': '',
+        'showFlag': '',
+        'monitorFlag': '',
+        'sortNo': ''
+      }
+      this.list.push(ablility)
+    },
+    onChange() {
+      const ablility = this.list[this.selectIndex]
+      request({ url: '/rms/rmsrecipetemplate/save',
+        'method': 'post',
+        'data': ablility }).then((res) => {
+        console.log(res)
+      })
+    },
+    onSave() {
+      request({ url: 'ms/mseqpablility/save',
+        'method': 'post',
+        'data': { id: '1' }}).then((res) => {
+        console.log(res)
+      })
     }
   }
 }

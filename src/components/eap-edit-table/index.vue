@@ -67,6 +67,10 @@ export default {
       default: function(i) {
         return i
       }
+    },
+    params: {
+      type: String,
+      default: null
     }
   },
   data: function() {
@@ -130,6 +134,9 @@ export default {
       } else {
         this.list = []
       }
+    },
+    params: function() {
+      this.doFetchData()
     }
   },
   created() {
@@ -143,7 +150,11 @@ export default {
       // 初始化配置查询model
       this.queryFields.map((field) => {
         const key = `query.${field.name}||${field.condition}`
-        this.$set(this.query, key, undefined)
+        if (key === 'query.eqpModelId||eq') {
+          this.$set(this.query, key, this.params)
+        } else {
+          this.$set(this.query, key, undefined)
+        }
       })
       this.refresh(1) // 初始加载第一页
     },
@@ -396,6 +407,7 @@ export default {
     cancel() {
       this.editId = ''
       Object.assign(this.model, this.restoreModel)
+      this.getList()
     },
     // 行新建
     create() {

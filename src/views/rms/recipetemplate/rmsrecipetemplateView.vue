@@ -6,7 +6,7 @@
       <el-input v-model="model.updateDate" :disabled="true" label="更新时间" />
     </w-form>
     <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
-    <w-edt-table v-slot="{row}" ref="language" v-bind="table" url="/rms/rmsrecipetemplate/">
+    <w-edt-table v-slot="{row}" ref="language" v-bind="table" :params="table.eqpModelId" url="/rms/rmsrecipetemplate/">
       <w-table-col name="eqpModelId" required label="设备类型ID" query condition="eq" hidden>
         <el-input v-model="table.model.eqpModelId" />
       </w-table-col>
@@ -67,7 +67,8 @@ export default {
           monitorFlag: '',
           sortNo: ''
         },
-        datas: []
+        datas: [],
+        eqpModelId: ''
       },
       formConf: {
         url: '/fab/fabequipmentmodel/',
@@ -84,6 +85,7 @@ export default {
           console.log(m)
           this.table.datas = m.detail
           this.table.model.eqpModelId = m.id
+          this.table.eqpModelId = m.id
         },
         beforeSubmit: (params, type) => {
           console.log('submit params->' + JSON.stringify(params))

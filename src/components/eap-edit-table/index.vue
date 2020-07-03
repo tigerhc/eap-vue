@@ -133,7 +133,7 @@ export default {
     }
   },
   created() {
-    this.opHide = this.readonlyMode
+    // this.opHide = this.readonlyMode
   },
   mounted() {
     this.restoreModel = JSON.parse(JSON.stringify(this.model))
@@ -201,7 +201,7 @@ export default {
       // 外部直接传入数据 无需求情api。 不开启分页，不开启搜索查询
       if (this.datas) {
         this.list = this.datas
-        return
+        // return
       }
       this.isLoading = true
       this.api

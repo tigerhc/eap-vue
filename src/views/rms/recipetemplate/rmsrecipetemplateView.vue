@@ -1,189 +1,110 @@
 <template>
   <div class="app-container calendar-list-container">
-    <div style="margin:20px 0px;">
-      <el-button type="primary" size="small" icon="el-icon-plus" @click="onNew">新增</el-button>
-      <el-button type="primary" size="small" icon="el-icon-delete" @click="onDelete">删除</el-button>
-    </div>
-    <el-table ref="recipeTemplateForm" :data="list" :row-class-name="tableRowClassName" style="width: 100%" highlight-current-row @row-click="rowClick" @row-dblclick="rowDblclick" @current-change="handleCurrentChange">
-      <el-table-column fixed type="index"/>
-      <el-table-column label="参数代码" prop="paraCode">
-        <template slot-scope="scope">
-          <el-input v-model="scope.row.paraCode" :disabled="scope.row.hidden" @input="onChange"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="参数名" prop="paraName">
-        <template slot-scope="scope">
-          <el-input v-model="scope.row.paraName" :disabled="scope.row.hidden" @input="onChange"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="参数简称" prop="paraShortName">
-        <template slot-scope="scope">
-          <el-input v-model="scope.row.paraShortName" :disabled="scope.row.hidden" @input="onChange"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="单位" prop="paraUnit">
-        <template slot-scope="scope">
-          <el-input v-model="scope.row.paraUnit" :disabled="scope.row.hidden" @input="onChange"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="设定值" prop="setValue">
-        <template slot-scope="scope">
-          <el-input v-model="scope.row.setValue" :disabled="scope.row.hidden" @input="onChange"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="是否首页显示" prop="showFlag" dict="SHOW_FLAG">
-        <template slot-scope="scope">
-          <w-select-dic v-model="scope.row.showFlag" :disabled="scope.row.hidden" dict="SHOW_FLAG" @input="onChange"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="是否监控" prop="monitorFlag" dict="MONITOR_FLAG">
-        <template slot-scope="scope">
-          <w-select-dic v-model="scope.row.monitorFlag" :disabled="scope.row.hidden" dict="MONITOR_FLAG" @input="onChange"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="排序号" prop="sortNo">
-        <template slot-scope="scope">
-          <el-input v-model="scope.row.sortNo" :disabled="scope.row.hidden" @input="onChange"/>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="pagination-container">
-      <el-pagination
-        :current-page.sync="listQuery.page"
-        :page-sizes="[10,20,30, 50]"
-        :page-size="listQuery.limit"
-        :total="total"
-        background
-        layout="total, sizes, prev, pager, next, jumper"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"/>
-    </div>
+    <w-form v-bind="formConf" :col="3" :model="model">
+      <el-input v-model="model.manufacturerName" label="设备厂家" />
+      <el-input v-model="model.classCode" label="设备类型" />
+      <el-input v-model="model.updateDate" :disabled="true" label="更新时间" />
+    </w-form>
+    <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
+    <w-edt-table v-slot="{row}" ref="language" v-bind="table" url="/rms/rmsrecipetemplate/">
+      <w-table-col name="eqpModelId" required label="设备类型ID" query condition="eq" hidden>
+        <el-input v-model="table.model.eqpModelId" />
+      </w-table-col>
+      <w-table-col name="paraCode" required label="参数代码" query condition="like">
+        <el-input v-model="table.model.paraCode" />
+      </w-table-col>
+      <w-table-col name="paraName" label="参数名" query condition="like">
+        <el-input v-model="table.model.paraName" />
+      </w-table-col>
+      <w-table-col name="paraShortName" label="参数简称" >
+        <el-input v-model="table.model.paraShortName" />
+      </w-table-col>
+      <w-table-col name="paraUnit" label="单位" >
+        <el-input v-model="table.model.paraUnit" />
+      </w-table-col>
+      <w-table-col name="setValue" label="设定值" >
+        <el-input v-model="table.model.setValue" />
+      </w-table-col>
+      <w-table-col name="showFlag" label="是否首页显示" dict="SHOW_FLAG" >
+        <w-select-dic v-model="table.model.showFlag" style="width:100%" label="显示" dict="SHOW_FLAG" />
+      </w-table-col>
+      <w-table-col name="monitorFlag" label="是否监控" dict="MONITOR_FLAG" >
+        <w-select-dic v-model="table.model.monitorFlag" style="width:100%" label="是否监控" dict="MONITOR_FLAG" />
+      </w-table-col>
+      <w-table-col name="sortNo" label="排序号" >
+        <el-input v-model="table.model.sortNo" />
+      </w-table-col>
+    </w-edt-table>
   </div>
 </template>
 <script>
-import request from '@/utils/request'
-import { fetchList } from '@/api/public'
 export default {
   name: 'OvenEditModel',
   data() {
     return {
-      listQuery: {
-        page: 1,
-        limit: 10,
-        eqpModelId: '',
-        paraName: undefined,
-        paraShortName: undefined
+      type: 'View',
+      model: {
+        manufacturerName: '',
+        classCode: '',
+        activeFlag: '',
+        detail: [],
+        updateDate: ''
       },
-      list: null,
-      tab: '/rms/rmsrecipetemplate/',
-      oldPage: 1,
-      total: null,
-      selectIndex: '-1',
-      selectRow: {},
-      eqpModelId: '',
-      eqpModelName: ''
+      table: {
+        rules: {
+          paraName: [{ required: true, message: '设备号必填', trigger: 'blur' }],
+          paraCode: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
+          itemCode: [{ required: true, message: '有效标志必选', trigger: 'change' }]
+        },
+        model: {
+          eqpModelId: '',
+          paraCode: '',
+          paraName: '',
+          paraShortName: '',
+          paraUnit: '',
+          setValue: '',
+          showFlag: '',
+          monitorFlag: '',
+          sortNo: ''
+        },
+        datas: []
+      },
+      formConf: {
+        url: '/fab/fabequipmentmodel/',
+        title: {
+          ADD: '新增配方模板',
+          EDIT: '修改配方模板',
+          VIEW: '配方模板详情'
+        },
+        rules: {
+          eqpModelName: [{ required: true, message: '设备类型必填', trigger: 'blur' }],
+          productionNo: [{ required: true, message: '机种必填', trigger: ['blur', 'change'] }]
+        },
+        onLoadData: (m, type) => {
+          console.log(m)
+          this.table.datas = m.detail
+          this.table.model.eqpModelId = m.id
+        },
+        beforeSubmit: (params, type) => {
+          console.log('submit params->' + JSON.stringify(params))
+          delete params['detail'] // 删除原数据模型里的多语言数组
+          const lang = this.$refs.language.tranformData('detail') // 获取被转换格式的所有细表数据
+          const re = { ...params, ...lang } // 合并细表数据
+          return re // 返回新的数据模型
+        }
+      }
     }
   },
   created() {
-    this.listQuery.eqpModelId = this.$route.query.id
-    this.getList()
+    this.type = this.$route.query.type
   },
   methods: {
-    getList() {
-      this.listLoading = true
-      const params = this.changeParams(this.listQuery)
-      fetchList(this.tab, params).then(response => {
-        this.list = response.data.results
-        this.total = response.data.total
-        this.listLoading = false
-      })
-    },
-    // 转换入参
-    changeParams(obj) {
-      const params = {
-        'page.pn': obj.page,
-        'query.eqpModelId||eq': obj.eqpModelId,
-        'page.size': obj.limit,
-        'sort.sortNo': 'asc',
-        'query.paraName||like': obj.paraName || '',
-        'query.paraShortName||like': obj.paraShortName || '',
-        'queryFields': 'id,paraCode,paraName,paraShortName,eqpModelId,eqpModelName,paraCodeparaUnit,setValue,limitMin,limitMax,limitType,monitorFlag,paraLevel,paraDataType,showFlag,activeFlag,updateDate,sortNo,'
-      }
-      return params
-    },
-    onDisplayChange(e) {
-      this.model.modelName = e
-    },
-    rowClick(row, column, event) {
-      const index = row.index
-      this.selectIndex = index // 选中行下标
-      this.selectRow = JSON.parse(JSON.stringify(row)) // 选中的值
-    },
-    rowDblclick(row, column, event) {
-      if (row.hidden) {
-        row.hidden = true
-      } else {
-        row.hidden = !row.hidden
-      }
-    },
     tableRowClassName({ row, rowIndex }) {
       row.index = rowIndex
     },
-    handleSizeChange(val) {
-      this.listQuery.limit = val
-      this.getList()
-    },
-    handleCurrentChange(val) {
-      this.listQuery.page = val
-      this.getList()
-    },
-    onDelete() {
-      if (this.selectIndex !== '-1') {
-        this.$confirm(`确定删除？`, { type: 'warning', center: true }).then(() => {
-          request({
-            url: '/rms/rmsrecipetemplate/' + +'/delete',
-            method: 'get'
-          }).then((res) => {
-            this.list = res.data.results
-            console.log(res)
-          })
-        })
-      } else {
-        this.$message({
-          message: '请先选择要删除的行',
-          type: 'warning'
-        })
-      }
-    },
-    onNew() {
-      const tem = {
-        'eqpModelId': this.eqpModelId,
-        'eqpModelName': this.eqpModelName,
-        'paraCode': '',
-        'paraName': '',
-        'paraShortName': '',
-        'paraUnit': '',
-        'setValue': '',
-        'showFlag': '',
-        'monitorFlag': '',
-        'sortNo': ''
-      }
-      this.list.push(tem)
-    },
-    onChange() {
-      const tem = this.list[this.selectIndex]
-      request({ url: '/rms/rmsrecipetemplate/save',
-        'method': 'post',
-        'data': tem }).then((res) => {
-        console.log(res)
-      })
-    },
-    onSave() {
-      request({ url: 'ms/mseqpablility/save',
-        'method': 'post',
-        'data': { id: '1' }}).then((res) => {
-        console.log(res)
-      })
+    newGrid() {
+      const p = { paraCode: '', paraName: '', paraShortName: '', paraUnit: '', setValue: '', showFlag: '', monitorFlag: '', sortNo: '' }
+      this.model.detail.push(p)
     }
   }
 }

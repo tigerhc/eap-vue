@@ -45,9 +45,9 @@
     <div class="content">
       <div v-for="(item,index) in tabData2[0]" :key="index" >
         <div class="item" >
-          <span >{{ item.eqpId }}</span>
+          <span :title="item.eqpId">{{ item.eqpId | ellipsis }}</span>
           <span>{{ item.lotNo }}</span>
-          <span class="littlefont">{{ item.recipeCode }}</span>
+          <span :title="item.recipeCode" class="littlefont">{{ item.recipeCode | ellipsis }}</span>
           <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
         </div>
       </div>
@@ -56,9 +56,9 @@
     <div class="content">
       <div v-for="(item,index) in tabData2[1]" :key="index" >
         <div class="item" >
-          <span >{{ item.eqpId }}</span>
+          <span :title="item.eqpId">{{ item.eqpId | ellipsis }}</span>
           <span>{{ item.lotNo }}</span>
-          <span class="littlefont">{{ item.recipeCode }}</span>
+          <span :title="item.recipeCode" class="littlefont">{{ item.recipeCode | ellipsis }}</span>
           <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
         </div>
       </div>
@@ -67,9 +67,9 @@
     <div class="content">
       <div v-for="(item,index) in tabData2[2]" :key="index" >
         <div class="item" >
-          <span :class="{ first: item.eqpId=='SIM-TRM1' }">{{ item.eqpId }}</span>
+          <span :title="item.eqpId" :class="{ first: item.eqpId=='SIM-TRM1' }">{{ item.eqpId | ellipsis }}</span>
           <span>{{ item.lotNo }}</span>
-          <span class="littlefont">{{ item.recipeCode }}</span>
+          <span :title="item.recipeCode" class="littlefont">{{ item.recipeCode | ellipsis }}</span>
           <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
         </div>
       </div>
@@ -110,6 +110,18 @@ export default {
     Date,
     EqpPanelGroup
 
+  },
+  filters: {
+    ellipsis(value) {
+      if (!value) {
+        return ''
+      }
+      if (value.length > 8) {
+        return value.slice(0, 8)
+      } else {
+        return value
+      }
+    }
   },
   data() {
     return {

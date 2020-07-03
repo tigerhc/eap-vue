@@ -117,7 +117,7 @@ export default {
         return ''
       }
       if (value.length > 8) {
-        return value.slice(0, 8)
+        return value.slice(0, 8) + '...'
       } else {
         return value
       }

@@ -496,6 +496,9 @@ export default {
       width: 185px;
     }
   }
+  .el-table thead.is-group th{
+    background-color: #1e6abc;
+  }
   .cell-text {
     overflow: hidden;
     text-overflow: ellipsis;

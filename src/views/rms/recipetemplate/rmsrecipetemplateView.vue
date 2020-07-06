@@ -1,8 +1,8 @@
 <template>
   <div class="app-container calendar-list-container">
     <w-form v-bind="formConf" :col="3" :model="model">
-      <el-input v-model="model.manufacturerName" label="设备厂家" />
-      <el-input v-model="model.classCode" label="设备类型" />
+      <el-input v-model="model.manufacturerName" :disabled="true" label="设备厂家" />
+      <el-input v-model="model.classCode" :disabled="true" label="设备类型" />
       <el-input v-model="model.updateDate" :disabled="true" label="更新时间" />
     </w-form>
     <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />

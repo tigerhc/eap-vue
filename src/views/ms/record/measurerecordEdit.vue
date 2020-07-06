@@ -10,6 +10,8 @@
       <el-input v-model="model.sampleCount" label="采样数"/>
       <el-input v-model="model.status" label="状态"/>
       <w-select-dic v-model="model.approveResult" style="width:100%" label="判定结果" dict="JUDGE_RESULT" />
+      <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
+      <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
       <!--      <el-row col="24" />-->
       <!--      <el-input v-model="model.createByName" :disabled="true" label="创建人" />-->
       <!--      <el-input v-model="model.createDate" :disabled="true" label="创建日期" />-->
@@ -95,7 +97,9 @@ export default {
         activeFlag: '',
         delFlag: 0,
         officeId: '',
-        projectId: '2'
+        projectId: '2',
+        updateByName: '',
+        updateDate: ''
       },
       rowData: [],
       gridData: [], // 多个形式 gridData:[{id:'',head:['key1','key2','key3'],data:[[{'rowName':''},{'key1':'', }, 'key2':'', 'key3': ''],]}]

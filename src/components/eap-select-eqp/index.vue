@@ -1,5 +1,5 @@
 <template>
-  <el-select v-bind="$attrs" :value="asyncValue" :multiple="multiple" filterable placeholder="请选择" @change="onValueChange">
+  <el-select v-bind="$attrs" :value="asyncValue" :multiple="multiple" filterable placeholder="设备号" @change="onValueChange">
     <el-option
       v-for="item in data"
       :key="item.id"

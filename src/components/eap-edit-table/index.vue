@@ -137,6 +137,7 @@ export default {
     },
     params: function() {
       this.doFetchData()
+      this.$set(this.query, 'query.eqpModelId||eq', undefined)
     }
   },
   created() {

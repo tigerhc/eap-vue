@@ -15,7 +15,7 @@
 <!--          <br>台阶仪-->
 <!--          <br>椭偏仪-->
 <!--          <br>原子力显微镜</div>-->
-        <Introduce :content="introduce"/>
+        <Introduce/>
       </div>
       <el-form
         ref="loginForm"
@@ -80,7 +80,6 @@
 import { isvalidUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import { Message } from 'element-ui'
-import { fetchHome } from '@/api/sys/project'
 import Introduce from '../../components/introduce/index'
 
 export default {
@@ -127,17 +126,11 @@ export default {
   },
   created() {
     // window.addEventListener('hashchange', this.afterQRScan)
-    this.getIntroduce()
   },
   destroyed() {
     // window.removeEventListener('hashchange', this.afterQRScan)
   },
   methods: {
-    getIntroduce() {
-      fetchHome('sys.login.leftSystemDesc').then(response => {
-        this.introduce = response.data
-      })
-    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''

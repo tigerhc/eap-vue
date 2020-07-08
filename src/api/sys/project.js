@@ -39,9 +39,9 @@ export function deleteProject(id) {
   })
 }
 
-export function fetchHome() {
+export function fetchHome(key) {
   return request({
-    url: '/sys/sysconfig/sys.protal.url/getByKey',
+    url: '/sys/sysconfig/' + key + '/getByKey',
     method: 'get'
   })
 }

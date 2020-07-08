@@ -7,9 +7,6 @@
     </w-form>
     <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
     <w-edt-table v-slot="{row}" ref="language" v-bind="table" :params="table.eqpModelId" url="/rms/rmsrecipetemplate/">
-      <w-table-col name="eqpModelId" required label="设备类型ID" query condition="eq" hidden>
-        <el-input v-model="table.model.eqpModelId" />
-      </w-table-col>
       <w-table-col name="paraCode" required label="参数代码" query condition="like">
         <el-input v-model="table.model.paraCode" />
       </w-table-col>
@@ -25,7 +22,7 @@
       <w-table-col name="setValue" label="设定值" >
         <el-input v-model="table.model.setValue" />
       </w-table-col>
-      <w-table-col name="showFlag" label="是否首页显示" dict="SHOW_FLAG" >
+      <w-table-col name="showFlag" label="是否首页显示" query dict="SHOW_FLAG" >
         <w-select-dic v-model="table.model.showFlag" style="width:100%" label="显示" dict="SHOW_FLAG" />
       </w-table-col>
       <w-table-col name="monitorFlag" label="是否监控" dict="MONITOR_FLAG" >
@@ -34,6 +31,9 @@
       <w-table-col name="sortNo" label="排序号" >
         <el-input v-model="table.model.sortNo" />
       </w-table-col>
+      <w-table-toolbar name="add" hidden/>
+      <w-table-toolbar name="batchDelete" hidden/>
+      <w-table-button name="delete" hidden/>
     </w-edt-table>
   </div>
 </template>

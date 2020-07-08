@@ -7,14 +7,15 @@
         <!--<div class="content" style="color:#fff">DSK CIM,当前采集SIM线 PRINTER, DM , GAZO, REFLOW生产和操作日志</div>-->
 
         <!--北京-->
-        <div class="title" style="color:#fff">数采平台</div>
-        <div class="content" style="color:#fff">当前支持以下设备类型
-          <br>白光干涉仪
-          <br>方阻测试仪
-          <br>膜厚仪
-          <br>台阶仪
-          <br>椭偏仪
-          <br>原子力显微镜</div>
+<!--        <div class="title" style="color:#fff">数采平台</div>-->
+<!--        <div class="content" style="color:#fff">当前支持以下设备类型-->
+<!--          <br>白光干涉仪-->
+<!--          <br>方阻测试仪-->
+<!--          <br>膜厚仪-->
+<!--          <br>台阶仪-->
+<!--          <br>椭偏仪-->
+<!--          <br>原子力显微镜</div>-->
+        <Introduce :content="introduce"/>
       </div>
       <el-form
         ref="loginForm"
@@ -79,10 +80,12 @@
 import { isvalidUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import { Message } from 'element-ui'
+import { fetchHome } from '@/api/sys/project'
+import Introduce from '../../components/introduce/index'
 
 export default {
   name: 'Login',
-  components: { LangSelect },
+  components: { Introduce, LangSelect },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!isvalidUsername(value)) {
@@ -110,7 +113,8 @@ export default {
       passwordType: 'password',
       loading: false,
       showDialog: false,
-      redirect: undefined
+      redirect: undefined,
+      introduce: ''
     }
   },
   watch: {
@@ -123,11 +127,17 @@ export default {
   },
   created() {
     // window.addEventListener('hashchange', this.afterQRScan)
+    this.getIntroduce()
   },
   destroyed() {
     // window.removeEventListener('hashchange', this.afterQRScan)
   },
   methods: {
+    getIntroduce() {
+      fetchHome('sys.login.leftSystemDesc').then(response => {
+        this.introduce = response.data
+      })
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''

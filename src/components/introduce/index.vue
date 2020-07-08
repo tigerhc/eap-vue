@@ -8,6 +8,7 @@ export default {
   name: 'Introduce',
   data: function() {
     return {
+      key: 'sys.login.leftSystemDesc',
       introduce: undefined
     }
   },
@@ -16,7 +17,7 @@ export default {
   },
   methods: {
     getIntroduce() {
-      fetchHome('sys.login.leftSystemDesc').then(response => {
+      fetchHome(this.key).then(response => {
         this.introduce = response.data
       })
     }

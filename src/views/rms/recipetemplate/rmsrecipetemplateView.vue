@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-form v-bind="formConf" :col="3" :model="model">
+    <w-form v-bind="formConf" :col="3" :model="model" :bottom-btn="true">
       <el-input v-model="model.manufacturerName" :disabled="true" label="设备厂家" />
       <el-input v-model="model.classCode" :disabled="true" label="设备类型" />
       <el-input v-model="model.updateDate" :disabled="true" label="更新时间" />
@@ -22,7 +22,7 @@
       <w-table-col name="setValue" label="设定值" >
         <el-input v-model="table.model.setValue" />
       </w-table-col>
-      <w-table-col name="showFlag" label="是否首页显示" query dict="SHOW_FLAG" >
+      <w-table-col name="showFlag" label="是否首页显示" query condition="eq" dict="SHOW_FLAG" >
         <w-select-dic v-model="table.model.showFlag" style="width:100%" label="显示" dict="SHOW_FLAG" />
       </w-table-col>
       <w-table-col name="monitorFlag" label="是否监控" dict="MONITOR_FLAG" >

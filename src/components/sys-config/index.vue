@@ -28,6 +28,9 @@ export default {
       }).then(response => {
         this.content = response.data
       })
+      setTimeout(() => {
+        this.getIntroduce()
+      }, 5000)
     }
   }
 }

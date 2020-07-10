@@ -15,7 +15,7 @@
 <!--          <br>台阶仪-->
 <!--          <br>椭偏仪-->
 <!--          <br>原子力显微镜</div>-->
-        <Introduce/>
+        <sys-config config_key="sys.login.leftSystemDesc"/>
       </div>
       <el-form
         ref="loginForm"
@@ -80,11 +80,11 @@
 import { isvalidUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import { Message } from 'element-ui'
-import Introduce from '../../components/introduce/index'
+import SysConfig from '../../components/sys-config/index'
 
 export default {
   name: 'Login',
-  components: { Introduce, LangSelect },
+  components: { SysConfig, LangSelect },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!isvalidUsername(value)) {

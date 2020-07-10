@@ -1,15 +1,20 @@
 <template>
-  <div v-html="introduce"/>
+  <div v-html="content"/>
 </template>
 
 <script>
 import { fetchHome } from '@/api/sys/project'
 export default {
-  name: 'Introduce',
+  name: 'SysConfig',
+  props: {
+    config_key: {
+      type: String,
+      default: null
+    }
+  },
   data: function() {
     return {
-      key: 'sys.login.leftSystemDesc',
-      introduce: undefined
+      content: undefined
     }
   },
   created() {
@@ -17,8 +22,8 @@ export default {
   },
   methods: {
     getIntroduce() {
-      fetchHome(this.key).then(response => {
-        this.introduce = response.data
+      fetchHome(this.config_key).then(response => {
+        this.content = response.data
       })
     }
   }

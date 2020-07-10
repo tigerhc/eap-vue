@@ -171,7 +171,7 @@
 </template>
 <script>
 import { update, fetchDict } from '@/api/public'
-import { fetchDeviceList } from '@/api/sys/device'
+import { fetchDeviceList } from '@/api/fab/model'
 import request from '@/utils/request'
 import AttachmentSelect from '../../../components/AttachmentSelect/index'
 import PicutreSelect from '../../../components/PicutreSelect/index'

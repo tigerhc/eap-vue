@@ -185,9 +185,9 @@
 </template>
 
 <script>
-import { fetchList, fetchEnable, deleteList } from '@/api/alarm/alarmSet'
+import { fetchList, fetchEnable, deleteList } from '@/api/edc/edc'
 import waves from '@/directive/waves' // 水波纹指令
-import { fetchLookup } from '@/api/sys/device'
+import { fetchLookup } from '@/api/fab/model'
 export default {
   name: 'AlarmSet',
   directives: {

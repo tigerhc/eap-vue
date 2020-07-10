@@ -80,7 +80,7 @@
 <script>
 import echarts from 'echarts'
 import Date from '../../../components/Date/index'
-import { fetchGetChart, fetchDataList, fetchYield } from '@/api/sys/monitor'
+import { fetchGetChart, fetchDataList, fetchYield } from '@/api/fab/monitor'
 import Screenfull from '@/components/Screenfull'
 import EqpPanelGroup from './components/EqpPanelGroup'
 

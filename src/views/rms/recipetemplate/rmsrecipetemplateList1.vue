@@ -62,7 +62,7 @@
 
 <script>
 // eslint-disable-next-line no-unused-vars
-import { fetchDeviceList, addDevice, updateDevice, deleteDevice, batchDelete } from '@/api/sys/device'
+import { fetchDeviceList, addDevice, updateDevice, deleteDevice, batchDelete } from '@/api/fab/model'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {

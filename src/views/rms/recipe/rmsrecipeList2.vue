@@ -131,8 +131,9 @@
 </template>
 
 <script>
+// eslint-disable-next-line no-unused-vars
 import { fetchList, create, update, del, getDeteils, batchDelete, fetchDict } from '@/api/public'
-import { fetchDeviceList } from '@/api/sys/device'
+import { fetchDeviceList } from '@/api/fab/model'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
@@ -176,7 +177,7 @@ export default {
   methods: {
     formatter(value, type) {
       for (const item of this.dictList[type]) {
-        if (item.value == value) {
+        if (item.value === value) {
           return item.label
         }
       }

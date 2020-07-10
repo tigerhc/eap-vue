@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { fetchHome } from '@/api/sys/project'
+import request from '@/utils/request'
 export default {
   name: 'SysConfig',
   props: {
@@ -22,7 +22,10 @@ export default {
   },
   methods: {
     getIntroduce() {
-      fetchHome(this.config_key).then(response => {
+      request({
+        url: '/sys/sysconfig/' + this.config_key + '/getByKey',
+        method: 'get'
+      }).then(response => {
         this.content = response.data
       })
     }

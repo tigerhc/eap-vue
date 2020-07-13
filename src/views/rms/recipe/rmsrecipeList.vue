@@ -25,6 +25,7 @@
 
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
       <w-table-toolbar name="uploadRecipe" label="上传recipe" type="primary" tip="上传recipe？" icon="el-icon-circle-plus-outline" />
+      <w-table-toolbar name="downloadRecipe" label="下载recipe" type="primary" tip="下载recipe？" icon="fa-download" />
       <w-table-button name="edit" label="升级" url="views/rms/recipe/rmsrecipeEdit" icon="el-icon-setting" />
 
     </w-table>
@@ -45,6 +46,22 @@
       </div>
     </el-dialog>
 
+    <el-dialog :visible.sync="dialogFormDownloadRecipeVisible" title="下载recipe">
+      <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
+      <el-form ref="dataModifyForm" :model="uploadRecipe1" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="设备号" prop="eqpId">
+          <el-input v-model="downloadRecipe1.eqpId"/>
+        </el-form-item>
+        <el-form-item label="程序名称" prop="recipeName">
+          <el-input v-model="downloadRecipe1.recipeName"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormDownloadRecipeVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="doDownloadRecipe">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -60,6 +77,11 @@ export default {
       uploadRecipe1: {
         eqpId: '',
         recipeName: ''
+      },
+      dialogFormDownloadRecipeVisible: false,
+      downloadRecipe1: {
+        eqpId: '',
+        recipeName: ''
       }
     }
   },
@@ -68,6 +90,9 @@ export default {
     // 弹出一个input框,输入后发送请求
     uploadRecipe(row, table, ctx) {
       this.dialogFormUploadRecipeVisible = true
+    },
+    downloadRecipe(row, table, ctx) {
+      this.dialogFormDownloadRecipeVisible = true
     },
 
     doUploadRecipe(row, table, ctx) {
@@ -80,6 +105,29 @@ export default {
           this.$notify({
             title: '成功',
             message: '上传recipe成功',
+            type: 'success',
+            duration: 2000
+          })
+        } else {
+          this.$notify({
+            title: '失败',
+            message: res.data.msg,
+            type: 'error',
+            duration: 2000
+          })
+        }
+      })
+    },
+    doDownloadRecipe(row, table, ctx) {
+      request({
+        url: 'rms/rmsrecipe/downloadrecipe',
+        method: 'post',
+        params: this.downloadRecipe1
+      }).then((res) => {
+        if (res.data.code === 0) {
+          this.$notify({
+            title: '成功',
+            message: '下载recipe成功',
             type: 'success',
             duration: 2000
           })

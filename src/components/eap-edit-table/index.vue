@@ -900,7 +900,7 @@ export default {
         scopedSlots: {
           default: (scope) => {
             // 编辑模式
-            if ((this.editId === scope.row.id || this.editId === scope.row.__id) && this.colChildrenSet[col.name] && col.name !== 'paraCode') {
+            if ((this.editId === scope.row.id || this.editId === scope.row.__id) && this.colChildrenSet[col.name] && !col.edit) {
               return <el-form-item prop={col.name}>{this.colChildrenSet[col.name]}</el-form-item>
             }
             // 显示模式

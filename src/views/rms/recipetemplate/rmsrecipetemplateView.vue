@@ -7,7 +7,7 @@
     </w-form>
     <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
     <w-edt-table v-slot="{row}" ref="language" v-bind="table" :params="table.eqpModelId" url="/rms/rmsrecipetemplate/">
-      <w-table-col name="paraCode" required label="参数代码" query condition="like">
+      <w-table-col name="paraCode" required label="参数代码" edit="false" query condition="like">
         <el-input v-model="table.model.paraCode" />
       </w-table-col>
       <w-table-col name="paraName" label="参数名" query condition="like">
@@ -53,11 +53,10 @@ export default {
       table: {
         rules: {
           paraName: [{ required: true, message: '设备号必填', trigger: 'blur' }],
-          paraCode: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
+          paraCode: [{ required: true, message: '设备类型必填', trigger: 'blur' }],
           itemCode: [{ required: true, message: '有效标志必选', trigger: 'change' }]
         },
         model: {
-          eqpModelId: '',
           paraCode: '',
           paraName: '',
           paraShortName: '',
@@ -84,7 +83,6 @@ export default {
         onLoadData: (m, type) => {
           console.log(m)
           this.table.datas = m.detail
-          this.table.model.eqpModelId = m.id
           this.table.eqpModelId = m.id
         },
         beforeSubmit: (params, type) => {

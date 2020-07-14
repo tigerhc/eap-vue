@@ -17,7 +17,7 @@
         </w-form>
       </el-tab-pane>
       <el-tab-pane label="计划详细" name="second">
-        <w-edt-table ref="language" v-bind="detail" url="11">
+        <w-edt-table ref="language" v-bind="detail">
           <w-table-col name="productionName" label="品名" align="center" width="400" />
           <w-table-col name="productionNo" label="品番" align="center" width="100"/>
           <w-table-col name="lotNo" label="批次" align="center" width="100"/>

@@ -46,7 +46,7 @@ export default {
     },
     url: {
       type: String,
-      required: true
+      default: ''
     },
     handler: {
       type: Object,
@@ -209,7 +209,7 @@ export default {
       // 外部直接传入数据 无需求情api。 不开启分页，不开启搜索查询
       if (this.datas) {
         this.list = this.datas
-        // return
+        return
       }
       this.isLoading = true
       this.api

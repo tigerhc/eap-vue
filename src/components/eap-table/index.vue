@@ -707,7 +707,7 @@ export default {
     const paginationConf = {
       props: {
         'current-page': this.query.page,
-        'page-sizes': [10, 20, 30, 50, 100, 500, 1000],
+        'page-sizes': [10, 20, 100, 500, 1000],
         'page-size': this.query.limit,
         total: this.total,
         background: true,

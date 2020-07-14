@@ -34,7 +34,13 @@
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
       <el-form ref="dataModifyForm" :model="uploadRecipe1" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="设备号" prop="eqpId">
-          <el-input v-model="uploadRecipe1.eqpId"/>
+          <el-select v-model="uploadRecipe1.eqpId" style="width:300px" filterable placeholder="请选择设备类型">
+            <el-option
+              v-for="item in eqpIdList"
+              :key="item.id"
+              :label="item.classCode"
+              :value="item.id"/>
+          </el-select>
         </el-form-item>
         <el-form-item label="程序名称" prop="recipeName">
           <el-input v-model="uploadRecipe1.recipeName"/>
@@ -50,7 +56,13 @@
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
       <el-form ref="dataModifyForm" :model="uploadRecipe1" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="设备号" prop="eqpId">
-          <el-input v-model="downloadRecipe1.eqpId"/>
+          <el-select v-model="downloadRecipe1.eqpId" style="width:300px" filterable placeholder="请选择设备类型">
+            <el-option
+              v-for="item in eqpIdList"
+              :key="item.id"
+              :label="item.classCode"
+              :value="item.id"/>
+          </el-select>
         </el-form-item>
         <el-form-item label="程序名称" prop="recipeName">
           <el-input v-model="downloadRecipe1.recipeName"/>
@@ -82,11 +94,14 @@ export default {
       downloadRecipe1: {
         eqpId: '',
         recipeName: ''
-      }
+      },
+      eqpIdList: []
     }
   },
+  created() {
+    this.getEqpIdList()
+  },
   methods: {
-
     // 弹出一个input框,输入后发送请求
     uploadRecipe(row, table, ctx) {
       this.dialogFormUploadRecipeVisible = true
@@ -108,6 +123,7 @@ export default {
             type: 'success',
             duration: 2000
           })
+          this.dialogFormUploadRecipeVisible = false
         } else {
           this.$notify({
             title: '失败',
@@ -131,6 +147,7 @@ export default {
             type: 'success',
             duration: 2000
           })
+          this.dialogFormDownloadRecipeVisible = false
         } else {
           this.$notify({
             title: '失败',
@@ -144,8 +161,17 @@ export default {
     // 升级
     upgrade() {
       // debugger
+    },
+    // 获取设备号下拉框
+    getEqpIdList() {
+      request({
+        url: '/fab/fabequipment/eqpIdlist',
+        method: 'get',
+        params: ''
+      }).then((res) => {
+        this.eqpIdList = res.data.results
+      })
     }
-
   }
 }
 </script>

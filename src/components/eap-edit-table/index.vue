@@ -69,8 +69,10 @@ export default {
       }
     },
     params: {
-      type: String,
-      default: null
+      type: Object,
+      default: function() {
+        return {}
+      }
     }
   },
   data: function() {
@@ -136,7 +138,9 @@ export default {
       }
     },
     params: function() {
-      this.$set(this.query, 'query.eqpModelId||eq', this.params)
+      Object.keys(this.params).forEach((k) => {
+        this.$set(this.query, 'query.' + k + '||eq', this.params[k])
+      })
       this.doFetchData()
     }
   },

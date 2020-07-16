@@ -10,6 +10,11 @@ import api from './fetch'
 export default {
   name: 'WTable',
   props: {
+    // 数据来源不通过接口获取，直接外部传入
+    datas: {
+      type: Array,
+      default: null
+    },
     tableConf: {
       type: Object,
       default: function() {
@@ -93,6 +98,13 @@ export default {
     }
   },
   watch: {
+    datas: function(val) {
+      if (Array.isArray(val)) {
+        this.list = val
+      } else {
+        this.list = []
+      }
+    },
     colSet: function(n, o) {
       if (n && n.length) {
         this.doFetchData()
@@ -169,6 +181,11 @@ export default {
     },
     // 调用api 获取数据
     getList(query) {
+      // 外部直接传入数据 无需求情api。 不开启分页，不开启搜索查询
+      if (this.datas) {
+        this.list = this.datas
+        return
+      }
       this.isLoading = true
       this.api
         .ajaxList(this.getParams(query))
@@ -322,6 +339,7 @@ export default {
       if (!name) {
         throw Error('未设置新增跳转路径')
       }
+      console.log(name + '--')
       this.$router.push({
         name, // 'views/fab/eqpmodel/addDevice'
         query: {

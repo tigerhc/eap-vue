@@ -21,6 +21,10 @@ export default {
       type: String,
       default: ''
     },
+    param: {
+      type: String,
+      default: ''
+    },
     url: {
       type: String,
       default: '/fab/fabequipment/eqpIdlist'
@@ -35,12 +39,13 @@ export default {
   data: function() {
     return {
       data: [],
-      list: this.ary
+      list: this.ary,
+      str1: this.str
     }
   },
   computed: {
     api: function() {
-      return api(this.url)
+      return api(this.url + '?param=' + this.param)
     },
     asyncValue: function() {
       if (this.multiple) {
@@ -49,7 +54,7 @@ export default {
         }
         return this.str === '' ? [] : this.list.split(',')
       } else {
-        return this.str
+        return this.str1
       }
     }
   },
@@ -73,6 +78,7 @@ export default {
   methods: {
     onValueChange(e) {
       this.list = e
+      this.str1 = e
       this.$emit('input', e)
     }
   }

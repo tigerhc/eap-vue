@@ -34,13 +34,7 @@
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
       <el-form ref="dataModifyForm" :model="uploadRecipe1" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="设备号" prop="eqpId">
-          <el-select v-model="uploadRecipe1.eqpId" style="width:300px" filterable placeholder="请选择设备类型">
-            <el-option
-              v-for="item in eqpIdList"
-              :key="item.id"
-              :label="item.classCode"
-              :value="item.id"/>
-          </el-select>
+          <w-select-eqp v-model="uploadRecipe1.eqpId" :multiple="false" param="filter" style="width:300px"/>
         </el-form-item>
         <el-form-item label="程序名称" prop="recipeName">
           <el-input v-model="uploadRecipe1.recipeName"/>
@@ -54,15 +48,9 @@
 
     <el-dialog :visible.sync="dialogFormDownloadRecipeVisible" title="下载recipe">
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
-      <el-form ref="dataModifyForm" :model="uploadRecipe1" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+      <el-form ref="dataModifyForm" :model="downloadRecipe1" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="设备号" prop="eqpId">
-          <el-select v-model="downloadRecipe1.eqpId" style="width:300px" filterable placeholder="请选择设备类型">
-            <el-option
-              v-for="item in eqpIdList"
-              :key="item.id"
-              :label="item.classCode"
-              :value="item.id"/>
-          </el-select>
+          <w-select-eqp v-model="downloadRecipe1.eqpId" :multiple="false" param="filter" style="width:300px"/>
         </el-form-item>
         <el-form-item label="程序名称" prop="recipeName">
           <el-input v-model="downloadRecipe1.recipeName"/>
@@ -79,8 +67,10 @@
 
 <script>
 import request from '@/utils/request'
+import WSelectEqp from '../../../components/eap-select-eqp/index'
 export default {
   name: 'RmsrecipeList',
+  components: { WSelectEqp },
   data() {
     return {
       table: {

@@ -2,7 +2,7 @@
   <div class="app-container calendar-list-container">
     <w-table v-bind="table" :datas="datas" url="rms/recipepermit/" sort="updateDate.desc, createDate.desc" >
       <!--todo fixed属性导致当前列变为第一列-->
-      <w-table-col name="recipeCode" label="程序名称" sort fixed align="left" handler="view" query condition="like"/>
+      <w-table-col name="recipeCode" label="程序名称" sort fixed align="left" handler="edit" query condition="like"/>
       <w-table-col name="eqpId" label="设备号" align="left" query condition="like" dict url="/fab/fabequipment/eqpIdlist"/>
       <w-table-col name="eqpModelName" label="设备类型" align="left" />
       <w-table-col name="eqpModelId" label="设备型号ID" hidden dict query url="/fab/fabequipmentmodel/list" namekey="modelName" condition="eq" filterable />

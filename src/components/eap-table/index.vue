@@ -339,7 +339,6 @@ export default {
       if (!name) {
         throw Error('未设置新增跳转路径')
       }
-      console.log(name + '--')
       this.$router.push({
         name, // 'views/fab/eqpmodel/addDevice'
         query: {

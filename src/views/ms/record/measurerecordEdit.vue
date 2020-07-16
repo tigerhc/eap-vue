@@ -12,11 +12,14 @@
       <w-select-dic v-model="model.approveResult" style="width:100%" label="判定结果" dict="JUDGE_RESULT" />
       <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
       <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
+      <button class="exportBtn" @click="exportDetail">
+        <i class="fa-download"/>
+        <span>导出Excel</span>
+      </button>
       <!--      <el-row col="24" />-->
       <!--      <el-input v-model="model.createByName" :disabled="true" label="创建人" />-->
       <!--      <el-input v-model="model.createDate" :disabled="true" label="创建日期" />-->
     </w-form>
-    <button @click="exportDetail">导出</button>
     <div class="model">
       <el-form v-if="rowData.length > 0" :model="model" disabled>
         <div v-for="(item,index) in rowData" :key="item.id">
@@ -245,7 +248,6 @@ export default {
       return 'rowStyle'
     },
     exportDetail() {
-      alert('-----------')
       if (this.exportsLoading) {
         return
       }
@@ -278,6 +280,21 @@ export default {
 }
 </script>
 <style lang="scss">
+  .exportBtn {
+    width: 150px;
+    height: 40px;
+    position: absolute;
+    right:40px;
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: 1px solid #67c23a;
+    color: #fff;
+    background-color: #67c23a;
+    line-height: 1;
+    font-weight: 500;
+    transition: .1s;
+  }
   .el-table th, .headStyle {
     background-color: #1e6abc;
     color: white;

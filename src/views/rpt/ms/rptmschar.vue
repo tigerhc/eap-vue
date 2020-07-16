@@ -4,7 +4,7 @@
       <el-row>
         <el-col :span="6">
           <el-form-item label="设备号" prop="eqpId">
-            <w-select-eqp :str="form.eqpId" :multiple="false" :disabled="false" @input="onValueChange($event)"/>
+            <w-select-eqp :str="form.eqpId" :multiple="false" :disabled="false" param="MS" @input="onValueChange($event)"/>
           </el-form-item>
         </el-col>
         <el-col :span="6">

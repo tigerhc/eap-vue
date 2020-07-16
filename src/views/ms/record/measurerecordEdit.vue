@@ -16,6 +16,7 @@
       <!--      <el-input v-model="model.createByName" :disabled="true" label="创建人" />-->
       <!--      <el-input v-model="model.createDate" :disabled="true" label="创建日期" />-->
     </w-form>
+    <button @click="exportDetail">导出</button>
     <div class="model">
       <el-form v-if="rowData.length > 0" :model="model" disabled>
         <div v-for="(item,index) in rowData" :key="item.id">
@@ -77,6 +78,7 @@
 </template>
 <script>
 import Vue from 'vue'
+import request from '@/utils/request'
 
 export default {
   name: 'MachineModel',
@@ -101,6 +103,10 @@ export default {
         updateByName: '',
         updateDate: ''
       },
+      param: {
+        recordId: ''
+      },
+      exportsLoading: false,
       rowData: [],
       gridData: [], // 多个形式 gridData:[{id:'',head:['key1','key2','key3'],data:[[{'rowName':''},{'key1':'', }, 'key2':'', 'key3': ''],]}]
       formConf: {
@@ -118,6 +124,7 @@ export default {
         onLoadData: (m, type) => {
           console.info(m)
           // m.officeIds = m.officeIds.split(',')
+          this.param = { recordId: m.recordId }
           this.rowData = []
           this.gridData = []
           this.circles = []
@@ -236,6 +243,36 @@ export default {
     },
     bodyRowStyle(row, rowIndex) {
       return 'rowStyle'
+    },
+    exportDetail() {
+      alert('-----------')
+      if (this.exportsLoading) {
+        return
+      }
+      this.exportsLoading = true
+      request({
+        url: 'ms/msmeasurerecord/exportDetail',
+        method: 'post',
+        params: this.param
+      }).then((res) => {
+        if (res.data.code === 0) {
+          return import('@/vendor/Export2Excel').then((excel) => {
+            console.log(res)
+            excel.export_byte_to_excel(res.data.bytes, res.data.title)
+            this.exportsLoading = false
+          })
+        } else {
+          this.$notify.error({
+            title: '失败',
+            message: (res && res.data.errmsg) || '导出失败!',
+            duration: 2000
+          })
+          this.exportsLoading = false
+        }
+      })
+        .catch((e) => {
+          this.exportsLoading = false
+        })
     }
   }
 }

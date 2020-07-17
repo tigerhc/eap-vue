@@ -1,7 +1,7 @@
 <template>
   <div class="app-container calendar-list-container">
     <w-table v-bind="table" url="/mes/meslottrack" sort="startTime.desc" >
-      <w-table-col name="eqpId" label="设备号" width="120" dict2 sort fixed align="center" query condition="in"/>
+      <w-table-col name="eqpId" label="设备号" sort fixed align="left" handler="view" query dict multiple eqp condition="in"/>
       <w-table-col name="lotNo" label="批次号" width="100" align="center" query condition="like" />
       <w-table-col name="productionName" label="品名" align="center" />
       <w-table-col name="productionNo" label="品番" width="100" align="center" />

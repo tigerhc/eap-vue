@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-bind="table" :datas="datas" url="rms/recipepermit/" sort="updateDate.desc, createDate.desc" >
+    <w-table v-bind="table" :datas="datas" url="rms/recipepermit/" sort="approveStep.desc, updateDate.desc" >
       <!--todo fixed属性导致当前列变为第一列-->
       <w-table-col name="recipeCode" label="程序名称" sort fixed align="left" handler="edit" query condition="like"/>
       <w-table-col name="eqpId" label="设备号" align="left" query condition="like" dict url="/fab/fabequipment/eqpIdlist"/>
@@ -16,11 +16,11 @@
       <w-table-col name="updateDate" label="更新时间" width="200" align="center" sort="1" query querymode="date" condition="between"/>
 
       <!--hidden属性: 隐藏默认button url: 修改默认url 没有url,则默认调用属性name值的方法-->
-      <w-table-toolbar name="add" hidden url="views/rms/recipepermit/rmsrecipepermitView" />
+      <w-table-toolbar name="add" hidden />
       <w-table-toolbar hidden name="batchDelete" />
 
       <w-table-button hidden name="delete" />
-      <w-table-button name="edit" label="升级" url="views/rms/recipepermit/rmsrecipepermitView" icon="el-icon-setting" />
+      <w-table-button name="edit" label="升级" url="views/rms/recipepermit/rmsrecipepermitEdit" icon="el-icon-setting" />
 
     </w-table>
 
@@ -38,7 +38,12 @@ export default {
       datas: []
     }
   },
-  created() {
+  watch: {
+    '$route'(to, from) {
+      this.getDatas()
+    }
+  },
+  mounted() {
     this.getDatas()
   },
   methods: {

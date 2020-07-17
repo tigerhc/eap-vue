@@ -14,7 +14,6 @@
       <w-table-col name="createDate" label="创建时间" width="250" align="center" sort="1" query querymode="date" condition="between"/>
       <w-table-toolbar name="add" hidden/>
       <w-table-toolbar name="batchDelete" hidden />
-      <w-table-button name="exports" hidden />
     </w-table>
   </div>
 </template>

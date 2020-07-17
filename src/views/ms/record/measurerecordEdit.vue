@@ -3,7 +3,9 @@
     <w-form v-bind="formConf" :col="3" :model="model" :bottom-btn="true">
       <el-input v-model="model.recordId" label="流水号"/>
       <el-input v-model="model.eqpId" label="设备号"/>
+      <el-row col="24" />
       <el-input v-model="model.productionNo" label="产品"/>
+      <el-input v-model="model.productionName" label="产品名"/>
       <el-input v-model="model.lotNo" label="批号"/>
       <el-input v-model="model.waferId" label="晶圆ID"/>
       <el-input v-model="model.timing" label="时机"/>
@@ -16,9 +18,6 @@
         <i class="fa-download"/>
         <span>导出Excel</span>
       </button>
-      <!--      <el-row col="24" />-->
-      <!--      <el-input v-model="model.createByName" :disabled="true" label="创建人" />-->
-      <!--      <el-input v-model="model.createDate" :disabled="true" label="创建日期" />-->
     </w-form>
     <div class="model">
       <el-form v-if="rowData.length > 0" :model="model" disabled>
@@ -50,7 +49,7 @@
           :header-row-class-name="headStyle"
           :cell-class-name="bodyRowStyle"
           border
-          fit
+
           stripe>
           <el-table-column fixed type="index"/>
           <div v-for="(col, index) in item.head" :key="col">
@@ -300,8 +299,9 @@ export default {
     color: white;
   }
   .el-table .rowStyle {
-    padding: 2px 0px;
-    margin: 0;
+    /*padding: 2px 0px;*/
+    /*margin: 0;*/
+    font-weight:bold
   }
   .el-table {
     /*min-height: calc(100vh - 84px - 96px - 42px);*/

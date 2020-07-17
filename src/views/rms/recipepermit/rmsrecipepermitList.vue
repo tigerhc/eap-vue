@@ -18,6 +18,7 @@
       <!--hidden属性: 隐藏默认button url: 修改默认url 没有url,则默认调用属性name值的方法-->
       <w-table-toolbar name="add" hidden />
       <w-table-toolbar hidden name="batchDelete" />
+      <w-table-toolbar name="exports" hidden />
 
       <w-table-button hidden name="delete" />
       <w-table-button name="edit" label="升级" url="views/rms/recipepermit/rmsrecipepermitEdit" icon="el-icon-setting" />

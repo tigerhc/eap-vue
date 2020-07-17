@@ -35,7 +35,7 @@
           <w-table-col name="maxValue" label="最大值" align="center"/>
           <w-table-toolbar name="add" hidden/>
           <w-table-toolbar name="batchDelete" hidden />
-          <w-table-button name="exports" hidden />
+          <w-table-toolbar name="exports" hidden />
         </w-edt-table>
       </el-tab-pane>
     </el-tabs>

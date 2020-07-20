@@ -236,6 +236,11 @@ export default {
   },
   methods: {
     handleSuccessFile(file) {
+      this.$notify({
+        title: '上传成功',
+        type: 'success',
+        duration: 2000
+      })
     },
     handleRemove(file, fileList) {
       console.log(file, fileList)

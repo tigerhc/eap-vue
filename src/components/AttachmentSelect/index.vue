@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="display: flex;flex-direction: row;justify-content: end;">
+    <div v-if="divshow" style="display: flex;flex-direction: row;justify-content: end;">
       <el-upload
         :show-file-list="showlist"
         :action="uploadurl"
@@ -59,6 +59,10 @@ export default {
     biz: {
       type: String,
       default: ''
+    },
+    divshow: {
+      type: Boolean,
+      default: true
     }
   },
   data: function() {

@@ -9,11 +9,12 @@
       :on-exceed="handleExceed"
       :file-list="imageList"
       :on-success="handleSuccess"
+      :class="{hide:hide}"
       class="upload-demo"
       list-type="picture-card"
       multiple>
       <el-button size="small" type="primary">点击上传</el-button>
-      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+      <div v-if="divshow" slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </el-upload>
     <el-dialog :visible.sync="dialogVisible" width="500px" height="500px">
       <img :src="dialogImageUrl" width="100%" height="100%" alt="">
@@ -51,6 +52,14 @@ export default {
     biz: {
       type: String,
       default: ''
+    },
+    hide: {
+      type: Boolean,
+      default: false
+    },
+    divshow: {
+      type: Boolean,
+      default: false
     }
   },
   data: function() {
@@ -142,6 +151,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+  .hide .el-upload--picture-card {
+    display: none;
+  }
 </style>

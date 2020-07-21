@@ -44,6 +44,7 @@ export default {
         dateTime: [{ required: true, message: '请选择时间！', trigger: 'change' }]
       },
       otherTempsTitles: [],
+      a: undefined,
       list: [],
       source: []
     }
@@ -70,6 +71,11 @@ export default {
             const data = res.data
             var title = data.title
             this.otherTempsTitles = title.split(',')
+            const a = title.split(',')
+            this.otherTempsTitles = a
+            console.log('123456', title)
+            console.log('789', a)
+            console.log('test', this.otherTempsTitles[0])
             this.source = data.results
             this.initChart()
           })
@@ -116,7 +122,7 @@ export default {
           }
         },
         legend: {
-          data: ['MES产量', '设备产量', 'MES达标率', '设备达标率']
+          data: [this.otherTempsTitles[0], this.otherTempsTitles[1], this.otherTempsTitles[2], this.otherTempsTitles[3]]
         },
         xAxis: [
           {
@@ -150,7 +156,7 @@ export default {
         ],
         series: [
           {
-            name: 'MES产量',
+            name: this.otherTempsTitles[0],
             type: 'bar',
             barGap: 0,
             label: {
@@ -159,18 +165,18 @@ export default {
             // barWidth: 10
           },
           {
-            name: '设备产量',
+            name: this.otherTempsTitles[1],
             type: 'bar',
             barGap: 0
             // barWidth: 10
           },
           {
-            name: 'MES达标率',
+            name: this.otherTempsTitles[2],
             type: 'line',
             yAxisIndex: 1
           },
           {
-            name: '设备达标率',
+            name: this.otherTempsTitles[3],
             type: 'line',
             yAxisIndex: 1
           }

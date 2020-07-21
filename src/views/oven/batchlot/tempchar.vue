@@ -23,7 +23,7 @@
       style="margin:5px;"
       @click="loadTempDataPart(tempName)"> {{ tempName.replace("PV","") }}
     </el-button>
-    <div id="yieldDayChart" style="width: 100%;height: 500px;overflow: hidden;"/>
+    <div id="tempChart" style="width: 100%;height: 500px;overflow: hidden;"/>
   </div>
 </template>
 <script>
@@ -176,7 +176,7 @@ export default {
           }
         ],
         dataset: {
-          dimensions: ['period_date', 'lot_yield', 'lot_yield_eqp', 'rate', 'eqp_rate'],
+          dimensions: ['create_date', 'temp_pv', 'temp_min', 'temp_sp', 'temp_max'],
           source: this.source
         }
       }

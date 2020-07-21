@@ -13,17 +13,19 @@
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>
     </el-form>
-
-    <el-button
-      v-for="tempName in otherTempsTitles"
-      v-if="tempName.indexOf('PV') != -1"
-      :key="tempName"
-      type="primary"
-      icon="el-icon-arrow-right"
-      style="margin:5px;"
-      @click="loadTempDataPart(tempName)"> {{ tempName.replace("PV","") }}
-    </el-button>
-    <div id="tempChart" style="width: 100%;height: 500px;overflow: hidden;"/>
+    <template v-for="(tempName, index) in otherTempsTitles">
+      <el-button
+        :key="tempName"
+        type="primary"
+        icon="el-icon-arrow-right"
+        style="margin:5px;"
+        @click="loadTempDataPart(tempName, index)"> {{ tempName.replace("PV","") }}
+      </el-button>
+    </template>
+<!--   <ul>
+      <li v-for="(item,index) in otherTempsTitles" >{{item}}</li>
+    </ul>- -->
+      <div id="tempChart" style="width: 100%;height: 500px;overflow: hidden;"/>
   </div>
 </template>
 <script>
@@ -44,9 +46,10 @@ export default {
         dateTime: [{ required: true, message: '请选择时间！', trigger: 'change' }]
       },
       otherTempsTitles: [],
-      a: undefined,
+      otherTempsValue: [],
       list: [],
-      source: []
+      source: [],
+      chart: undefined
     }
   },
   mounted() {
@@ -71,13 +74,12 @@ export default {
             const data = res.data
             var title = data.title
             this.otherTempsTitles = title.split(',')
+            this.otherTempsValue = data.results[0]
             const a = title.split(',')
             this.otherTempsTitles = a
-            console.log('123456', title)
-            console.log('789', a)
-            console.log('test', this.otherTempsTitles[0])
             this.source = data.results
             this.initChart()
+            console.log('this.otherTempsTitles', this.otherTempsTitles)
           })
         }
       })
@@ -94,9 +96,8 @@ export default {
       var date = new Date(temp[0], temp[1], temp[2])
       return date
     },
-    initChart() {
-      var chart = document.getElementById('tempChart')
-      var tempChart = echarts.init(chart)
+    initChart(lastName = '无') {
+      this.chart = echarts.init(document.getElementById('tempChart'))
       const option = {
         // title: {
         //   text: 'SIM日产量分析'
@@ -122,7 +123,6 @@ export default {
           }
         },
         legend: {
-          data: [this.otherTempsTitles[0], this.otherTempsTitles[1], this.otherTempsTitles[2], this.otherTempsTitles[3]]
         },
         xAxis: [
           {
@@ -156,7 +156,7 @@ export default {
         ],
         series: [
           {
-            name: this.otherTempsTitles[0],
+            name: '湿度现在值',
             type: 'bar',
             barGap: 0,
             label: {
@@ -165,28 +165,42 @@ export default {
             // barWidth: 10
           },
           {
-            name: this.otherTempsTitles[1],
+            name: '湿度SET',
             type: 'bar',
             barGap: 0
             // barWidth: 10
           },
           {
-            name: this.otherTempsTitles[2],
+            name: '湿度MIN',
             type: 'line',
             yAxisIndex: 1
           },
           {
-            name: this.otherTempsTitles[3],
+            name: '湿度MAX',
+            type: 'line',
+            yAxisIndex: 1
+          },
+          {
+            name: lastName,
             type: 'line',
             yAxisIndex: 1
           }
         ],
+
         dataset: {
-          dimensions: ['create_date', 'temp_pv', 'temp_min', 'temp_sp', 'temp_max'],
+          dimensions: ['create_date', 'temp_pv', 'temp_min', 'temp_sp', 'temp_max', 'otherValue'],
           source: this.source
         }
       }
-      tempChart.setOption(option, true)
+      this.chart.setOption(option, true)
+    },
+    loadTempDataPart(name, index) {
+      const { source } = this
+      this.source = source.map(data => {
+        var values = data.other_temps_value.split(',')
+        return { ...data, otherValue: values[index] }
+      })
+      this.initChart(name)
     }
   }
 }
@@ -200,6 +214,24 @@ export default {
     .form {
       margin-top: 20px;
     }
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    height: 50px;
+  }
+  li {
+    cursor: pointer;
+    box-sizing: border-box;
+    height: 50px;
+    width: 150px;
+    list-style: none;
+    text-align: center;
+    line-height: 50px;
+    float: left;
+    border-right:1px solid #ccc;
+    border-bottom: 1px solid #ccc;
   }
 </style>
 <style>

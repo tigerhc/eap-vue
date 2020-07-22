@@ -4,14 +4,14 @@
       <el-tab-pane label="程序信息" name="first">
         <el-form ref="addForm" :inline="true" :rules="rules" :model="editList" class="editForm" label-width="150px">
           <el-form-item label="程序名称" prop="recipeCode">
-            <el-input v-model="editList.recipeCode"/>
+            <el-input v-model="editList.recipeCode" disabled/>
           </el-form-item>
 
           <el-form-item label="程序版本" prop="versionNo">
-            <el-input v-model="editList.versionNo"/>
+            <el-input v-model="editList.versionNo" disabled/>
           </el-form-item>
           <el-form-item label="设备号" prop="eqpId">
-            <el-input v-model="editList.eqpId"/>
+            <el-input v-model="editList.eqpId" disabled/>
           </el-form-item>
           <el-form-item label="状态" prop="status">
             <el-select v-model="editList.status" filterable placeholder="请选择程序状态">
@@ -23,7 +23,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="审核状态" prop="approveStep">
-            <el-select v-model="editList.approveStep" filterable placeholder="请选择审核状态">
+            <el-select v-model="editList.approveStep" disabled filterable placeholder="请选择审核状态">
               <el-option
                 v-for="item in dictList.approveStepList"
                 :key="item.value"
@@ -32,7 +32,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="审核结果" prop="approveResult">
-            <el-select v-model="editList.approveResult" filterable placeholder="请选择审核结果">
+            <el-select v-model="editList.approveResult" disabled filterable placeholder="请选择审核结果">
               <el-option
                 v-for="item in dictList.approveResultList"
                 :key="item.value"
@@ -41,7 +41,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="设备类型" prop="eqpModelId">
-            <el-select v-model="editList.eqpModelId" filterable placeholder="请选择设备类型">
+            <el-select v-model="editList.eqpModelId" disabled filterable placeholder="请选择设备类型">
               <el-option
                 v-for="item in eqpModelNameList"
                 :key="item.id"
@@ -100,17 +100,8 @@
             <el-table-column prop="paraCode" label="参数CODE" align="center"/>
             <el-table-column prop="paraName" label="参数名称" align="center"/>
             <el-table-column label="设定值" align="center">
-              <el-table-column prop="setValue" label="New Value" align="center">
-                <template slot-scope="{row}">
-                <el-input
-                  v-if="row.index === doubleClickIndex"
-                  v-model="row.setValue"
-                />
-                <span v-if="row.index !== doubleClickIndex" class="cell-text">{{ row.setValue }}</span>
-              </template>
-              </el-table-column>
-               <el-table-column prop="setValueOld" label="Old Value" align="center"/>
-
+              <el-table-column prop="setValue" label="New Value" align="center"/>
+              <el-table-column prop="setValueOld" label="Old Value" align="center"/>
             </el-table-column>
             <el-table-column label="最小值" align="center">
                <el-table-column prop="minValue" label="New Value" align="center">
@@ -120,7 +111,7 @@
                     v-model="row.minValue"
                   />
                   <span v-if="row.index !== doubleClickIndex" class="cell-text">{{ row.minValue }}</span>
-              </template>
+                </template>
                </el-table-column>
                <el-table-column prop="minValueOld" label="Old Value" align="center"/>
 
@@ -133,7 +124,7 @@
                   v-model="row.maxValue"
                 />
                 <span v-if="row.index !== doubleClickIndex" class="cell-text">{{ row.maxValue }}</span>
-              </template>
+                </template>
                </el-table-column>
                <el-table-column prop="maxValueOld" label="Old Value" align="center"/>
 
@@ -194,6 +185,7 @@ export default {
       },
       versionType: 2,
       dictList: {
+        versionTypeList: [],
         statusList: [],
         approveStepList: [],
         approveResultList: []
@@ -274,7 +266,7 @@ export default {
     },
     getDictValue() {
       const typeList = ['RECIPE_VERSION_TYPE', 'RECIPE_STATUS', 'RECIPE_APPROVE_STEP', 'RECIPE_APPROVE_RESULT']
-      const list = ['statusList', 'approveStepList', 'approveResultList']
+      const list = ['versionTypeList', 'statusList', 'approveStepList', 'approveResultList']
       for (let i = 0; i < typeList.length; i++) {
         this.getDictList(typeList[i], list[i])
       }
@@ -455,13 +447,22 @@ export default {
         method: 'get',
         params: { recipeIdNew: this.id, recipeIdOld: this.oldId }
       }).then((res) => {
-        this.getDeteils()
-        this.$notify({
-          title: '成功',
-          message: res.data.msg,
-          type: 'success',
-          duration: 2000
-        })
+        if (res.data.code === 0) {
+          this.getDeteils()
+          this.$notify({
+            title: '成功',
+            message: res.data.msg,
+            type: 'success',
+            duration: 2000
+          })
+        } else {
+          this.$notify({
+            title: '失败',
+            message: res.data.msg,
+            type: 'error',
+            duration: 2000
+          })
+        }
       })
     },
     minCopy() {
@@ -470,13 +471,22 @@ export default {
         method: 'get',
         params: { recipeIdNew: this.id, recipeIdOld: this.oldId }
       }).then((res) => {
-        this.getDeteils()
-        this.$notify({
-          title: '成功',
-          message: res.data.msg,
-          type: 'success',
-          duration: 2000
-        })
+        if (res.data.code === 0) {
+          this.getDeteils()
+          this.$notify({
+            title: '成功',
+            message: res.data.msg,
+            type: 'success',
+            duration: 2000
+          })
+        } else {
+          this.$notify({
+            title: '失败',
+            message: res.data.msg,
+            type: 'error',
+            duration: 2000
+          })
+        }
       })
     },
     color({ row, column, rowIndex, columnIndex }) {

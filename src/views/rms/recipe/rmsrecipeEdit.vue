@@ -70,9 +70,9 @@
       </el-tab-pane>
       <el-tab-pane label="参数信息" name="second">
         <div style="margin-bottom:20px">
-          <el-button type="primary" size="small" icon="el-icon-plus" >新增</el-button>
-          <el-button type="primary" size="small" icon="el-icon-delete" >删除</el-button>
-          <el-button type="primary" size="small" @click="setCopy">设定值复制</el-button>
+          <el-button type="primary" size="small" style="display: none" icon="el-icon-plus" >新增</el-button>
+          <el-button type="primary" size="small" style="display: none" icon="el-icon-delete" >删除</el-button>
+          <el-button type="primary" size="small" style="display: none" @click="setCopy">设定值复制</el-button>
           <el-button type="primary" size="small" @click="maxCopy" >最大值复制</el-button>
           <el-button type="primary" size="small" @click="minCopy">最小值复制</el-button>
         </div>

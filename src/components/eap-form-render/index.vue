@@ -93,7 +93,6 @@ export default {
         if (tag && label && expression) {
           let [path = ''] = expression.match(/(?![^\.]).*/g)
           path = path.split('.').filter(Boolean).join('.')
-          console.info(path)
           return (
             <el-form-item label={label} prop={path}>
               {v}

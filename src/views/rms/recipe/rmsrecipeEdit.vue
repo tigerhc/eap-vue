@@ -17,6 +17,7 @@
             <el-select v-model="editList.status" filterable placeholder="请选择程序状态">
               <el-option
                 v-for="item in dictList.statusList"
+                :disabled="item.remarks"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"/>
@@ -51,8 +52,8 @@
           </el-form-item>
           <el-form-item label="升级类型" prop="versionType">
             <el-radio-group v-model="versionType">
-              <el-radio :label="2">设备</el-radio>
-              <el-radio :label="3">通用</el-radio>
+              <el-radio :label="'EQP'">设备</el-radio>
+              <el-radio :label="'GOLD'">通用</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="程序描述" prop="recipeDesc">
@@ -183,7 +184,7 @@ export default {
         approveResult: undefined,
         versionNo: undefined
       },
-      versionType: 2,
+      versionType: '',
       dictList: {
         versionTypeList: [],
         statusList: [],
@@ -255,9 +256,20 @@ export default {
         method: 'get',
         params: this.uploadRecipe1
       }).then((res) => {
+        console.log(res)
         this.editList = res.data.results
+        this.versionType = res.data.results.versionType
         this.ruleForm.tableData = res.data.results.rmsRecipeBodyDtlList
         this.oldId = res.data.results.oldId
+        if (res.data.results.status === '1' || res.data.results.status === 'Y' || res.data.results.status === 'N') {
+          this.showFlag = false
+          if (res.data.results.status === 'Y') {
+            this.editList.status = '启用'
+          }
+          if (res.data.results.status === 'N') {
+            this.editList.status = '禁用'
+          }
+        }
       })
       // deteils(this.tab, this.id).then(res => {
       //   this.editList = res.data
@@ -265,7 +277,7 @@ export default {
       // })
     },
     getDictValue() {
-      const typeList = ['RECIPE_VERSION_TYPE', 'RECIPE_STATUS', 'RECIPE_APPROVE_STEP', 'RECIPE_APPROVE_RESULT']
+      const typeList = ['RECIPE_VERSION_TYPE', 'RECIPE_STATUS_SELECT', 'RECIPE_APPROVE_STEP', 'RECIPE_APPROVE_RESULT']
       const list = ['versionTypeList', 'statusList', 'approveStepList', 'approveResultList']
       for (let i = 0; i < typeList.length; i++) {
         this.getDictList(typeList[i], list[i])
@@ -393,24 +405,33 @@ export default {
         approveResult: this.editList.approveResult,
         _detail: JSON.stringify(this.ruleForm.tableData)
       }
-      update(this.tab, params).then((res) => {
-        if (res.data.code === 0) {
-          this.cancel()
-          this.$notify({
-            title: '成功',
-            message: '添加成功',
-            type: 'success',
-            duration: 2000
-          })
-        } else {
-          this.$notify({
-            title: '失败',
-            message: '添加失败',
-            type: 'error',
-            duration: 2000
-          })
-        }
-      })
+      if (this.editList.status === '1' && this.versionType === 'DRAFT') {
+        this.$notify({
+          title: '失败',
+          message: '请选选择升级类型再提交审批',
+          type: 'error',
+          duration: 2000
+        })
+      } else {
+        update(this.tab, params).then((res) => {
+          if (res.data.code === 0) {
+            this.cancel()
+            this.$notify({
+              title: '成功',
+              message: '修改成功',
+              type: 'success',
+              duration: 2000
+            })
+          } else {
+            this.$notify({
+              title: '失败',
+              message: '修改失败',
+              type: 'error',
+              duration: 2000
+            })
+          }
+        })
+      }
     },
     getView() {
       const List = this.$store.state.tagsView.visitedViews

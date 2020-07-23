@@ -40,7 +40,7 @@ export default {
         ctx.refresh()
         this.$notify({
           title: '成功',
-          message: '已禁用',
+          message: '已启用',
           type: 'success',
           duration: 2000
         })

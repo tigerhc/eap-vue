@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-bind="table" url="rms/rmsrecipe/" sort="updateDate.desc, createDate.desc" >
+    <w-table v-slot="{row}" v-bind="table" url="rms/rmsrecipe/" sort="updateDate.desc, createDate.desc" >
       <!--todo fixed属性导致当前列变为第一列-->
       <w-table-col name="recipeCode" label="程序名称" sort fixed align="left" handler="view" query condition="like"/>
       <w-table-col name="eqpId" label="设备号" sort fixed align="left" query dict multiple eqp condition="in"/>
@@ -27,6 +27,8 @@
       <w-table-toolbar name="uploadRecipe" label="上传recipe" type="primary" tip="上传recipe？" icon="el-icon-circle-plus-outline" />
       <w-table-toolbar name="downloadRecipe" label="下载recipe" type="primary" tip="下载recipe？" icon="fa-download" />
       <w-table-button name="edit" label="升级" url="views/rms/recipe/rmsrecipeEdit" icon="el-icon-setting" />
+      <w-table-button v-if="row.approveStep == 0 && row.status !== 'Y'" name="enable" label="启用" tip="确认启用？" icon="el-icon-bell" />
+      <w-table-button v-if="row.status === 'Y'" name="diable" label="停用" tip="确认停用？" icon="el-icon-circle-close" type="warning" />
 
     </w-table>
 
@@ -92,6 +94,34 @@ export default {
     this.getEqpIdList()
   },
   methods: {
+    enable(row, table, ctx) {
+      request({
+        url: '/rms/rmsrecipe/status/' + row.id + '/Y',
+        method: 'put'
+      }).then(() => {
+        ctx.refresh()
+        this.$notify({
+          title: '成功',
+          message: '已启用',
+          type: 'success',
+          duration: 2000
+        })
+      })
+    },
+    diable(row, table, ctx) {
+      request({
+        url: '/rms/rmsrecipe/status/' + row.id + '/N',
+        method: 'put'
+      }).then(() => {
+        ctx.refresh()
+        this.$notify({
+          title: '成功',
+          message: '已禁用',
+          type: 'success',
+          duration: 2000
+        })
+      })
+    },
     // 弹出一个input框,输入后发送请求
     uploadRecipe(row, table, ctx) {
       this.dialogFormUploadRecipeVisible = true

@@ -261,14 +261,14 @@ export default {
         this.versionType = res.data.results.versionType
         this.ruleForm.tableData = res.data.results.rmsRecipeBodyDtlList
         this.oldId = res.data.results.oldId
-        if (res.data.results.status === '1' || res.data.results.status === 'Y' || res.data.results.status === 'N') {
+        if (res.data.results.status !== '0' && res.data.results.status !== '2') {
           this.showFlag = false
-          if (res.data.results.status === 'Y') {
-            this.editList.status = '启用'
-          }
-          if (res.data.results.status === 'N') {
-            this.editList.status = '禁用'
-          }
+        }
+        if (res.data.results.status === 'Y') {
+          this.editList.status = '启用'
+        }
+        if (res.data.results.status === 'N') {
+          this.editList.status = '禁用'
         }
       })
       // deteils(this.tab, this.id).then(res => {
@@ -415,6 +415,7 @@ export default {
       } else {
         update(this.tab, params).then((res) => {
           if (res.data.code === 0) {
+            this.addPermitList()
             this.cancel()
             this.$notify({
               title: '成功',
@@ -432,6 +433,14 @@ export default {
           }
         })
       }
+    },
+    // 提交审批后先生成审批记录
+    addPermitList() {
+      request({
+        url: 'rms/rmsrecipepermit/addPermitList',
+        method: 'get',
+        params: { recipeId: this.id, versionType: this.versionType }
+      })
     },
     getView() {
       const List = this.$store.state.tagsView.visitedViews

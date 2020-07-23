@@ -9,7 +9,7 @@
     </w-form>
     <div class="add-footer">
       <el-button @click="cancel">返回</el-button>
-      <el-button type="primary" @click="permit">提交</el-button>
+      <el-button v-if="showFlag" type="primary" @click="permit">提交</el-button>
     </div>
     <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
     <el-tabs v-model="activeName" type="border-card">
@@ -93,6 +93,7 @@ export default {
   components: { PicutreSelect, AttachmentSelect },
   data() {
     return {
+      showFlag: true,
       load: false,
       // 动态设置table高度
       tableHeight: document.body.scrollHeight - 210,
@@ -158,14 +159,16 @@ export default {
       })
     },
     getRoleName() {
-      request({ url: '/rms/rmsrecipepermitconfig/getPermitConfig',
-        'method': 'post',
-        'data': { approveStep: this.model.approveStep }
-      }).then((res) => {
-        if (res.data.code === 0) {
-          this.model.roleName = res.data.results.submitterRoleName
-        }
-      })
+      if (this.model.approveStep !== '') {
+        request({ url: '/rms/rmsrecipepermitconfig/getPermitConfig',
+          'method': 'post',
+          'data': { approveStep: this.model.approveStep }
+        }).then((res) => {
+          if (res.data.code === 0) {
+            this.model.roleName = res.data.results.submitterRoleName
+          }
+        })
+      }
     },
     getHistory() {
       request({ url: '/rms/rmsrecipepermit/getHistory',
@@ -232,7 +235,7 @@ export default {
           duration: 2000
         })
       } else {
-        request({ url: '/rms/rmsrecipepermit/permit',
+        request({ url: '/rms/rmsrecipepermit/recipePermit',
           'method': 'post',
           'data': this.model
         }).then((res) => {
@@ -240,6 +243,7 @@ export default {
             this.model.submitResult = ''
             this.model.submitDesc = ''
             this.getHistory()
+            this.showFlag = false
             this.$notify({
               title: '成功',
               message: '提交成功',

@@ -357,7 +357,8 @@ export default {
         name, // 'views/fab/eqpmodel/addDevice',
         query: {
           id: item.id,
-          type: 'EDIT'
+          type: 'EDIT',
+          param: item.fileType
         }
       })
     },
@@ -370,7 +371,8 @@ export default {
         name, // 'views/fab/eqpmodel/addDevice',
         query: {
           id: item.id,
-          type: 'VIEW'
+          type: 'VIEW',
+          param: item.fileType
         }
       })
     },

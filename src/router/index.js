@@ -72,8 +72,8 @@ export const constantRouterMap = [
     children: [
       {
         path: 'dashboard',
-        // component: () => import('@/views/fab/status/eqpstatusList'),
-        component: () => import('@/views/ms/record/measurerecordList'),
+        component: () => import('@/views/fab/status/eqpstatusList'),
+        // component: () => import('@/views/ms/record/measurerecordList'),
         name: 'Dashboard',
         meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
       }

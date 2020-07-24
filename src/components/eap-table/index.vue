@@ -50,6 +50,10 @@ export default {
     opHide: {
       type: Boolean,
       default: null
+    },
+    limit: {
+      type: Number,
+      default: 10
     }
   },
   data: function() {
@@ -109,6 +113,9 @@ export default {
       if (n && n.length) {
         this.doFetchData()
       }
+    },
+    limit: function() {
+      this.query.limit = this.limit
     }
   },
   created() {},
@@ -173,9 +180,9 @@ export default {
       this.query.limit = limit
       this.getList(this.query)
     },
-    refresh(page = 1, limit = 10) {
+    refresh(page = 1) {
       this.query.page = page
-      this.query.limit = limit
+      this.query.limit = this.limit
       this.query.queryFields = this.queryName
       this.getList(this.query)
     },

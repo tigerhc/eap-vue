@@ -68,6 +68,10 @@ export default {
         return i
       }
     },
+    limit: {
+      type: Number,
+      default: 10
+    },
     params: {
       type: Object,
       default: function() {
@@ -142,6 +146,9 @@ export default {
         this.$set(this.query, 'query.' + k + '||eq', this.params[k])
       })
       this.doFetchData()
+    },
+    limit: function() {
+      this.query.limit = this.limit
     }
   },
   created() {
@@ -203,9 +210,9 @@ export default {
       this.query.limit = limit
       this.getList(this.query)
     },
-    refresh(page = 1, limit = 10) {
+    refresh(page = 1) {
       this.query.page = page
-      this.query.limit = limit
+      this.query.limit = this.limit
       this.query.queryFields = this.queryName
       this.getList(this.query)
     },

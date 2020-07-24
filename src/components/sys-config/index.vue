@@ -10,6 +10,10 @@ export default {
     config_key: {
       type: String,
       default: null
+    },
+    second: {
+      type: Number,
+      default: 0
     }
   },
   data: function() {
@@ -28,9 +32,11 @@ export default {
       }).then(response => {
         this.content = response.data
       })
-      setTimeout(() => {
-        this.getIntroduce()
-      }, 5000)
+      if (this.second !== 0) {
+        setTimeout(() => {
+          this.getIntroduce()
+        }, this.second)
+      }
     }
   }
 }

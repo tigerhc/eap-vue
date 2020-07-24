@@ -112,7 +112,7 @@ export default {
       row.index = rowIndex
     },
     newGrid() {
-      const p = { paraCode: '', paraName: '', paraShortName: '', paraUnit: '', setValue: '', showFlag: '', monitorFlag: '', sortNo: '' }
+      const p = { calCode: '', calName: '', calShortName: '', paraUnit: '', defaultValue: '', monitorFlag: '', colLevel: '', colDataType: '', sortNo: '' }
       this.model.detail.push(p)
     }
   }

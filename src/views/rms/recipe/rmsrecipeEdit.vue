@@ -452,8 +452,12 @@ export default {
     },
     cancel() {
       this.getView()
-      this.$store.dispatch('delView', this.viewObj).then(({ visitedViews }) => {
-        this.$router.push({ name: 'views/rms/recipe/rmsrecipeList' })
+      const { matched } = this.$route
+      const cp = [...matched]
+      const preRoute = cp[Math.max(cp.length - 2)]
+      console.info('取消返回上级页面', preRoute)
+      this.$store.dispatch('delView', this.$route).then(({ visitedViews }) => {
+        this.$router.push({ path: preRoute && preRoute.path })
       })
     },
     setCopy() {

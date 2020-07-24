@@ -104,8 +104,8 @@ export default {
   },
   created() {
     this.type = this.$route.query.type
-    this.model.fileType = this.$route.query.param
-    this.table.param.fileType = this.$route.query.param
+    this.model.fileType = this.$route.query.param.fileType
+    this.table.param.fileType = this.$route.query.param.fileType
   },
   methods: {
     tableRowClassName({ row, rowIndex }) {

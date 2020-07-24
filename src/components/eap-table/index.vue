@@ -358,7 +358,7 @@ export default {
         query: {
           id: item.id,
           type: 'EDIT',
-          param: item.fileType
+          param: item
         }
       })
     },
@@ -372,7 +372,7 @@ export default {
         query: {
           id: item.id,
           type: 'VIEW',
-          param: item.fileType
+          param: item
         }
       })
     },

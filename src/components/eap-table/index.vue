@@ -415,6 +415,10 @@ export default {
     reset() {},
     // 搜索
     search() {
+      if (this.datas) {
+        this.$parent.query(this.query)
+        return
+      }
       this.refresh()
     },
     queryModeCreator(mode = 'input', conf) {

@@ -46,7 +46,7 @@
               <el-option
                 v-for="item in eqpModelNameList"
                 :key="item.id"
-                :label="item.classCode"
+                :label="item.manufacturerName + '-' + item.classCode"
                 :value="item.id"/>
             </el-select>
           </el-form-item>
@@ -389,7 +389,7 @@ export default {
       let eqpModelName = ''
       this.eqpModelNameList.forEach((item) => {
         if (item.id === this.editList.eqpModelId) {
-          eqpModelName = item.classCode
+          eqpModelName = item.manufacturerName + '-' + item.classCode
         }
       })
       const params = {

@@ -1,17 +1,17 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-bind="table" url="rms/rmsrecipe/" sort="updateDate.desc, createDate.desc" >
+    <w-table v-slot="{row}" v-bind="table" url="rms/rmsrecipe/" sort="updateDate.desc, createDate.desc" >
       <!--todo fixed属性导致当前列变为第一列-->
-      <w-table-col name="recipeCode" label="程序名称" sort fixed align="left" handler="view" query condition="like"/>
-      <w-table-col name="eqpId" label="设备号" align="left" query condition="like" dict url="/fab/fabequipment/eqpIdlist"/>
-      <w-table-col name="eqpModelName" label="设备类型" align="left" />
+      <w-table-col name="recipeCode" label="程序名称" sort fixed align="center" handler="view" query condition="like"/>
+      <w-table-col name="eqpId" label="设备号" sort fixed align="center" query dict multiple eqp condition="in"/>
+      <w-table-col name="eqpModelName" width="200" label="设备类型" align="center" />
       <w-table-col name="eqpModelId" label="设备型号ID" hidden dict query url="/fab/fabequipmentmodel/list" namekey="modelName" condition="eq" filterable />
       <w-table-col name="versionType" label="程序等级" align="center" dict="RECIPE_VERSION_TYPE" query condition="eq" filterable />
       <w-table-col name="versionNo" label="程序版本号" align="center"/>
-      <w-table-col name="status" label="状态" hidden dict="RECIPE_STATUS" query condition="eq" filterable />
+      <w-table-col name="status" label="状态" dict="RECIPE_STATUS" query condition="eq" filterable />
       <w-table-col name="approveStep" label="审核状态" align="center" dict="RECIPE_APPROVE_STEP" query condition="eq" filterable />
       <w-table-col name="approveResult" label="审核结果" align="center" dict="RECIPE_APPROVE_RESULT" query condition="eq" filterable />
-      <w-table-col name="createDate" label="创建时间" align="center"/>
+      <w-table-col name="createDate" label="创建时间" width="200" align="center"/>
       <w-table-col name="createByName" label="上传人" align="center" query condition="eq" />
       <!--<w-table-col name="versionNo" label="程序版本号" align="center"/>-->
       <!--<w-table-col name="versionNo" label="程序版本号" align="center"/>-->
@@ -25,7 +25,10 @@
 
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
       <w-table-toolbar name="uploadRecipe" label="上传recipe" type="primary" tip="上传recipe？" icon="el-icon-circle-plus-outline" />
+      <w-table-toolbar name="downloadRecipe" label="下载recipe" type="primary" tip="下载recipe？" icon="fa-download" />
       <w-table-button name="edit" label="升级" url="views/rms/recipe/rmsrecipeEdit" icon="el-icon-setting" />
+      <w-table-button v-if="row.approveStep == 0 && row.status !== 'Y'" name="enable" label="启用" tip="确认启用？" icon="el-icon-bell" />
+      <w-table-button v-if="row.status === 'Y'" name="diable" label="停用" tip="确认停用？" icon="el-icon-circle-close" type="warning" />
 
     </w-table>
 
@@ -33,7 +36,7 @@
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
       <el-form ref="dataModifyForm" :model="uploadRecipe1" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="设备号" prop="eqpId">
-          <el-input v-model="uploadRecipe1.eqpId"/>
+          <w-select-eqp v-model="uploadRecipe1.eqpId" :multiple="false" param="filter" style="width:300px"/>
         </el-form-item>
         <el-form-item label="程序名称" prop="recipeName">
           <el-input v-model="uploadRecipe1.recipeName"/>
@@ -45,13 +48,31 @@
       </div>
     </el-dialog>
 
+    <el-dialog :visible.sync="dialogFormDownloadRecipeVisible" title="下载recipe">
+      <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
+      <el-form ref="dataModifyForm" :model="downloadRecipe1" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="设备号" prop="eqpId">
+          <w-select-eqp v-model="downloadRecipe1.eqpId" :multiple="false" param="filter" style="width:300px"/>
+        </el-form-item>
+        <el-form-item label="程序名称" prop="recipeName">
+          <el-input v-model="downloadRecipe1.recipeName"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormDownloadRecipeVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="doDownloadRecipe">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import request from '@/utils/request'
+import WSelectEqp from '../../../components/eap-select-eqp/index'
 export default {
   name: 'RmsrecipeList',
+  components: { WSelectEqp },
   data() {
     return {
       table: {
@@ -60,14 +81,53 @@ export default {
       uploadRecipe1: {
         eqpId: '',
         recipeName: ''
-      }
+      },
+      dialogFormDownloadRecipeVisible: false,
+      downloadRecipe1: {
+        eqpId: '',
+        recipeName: ''
+      },
+      eqpIdList: []
     }
   },
+  created() {
+    this.getEqpIdList()
+  },
   methods: {
-
+    enable(row, table, ctx) {
+      request({
+        url: '/rms/rmsrecipe/status/' + row.id + '/Y',
+        method: 'put'
+      }).then(() => {
+        ctx.refresh()
+        this.$notify({
+          title: '成功',
+          message: '已启用',
+          type: 'success',
+          duration: 2000
+        })
+      })
+    },
+    diable(row, table, ctx) {
+      request({
+        url: '/rms/rmsrecipe/status/' + row.id + '/N',
+        method: 'put'
+      }).then(() => {
+        ctx.refresh()
+        this.$notify({
+          title: '成功',
+          message: '已禁用',
+          type: 'success',
+          duration: 2000
+        })
+      })
+    },
     // 弹出一个input框,输入后发送请求
     uploadRecipe(row, table, ctx) {
       this.dialogFormUploadRecipeVisible = true
+    },
+    downloadRecipe(row, table, ctx) {
+      this.dialogFormDownloadRecipeVisible = true
     },
 
     doUploadRecipe(row, table, ctx) {
@@ -83,6 +143,31 @@ export default {
             type: 'success',
             duration: 2000
           })
+          this.dialogFormUploadRecipeVisible = false
+        } else {
+          this.$notify({
+            title: '失败',
+            message: res.data.msg,
+            type: 'error',
+            duration: 2000
+          })
+        }
+      })
+    },
+    doDownloadRecipe(row, table, ctx) {
+      request({
+        url: 'rms/rmsrecipe/downloadrecipe',
+        method: 'post',
+        params: this.downloadRecipe1
+      }).then((res) => {
+        if (res.data.code === 0) {
+          this.$notify({
+            title: '成功',
+            message: '下载recipe成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.dialogFormDownloadRecipeVisible = false
         } else {
           this.$notify({
             title: '失败',
@@ -96,8 +181,17 @@ export default {
     // 升级
     upgrade() {
       // debugger
+    },
+    // 获取设备号下拉框
+    getEqpIdList() {
+      request({
+        url: '/fab/fabequipment/eqpIdlist',
+        method: 'get',
+        params: ''
+      }).then((res) => {
+        this.eqpIdList = res.data.results
+      })
     }
-
   }
 }
 </script>

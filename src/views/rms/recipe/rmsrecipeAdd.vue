@@ -147,11 +147,13 @@
   </div>
 </template>
 <script>
+// eslint-disable-next-line no-unused-vars
 import { fetchList, create, update, del, getDeteils, batchDelete, fetchDict } from '@/api/public'
-import { fetchDeviceList } from '@/api/sys/device'
+import { fetchDeviceList } from '@/api/fab/model'
+// eslint-disable-next-line no-unused-vars
 import waves from '@/directive/waves' // 水波纹指令
 export default {
-  name: 'programAdd',
+  name: 'ProgramAdd',
   data() {
     return {
       load: false,
@@ -269,7 +271,7 @@ export default {
       })
     },
     del() {
-      if (this.selectIndex != '') {
+      if (this.selectIndex !== '') {
         this.ruleForm.tableData.splice(this.selectIndex, 1)
       } else {
         this.$notify({
@@ -283,7 +285,7 @@ export default {
     save() {
       let eqpModelName = ''
       this.eqpModelNameList.forEach(item => {
-        if (item.id == this.addList.eqpModelId) {
+        if (item.id === this.addList.eqpModelId) {
           eqpModelName = item.classCode
         }
       })
@@ -300,7 +302,7 @@ export default {
         _detail: JSON.stringify(this.ruleForm.tableData)
       }
       create(this.tab, params).then((res) => {
-        if (res.data.code == 0) {
+        if (res.data.code === 0) {
           this.cancel()
           this.$notify({
             title: '成功',
@@ -321,7 +323,7 @@ export default {
     getView() {
       const List = this.$store.state.tagsView.visitedViews
       for (const item of List) {
-        if (item.name == 'programAdd') {
+        if (item.name === 'programAdd') {
           this.viewObj = item
         }
       }

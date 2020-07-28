@@ -3,7 +3,9 @@
     <w-form v-bind="formConf" :col="3" :model="model" :bottom-btn="true">
       <el-input v-model="model.recordId" label="流水号"/>
       <el-input v-model="model.eqpId" label="设备号"/>
+      <el-row col="24" />
       <el-input v-model="model.productionNo" label="产品"/>
+      <el-input v-model="model.productionName" label="产品名"/>
       <el-input v-model="model.lotNo" label="批号"/>
       <el-input v-model="model.waferId" label="晶圆ID"/>
       <el-input v-model="model.timing" label="时机"/>
@@ -12,9 +14,10 @@
       <w-select-dic v-model="model.approveResult" style="width:100%" label="判定结果" dict="JUDGE_RESULT" />
       <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
       <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
-      <!--      <el-row col="24" />-->
-      <!--      <el-input v-model="model.createByName" :disabled="true" label="创建人" />-->
-      <!--      <el-input v-model="model.createDate" :disabled="true" label="创建日期" />-->
+      <button class="exportBtn" @click="exportDetail">
+        <i class="fa-download"/>
+        <span>导出Excel</span>
+      </button>
     </w-form>
     <div class="model">
       <el-form v-if="rowData.length > 0" :model="model" disabled>
@@ -46,7 +49,7 @@
           :header-row-class-name="headStyle"
           :cell-class-name="bodyRowStyle"
           border
-          fit
+
           stripe>
           <el-table-column fixed type="index"/>
           <div v-for="(col, index) in item.head" :key="col">
@@ -77,6 +80,7 @@
 </template>
 <script>
 import Vue from 'vue'
+import request from '@/utils/request'
 
 export default {
   name: 'MachineModel',
@@ -101,6 +105,10 @@ export default {
         updateByName: '',
         updateDate: ''
       },
+      param: {
+        recordId: ''
+      },
+      exportsLoading: false,
       rowData: [],
       gridData: [], // 多个形式 gridData:[{id:'',head:['key1','key2','key3'],data:[[{'rowName':''},{'key1':'', }, 'key2':'', 'key3': ''],]}]
       formConf: {
@@ -118,6 +126,7 @@ export default {
         onLoadData: (m, type) => {
           console.info(m)
           // m.officeIds = m.officeIds.split(',')
+          this.param = { recordId: m.recordId }
           this.rowData = []
           this.gridData = []
           this.circles = []
@@ -238,18 +247,63 @@ export default {
     },
     bodyRowStyle(row, rowIndex) {
       return 'rowStyle'
+    },
+    exportDetail() {
+      if (this.exportsLoading) {
+        return
+      }
+      this.exportsLoading = true
+      request({
+        url: 'ms/msmeasurerecord/exportDetail',
+        method: 'post',
+        params: this.param
+      }).then((res) => {
+        if (res.data.code === 0) {
+          return import('@/vendor/Export2Excel').then((excel) => {
+            console.log(res)
+            excel.export_byte_to_excel(res.data.bytes, res.data.title)
+            this.exportsLoading = false
+          })
+        } else {
+          this.$notify.error({
+            title: '失败',
+            message: (res && res.data.errmsg) || '导出失败!',
+            duration: 2000
+          })
+          this.exportsLoading = false
+        }
+      })
+        .catch((e) => {
+          this.exportsLoading = false
+        })
     }
   }
 }
 </script>
 <style lang="scss">
+  .exportBtn {
+    width: 150px;
+    height: 40px;
+    position: absolute;
+    right:40px;
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: 1px solid #67c23a;
+    color: #fff;
+    background-color: #67c23a;
+    line-height: 1;
+    font-weight: 500;
+    transition: .1s;
+  }
   .el-table th, .headStyle {
     background-color: #1e6abc;
     color: white;
   }
   .el-table .rowStyle {
-    padding: 2px 0px;
-    margin: 0;
+    /*padding: 2px 0px;*/
+    /*margin: 0;*/
+    font-weight:bold
   }
   .el-table {
     /*min-height: calc(100vh - 84px - 96px - 42px);*/

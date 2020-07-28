@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-slot="{row}" v-bind="table" url="/aps/apsplanpdtyield" sort="plan_date.asc" >
+    <w-table v-slot="{row}" v-bind="table" url="/aps/apsplanpdtyield" sort="plan_date.desc" >
       <w-table-col name="productionNo" label="品番" width="100" sort fixed align="center" handler="view" query condition="like" />
       <w-table-col name="productionName" label="品名" align="left" width="250" query condition="like" />
       <w-table-col name="planDate" label="投入日期" width="100" align="center"/>

@@ -66,7 +66,8 @@
 </template>
 
 <script>
-import { fetchList, fetchEcharts } from '@/api/sys/temperature'
+// eslint-disable-next-line no-unused-vars
+import { fetchList, fetchEcharts } from '@/api/oven/temperature'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {

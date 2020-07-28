@@ -1,10 +1,15 @@
 <template>
-  <el-select v-bind="$attrs" :value="asyncValue" :multiple="multiple" filterable placeholder="设备号" @change="onValueChange">
+  <el-select v-bind="$attrs" :value="asyncValue" :multiple="multiple" collapse-tags filterable placeholder="设备号" @change="onValueChange">
     <el-option
       v-for="item in data"
       :key="item.id"
-      :label="item[namekey]"
-      :value="item[valuekey]"/>
+      :label="item[valuekey]"
+      :value="item[valuekey]">
+      <span style="float: left;">{{ item[valuekey] }}</span>&nbsp;&nbsp;
+      <span style="color: #8492a6; font-size: 12px">{{ item[namekey] }}</span>
+    <!--<span style="float: left; font-size: 13px">{{ item[valuekey]  }}</span>-->
+    <!--<span style="float: right; color: #8492a6; font-size: 13px">{{ item[namekey] }}</span>-->
+    </el-option>
   </el-select>
 </template>
 
@@ -18,6 +23,10 @@ export default {
       default: () => []
     },
     str: {
+      type: String,
+      default: ''
+    },
+    param: {
       type: String,
       default: ''
     },
@@ -35,12 +44,13 @@ export default {
   data: function() {
     return {
       data: [],
-      list: this.ary
+      list: this.ary,
+      str1: this.str
     }
   },
   computed: {
     api: function() {
-      return api(this.url)
+      return api(this.url + '?param=' + this.param)
     },
     asyncValue: function() {
       if (this.multiple) {
@@ -49,7 +59,7 @@ export default {
         }
         return this.str === '' ? [] : this.list.split(',')
       } else {
-        return this.str
+        return this.str1
       }
     }
   },
@@ -73,6 +83,7 @@ export default {
   methods: {
     onValueChange(e) {
       this.list = e
+      this.str1 = e
       this.$emit('input', e)
     }
   }

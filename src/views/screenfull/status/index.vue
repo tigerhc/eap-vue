@@ -19,7 +19,7 @@
 </template>
 <script>
 import echarts from 'echarts'
-import { fetchGetChart, fetchDataList } from '@/api/sys/monitor'
+import { fetchGetChart, fetchDataList } from '@/api/fab/monitor'
 import Screenfull from '@/components/Screenfull'
 export default {
   name: 'Status',

@@ -46,7 +46,7 @@ export default {
     },
     url: {
       type: String,
-      required: true
+      default: ''
     },
     handler: {
       type: Object,
@@ -68,9 +68,15 @@ export default {
         return i
       }
     },
+    limit: {
+      type: Number,
+      default: 10
+    },
     params: {
-      type: String,
-      default: null
+      type: Object,
+      default: function() {
+        return {}
+      }
     }
   },
   data: function() {
@@ -136,8 +142,13 @@ export default {
       }
     },
     params: function() {
-      this.$set(this.query, 'query.eqpModelId||eq', this.params)
+      Object.keys(this.params).forEach((k) => {
+        this.$set(this.query, 'query.' + k + '||eq', this.params[k])
+      })
       this.doFetchData()
+    },
+    limit: function() {
+      this.query.limit = this.limit
     }
   },
   created() {
@@ -199,9 +210,9 @@ export default {
       this.query.limit = limit
       this.getList(this.query)
     },
-    refresh(page = 1, limit = 10) {
+    refresh(page = 1) {
       this.query.page = page
-      this.query.limit = limit
+      this.query.limit = this.limit
       this.query.queryFields = this.queryName
       this.getList(this.query)
     },
@@ -209,7 +220,7 @@ export default {
       // 外部直接传入数据 无需求情api。 不开启分页，不开启搜索查询
       if (this.datas) {
         this.list = this.datas
-        // return
+        return
       }
       this.isLoading = true
       this.api
@@ -900,7 +911,7 @@ export default {
         scopedSlots: {
           default: (scope) => {
             // 编辑模式
-            if ((this.editId === scope.row.id || this.editId === scope.row.__id) && this.colChildrenSet[col.name] && col.name !== 'paraCode') {
+            if ((this.editId === scope.row.id || this.editId === scope.row.__id) && this.colChildrenSet[col.name] && !col.edit) {
               return <el-form-item prop={col.name}>{this.colChildrenSet[col.name]}</el-form-item>
             }
             // 显示模式

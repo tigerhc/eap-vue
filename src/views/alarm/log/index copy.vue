@@ -103,7 +103,7 @@
 
 <!--<script>-->
 <!--import { fetchList, create, update, del, getDeteils, batchDelete, exportLoginLog } from '@/api/public'-->
-<!--import { fetchDeviceList } from '@/api/sys/device'-->
+<!--import { fetchDeviceList } from '@/api/fab/model'-->
 <!--import waves from '@/directive/waves' // 水波纹指令-->
 
 <!--export default {-->

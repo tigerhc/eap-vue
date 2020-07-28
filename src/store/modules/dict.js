@@ -1,4 +1,4 @@
-import { fetchDicts } from '@/api/dict'
+import { fetchDicts } from '@/api/sys/dict'
 
 const permission = {
   state: {

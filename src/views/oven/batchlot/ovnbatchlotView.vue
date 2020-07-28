@@ -42,7 +42,7 @@
 import echarts from 'echarts'
 
 require('echarts/theme/macarons') // echarts theme
-import { fetchEcharts } from '@/api/sys/temperature'
+import { fetchEcharts } from '@/api/oven/temperature'
 
 export default {
   name: 'TempModel',

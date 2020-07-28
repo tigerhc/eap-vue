@@ -41,9 +41,10 @@
   </div>
 </template>
 <script>
-import { fetchDeviceList, addDevice, updateDevice, deleteDevice } from '@/api/sys/device'
+// eslint-disable-next-line no-unused-vars
+import { fetchDeviceList, addDevice, updateDevice, deleteDevice } from '@/api/fab/model'
 export default {
-  name: 'addDevice',
+  name: 'AddDevice',
   data() {
     return {
       addList: {
@@ -52,6 +53,7 @@ export default {
         smlPath: '',
         hostJavaClass: '',
         activeFlag: '',
+        // eslint-disable-next-line no-dupe-keys
         hostJavaClass: '',
         remarks: '',
         delFlag: 0,
@@ -77,7 +79,7 @@ export default {
     getView() {
       const List = this.$store.state.tagsView.visitedViews
       for (const item of List) {
-        if (item.name == 'addDevice') {
+        if (item.name === 'addDevice') {
           this.viewObj = item
         }
       }
@@ -86,7 +88,7 @@ export default {
       this.$refs['addForm'].validate((valid) => {
         if (valid) {
           addDevice(this.addList).then((res) => {
-            if (res.data.code == 0) {
+            if (res.data.code === 0) {
               this.cancel()
               this.$notify({
                 title: '成功',

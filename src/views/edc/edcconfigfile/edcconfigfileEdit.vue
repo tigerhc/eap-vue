@@ -3,30 +3,33 @@
     <w-form v-bind="formConf" :col="3" :model="model" :bottom-btn="true">
       <el-input v-model="model.manufacturerName" :disabled="true" label="设备厂家" />
       <el-input v-model="model.classCode" :disabled="true" label="设备类型" />
-      <el-input v-model="model.updateDate" :disabled="true" label="更新时间" />
+      <el-input v-model="model.fileType" :disabled="true" label="文件类型" />
     </w-form>
     <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
-    <w-edt-table v-slot="{row}" ref="language" v-bind="table" :params="table.param" url="/rms/rmsrecipetemplate/">
-      <w-table-col name="paraCode" required label="参数代码" edit="false" query condition="like">
-        <el-input v-model="table.model.paraCode" />
+    <w-edt-table v-slot="{row}" ref="language" v-bind="table" :params="table.param" :limit="99999" sort="sort_no.asc" url="/edc/edcconfigfilecsv/">
+      <w-table-col name="colCode" required label="参数代码" edit="false" query condition="like">
+        <el-input v-model="table.model.colCode" />
       </w-table-col>
-      <w-table-col name="paraName" label="参数名" query condition="like">
-        <el-input v-model="table.model.paraName" />
+      <w-table-col name="colName" label="参数名" query condition="like">
+        <el-input v-model="table.model.colName" />
       </w-table-col>
-      <w-table-col name="paraShortName" label="参数简称" >
-        <el-input v-model="table.model.paraShortName" />
+      <w-table-col name="colShortName" label="参数简称" >
+        <el-input v-model="table.model.colShortName" />
       </w-table-col>
       <w-table-col name="paraUnit" label="单位" >
         <el-input v-model="table.model.paraUnit" />
       </w-table-col>
-      <w-table-col name="setValue" label="设定值" >
-        <el-input v-model="table.model.setValue" />
-      </w-table-col>
-      <w-table-col name="showFlag" label="是否首页显示" query condition="eq" dict="SHOW_FLAG" >
-        <w-select-dic v-model="table.model.showFlag" style="width:100%" label="显示" dict="SHOW_FLAG" />
+      <w-table-col name="defaultValue" label="默认值" >
+        <el-input v-model="table.model.defaultValue" />
       </w-table-col>
       <w-table-col name="monitorFlag" label="是否监控" dict="MONITOR_FLAG" >
         <w-select-dic v-model="table.model.monitorFlag" style="width:100%" label="是否监控" dict="MONITOR_FLAG" />
+      </w-table-col>
+      <w-table-col name="colLevel" label="参数等级" query condition="eq" dict="COL_LEVEL" >
+        <w-select-dic v-model="table.model.colLevel" style="width:100%" label="显示" dict="COL_LEVEL" />
+      </w-table-col>
+      <w-table-col name="colDataType" label="参数数据类型" query condition="eq" dict="COL_DATA_TYPE" >
+        <w-select-dic v-model="table.model.colDataType" style="width:100%" label="显示" dict="COL_DATA_TYPE" />
       </w-table-col>
       <w-table-col name="sortNo" label="排序号" >
         <el-input v-model="table.model.sortNo" />
@@ -39,14 +42,14 @@
 </template>
 <script>
 export default {
-  name: 'OvenEditModel',
+  name: 'EdcConfigFileEdit',
   data() {
     return {
       type: 'View',
       model: {
         manufacturerName: '',
         classCode: '',
-        activeFlag: '',
+        fileType: '',
         detail: [],
         updateDate: ''
       },
@@ -57,26 +60,28 @@ export default {
           itemCode: [{ required: true, message: '有效标志必选', trigger: 'change' }]
         },
         model: {
-          paraCode: '',
-          paraName: '',
-          paraShortName: '',
+          calCode: '',
+          calName: '',
+          calShortName: '',
           paraUnit: '',
-          setValue: '',
-          showFlag: '',
+          defaultValue: '',
           monitorFlag: '',
+          colLevel: '',
+          colDataType: '',
           sortNo: ''
         },
         datas: [],
         param: {
-          eqpModelId: ''
+          eqpModelId: '',
+          fileType: ''
         }
       },
       formConf: {
         url: '/fab/fabequipmentmodel/',
         title: {
-          ADD: '新增配方模板',
-          EDIT: '修改配方模板',
-          VIEW: '配方模板详情'
+          ADD: '新增文件配置',
+          EDIT: '修改文件配置',
+          VIEW: '文件配置详情'
         },
         rules: {
           eqpModelName: [{ required: true, message: '设备类型必填', trigger: 'blur' }],
@@ -99,13 +104,15 @@ export default {
   },
   created() {
     this.type = this.$route.query.type
+    this.model.fileType = this.$route.query.param.fileType
+    this.table.param.fileType = this.$route.query.param.fileType
   },
   methods: {
     tableRowClassName({ row, rowIndex }) {
       row.index = rowIndex
     },
     newGrid() {
-      const p = { paraCode: '', paraName: '', paraShortName: '', paraUnit: '', setValue: '', showFlag: '', monitorFlag: '', sortNo: '' }
+      const p = { calCode: '', calName: '', calShortName: '', paraUnit: '', defaultValue: '', monitorFlag: '', colLevel: '', colDataType: '', sortNo: '' }
       this.model.detail.push(p)
     }
   }

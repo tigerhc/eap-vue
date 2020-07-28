@@ -10,6 +10,11 @@ import api from './fetch'
 export default {
   name: 'WTable',
   props: {
+    // 数据来源不通过接口获取，直接外部传入
+    datas: {
+      type: Array,
+      default: null
+    },
     tableConf: {
       type: Object,
       default: function() {
@@ -45,6 +50,10 @@ export default {
     opHide: {
       type: Boolean,
       default: null
+    },
+    limit: {
+      type: Number,
+      default: 10
     }
   },
   data: function() {
@@ -93,10 +102,20 @@ export default {
     }
   },
   watch: {
+    datas: function(val) {
+      if (Array.isArray(val)) {
+        this.list = val
+      } else {
+        this.list = []
+      }
+    },
     colSet: function(n, o) {
       if (n && n.length) {
         this.doFetchData()
       }
+    },
+    limit: function() {
+      this.query.limit = this.limit
     }
   },
   created() {},
@@ -161,14 +180,19 @@ export default {
       this.query.limit = limit
       this.getList(this.query)
     },
-    refresh(page = 1, limit = 10) {
+    refresh(page = 1) {
       this.query.page = page
-      this.query.limit = limit
+      this.query.limit = this.limit
       this.query.queryFields = this.queryName
       this.getList(this.query)
     },
     // 调用api 获取数据
     getList(query) {
+      // 外部直接传入数据 无需求情api。 不开启分页，不开启搜索查询
+      if (this.datas) {
+        this.list = this.datas
+        return
+      }
       this.isLoading = true
       this.api
         .ajaxList(this.getParams(query))
@@ -340,7 +364,8 @@ export default {
         name, // 'views/fab/eqpmodel/addDevice',
         query: {
           id: item.id,
-          type: 'EDIT'
+          type: 'EDIT',
+          param: item
         }
       })
     },
@@ -353,7 +378,8 @@ export default {
         name, // 'views/fab/eqpmodel/addDevice',
         query: {
           id: item.id,
-          type: 'VIEW'
+          type: 'VIEW',
+          param: item
         }
       })
     },
@@ -389,6 +415,10 @@ export default {
     reset() {},
     // 搜索
     search() {
+      if (this.datas) {
+        this.$parent.query(this.query)
+        return
+      }
       this.refresh()
     },
     queryModeCreator(mode = 'input', conf) {
@@ -707,7 +737,7 @@ export default {
     const paginationConf = {
       props: {
         'current-page': this.query.page,
-        'page-sizes': [10, 20, 30, 50, 100, 500, 1000],
+        'page-sizes': [10, 20, 100, 500, 1000],
         'page-size': this.query.limit,
         total: this.total,
         background: true,

@@ -226,7 +226,9 @@ export default {
         // eslint-disable-next-line no-unused-vars
         const p = []
         for (const argumentsKey in datas) {
-          p.push(datas[argumentsKey][i][heads[i]])
+          if (datas[argumentsKey][i][heads[i]] !== undefined) {
+            p.push(datas[argumentsKey][i][heads[i]])
+          }
         }
         this.circles.push(p)
       }

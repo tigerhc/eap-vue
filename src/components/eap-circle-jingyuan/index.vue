@@ -2,18 +2,27 @@
   <div class="jk-wrapper-jingyuan">
     <div class="jk-bg-round-red">
       <div style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
-        <div v-for="(item,index) in listleft" :key="index" style="margin-right: 30px;">
-          <div>{{ item }}</div>
+        <div v-for="(item,index) in listleft" :key="index" style="margin-right: 30px;display: flex;flex-direction: column;align-items: center;">
+          <span style="font-weight: bold;margin-bottom: 3px;">{{ index + listcenter.length + 1 }}</span>
+          <span>
+            {{ item }}
+          </span>
         </div>
       </div>
       <div style="display: flex;flex-direction: column;justify-content: space-between;align-items: center;">
-        <div v-for="(item,index) in listcenter" :key="index" style="line-height: 60px;">
-          <div>{{ item }}</div>
+        <div v-for="(item,index) in listcenter" :key="index" style="margin:15px 0px;display: flex;flex-direction: column;align-items: center;">
+          <div style="font-weight: bold;margin-bottom: 3px;line-height: normal;">{{ index + 1 }}</div>
+          <div>
+            {{ item }}
+          </div>
         </div>
       </div>
       <div style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
-        <div v-for="(item,index) in listright" :key="index" style="margin-left: 30px;">
-          <div>{{ item }}</div>
+        <div v-for="(item,index) in listright" :key="index" style="margin-left: 30px;display: flex;flex-direction: column;align-items: center;">
+          <span style="font-weight: bold;margin-bottom: 3px;">{{ index + listcenter.length + listleft.length + 1 }}</span>
+          <span>
+            {{ item }}
+          </span>
         </div>
       </div>
     </div>

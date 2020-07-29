@@ -7,9 +7,7 @@
     </w-form>
     <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
     <w-edt-table v-slot="{row}" ref="language" v-bind="table" :params="table.param" url="/rms/rmsrecipetemplate/">
-      <w-table-col name="paraCode" required label="参数代码" edit="false" query condition="like">
-        <el-input v-model="table.model.paraCode" />
-      </w-table-col>
+      <w-table-col name="paraCode" required label="参数代码" query condition="like"/>
       <w-table-col name="paraName" label="参数名" query condition="like">
         <el-input v-model="table.model.paraName" />
       </w-table-col>

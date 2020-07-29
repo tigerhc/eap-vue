@@ -137,6 +137,7 @@ export default {
           this.history.recipeId = m.id
           this.recipeId = m.id
           // this.table.param = { recipeId: m.id }
+          this.model.approveStep = m.approveStep
           this.showFlag = true
           this.getDeteils()
           this.getRoleName()

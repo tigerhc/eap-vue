@@ -13,13 +13,16 @@
         <el-button type="primary" @click="search">查询</el-button>
       </el-row>
     </el-form>
-    <el-tabs v-model="editableTabsValue" type="card" @tab-click="loadTempDataPart">
-      <el-tab-pane
-        v-for="item in editableTabs"
-        :key="item.title"
-        :label="item.title"
-        :name="item.title"/>
-    </el-tabs>
+    <template v-for="(tempName) in otherTempsTitles">
+      <el-button
+        v-if="tempName.indexOf('当前值') !== -1 || tempName.indexOf('现在值') !== -1"
+        :key="tempName"
+        type="primary"
+        icon="el-icon-arrow-right"
+        style="margin:5px;"
+        @click="loadTempDataPart(tempName)"> {{ tempName.replace('当前值','').replace('现在值','') }}
+      </el-button>
+    </template>
 
       <div id="tempChart" style="width: 100%;height: 500px;overflow: hidden;"/>
   </div>
@@ -41,11 +44,10 @@ export default {
         eqpId: [{ required: true, message: '请选择设备！', trigger: 'change' }],
         dateTime: [{ required: true, message: '请选择时间！', trigger: 'change' }]
       },
-      editableTabsValue: 0,
-      editableTabs: [],
-      tempsTitles: [],
-      tempsValue: [],
+      otherTempsTitles: [],
+      otherTempsValue: [],
       list: [],
+      source: [],
       chart: undefined,
       charLegend: ['运行温度', '设定温度', '低温报警', '高温报警']
     }
@@ -70,30 +72,14 @@ export default {
             endTime: this.form.dateTime[1]
           }).then((res) => {
             const data = res.data
-            this.editableTabs.splice(0, this.editableTabs.length)
-            this.tempsTitles = data.title.split(',')
-            if (this.tempsTitles[0].indexOf('第2温区') !== -1) {
-              this.tempsTitles.splice(0, 0, '第1温区温度当前值')
-              this.tempsTitles.splice(1, 0, '第1温区温度SET')
-              this.tempsTitles.splice(2, 0, '第1温区温度MIN')
-              this.tempsTitles.splice(3, 0, '第1温区温度MAX')
-              for (let index = 0; index < this.tempsTitles.length; index++) {
-                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
-                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
-                }
-              }
-            } else {
-              for (let index = 0; index < this.tempsTitles.length; index++) {
-                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
-                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
-                }
-              }
-            }
-            this.editableTabsValue = this.editableTabs[0].title
-            this.tempsValue = data.results
-            this.initChart(0)
-            // console.log(this.tempsValue)
-            // console.log('this.tempsTitles', this.tempsTitles)
+            var title = data.title
+            this.otherTempsTitles = title.split(',')
+            this.otherTempsValue = data.results[0]
+            const a = title.split(',')
+            this.otherTempsTitles = a
+            this.source = data.results
+            this.initChart()
+            console.log('this.otherTempsTitles', this.otherTempsTitles)
           })
         }
       })
@@ -110,7 +96,7 @@ export default {
       var date = new Date(temp[0], temp[1], temp[2])
       return date
     },
-    initChart(index) {
+    initChart() {
       this.chart = echarts.init(document.getElementById('tempChart'))
       const Cureoption = {
         title: {
@@ -169,7 +155,7 @@ export default {
         ],
         series: [
           {
-            name: '运行温度',
+            name: '湿度现在值',
             itemStyle: {
               normal: {
                 color: '#458B74',
@@ -186,7 +172,7 @@ export default {
             animationEasing: 'quadraticOut'
           },
           {
-            name: '设定温度',
+            name: '湿度SET',
             smooth: true,
             type: 'line',
             itemStyle: {
@@ -204,7 +190,7 @@ export default {
             animationEasing: 'quadraticOut'
           },
           {
-            name: '低温报警',
+            name: '湿度MIN',
             smooth: true,
             type: 'line',
             itemStyle: {
@@ -222,7 +208,7 @@ export default {
             animationEasing: 'quadraticOut'
           },
           {
-            name: '高温报警',
+            name: '湿度MAX',
             smooth: true,
             type: 'line',
             itemStyle: {
@@ -244,18 +230,14 @@ export default {
           }
         ]
       }
-      if (index === 0 || index === '0') {
-        this.chart.setOption(this.loadTempDataFirst(Cureoption), true)
-      } else {
-        this.chart.setOption(this.loadTempData(Cureoption, index), true)
-      }
+      this.chart.setOption(this.loadTempDataFirst(Cureoption), true)
     },
     loadTempDataFirst(option) {
-      option.xAxis.data = this.produce(this.tempsValue, 'create_date')
-      option.series[0].data = this.produce(this.tempsValue, 'temp_pv')
-      option.series[1].data = this.produce(this.tempsValue, 'temp_sp')
-      option.series[2].data = this.produce(this.tempsValue, 'temp_min')
-      option.series[3].data = this.produce(this.tempsValue, 'temp_max')
+      option.xAxis.data = this.produce(this.source, 'create_date')
+      option.series[0].data = this.produce(this.source, 'temp_pv')
+      option.series[1].data = this.produce(this.source, 'temp_sp')
+      option.series[2].data = this.produce(this.source, 'temp_min')
+      option.series[3].data = this.produce(this.source, 'temp_max')
       return option
     },
     produce(data, name) {
@@ -265,25 +247,53 @@ export default {
       }
       return result
     },
-    loadTempData(option, index) {
-      option.xAxis.data = this.produce(this.tempsValue, 'create_date')
-      option.series[0].data = this.produceOther(this.tempsValue, index, 0)
-      option.series[1].data = this.produceOther(this.tempsValue, index, 1)
-      option.series[2].data = this.produceOther(this.tempsValue, index, 2)
-      option.series[3].data = this.produceOther(this.tempsValue, index, 3)
+    loadTempDataPart(tempName) {
+      console.log('测试进入')
+      tempName = tempName.replace('当前值', '').replace('现在值', '')
+      var option = this.chart.getOption()
+      option.series = option.series.slice(0, 4)
+      this.charLegend = this.charLegend.slice(0, 4)
+      const length = this.otherTempsTitles.length
+      for (let index = 0; index < length; index++) {
+        const element = this.otherTempsTitles[index]
+        if (element.indexOf(tempName) === -1) {
+          continue
+        }
+        this.charLegend.push(element)
+        const othterSeries = {
+          name: element,
+          smooth: true,
+          type: 'line',
+          data: [],
+          animationDuration: 3000,
+          animationEasing: 'quadraticOut',
+          itemStyle: {
+            normal: {
+              lineStyle: {
+                width: 2
+              }
+            }
+          }
+        }
+        if (this.otherTempsTitles[index].indexOf('MAX') !== -1 || this.otherTempsTitles[index].indexOf('MIN') !== -1) {
+          othterSeries.itemStyle.normal.lineStyle.type = 'dashed'
+        } else if (this.otherTempsTitles[index].indexOf('SET') !== -1) {
+          othterSeries.itemStyle.normal.lineStyle.type = 'dotted'
+        }
+        othterSeries.data = this.produceOther(this.source, index)
+        option.series.push(othterSeries)
+      }
+      option.legend[0].data = this.charLegend
+      this.chart.setOption(option)
       return option
     },
-    produceOther(data, index, int) {
-      var key = 4 * (index - 1) + int
+    produceOther(data, index) {
       var result = []
       for (var i = 0, len = data.length; i < len; i++) {
-        var tempsValues = data[i].other_temps_value.split(',')
-        result.push(tempsValues[key])
+        var otherTempsValues = data[i].other_temps_value.split(',')
+        result.push(otherTempsValues[index])
       }
       return result
-    },
-    loadTempDataPart(tab) {
-      this.initChart(tab.index)
     }
   }
 }

@@ -113,10 +113,6 @@ export default {
     initChart(index) {
       this.chart = echarts.init(document.getElementById('tempChart'))
       const Cureoption = {
-        title: {
-          text: '数据曲线',
-          padding: [20, 20]
-        },
         tooltip: {
           trigger: 'axis',
           axisPointer: {

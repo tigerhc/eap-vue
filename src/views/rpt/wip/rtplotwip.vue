@@ -39,7 +39,7 @@ export default {
         { 'prop': 'lot_no', 'label': 'NO' }
       ],
       cols: [
-        { 'fixed': true, 'prop': 'production_name', 'label': '品名', 'width': '210' },
+        { 'fixed': true, 'prop': 'production_name', 'label': '品名', 'width': '250' },
         { 'fixed': true, 'prop': 'lot_no', 'label': 'NO', 'width': '100' }
       ], // 列集合
       lineNo: '',
@@ -94,7 +94,11 @@ export default {
         const data = response.data.yield
         for (let i = 0; i < data.length; i++) {
           for (let j = 0; j < this.cols[2].child.length; j++) {
+            console.log(this.cols[2])
             this.cols[2].child[j].color = 'jk-blue'
+            // if (j > 2) {
+            //   this.cols[2].child[j].color = 'jk-white'
+            // }
             if (this.cols[2].child[j].prop === data[i].step_id) {
               this.$set(data[i], this.cols[2].child[j].prop, data[i].lot_yield)
               break
@@ -118,12 +122,23 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
   .Rtplotyieldday {
     width: 100%;
     height: 100%;
     margin: 0 auto;
 
+    .el-table thead.is-group th{
+      background-color: #1e6abc;
+      text-align: center;
+    }
+    .el-table__row td.jk-blue{
+      border-right: 1px solid #6cadc8 !important;
+    }
+    .el-table__row td.jk-white{
+      background-color: #f5f7fa;
+      border-right: 1px solid #f5f7fa;
+    }
     .form {
       margin-top: 20px;
     }

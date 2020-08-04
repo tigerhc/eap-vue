@@ -6,11 +6,11 @@
           <el-form-item label="线别" prop="lineNo">
             <el-select v-model="form.lineNo">
               <el-option
-v-for="item in lineNoOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value"
-                         :disabled="item.disabled" />
+                v-for="item in lineNoOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+                :disabled="item.disabled" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -18,7 +18,7 @@ v-for="item in lineNoOptions"
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>
     </el-form>
-    <el-table :data="tableData" style="width: 100%" >
+    <el-table :data="tableData" :cell-class-name="color" style="width: 100%" >
       <el-table-column v-for="col in cols" :key="col.prop" :fixed="col.fixed" :prop="col.prop" :label="col.label" :class-name="col.color" :width="col.width">
         <el-table-column v-for="(son, k) in col.child" :key="k" :prop="son.prop" :label="son.label" :class-name="son.color" :width="son.width"/>
       </el-table-column>
@@ -44,7 +44,7 @@ export default {
       ], // 列集合
       lineNo: '',
       form: {
-        lineNo: undefined
+        lineNo: 'SIM'
       },
       formRules: {
         lineNo: [{ required: true, message: '请选择线别！', trigger: 'change' }]
@@ -63,8 +63,13 @@ export default {
       }]
     }
   },
+  watch: {
+    cols() {
+      this.serch()
+    }
+  },
   mounted() {
-
+    // this.serch()
   },
   created() {
     this.initStation()
@@ -90,21 +95,60 @@ export default {
         url: '/edc/rptlotyield/findLotYield?lineNo=' + this.form.lineNo,
         method: 'get'
       }).then((response) => {
-        console.log(response)
         const data = response.data.yield
+        let start = 0
         for (let i = 0; i < data.length; i++) {
           for (let j = 0; j < this.cols[2].child.length; j++) {
-            console.log(this.cols[2])
-            this.cols[2].child[j].color = 'jk-blue'
-            // if (j > 2) {
-            //   this.cols[2].child[j].color = 'jk-white'
-            // }
-            if (this.cols[2].child[j].prop === data[i].step_id) {
+            if (this.cols[2].child[j].prop === data[i].step_code) {
               this.$set(data[i], this.cols[2].child[j].prop, data[i].lot_yield)
-              break
+            }
+          }
+          if (i > 0) {
+            if (data[i].production_name !== data[i - 1].production_name) {
+              const subtotal = { production_name: '小计' }
+              const lot = new Array(this.cols[2].child.length).fill(0)
+              for (let k = start; k < i; k++) {
+                if (k > start) {
+                  data[k].production_name = ''
+                }
+                for (let j = 0; j < this.cols[2].child.length; j++) {
+                  if (this.cols[2].child[j].prop === data[k].step_code) {
+                    lot[j] = lot[j] + data[k].lot_yield
+                  }
+                }
+              }
+              for (let i = 0; i < lot.length; i++) {
+                if (lot[i] !== 0) {
+                  this.$set(subtotal, this.cols[2].child[i].prop, lot[i])
+                  lot[i] = 0
+                }
+              }
+              this.tableData.push(subtotal)
+              start = i
             }
           }
           this.tableData.push(data[i])
+          if (i === data.length - 1) {
+            const subtotal = { production_name: '小计' }
+            const lot = new Array(this.cols[2].child.length).fill(0)
+            for (let k = start; k <= i; k++) {
+              if (k > start) {
+                data[k].production_name = ''
+              }
+              for (let j = 0; j < this.cols[2].child.length; j++) {
+                if (this.cols[2].child[j].prop === data[k].step_code) {
+                  lot[j] = lot[j] + data[k].lot_yield
+                }
+              }
+            }
+            for (let i = 0; i < lot.length; i++) {
+              if (lot[i] !== 0) {
+                this.$set(subtotal, this.cols[2].child[i].prop, lot[i])
+                lot[i] = 0
+              }
+            }
+            this.tableData.push(subtotal)
+          }
         }
       })
       // this.$refs['form'].validate((valid) => {
@@ -118,6 +162,29 @@ export default {
       //     })
       //   }
       // })
+    },
+    color({ row, column, rowIndex, columnIndex }) {
+      let index = 0
+      let flag = false
+      for (let j = 0; j < this.cols[2].child.length; j++) {
+        if (this.cols[2].child[j].prop === row.step_code) {
+          index = j
+          flag = true
+        }
+        if (flag) {
+          if (columnIndex > index + 2) {
+            return 'jk-white'
+          } else if (columnIndex > 1) {
+            return 'jk-cyan'
+          }
+        }
+      }
+      if (row.production_name === '小计' && columnIndex > 0) {
+        return 'jk-violet'
+      }
+      if (row.production_name === '小计' && columnIndex === 0) {
+        return 'jk-violet-1'
+      }
     }
   }
 }
@@ -128,12 +195,32 @@ export default {
     height: 100%;
     margin: 0 auto;
 
-    .el-table thead.is-group th{
-      background-color: #1e6abc;
+    .el-table td{
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
       text-align: center;
+      color: black;
     }
-    .el-table__row td.jk-blue{
-      border-right: 1px solid #6cadc8 !important;
+    .el-table thead.is-group th{
+      background-color: #9999ff;
+      text-align: center;
+      color: black;
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
+    }
+    .el-table__row td.jk-cyan{
+      background-color: #87c0f5;
+      border-right: 1px solid #87c0f5;
+      text-align: right;
+    }
+    .el-table__row td.jk-violet{
+      background-color: #9400d3;
+      border-right: 1px solid #9400d3;
+      text-align: right;
+    }
+    .el-table__row td.jk-violet-1{
+      background-color: #9400d3;
+      border-right: 1px solid #9400d3;
     }
     .el-table__row td.jk-white{
       background-color: #f5f7fa;

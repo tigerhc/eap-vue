@@ -12,7 +12,7 @@
       <el-input v-model="model.sampleCount" label="采样数"/>
       <el-input v-model="model.status" label="状态"/>
       <w-select-dic v-model="model.approveResult" style="width:100%" label="判定结果" dict="JUDGE_RESULT" />
-      <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
+      <el-input v-model="model.createBy" :disabled="true" label="量测人" />
       <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
       <button class="exportBtn" @click="exportDetail">
         <i class="fa-download"/>
@@ -103,6 +103,7 @@ export default {
         officeId: '',
         projectId: '2',
         updateByName: '',
+        createBy: '',
         updateDate: ''
       },
       param: {

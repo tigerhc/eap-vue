@@ -18,7 +18,7 @@
       @selection-change="onSelect"
       @select="onSelect"
       @select-all="onSelect">
-      <el-table-column type="index" width="50" align="center"/>
+      <el-table-column type="index" width="50" label="序号" align="center"/>
       <el-table-column type="selection" width="55"/>
       <el-table-column prop="fileName" label="附件名称" align="center"/>
       <el-table-column prop="fileExt" label="附件类型" align="center"/>

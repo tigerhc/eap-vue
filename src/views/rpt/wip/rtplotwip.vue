@@ -77,7 +77,7 @@ export default {
   methods: {
     initStation() {
       request({
-        url: '/sys/organization/findStep',
+        url: '/sys/organization/findYieldStep',
         method: 'get'
       }).then((response) => {
         const stations = response.data

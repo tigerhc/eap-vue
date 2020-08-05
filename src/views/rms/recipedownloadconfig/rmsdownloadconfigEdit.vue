@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column :label="$t('table.actions')" width="200px" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" icon="el-icon-edit" circle @click="edit(scope.row.id,scope.row.level1,scope.row.level2,scope.row.level3)" />
+          <el-button type="primary" title="编辑" size="mini" icon="el-icon-edit" circle @click="edit(scope.row.id,scope.row.level1,scope.row.level2,scope.row.level3)" />
         </template>
       </el-table-column>
     </el-table>

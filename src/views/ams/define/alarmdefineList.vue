@@ -7,7 +7,7 @@
       <w-table-col name="alarmName" label="名称" align="left" />
       <w-table-col name="alarmCategory" label="等级" width="80" align="center" />
       <w-table-col name="alarmType" label="种类" width="80" align="center" dict="AMS_ALARM_TYPE" />
-      <!--<w-table-col name="sortCode" label="排序号" sort/>-->
+      <!--<w-table-col name="sortNo" label="排序号" sort/>-->
       <!-- todo filterable 属性-->
       <w-table-col name="eqpModelId" label="设备型号" hidden query dict url="/fab/fabequipmentmodel/list" namekey="modelName" condition="eq" filterable />
       <w-table-col name="monitorFlag" label="监控" width="80" align="center" dict="MONITOR_FLAG" query condition="eq" />

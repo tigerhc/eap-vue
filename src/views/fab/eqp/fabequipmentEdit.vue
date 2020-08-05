@@ -24,7 +24,7 @@
     <w-select-dic v-model="model.clientFlag" label="客户端标志" dict="ACTIVE_FLAG" />
     <el-input v-model="model.takeTime" label="节拍" />
     <w-select-dic v-model="model.activeFlag" style="width:100%" label="有效标志" dict="ACTIVE_FLAG" />
-    <el-input v-model="model.sortCode" label="排序号" />
+    <el-input v-model="model.sortNo" label="排序号" />
     <el-row col="24" />
     <el-input v-model="model.createByName" :disabled="true" label="创建人" />
     <el-input v-model="model.createDate" :disabled="true" label="创建日期" />

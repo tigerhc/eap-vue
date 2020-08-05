@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-slot="{row}" v-bind="table" url="/fab/fabequipment" sort="sortCode.asc" >
+    <w-table v-slot="{row}" v-bind="table" url="/fab/fabequipment" sort="sortNo.asc" >
       <!--todo fixed属性导致当前列变为第一列-->
 <!--      <w-table-col name="eqpId" label="设备号" sort fixed align="left" handler="view" query condition="in"/>-->
       <w-table-col name="eqpId" label="设备号" sort fixed align="left" handler="view" query eqp multiple namekey="id" condition="in"/>
@@ -9,7 +9,7 @@
       <w-table-col name="modelName" label="设备型号" align="left" />
       <w-table-col name="bcCode" label="BC号" align="center" />
       <w-table-col name="ip" label="机台IP地址" align="center"/>
-      <!--<w-table-col name="sortCode" label="排序号" sort/>-->
+      <!--<w-table-col name="sortNo" label="排序号" sort/>-->
       <!-- todo filterable 属性-->
       <w-table-col name="modelId" label="设备型号" hidden query dict url="/fab/fabequipmentmodel/list" namekey="modelName" querymode="select" condition="eq" filterable />
       <w-table-col name="activeFlag" label="有效标志" width="80" align="center" dict="ACTIVE_FLAG" query condition="eq" />

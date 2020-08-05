@@ -166,10 +166,12 @@ export default {
         const dictList = this.dictList(dict) || []
         const v = dictList.find((i) => i.value === val)
         if (foldcolor) {
-          if (val === 'Y') {
+          if (val === 'Y' || val === '1') {
             return <el-button type = 'success' plain> {(v && v.label) || val}</el-button>
-          } else if (val === 'N') {
+          } else if (val === 'N' || val === '0') {
             return <el-button type = 'danger' plain> {(v && v.label) || val}</el-button>
+          } else if (val !== '' && val !== null) {
+            return <el-button type = 'primary' plain> {(v && v.label) || val}</el-button>
           }
         }
         return (v && v.label) || val

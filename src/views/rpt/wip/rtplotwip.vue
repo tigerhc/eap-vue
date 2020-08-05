@@ -91,6 +91,7 @@ export default {
       })
     },
     serch() {
+      this.tableData = []
       request({
         url: '/edc/rptlotyield/findLotYield?lineNo=' + this.form.lineNo,
         method: 'get'
@@ -184,6 +185,9 @@ export default {
       }
       if (row.production_name === '小计' && columnIndex === 0) {
         return 'jk-violet-1'
+      }
+      if (columnIndex > 1) {
+        return 'jk-white'
       }
     }
   }

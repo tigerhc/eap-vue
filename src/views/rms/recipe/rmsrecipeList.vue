@@ -10,7 +10,7 @@
       <w-table-col name="versionNo" label="程序版本号" align="center"/>
       <w-table-col name="status" label="状态" dict="RECIPE_STATUS" query condition="eq" filterable />
       <w-table-col name="approveStep" label="审核状态" align="center" dict="RECIPE_APPROVE_STEP" query condition="eq" filterable />
-      <w-table-col name="approveResult" label="审核结果" align="center" dict="RECIPE_APPROVE_RESULT" query condition="eq" filterable foldcolor/>
+      <w-table-col name="approveResult" label="审核结果" width="100" align="center" dict="RECIPE_APPROVE_RESULT" query condition="eq" filterable foldcolor/>
       <w-table-col name="createDate" label="创建时间" width="200" align="center"/>
       <w-table-col name="createByName" label="上传人" align="center" query condition="eq" />
       <!--<w-table-col name="versionNo" label="程序版本号" align="center"/>-->

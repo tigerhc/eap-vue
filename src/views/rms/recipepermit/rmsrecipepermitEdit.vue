@@ -229,7 +229,7 @@ export default {
           type: 'error',
           duration: 2000
         })
-      } else if (this.model.submitResult === '2' && this.model.submitDesc === '') {
+      } else if (this.model.submitResult === '0' && this.model.submitDesc === '') {
         this.$notify({
           showClose: true,
           message: '审批不通过请在审批建议里说明原因',

@@ -59,14 +59,14 @@
           <el-form-item label="程序描述" prop="recipeDesc">
             <el-input
               :autosize="{ minRows: 4}"
-              v-model="editList.recipeDesc"
+              v-model="editList.remarks"
               style="width:540px"
               type="textarea"
               placeholder="请输入内容"/>
           </el-form-item>
         </el-form>
         <div v-if="showFlag">
-          <el-button type="primary" @click="save">保存</el-button>
+          <el-button type="primary" @click="save">提交</el-button>
         </div>
       </el-tab-pane>
       <el-tab-pane label="参数信息" name="second">
@@ -162,7 +162,7 @@
   </div>
 </template>
 <script>
-import { update, fetchDict } from '@/api/public'
+import { fetchDict } from '@/api/public'
 import { fetchDeviceList } from '@/api/fab/model'
 import request from '@/utils/request'
 import AttachmentSelect from '../../../components/AttachmentSelect/index'
@@ -182,7 +182,8 @@ export default {
         status: undefined,
         approveStep: undefined,
         approveResult: undefined,
-        versionNo: undefined
+        versionNo: undefined,
+        remarks: ''
       },
       versionType: '',
       dictList: {
@@ -403,7 +404,7 @@ export default {
         status: this.editList.status,
         approveStep: this.editList.approveStep,
         approveResult: this.editList.approveResult,
-        _detail: JSON.stringify(this.ruleForm.tableData)
+        remarks: this.editList.remarks
       }
       if (this.editList.status === '1' && this.versionType === 'DRAFT') {
         this.$notify({
@@ -413,20 +414,26 @@ export default {
           duration: 2000
         })
       } else {
-        update(this.tab, params).then((res) => {
+        console.log(params)
+        request({
+          url: 'rms/rmsrecipe/updatePermit',
+          method: 'get',
+          params: params
+        }).then((res) => {
+          console.log(res)
           if (res.data.code === 0) {
             this.addPermitList()
             this.cancel()
             this.$notify({
               title: '成功',
-              message: '修改成功',
+              message: '提交成功',
               type: 'success',
               duration: 2000
             })
           } else {
             this.$notify({
               title: '失败',
-              message: '修改失败',
+              message: '提交失败,' + res.data.msg,
               type: 'error',
               duration: 2000
             })

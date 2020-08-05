@@ -56,7 +56,7 @@
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
       <el-form ref="dataModifyForm" :model="params" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="优先下载" prop="eqpId">
-          <el-select v-model="params.level1" filterable style="width: 200px;" class="filter-item" placeholder="请选择程序版本">
+          <el-select v-model="params.level1" clearable filterable style="width: 200px;" class="filter-item" placeholder="请选择程序版本">
             <el-option
               v-for="item in dictList.versionTypeList"
               :key="item.value"
@@ -65,7 +65,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="其次下载" prop="recipeName">
-          <el-select v-model="params.level2" filterable style="width: 200px;" class="filter-item" placeholder="请选择程序版本">
+          <el-select v-model="params.level2" clearable filterable style="width: 200px;" class="filter-item" placeholder="请选择程序版本">
             <el-option
               v-for="item in dictList.versionTypeList"
               :key="item.value"
@@ -74,7 +74,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="最后下载" prop="recipeName">
-          <el-select v-model="params.level3" filterable style="width: 200px;" class="filter-item" placeholder="请选择程序版本">
+          <el-select v-model="params.level3" clearable filterable style="width: 200px;" class="filter-item" placeholder="请选择程序版本">
             <el-option
               v-for="item in dictList.versionTypeList"
               :key="item.value"
@@ -175,10 +175,6 @@ export default {
     getDictList(type, name) {
       fetchDict(type).then(response => {
         this.dictList[name] = response.data
-        this.dictList[name].splice(0, 0, {
-          value: '',
-          label: '无'
-        })
       })
     },
     getList() {
@@ -224,17 +220,24 @@ export default {
       this.dialogFormEdit = true
     },
     doEdit() {
-      if (this.params.level1 !== '' && (this.params.level1 === this.params.level2 || this.params.level1 === this.params.level3)) {
+      if (this.params.level1 === '' && (this.params.level2 !== '' || this.params.level3 !== '')) {
         this.$notify({
           title: '失败',
-          message: '请勿选择相同的程序版本,没有可选无',
+          message: '请优先设置最高优先级，不然后续优先级设置是无效的',
+          type: 'error',
+          duration: 2000
+        })
+      } else if (this.params.level1 !== '' && (this.params.level1 === this.params.level2 || this.params.level1 === this.params.level3)) {
+        this.$notify({
+          title: '失败',
+          message: '请勿选择相同的程序版本,没有可不选',
           type: 'error',
           duration: 2000
         })
       } else if (this.params.level2 !== '' && this.params.level2 === this.params.level3) {
         this.$notify({
           title: '失败',
-          message: '请勿选择相同的程序版本,没有可选无',
+          message: '请勿选择相同的程序版本,没有可不选',
           type: 'error',
           duration: 2000
         })

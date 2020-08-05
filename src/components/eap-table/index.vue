@@ -137,9 +137,9 @@ export default {
       const handler = col['formatter.handler'] || col['handler']
 
       if (
-        // !this.opHide &&
+      // !this.opHide &&
         handler &&
-        (typeof this.$vnode.context[handler] === 'function' || typeof this[handler] === 'function')
+          (typeof this.$vnode.context[handler] === 'function' || typeof this[handler] === 'function')
       ) {
         const h = this[handler] || this.$vnode.context[handler]
         const fn = () => {
@@ -421,6 +421,12 @@ export default {
       }
       this.refresh()
     },
+    clean() {
+      this.queryFields.map((field) => {
+        const key = `query.${field.name}||${field.condition}`
+        this.$set(this.query, key, undefined)
+      })
+    },
     queryModeCreator(mode = 'input', conf) {
       const re = { ...conf }
       const r = mode
@@ -633,12 +639,19 @@ export default {
         type: 'success',
         label: this.$t('table.export')
       }
+      const clean = {
+        name: 'clean',
+        icon: 'el-icon-refresh',
+        type: 'primary',
+        label: '清空'
+      }
 
       const deft = {
         search,
         batchDelete,
         add,
-        exports
+        exports,
+        clean
       }
 
       const creator = (conf) => {
@@ -765,7 +778,7 @@ export default {
     }
     const selection = {
       type: 'selection',
-      width: '39'
+      width: '40'
     }
     const index = {
       type: 'index',
@@ -835,18 +848,18 @@ function isHidden(conf) {
 </script>
 
 <style lang="scss">
-.unfold-pop {
-  min-width: unset;
-  background-color: #ffe;
-}
-.el-table--medium td.jk-table-column, .el-table--medium th.jk-table-column{
-  padding: 5px 0px;
-}
-.jk-table-container {
-  min-height: calc(100vh - 84px) ;
-}
-/*96.4px 所以后面又减了1*/
-.el-table{
-  min-height: calc(100vh - 84px - 96px - 42px - 1px ) ;
-}
+  .unfold-pop {
+    min-width: unset;
+    background-color: #ffe;
+  }
+  .el-table--medium td.jk-table-column, .el-table--medium th.jk-table-column{
+    padding: 5px 0px;
+  }
+  .jk-table-container {
+    min-height: calc(100vh - 84px) ;
+  }
+  /*96.4px 所以后面又减了1*/
+  .el-table{
+    min-height: calc(100vh - 84px - 96px - 42px - 1px ) ;
+  }
 </style>

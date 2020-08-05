@@ -175,8 +175,8 @@ export default {
 
       if (
         !this.opHide &&
-        handler &&
-        (typeof this.$vnode.context[handler] === 'function' || typeof this[handler] === 'function')
+          handler &&
+          (typeof this.$vnode.context[handler] === 'function' || typeof this[handler] === 'function')
       ) {
         const h = this[handler] || this.$vnode.context[handler]
         const fn = () => {
@@ -310,6 +310,12 @@ export default {
           })
         })
         .catch((e) => e)
+    },
+    clean() {
+      this.queryFields.map((field) => {
+        const key = `query.${field.name}||${field.condition}`
+        this.$set(this.query, key, undefined)
+      })
     },
     // 批量删除
     batchDelete() {
@@ -742,12 +748,19 @@ export default {
         type: 'success',
         label: this.$t('table.export')
       }
+      const clean = {
+        name: 'clean',
+        icon: 'el-icon-refresh',
+        type: 'primary',
+        label: '清空'
+      }
 
       const deft = {
         search,
         batchDelete,
         add,
-        exports
+        exports,
+        clean
       }
 
       if (this.isDatasMode) {
@@ -959,8 +972,8 @@ function isHidden(conf) {
 </script>
 
 <style lang="scss">
-.unfold-pop {
-  min-width: unset;
-  background-color: #ffe;
-}
+  .unfold-pop {
+    min-width: unset;
+    background-color: #ffe;
+  }
 </style>

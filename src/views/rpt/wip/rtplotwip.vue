@@ -93,7 +93,7 @@ export default {
     serch() {
       this.tableData = []
       request({
-        url: '/edc/rptlotyield/findLotYield?lineNo=' + this.form.lineNo,
+        url: '/mes/meslotwip/findLotYield?lineNo=' + this.form.lineNo,
         method: 'get'
       }).then((response) => {
         const data = response.data.yield

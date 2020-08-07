@@ -111,7 +111,7 @@ export default {
   methods: {
     getHome(item) {
       if (item === 'home') {
-        fetchHome().then((res) => {
+        fetchHome('sys.page.homePageUrl').then((res) => {
           this.home = res.data
           window.open(this.home)
         })

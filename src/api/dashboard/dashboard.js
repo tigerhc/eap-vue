@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchHeader() {
   return request({
-    url: '/aps/apsplanpdtyield/indexFour',
+    url: '/mes/meslotwip/indexFour',
     method: 'get'
   })
 }

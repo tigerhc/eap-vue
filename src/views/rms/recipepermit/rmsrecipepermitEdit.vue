@@ -21,6 +21,7 @@
           <w-table-col name="submitDesc" label="审批建议" align="center" />
           <w-table-col name="submitDate" label="审批时间" align="center" />
           <w-table-toolbar name="add" hidden/>
+          <w-table-toolbar name="clean" hidden/>
           <w-table-toolbar name="batchDelete" hidden />
           <w-table-toolbar name="search" hidden />
           <w-table-toolbar name="exports" hidden />

@@ -220,10 +220,10 @@ export default {
       this.dialogFormEdit = true
     },
     doEdit() {
-      if (this.params.level1 === '' && (this.params.level2 !== '' || this.params.level3 !== '')) {
+      if ((this.params.level1 === '' && (this.params.level2 !== '' || this.params.level3 !== '')) || (this.params.level2 === '' && this.params.level3 !== '')) {
         this.$notify({
           title: '失败',
-          message: '请优先设置最高优先级，不然后续优先级设置是无效的',
+          message: '请优先设置高优先级，不然后续优先级设置是无效的',
           type: 'error',
           duration: 2000
         })

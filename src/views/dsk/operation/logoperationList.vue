@@ -4,7 +4,7 @@
       <w-table-col name="eqpId" label="设备号" sort fixed align="left" handler="view" query dict multiple eqp condition="in"/>
       <w-table-col name="eqpModelName" label="设备型号" align="left"/>
       <w-table-col name="eqpModelId" label="设备型号" hidden query dict url="/fab/fabequipmentmodel/list" namekey="modelName" condition="eq" filterable/>
-      <w-table-col name="eventId" label="事件ID" align="left" query condition="like"/>
+      <w-table-col name="eventId" label="事件ID" align="left" query condition="eq"/>
       <w-table-col name="alarmCode" label="报警ID" align="left"/>
       <w-table-col name="eventName" label="事件内容" align="left"/>
       <w-table-col name="eventDetail" label="事件详细" align="left"/>

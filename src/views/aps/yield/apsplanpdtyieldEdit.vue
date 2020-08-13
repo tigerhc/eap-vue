@@ -23,6 +23,7 @@
           <w-table-col name="lotNo" label="批次" align="center" width="100"/>
           <w-table-col name="planDate" label="投入日期" width="180" />
           <w-table-col name="planQty" label="投入数" width="120" align="right" />
+          <w-table-col name="dayNo" label="当日投入序列" width="120" align="right" />
           <w-table-toolbar name="batchDelete" hidden />
           <w-table-button name="delete" hidden />
           <w-table-button name="edit" hidden />

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container calendar-list-container">
     <w-table v-bind="table" url="/edc/edcamsrecord" sort="startDate.desc" >
-      <w-table-col name="eqpId" label="设备号" width="120" sort fixed align="left" query condition="like"/>
+      <w-table-col name="eqpId" label="设备号" width="120" sort fixed align="left" handler="view" query eqp multiple namekey="id" condition="in"/>
       <w-table-col name="alarmCode" label="报警编码" width="120" align="left" query condition="like"/>
       <w-table-col name="alarmName" label="报警名称" align="left" />
       <w-table-col name="lotNo" label="批次" align="center" width="100" />

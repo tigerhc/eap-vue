@@ -1,7 +1,7 @@
 <template>
   <div class="app-container calendar-list-container">
     <w-table v-slot="{row}" v-bind="table" url="/edc/edcevtrecord" sort="createDate.desc" >
-      <w-table-col name="eqpId" label="设备号" sort fixed align="center" query condition="like" />
+      <w-table-col name="eqpId" label="设备号" width="120" sort fixed align="left" handler="view" query eqp multiple namekey="id" condition="in"/>
       <w-table-col name="eventId" label="事件ID" align="center" query condition="eq" />
       <w-table-col name="eventDesc" label="事件描述" align="center" />
       <w-table-col name="eventParams" label="事件参数" align="center" />

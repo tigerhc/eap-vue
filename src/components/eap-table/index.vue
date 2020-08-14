@@ -637,7 +637,7 @@ export default {
           }
         }
       }
-      return <el-table-column {...opConf} width='150' label={this.$t('table.actions')} class-name='small-padding fixed-width' />
+      return <el-table-column {...opConf} width='200' label={this.$t('table.actions')} class-name='small-padding fixed-width' />
     },
     renderToobar() {
       const add = {

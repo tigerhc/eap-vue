@@ -3,7 +3,7 @@
     <w-table v-slot="{row}" v-bind="table" :limit="20" url="/rms/rmsrecipelog" sort="createDate.desc" >
       <w-table-col name="eqpId" label="设备号" width="120" sort fixed align="left" handler="view" query eqp multiple namekey="id" condition="in"/>
       <w-table-col name="eventCode" label="事件" align="center" />
-      <w-table-col name="eqpModelName" label="设备名称" align="center" />
+      <w-table-col name="eqpModelName" width="200" label="设备类型" align="center" />
       <w-table-col name="recipeCode" label="配方CODE" align="center" />
       <w-table-col name="recipeName" label="配方名" align="center" />
       <w-table-col name="versionType" label="版本类型" align="center" />

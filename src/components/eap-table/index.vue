@@ -171,10 +171,9 @@ export default {
         if (foldcolor) {
           if (val === 'Y' || val === '1') {
             return <el-button type = 'success' plain> {(v && v.label) || val}</el-button>
-          } else if (val === 'N' || val === '0') {
+          }
+          if (val === 'N' || val === '0') {
             return <el-button type = 'danger' plain> {(v && v.label) || val}</el-button>
-          } else if (val !== '' && val !== null) {
-            return <el-button type = 'primary' plain> {(v && v.label) || val}</el-button>
           }
         }
         return (v && v.label) || val
@@ -616,7 +615,7 @@ export default {
           }
         }
       }
-      return <el-table-column {...opConf} label={this.$t('table.actions')} class-name='small-padding fixed-width' />
+      return <el-table-column {...opConf} width='150' label={this.$t('table.actions')} class-name='small-padding fixed-width' />
     },
     renderToobar() {
       const add = {

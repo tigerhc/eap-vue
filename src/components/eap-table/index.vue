@@ -51,6 +51,10 @@ export default {
       type: Boolean,
       default: null
     },
+    hiddenquery: {
+      type: Boolean,
+      default: false
+    },
     limit: {
       type: Number,
       default: 10
@@ -431,6 +435,9 @@ export default {
         this.$set(this.query, key, undefined)
       })
     },
+    more() {
+      this.hiddenquery = false
+    },
     queryModeCreator(mode = 'input', conf) {
       const re = { ...conf }
       const r = mode
@@ -470,7 +477,7 @@ export default {
         return h(mode, {
           attrs: { placeholder: newConf.label, ...newConf },
           props: { value: this.query[key], ...newConf },
-          style: { width: newConf.condition === 'between' ? '250px' : '200px', marginRight: '5px' },
+          style: this.hiddenquery ? { width: newConf.condition === 'between' ? '250px' : '200px', display: newConf.hiddenquery ? 'none' : '', marginRight: '5px' } : { width: newConf.condition === 'between' ? '250px' : '200px', marginRight: '5px' },
           class: { 'filter-item': true },
           on: {
             input: (e) => {
@@ -649,8 +656,21 @@ export default {
         type: 'primary',
         label: '清空'
       }
+      const more = {
+        name: 'more',
+        icon: 'el-icon-rank',
+        type: 'primary',
+        label: '更多查询'
+      }
 
-      const deft = {
+      const deft = this.hiddenquery ? {
+        search,
+        batchDelete,
+        add,
+        exports,
+        clean,
+        more
+      } : {
         search,
         batchDelete,
         add,

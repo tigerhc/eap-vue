@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-slot="{row}" v-bind="table" :limit="20" url="/rms/rmsrecipelog" sort="createDate.desc" >
+    <w-table v-slot="{row}" v-bind="table" :limit="15" url="/rms/rmsrecipelog" sort="createDate.desc" >
       <w-table-col name="eqpId" label="设备号" width="120" sort fixed align="left" handler="view" query eqp multiple namekey="id" condition="in"/>
       <w-table-col name="eventCode" label="事件" align="center" />
       <w-table-col name="eqpModelName" width="200" label="设备类型" align="center" />

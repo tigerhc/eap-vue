@@ -55,6 +55,10 @@ export default {
       type: Boolean,
       default: false
     },
+    hiddenQuery: {
+      type: Boolean,
+      default: true
+    },
     limit: {
       type: Number,
       default: 10
@@ -126,6 +130,9 @@ export default {
     }
   },
   created() {},
+  mounted() {
+    this.moreQuery()
+  },
   methods: {
     doFetchData() {
       // 初始化配置查询model
@@ -436,7 +443,7 @@ export default {
       })
     },
     more() {
-      this.hiddenquery = false
+      this.hiddenQuery = !this.hiddenQuery
     },
     queryModeCreator(mode = 'input', conf) {
       const re = { ...conf }
@@ -467,6 +474,14 @@ export default {
       }
       return { mode, ...re }
     },
+    // 判断是否要添加更多按钮
+    moreQuery() {
+      this.queryFields.map((field) => {
+        if ('hiddenquery' in field) {
+          this.hiddenquery = true
+        }
+      })
+    },
     // 生成查询条件表单
     renderQuery(h) {
       return this.queryFields.map((field) => {
@@ -477,7 +492,7 @@ export default {
         return h(mode, {
           attrs: { placeholder: newConf.label, ...newConf },
           props: { value: this.query[key], ...newConf },
-          style: this.hiddenquery ? { width: newConf.condition === 'between' ? '250px' : '200px', display: newConf.hiddenquery ? 'none' : '', marginRight: '5px' } : { width: newConf.condition === 'between' ? '250px' : '200px', marginRight: '5px' },
+          style: this.hiddenQuery ? { width: newConf.condition === 'between' ? '250px' : '200px', display: newConf.hiddenquery ? 'none' : '', marginRight: '5px' } : { width: newConf.condition === 'between' ? '250px' : '200px', marginRight: '5px' },
           class: { 'filter-item': true },
           on: {
             input: (e) => {
@@ -660,22 +675,22 @@ export default {
         name: 'more',
         icon: 'el-icon-rank',
         type: 'primary',
-        label: '更多查询'
+        label: '更多'
       }
 
       const deft = this.hiddenquery ? {
         search,
+        more,
+        clean,
         batchDelete,
         add,
-        exports,
-        clean,
-        more
+        exports
       } : {
         search,
+        clean,
         batchDelete,
         add,
-        exports,
-        clean
+        exports
       }
 
       const creator = (conf) => {

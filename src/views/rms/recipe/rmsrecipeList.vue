@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-slot="{row}" v-bind="table" :hiddenquery="true" url="rms/rmsrecipe/" sort="updateDate.desc, createDate.desc" >
+    <w-table v-slot="{row}" v-bind="table" url="rms/rmsrecipe/" sort="updateDate.desc, createDate.desc" >
       <!--todo fixed属性导致当前列变为第一列-->
       <w-table-col name="recipeCode" label="程序名称" width="180" sort fixed align="left" handler="view" query condition="like"/>
       <w-table-col name="eqpId" label="设备号" width="150" sort fixed align="center" query dict multiple eqp condition="in"/>

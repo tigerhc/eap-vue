@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { fetchProList, fetchHome, getProject } from '@/api/sys/project'
+import { fetchProList, getProject } from '@/api/sys/project'
 import { mapGetters } from 'vuex'
 import { fetchMenuList, fetchMeunRouterList } from '@/api/sys/menu'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -103,20 +103,33 @@ export default {
     ...mapGetters(['sidebar', 'name', 'avatar', 'device', 'addRouters', 'project'])
   },
   mounted() {
-    getProject('2').then((res) => {
-      const obj = res.data
-      this.$store.dispatch('getProject', obj)
-    })
-    this.getFirstMeun()
-    this.getList()
+    if (this.$route.fullPath === '/rms/rmsrecipe') {
+      getProject('4').then((res) => {
+        console.log(res)
+        const obj = res.data
+        this.$store.dispatch('getProject', obj)
+      })
+      this.getFirstMeun('4')
+      this.getList()
+    } else {
+      getProject('2').then((res) => {
+        console.log(res)
+        const obj = res.data
+        this.$store.dispatch('getProject', obj)
+      })
+      this.getFirstMeun('2')
+      this.getList()
+    }
   },
   methods: {
-    getHome(item) {
-      if (item === 'home') {
-        fetchHome('sys.page.homePageUrl').then((res) => {
-          this.home = res.data
-          window.open(this.home)
-        })
+    getHome() {
+      const fullPath = this.$route.fullPath
+      const path = fullPath.split('/')[1]
+      console.log(path)
+      if (path === 'rms') {
+        this.$router.push('/rms/rmsrecipe')
+      } else {
+        this.$router.push('/dashboard')
       }
     },
     toggleSideBar() {
@@ -151,11 +164,12 @@ export default {
       return params
     },
     // 获取一级菜单
-    getFirstMeun() {
+    getFirstMeun(projectId) {
       const params = {
-        projectId: '2'
+        projectId: projectId
       }
       fetchMenuList(params).then((response) => {
+        console.log(response)
         this.firstLeave = response.data
         this.activeName = this.firstLeave[0].id
         this.getSecondLeave(this.activeName)

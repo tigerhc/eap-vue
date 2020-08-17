@@ -2,17 +2,17 @@
   <el-scrollbar wrap-class="scrollbar-wrapper">
     <div v-show="!isCollapse" class="header-sidebar" @click="comeBack">
       <img :src="project.projectPhotoUrl">
-      <span>{{project.projectName}}</span>
+      <span>{{ project.projectName }}</span>
     </div>
     <div v-show="isCollapse" style="padding-left:10px" class="header-sidebar" @click="comeBack">
       <img :src="project.projectPhotoUrl">
     </div>
     <el-menu
       :show-timeout="200"
-      style="height:90%"
       :default-active="$route.path"
       :collapse="isCollapse"
       :default-openeds="openeds"
+      style="height:90%"
       mode="vertical"
       background-color="#002140"
       text-color="#bfcbd9"
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapGetters, Store } from 'vuex'
+import { mapGetters } from 'vuex'
 import SidebarItem from './SidebarItem'
 
 export default {
@@ -47,11 +47,18 @@ export default {
     },
     openeds() {
       return ['1']
-    },
+    }
   },
   methods: {
     comeBack() {
-      this.$router.push('/dashboard')
+      const fullPath = this.$route.fullPath
+      const path = fullPath.split('/')[1]
+      console.log(path)
+      if (path === 'rms') {
+        this.$router.push('/rms/rmsrecipe')
+      } else {
+        this.$router.push('/dashboard')
+      }
     }
   }
 }

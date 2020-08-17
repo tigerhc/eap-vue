@@ -27,7 +27,7 @@
       <w-table-toolbar name="uploadRecipe" label="上传recipe" type="primary" tip="上传recipe？" icon="el-icon-circle-plus-outline" />
       <w-table-toolbar name="downloadRecipe" label="下载recipe" type="primary" tip="下载recipe？" icon="fa-download" />
       <w-table-button name="edit" label="升级" url="views/rms/recipe/rmsrecipeEdit" icon="el-icon-setting" />
-      <w-table-button v-if="row.approveStep == 0 && row.status !== 'Y'" name="enable" label="启用" tip="确认启用？" icon="el-icon-bell" />
+      <w-table-button v-if="row.approveStep === 0 && row.status !== 'Y'" name="enable" label="启用" tip="确认启用？" icon="el-icon-bell" />
       <w-table-button v-if="row.status === 'Y'" name="diable" label="停用" tip="确认停用？" icon="el-icon-circle-close" type="warning" />
 
     </w-table>

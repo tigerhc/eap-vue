@@ -10,7 +10,7 @@
         <ul class="list-unstyled">
           <li>或者你可以去:</li>
           <li class="link-type">
-            <router-link to="/dashboard">回首页</router-link>
+            <router-link :to="path">回首页</router-link>
           </li>
           <li class="link-type"><a href="https://www.taobao.com/">随便看看</a></li>
           <li><a href="#" @click.prevent="dialogVisible=true">点我看图</a></li>
@@ -33,15 +33,33 @@ export default {
   name: 'Page401',
   data() {
     return {
+      path: '',
       errGif: errGif + '?' + +new Date(),
       ewizardClap: 'https://wpimg.wallstcn.com/007ef517-bafd-4066-aae4-6883632d9646',
       dialogVisible: false
     }
   },
+  created() {
+    const fullPath = this.$route.fullPath
+    const path = fullPath.split('/')[1]
+    console.log(path)
+    if (path === 'rms') {
+      this.path = '/rms/rmsrecipe'
+    } else {
+      this.path = '/dashboard'
+    }
+  },
   methods: {
     back() {
       if (this.$route.query.noGoBack) {
-        this.$router.push({ path: '/dashboard' })
+        const fullPath = this.$route.fullPath
+        const path = fullPath.split('/')[1]
+        console.log(path)
+        if (path === 'rms') {
+          this.$router.push('/rms/rmsrecipe')
+        } else {
+          this.$router.push('/dashboard')
+        }
       } else {
         this.$router.go(-1)
       }

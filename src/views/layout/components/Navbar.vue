@@ -1,6 +1,8 @@
 <template>
   <div class="navbar">
+    <el-tooltip content="左侧导航隐藏开关" placement="bottom">
     <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
+    </el-tooltip>
 
     <!-- <breadcrumb class="breadcrumb-container"/> -->
     <div class="headerSur">

@@ -34,6 +34,7 @@
     "url": "https://gitee.com/dataact/jeeweb/issues"
   },
   "dependencies": {
+    "@antv/g6": "3.6.1",
     "axios": "0.18.0",
     "clipboard": "1.7.1",
     "codemirror": "5.39.2",
@@ -51,6 +52,7 @@
     "node-sass": "^4.14.1",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
+    "qs": "^6.9.4",
     "screenfull": "3.3.3",
     "showdown": "1.8.6",
     "simplemde": "1.11.2",

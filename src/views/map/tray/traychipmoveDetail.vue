@@ -1,19 +1,19 @@
 <template>
   <div class="app-container">
-    <div id="chip-move-info" class="chip-move-info"/>
+    <div id="chip-move-info" class="chip-move-info" />
   </div>
 </template>
 
 <style lang="scss">
 .chip-move-info .g6-component-toolbar {
   margin-left: 10px;
-  li[code="redo"] {
+  li[code='redo'] {
     display: none;
   }
-  li[code="undo"] {
+  li[code='undo'] {
     display: none;
   }
-  li[code="realZoom"] {
+  li[code='realZoom'] {
     display: none;
   }
 }
@@ -180,12 +180,16 @@ export default {
         }
         // 所有的to构造成map
         const tomap = {}
+        // 所有的相同芯片
+        const eqsmap = {}
         this.chip_list.forEach(function(itm) {
           // 时间转成数字，便于比较
           itm.startTime = Date.parse(itm.startTime)
           // g6的id必须为字符
           itm.id = '' + itm.id
+          // 识别标识
           const key = '' + itm.toTrayId + '-' + itm.toX + '-' + itm.toY
+          itm.key = key
           if (!tomap.hasOwnProperty(key)) {
             tomap[key] = []
           }
@@ -193,33 +197,56 @@ export default {
             id: itm.id,
             time: itm.startTime
           })
+          if (itm.eqpType === 3) {
+            if (!eqsmap.hasOwnProperty(key)) {
+              eqsmap[key] = []
+            }
+            eqsmap[key].push(itm.id)
+          }
         })
+        // key为需要转换的ID,val为目标ID
+        const eqs = {}
+        for (const eqval of Object.values(eqsmap)) {
+          if (eqval) {
+            for (let i = 0; i < eqval.length; i++) {
+              if (i !== 0) {
+                eqs[eqval[i]] = eqval[0]
+              }
+            }
+          }
+        }
         // 排序，按时间由大到小
         for (const toitm of Object.values(tomap)) {
           toitm.sort((a, b) => {
             return b.time - a.time
           })
         }
+        // 构造节点
+        const nodes = this.chip_list.filter((itm) => {
+          if (itm.eqpType === 3) {
+            return !eqs.hasOwnProperty(itm.id)
+          }
+          return true
+        })
         // 构造边
         const edges = []
         this.chip_list.forEach(function(itm) {
-          const fkey = itm.fromTrayId
-            ? '' + itm.fromTrayId + '-' + itm.fromX + '-' + itm.fromY
-            : '' + itm.toTrayId + '-' + itm.toX + '-' + itm.toY
+          const fkey = itm.fromTrayId ? '' + itm.fromTrayId + '-' + itm.fromX + '-' + itm.fromY : itm.key
           if (tomap.hasOwnProperty(fkey)) {
             const arr = tomap[fkey].filter((it) => {
               return itm.id !== it.id && itm.startTime > it.time
             })
             if (arr.length > 0) {
+              const src = arr[0].id
               edges.push({
-                source: arr[0].id,
-                target: itm.id
+                source: eqs.hasOwnProperty(src) ? eqs[src] : src,
+                target: eqs.hasOwnProperty(itm.id) ? eqs[itm.id] : itm.id
               })
             }
           }
         })
         this.renderG6({
-          nodes: this.chip_list,
+          nodes,
           edges
         })
       })

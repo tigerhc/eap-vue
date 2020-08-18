@@ -51,14 +51,7 @@ export default {
   },
   methods: {
     comeBack() {
-      const fullPath = this.$route.fullPath
-      const path = fullPath.split('/')[1]
-      console.log(path)
-      if (path === 'rms') {
-        this.$router.push('/rms/rmsrecipe')
-      } else {
-        this.$router.push('/dashboard')
-      }
+      this.$router.push('/dashboard')
     }
   }
 }

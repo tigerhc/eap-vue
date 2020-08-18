@@ -64,7 +64,11 @@ export default {
           label: '报告'
         },
         {
-          value: 3,
+          value: 4,
+          label: '贴合'
+        },
+        {
+          value: 8,
           label: '打码'
         }
       ]

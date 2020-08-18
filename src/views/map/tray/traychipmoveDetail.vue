@@ -197,7 +197,7 @@ export default {
             id: itm.id,
             time: itm.startTime
           })
-          if (itm.eqpType === 3) {
+          if (itm.eqpType && (itm.eqpType & 12) > 0) {
             if (!eqsmap.hasOwnProperty(key)) {
               eqsmap[key] = []
             }
@@ -223,7 +223,7 @@ export default {
         }
         // 构造节点
         const nodes = this.chip_list.filter((itm) => {
-          if (itm.eqpType === 3) {
+          if ((itm.eqpType & 12) > 0) {
             return !eqs.hasOwnProperty(itm.id)
           }
           return true

@@ -135,12 +135,30 @@ export default {
 
     }
   },
+  watch: {
+    tabData() {
+      this.timer()
+    }
+  },
+  beforeDestroy() {
+    if (!this.chart) {
+      return
+    }
+    this.chart.dispose()
+    this.chart = null
+  },
+  destroyed() {
+    clearTimeout(this.timer)
+  },
   mounted() {
-    this.getData()
-    this.getList()
-    this.getYield()
+    this.inIt()
   },
   methods: {
+    inIt() {
+      this.getData()
+      this.getList()
+      this.getYield()
+    },
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
     },
@@ -153,6 +171,12 @@ export default {
         this.initChart()
       })
     },
+    // 这是一个定时器
+    timer() {
+      setTimeout(() => {
+        this.inIt()
+      }, 300000)
+    },
 
     getYield() {
       fetchYield({
@@ -163,6 +187,7 @@ export default {
     },
 
     getList() {
+      this.tabData2 = [[]]
       const params = {
         'sort': 'updateDate',
         'page.pn': 1,

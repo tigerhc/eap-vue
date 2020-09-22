@@ -149,7 +149,7 @@ export default {
             // max: 60000,
             // interval: 6000,
             axisLabel: {
-              formatter: '{value} K'
+              formatter: '{value} '
             }
           },
           {

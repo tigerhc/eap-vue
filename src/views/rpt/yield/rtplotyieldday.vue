@@ -112,7 +112,7 @@ export default {
         //
         //   // padding: [20, 20]
         // },
-        color: ['#003366', '#FFA500', '#003366', '#FFA500'],
+        color: ['#003366', '#FFA500', '#003366', '#FFA500', '#FF0000'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -131,7 +131,7 @@ export default {
           }
         },
         legend: {
-          data: ['MES产量', '设备产量', 'MES达标率', '设备达标率']
+          data: ['MES产量', '设备产量', 'MES达标率', '设备达标率', '计划产量']
         },
         xAxis: [
           {
@@ -188,10 +188,16 @@ export default {
             name: '设备达标率',
             type: 'line',
             yAxisIndex: 1
+          },
+          {
+            name: '计划产量',
+            type: 'line',
+            yAxisIndex: 0,
+            color: 'red'
           }
         ],
         dataset: {
-          dimensions: ['period_date', 'lot_yield', 'lot_yield_eqp', 'rate', 'eqp_rate'],
+          dimensions: ['period_date', 'lot_yield', 'lot_yield_eqp', 'rate', 'eqp_rate', 'plan_qty'],
           source: this.source
         }
       }

@@ -4,7 +4,7 @@
       <el-row>
         <el-col :span="6">
           <el-form-item label="线别" prop="lineNo">
-            <el-select v-model="form.lineNo">
+            <el-select v-model="form.lineNo" @change="ValueChange(1)">
               <el-option
 v-for="item in lineNoOptions"
                          :key="item.value"
@@ -12,6 +12,18 @@ v-for="item in lineNoOptions"
                          :value="item.value"
                          :disabled="item.disabled" />
             </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="5">
+          <el-form-item label="站别" prop="station_code">
+            <el-select v-model="form.station_code" filterable placeholder="请选择" >
+              <el-option
+                v-for="item in noList"
+                :key="item.station_code"
+                :label="item.station_code"
+                :value="item.station_code"/>
+            </el-select>
+            <!--            <w-select :str="form.productionNo" :multiple="true" :disabled="false" @input="onNoChange($event)"/>-->
           </el-form-item>
         </el-col>
         <el-col :span="9">
@@ -28,6 +40,7 @@ v-for="item in lineNoOptions"
 <script>
 import { rtplotyieldday } from '@/api/public'
 import echarts from 'echarts'
+import request from '@/utils/request'
 
 export default {
   name: 'Rtplotyieldday',
@@ -36,7 +49,8 @@ export default {
     return {
       form: {
         lineNo: undefined,
-        dateTime: []
+        dateTime: [],
+        station_code: ''
       },
       formRules: {
         lineNo: [{ required: true, message: '请选择线别！', trigger: 'change' }],
@@ -44,6 +58,7 @@ export default {
       },
       list: [],
       source: [],
+      noList: [],
       // 先写死
       lineNoOptions: [{
         value: 'SIM',
@@ -82,13 +97,24 @@ export default {
           rtplotyieldday({
             beginTime: this.form.dateTime[0],
             endTime: this.form.dateTime[1],
-            lineNo: this.form.lineNo
+            lineNo: this.form.lineNo,
+            stationCode: this.form.station_code
           }).then((res) => {
             const data = res.data
             this.source = data.yield
             this.initChart()
           })
         }
+      })
+    },
+    ValueChange(index) {
+      request({
+        url: 'edc/rptlotyieldday/searchStand/' + this.form.lineNo,
+        method: 'get'
+      }).then((response) => {
+        const rs = response.data
+        this.noList = rs || []
+        // this.productionNo = rss.split(',')
       })
     },
     getDate(datestr) {
@@ -195,7 +221,7 @@ export default {
             yAxisIndex: 0,
             color: 'red',
             lineStyle: {
-              width: 5
+              width: 3
             }
           }
         ],

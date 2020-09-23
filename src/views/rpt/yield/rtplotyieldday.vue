@@ -193,7 +193,10 @@ export default {
             name: '计划产量',
             type: 'line',
             yAxisIndex: 0,
-            color: 'red'
+            color: 'red',
+            lineStyle: {
+              width: 5
+            }
           }
         ],
         dataset: {

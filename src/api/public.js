@@ -118,3 +118,11 @@ export function selectAlarmCountByEqp(data) {
     params: data
   })
 }
+
+export function selectEqp(data) {
+  return request({
+    url: 'edc/rptlotyieldday/findEqp',
+    method: 'get',
+    params: data
+  })
+}

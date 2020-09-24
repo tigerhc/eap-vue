@@ -34,11 +34,12 @@ v-for="item in lineNoOptions"
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>
     </el-form>
-    <div id="yieldDayChart" style="width: 100%;height: 500px;overflow: hidden;"/>
+    <div id="yieldDayChart" style="width: 100%;height: 300px;overflow: hidden;"/>
+    <div id="eqpChart" style="width: 100%;height: 250px;overflow: hidden;"/>
   </div>
 </template>
 <script>
-import { rtplotyieldday } from '@/api/public'
+import { rtplotyieldday, selectEqp } from '@/api/public'
 import echarts from 'echarts'
 import request from '@/utils/request'
 
@@ -58,6 +59,7 @@ export default {
       },
       list: [],
       source: [],
+      source2: [],
       noList: [],
       // 先写死
       lineNoOptions: [{
@@ -117,6 +119,22 @@ export default {
         // this.productionNo = rss.split(',')
       })
     },
+    selectEqp(periodDate) {
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          selectEqp({
+            year: this.form.dateTime[0],
+            day: periodDate,
+            stationCode: this.form.station_code
+          }).then((res) => {
+            const rs = res.data
+            this.source2 = rs || []
+            this.initEqp(periodDate)
+          })
+        }
+      })
+    },
+
     getDate(datestr) {
       var temp = datestr.split('-')
       if (temp[1] === '01') {
@@ -138,7 +156,7 @@ export default {
         //
         //   // padding: [20, 20]
         // },
-        color: ['#003366', '#FFA500', '#003366', '#FFA500', '#FF0000'],
+        color: ['#FFA500', '#37A2DA', '#FFA500', '#37A2DA', '#FF0000'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -231,6 +249,86 @@ export default {
         }
       }
       yieldDayChart.setOption(option, true)
+      var _this = this
+      yieldDayChart.on('dblclick', function(params) {
+        _this.selectEqp(params.data.period_date)
+      })
+    },
+
+    initEqp(periodDate) {
+      var chart2 = document.getElementById('eqpChart')
+      var yieldChart = echarts.init(chart2)
+      const option = {
+        title: {
+          text: '日期 : ' + periodDate,
+          // left: 'left',
+          // padding: [20, 20]
+          margin: [100, 100, 100, 100]
+        },
+        color: ['#37A2DA', '#FFA500', '#37A2DA', '#FFA500', '#FF0000'],
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            crossStyle: {
+              color: '#999'
+            }
+          }
+        },
+        toolbox: {
+          feature: {
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ['line', 'bar'] },
+            restore: { show: true },
+            saveAsImage: { show: true }
+          }
+        },
+        legend: {
+          data: ['MES产量', '设备产量']
+        },
+        xAxis: [
+          {
+            type: 'category',
+            axisPointer: {
+              type: 'shadow'
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            name: '日产量',
+            min: 0,
+            // max: 60000,
+            // interval: 6000,
+            axisLabel: {
+              formatter: '{value} '
+            }
+          }
+        ],
+        series: [
+          {
+            name: 'MES产量',
+            type: 'bar',
+            barGap: 0,
+            label: {
+              formatter: '{c}  {name|{a}}'
+            }
+            // barWidth: 10
+          },
+          {
+            name: '设备产量',
+            type: 'bar',
+            barGap: 0
+            // barWidth: 10
+          }
+        ],
+        dataset: {
+          dimensions: ['eqp_id', 'lot_yield', 'lot_yield_eqp'],
+          source: this.source2
+        }
+      }
+      yieldChart.setOption(option, true)
     }
   }
 }

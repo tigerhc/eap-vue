@@ -125,7 +125,8 @@ export default {
           selectEqp({
             year: this.form.dateTime[0],
             day: periodDate,
-            stationCode: this.form.station_code
+            stationCode: this.form.station_code,
+            lineNo: this.form.lineNo
           }).then((res) => {
             const rs = res.data
             this.source2 = rs || []

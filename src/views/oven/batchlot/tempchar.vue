@@ -67,7 +67,15 @@ export default {
       var end = this.form.dateTime[1].slice(8, 10)
       var startc = parseInt(start)
       var endc = parseInt(end)
-      if (endc - startc > 6) {
+      console.log('qq' + startc + 'ww' + endc)
+      if ((endc - startc) > 6) {
+        this.$alert('限制时间范围为7天内', '请重新选择时间范围！', {
+          confirmButtonText: '确定',
+          callback: action => {
+          } })
+        // eslint-disable-next-line brace-style
+      } else
+      if ((endc - startc) < 0 && (endc - startc) > -24) {
         this.$alert('限制时间范围为7天内', '请重新选择时间范围！', {
           confirmButtonText: '确定',
           callback: action => {

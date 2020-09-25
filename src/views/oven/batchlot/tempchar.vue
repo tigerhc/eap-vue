@@ -188,7 +188,8 @@ export default {
         },
         yAxis: [
           {
-            type: 'value'
+            type: 'value',
+            min: this.tempsValue[0]['temp_min'] - 1
           }
         ],
         series: [

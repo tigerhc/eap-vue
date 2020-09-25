@@ -10,7 +10,7 @@
             <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
           </el-form-item>
         </el-col>
-        <el-button type="primary" @click="search">查询</el-button>
+        <el-button type="primary" @click="check">查询</el-button>
       </el-row>
     </el-form>
     <el-tabs v-model="editableTabsValue" type="card" @tab-click="loadTempDataPart">
@@ -61,6 +61,22 @@ export default {
   methods: {
     onValueChange(name) {
       this.form.eqpId = name
+    },
+    check() {
+      var start = this.form.dateTime[0].slice(8, 10)
+      var end = this.form.dateTime[1].slice(8, 10)
+      var startc = parseInt(start)
+      var endc = parseInt(end)
+      if (endc - startc > 6) {
+        this.$alert('限制时间范围为7天内', '请重新选择时间范围！', {
+          confirmButtonText: '确定',
+          callback: action => {
+          } })
+        // eslint-disable-next-line brace-style
+      }
+      else {
+        this.search()
+      }
     },
     search() {
       this.$refs['form'].validate((valid) => {

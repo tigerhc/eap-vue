@@ -45,6 +45,7 @@ export default {
       editableTabs: [],
       tempsTitles: [],
       tempsValue: [],
+      flag: 0,
       list: [],
       chart: undefined,
       charLegend: ['运行温度', '设定温度', '低温报警', '高温报警']
@@ -119,6 +120,7 @@ export default {
             }
             this.editableTabsValue = this.editableTabs[0].title
             this.tempsValue = data.results
+            this.flag = this.tempsValue[0]['temp_min']
             this.initChart(0)
             // console.log(this.tempsValue)
             // console.log('this.tempsTitles', this.tempsTitles)
@@ -189,7 +191,7 @@ export default {
         yAxis: [
           {
             type: 'value',
-            min: this.tempsValue[0]['temp_min'] - 1
+            min: this.flag - 1
           }
         ],
         series: [
@@ -305,9 +307,24 @@ export default {
         var tempsValues = data[i].other_temps_value.split(',')
         result.push(tempsValues[key])
       }
+      // eslint-disable-next-line eqeqeq
+      // if (int == 2) {
+      //   var tem = data[0].other_temps_value.split(',')
+      //   this.flag = tem[key]
+      //   alert(this.flag)
+      // }
+
       return result
     },
     loadTempDataPart(tab) {
+      if (tab.index === 0 || tab.index === '0') {
+        this.flag = this.tempsValue[0]['temp_min']
+        alert(tab.index)
+      } else {
+        var key = 4 * (tab.index - 1) + 2
+        var tem = this.tempsValue[0].other_temps_value.split(',')
+        this.flag = tem[key]
+      }
       this.initChart(tab.index)
     }
   }

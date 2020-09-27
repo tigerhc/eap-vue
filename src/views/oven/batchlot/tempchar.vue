@@ -319,7 +319,6 @@ export default {
     loadTempDataPart(tab) {
       if (tab.index === 0 || tab.index === '0') {
         this.flag = this.tempsValue[0]['temp_min']
-        alert(tab.index)
       } else {
         var key = 4 * (tab.index - 1) + 2
         var tem = this.tempsValue[0].other_temps_value.split(',')

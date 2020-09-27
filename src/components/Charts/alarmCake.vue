@@ -32,7 +32,22 @@ export default {
       // endTime:'2017-03-10'
     }
   },
+  watch: {
+    list() {
+      this.myChart.dispose()
+      this.scatterData = this.getVirtulData()
+      this.myChart = echarts.init(document.getElementById(this.id))
+      this.initChart()
+      const that = this
+      setTimeout(function() {
+        that.myChart.setOption({
+          series: that.getPieSeries(that.scatterData, that.myChart)
+        })
+      }, 10)
+    }
+  },
   mounted() {
+    // eslint-disable-next-line no-undef
     this.scatterData = this.getVirtulData()
     this.myChart = echarts.init(document.getElementById(this.id))
     this.initChart()

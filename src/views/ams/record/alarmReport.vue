@@ -4,7 +4,7 @@
       <el-row>
         <el-col :span="6">
           <el-form-item label="线别" prop="lineNo">
-            <el-select v-model="form.lineNo">
+            <el-select v-model="form.lineNo" @change="ValueChange(1)">
               <el-option
                 v-for="item in lineNoOptions"
                 :key="item.value"
@@ -12,6 +12,18 @@
                 :value="item.value"
                 :disabled="item.disabled" />
             </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="5">
+          <el-form-item label="工程" prop="station_code">
+            <el-select v-model="form.stationCode" filterable placeholder="请选择" >
+              <el-option
+                v-for="item in noList"
+                :key="item.station_code"
+                :label="item.station_code"
+                :value="item.station_code"/>
+            </el-select>
+            <!--            <w-select :str="form.productionNo" :multiple="true" :disabled="false" @input="onNoChange($event)"/>-->
           </el-form-item>
         </el-col>
         <el-col :span="9">
@@ -29,6 +41,7 @@
 <script>
 import { selectAlarmCountByLine, selectAlarmCountByEqp } from '@/api/public'
 import echarts from 'echarts'
+import request from '@/utils/request'
 
 export default {
   name: 'AlarmReport',
@@ -37,8 +50,10 @@ export default {
     return {
       form: {
         lineNo: undefined,
-        dateTime: []
+        dateTime: [],
+        stationCode: ''
       },
+      noList: [],
       formRules: {
         lineNo: [{ required: true, message: '请选择线别！', trigger: 'change' }],
         dateTime: [{ required: true, message: '请选择时间！', trigger: 'change' }]
@@ -84,13 +99,24 @@ export default {
           selectAlarmCountByLine({
             beginTime: this.form.dateTime[0],
             endTime: this.form.dateTime[1],
-            lineNo: this.form.lineNo
+            lineNo: this.form.lineNo,
+            stationCode: this.form.stationCode
           }).then((res) => {
             const data = res.data
             this.source = data.record
             this.initChart()
           })
         }
+      })
+    },
+    ValueChange(index) {
+      request({
+        url: 'edc/rptlotyieldday/searchStand/' + this.form.lineNo,
+        method: 'get'
+      }).then((response) => {
+        const rs = response.data
+        this.noList = rs || []
+        // this.productionNo = rss.split(',')
       })
     },
 

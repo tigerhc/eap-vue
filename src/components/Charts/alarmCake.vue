@@ -79,7 +79,7 @@ export default {
       this.myChart.setOption({
         tooltip: {},
         legend: {
-          data: ['RUN', 'IDLE', 'DOWN'],
+          data: ['RUN', 'IDLE', 'DOWN', 'OTHER'],
           bottom: 20,
           right: 0
         },
@@ -132,7 +132,7 @@ export default {
     getVirtulData() {
       var data = []
       for (const item of this.list) {
-        data.push([item.periodDate, item.runTime, item.idleTime, item.downTime])
+        data.push([item.periodDate, item.runTime, item.idleTime, item.downTime, item.otherTime])
       }
       return data
     },
@@ -157,7 +157,7 @@ export default {
               shadowColor: 'rgba(0, 0, 0, 0.5)'
             },
             color: function(params) {
-              var colorList = ['#43ca17', '#FFFF00', '#FF0000']
+              var colorList = ['#43ca17', '#FFFF00', '#FF0000', '#808080']
               return colorList[params.dataIndex]
             }
 
@@ -165,7 +165,8 @@ export default {
           data: [
             { name: 'RUN', value: item[1] },
             { name: 'IDLE', value: item[2] },
-            { name: 'DOWN', value: item[3] }
+            { name: 'DOWN', value: item[3] },
+            { name: 'OTHER', value: item[4] }
           ]
         }
       })

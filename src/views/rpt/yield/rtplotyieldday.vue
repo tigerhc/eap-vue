@@ -6,7 +6,7 @@
           <el-form-item label="线别" prop="lineNo">
             <el-select v-model="form.lineNo" @change="ValueChange(1)">
               <el-option
-v-for="item in lineNoOptions"
+                          v-for="item in lineNoOptions"
                          :key="item.value"
                          :label="item.label"
                          :value="item.value"
@@ -14,7 +14,7 @@ v-for="item in lineNoOptions"
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="6">
           <el-form-item label="站别" prop="station_code">
             <el-select v-model="form.station_code" filterable placeholder="请选择" >
               <el-option
@@ -26,6 +26,17 @@ v-for="item in lineNoOptions"
             <!--            <w-select :str="form.productionNo" :multiple="true" :disabled="false" @input="onNoChange($event)"/>-->
           </el-form-item>
         </el-col>
+<!--           <span class="demonstration">站别</span>-->
+<!--        <el-col :span="5">-->
+<!--                   <el-form-item label="站别" prop="station_code">-->
+<!--             <el-cascader-->
+<!--               :props="aa"-->
+<!--               :options="noList1"-->
+<!--               multiple-->
+<!--               collapse-tags-->
+<!--               clearable/>-->
+<!--                   </el-form-item>-->
+<!--               </el-col>-->
         <el-col :span="9">
           <el-form-item label="日期" prop="dateTime">
             <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
@@ -35,11 +46,13 @@ v-for="item in lineNoOptions"
       </el-row>
     </el-form>
     <div id="yieldDayChart" style="width: 100%;height: 300px;overflow: hidden;"/>
+    <div id="findAllEqp" style="width: 100%;height: 250px;"/>
     <div id="eqpChart" style="width: 100%;height: 250px;overflow: hidden;"/>
+
   </div>
 </template>
 <script>
-import { rtplotyieldday, selectEqp } from '@/api/public'
+import { rtplotyieldday, selectEqp, findAllEqp } from '@/api/public'
 import echarts from 'echarts'
 import request from '@/utils/request'
 
@@ -48,10 +61,12 @@ export default {
   components: {},
   data() {
     return {
+      aa: { multiple: true },
       form: {
         lineNo: undefined,
         dateTime: [],
-        station_code: ''
+        station_code: '',
+        value: []
       },
       formRules: {
         lineNo: [{ required: true, message: '请选择线别！', trigger: 'change' }],
@@ -61,6 +76,10 @@ export default {
       source: [],
       source2: [],
       noList: [],
+      noList1: [],
+      formatArr: [],
+      series: [],
+      legend: [],
       // 先写死
       lineNoOptions: [{
         value: 'SIM',
@@ -94,6 +113,39 @@ export default {
   },
   methods: {
     serch() {
+      // eslint-disable-next-line eqeqeq
+      if (this.form.station_code != '') {
+        this.legend = []
+        this.series = []
+        this.formatArr = []
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            // eslint-disable-next-line no-undef
+            findAllEqp({
+              beginTime: this.form.dateTime[0],
+              endTime: this.form.dateTime[1],
+              lineNo: this.form.lineNo,
+              stationCode: this.form.station_code
+            }).then((res) => {
+              const data = res.data
+              this.source3 = data || []
+              for (var i in data[0]) {
+                this.formatArr.push(i)
+              }
+              for (var p in data[0]) {
+                this.legend.push(p)
+                this.series.push({
+                  name: p,
+                  type: 'bar',
+                  barGap: 0
+                })
+              }
+              this.series.splice(0, 1)
+              this.AllEqpChart()
+            })
+          }
+        })
+      }
       this.$refs['form'].validate((valid) => {
         if (valid) {
           rtplotyieldday({
@@ -116,6 +168,7 @@ export default {
       }).then((response) => {
         const rs = response.data
         this.noList = rs || []
+        this.noList1 = rs || []
         // this.productionNo = rss.split(',')
       })
     },
@@ -266,7 +319,7 @@ export default {
           // padding: [20, 20]
           margin: [100, 100, 100, 100]
         },
-        color: ['#37A2DA', '#FFA500', '#37A2DA', '#FFA500', '#FF0000'],
+        color: ['#FFA500', '#37A2DA', '#37A2DA', '#FFA500', '#FF0000'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -330,14 +383,76 @@ export default {
         }
       }
       yieldChart.setOption(option, true)
+    },
+    AllEqpChart() {
+      var chart3 = document.getElementById('findAllEqp')
+      var yieldDayChart = echarts.init(chart3)
+      const option = {
+        // title: {
+        //   text: 'SIM日产量分析'
+        //
+        //   // padding: [20, 20]
+        // },
+        color: ['#FFA500', '#37A2DA', '#FFA500', '#37A2DA', '#FF0000'],
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            crossStyle: {
+              color: '#999'
+            }
+          }
+        },
+        toolbox: {
+          feature: {
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ['line', 'bar'] },
+            restore: { show: true },
+            saveAsImage: { show: true }
+          }
+        },
+        legend: {
+          data: this.legend
+        },
+        xAxis: [
+          {
+            type: 'category',
+            axisPointer: {
+              type: 'shadow'
+            }
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            name: '日产量',
+            min: 0,
+            // max: 60000,
+            // interval: 6000,
+            axisLabel: {
+              formatter: '{value} '
+            }
+          }
+        ],
+        series: this.series,
+        dataset: {
+          dimensions: this.formatArr,
+          source: this.source3
+        }
+      }
+      yieldDayChart.setOption(option, true)
+      var _this = this
+      yieldDayChart.on('dblclick', function(params) {
+        _this.selectEqp(params.data.period_date)
+      })
     }
   }
 }
 </script>
 <style lang="scss" scoped>
   .Rtplotyieldday {
-    width: 100%;
-    height: 100%;
+    width: auto;
+    height: auto;
     margin: 0 auto;
 
     .form {

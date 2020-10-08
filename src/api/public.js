@@ -126,3 +126,11 @@ export function selectEqp(data) {
     params: data
   })
 }
+
+export function findAllEqp(data) {
+  return request({
+    url: 'edc/rptlotyieldday/findAllEqp',
+    method: 'get',
+    params: data
+  })
+}

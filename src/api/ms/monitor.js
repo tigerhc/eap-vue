@@ -6,3 +6,11 @@ export function weightChart(query) {
     params: query
   })
 }
+
+export function kongdongChart(query) {
+  return request({
+    url: '/mes/meslottrack/chartKongDong',
+    method: 'get',
+    params: query
+  })
+}

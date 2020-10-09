@@ -46,7 +46,7 @@
       </el-row>
     </el-form>
     <div id="yieldDayChart" style="width: 100%;height: 300px;overflow: hidden;"/>
-    <div id="findAllEqp" style="width: 100%;height: 250px;"/>
+    <div id="findAllEqp" style="width: 100%;height: 280px;"/>
     <div id="eqpChart" style="width: 100%;height: 250px;overflow: hidden;"/>
 
   </div>
@@ -393,7 +393,7 @@ export default {
         //
         //   // padding: [20, 20]
         // },
-        color: ['#FFA500', '#37A2DA', '#FFA500', '#37A2DA', '#FF0000'],
+        color: ['#FFA500', '#37A2DA', '#FFA500', '#37A2DA'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -410,6 +410,10 @@ export default {
             restore: { show: true },
             saveAsImage: { show: true }
           }
+        },
+        grid: {
+          top: '37%',
+          bottom: '8%'
         },
         legend: {
           data: this.legend

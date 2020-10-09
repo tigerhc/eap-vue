@@ -158,7 +158,7 @@ export default {
     } else {
       this.timer = setInterval(() => {
         this.inIt()
-      }, 5000)
+      }, 150000)
     }
   },
   methods: {

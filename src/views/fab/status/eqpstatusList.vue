@@ -149,9 +149,17 @@ export default {
   },
   destroyed() {
     clearTimeout(this.timer)
+    clearInterval(this.timer)
   },
   mounted() {
     this.inIt()
+    if (this.timer) {
+      clearInterval(this.timer)
+    } else {
+      this.timer = setInterval(() => {
+        this.inIt()
+      }, 5000)
+    }
   },
   methods: {
     inIt() {
@@ -175,7 +183,7 @@ export default {
     timer() {
       setTimeout(() => {
         this.inIt()
-      }, 300000)
+      }, 150000)
     },
 
     getYield() {

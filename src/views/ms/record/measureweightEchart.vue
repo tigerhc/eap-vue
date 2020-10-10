@@ -8,9 +8,27 @@
 					</div>
 				</el-col>
 				<el-col :span="6">
-					<div class="condition">
+					<el-form-item label="线别" prop="lineNo">
+            <el-select v-model="lineNo" @change="updateEqp">
+              <el-option
+                v-for="item in lineNoOptions"
+                :key="item.lineNo"
+                :label="item.lineNo"
+                :value="item.lineNo" />
+            </el-select>
+          </el-form-item>
+					<!--<div class="condition">
 						<input v-model="chartParam.eqpId" type="text" placeholder="设备号" class="el-input__inner">
-					</div>
+					</div>-->
+					<el-form-item label="设备号" prop="eqpId">
+							<el-select v-model="chartParam.eqpId">
+								<el-option
+									v-for="item in eqpIdOptions"
+									:key="item.eqpId"
+									:label="item.eqpName"
+									:value="item.eqpId" />
+							</el-select>
+						</el-form-item>
 				</el-col>
 				<el-col :span="9">
             <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
@@ -29,6 +47,8 @@
 <script>
 import echarts from 'echarts'
 import { weightChart } from '@/api/ms/monitor'
+import request from '@/utils/request'
+
 export default {
   name: 'MeasureweightEchart',
   data() {
@@ -41,8 +61,20 @@ export default {
         eqpId: '',
         startTime: '',
         endTime: ''
-      }
+      },
+      lineNo: '',
+      lineNoOptions: [],
+      eqpIdOptions: []
     }
+  },
+  created() {
+    var _this = this
+    request({
+      url: 'ms/msmeasurerecord/getLineNoOptions',
+      method: 'get'
+    }).then((response) => {
+      _this.lineNoOptions = response.data.lineNoOptions
+    })
   },
   methods: {
     searchClick() {
@@ -117,6 +149,15 @@ export default {
       return '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">date：' + param.name + '</span><br>' +
 							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">value：' + param.data + '</span><br>' +
 							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">eqpId：' + eqpId + '</span>'
+    },
+    updateEqp() {
+      var _this = this
+      request({
+        url: 'ms/msmeasurerecord/getEqpIdOptions?lineNo=' + this.lineNo,
+        method: 'get'
+      }).then((response) => {
+        _this.eqpIdOptions = response.data.eqpIdOptions
+      })
     }
   }
 }

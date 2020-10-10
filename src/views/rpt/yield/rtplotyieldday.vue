@@ -393,7 +393,7 @@ export default {
         //
         //   // padding: [20, 20]
         // },
-        color: ['#FFA500', '#37A2DA', '#FFA500', '#37A2DA'],
+        color: ['#FFA500', '#D2691E', '#B0C4DE', '#778899', '#FF69B4', '#FF1493', '#00FFFF', '#00CED1', '#808000', '#BDB76B', '#FF7F50', '#FF4500', '#32CD32', '#00FF00', '#FFFF00', '#BDB76B', '#0000FF', '#1E90FF', '#EE82EE', '#FF00FF', '#87CEFA', '#00BFFF'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {

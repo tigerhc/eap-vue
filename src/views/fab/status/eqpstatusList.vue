@@ -213,7 +213,7 @@ export default {
           if (item.eqpId === 'SIM-WB-1A') {
             lineIndex = 1
           }
-          if (item.eqpId === 'SIM-AOI1') {
+          if (item.eqpId === 'SIM-TRM1') {
             lineIndex = 2
           }
           this.tabData2[lineIndex].push(item)

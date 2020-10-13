@@ -13,7 +13,7 @@
 
           <el-row>
             <el-col :span="24">
-              <eqp-panel-group @handleSetLineChartData="handleSetLineChartData"/>
+              <eqp-panel-group ref="refs" @handleSetLineChartData="handleSetLineChartData"/>
             </el-col>
           </el-row>
 
@@ -183,6 +183,7 @@ export default {
     timer() {
       setTimeout(() => {
         this.inIt()
+        this.$refs.refs.getData()
       }, 150000)
     },
 

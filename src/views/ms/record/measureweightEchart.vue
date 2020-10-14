@@ -2,12 +2,7 @@
 	<div class="app-container calendar-list-container">
 		<div class="condition-panel">
 			<el-form class="form" label-width="90px" size="small">
-				<el-col :span="6">
-					<div class="condition">
-						<input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner">
-					</div>
-				</el-col>
-				<el-col :span="6">
+				<el-col :span="4">
 					<el-form-item label="站点" prop="lineNo">
             <el-select v-model="lineNo" @change="updateEqp">
               <el-option
@@ -20,17 +15,24 @@
 					<!--<div class="condition">
 						<input v-model="chartParam.eqpId" type="text" placeholder="设备号" class="el-input__inner">
 					</div>-->
-					<el-form-item label="设备号" prop="eqpId">
-							<el-select v-model="chartParam.eqpId">
-								<el-option
-									v-for="item in eqpIdOptions"
-									:key="item.eqpId"
-									:label="item.eqpName"
-									:value="item.eqpId" />
-							</el-select>
-						</el-form-item>
 				</el-col>
-				<el-col :span="9">
+				<el-col :span="6">
+					<el-form-item label="设备号" prop="eqpId">
+						<el-select v-model="chartParam.eqpId">
+							<el-option
+								v-for="item in eqpIdOptions"
+								:key="item.eqpId"
+								:label="item.eqpName"
+								:value="item.eqpId" />
+						</el-select>
+					</el-form-item>
+				</el-col>
+				<el-col :span="4">
+					<div class="condition">
+            <input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner">
+          </div>
+        </el-col>
+				<el-col :span="6">
             <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
 				</el-col>
 			</el-form>
@@ -102,13 +104,20 @@ export default {
     initChart(weightData) {
       var xAxisArr = []
       var yAxisArr = []
+      var minArr = []
+      var maxArr = []
       if (weightData.length > 0) {
         for (var i = 0; i < weightData.length; i++) {
           xAxisArr.push(weightData[i].createDate)
           yAxisArr.push(weightData[i].weight)
+          minArr.push(weightData[i].limitMin)
+          maxArr.push(weightData[i].limitMax)
           var remarkObj = {}
           remarkObj.keyName = weightData[i].createDate
           remarkObj.eqpId = weightData[i].eqpId
+          remarkObj.limitMin = weightData[i].limitMin
+          remarkObj.limitMax = weightData[i].limitMax
+          remarkObj.fact = weightData[i].weight
           this.remarkArr.push(remarkObj)
         }
       }
@@ -121,18 +130,45 @@ export default {
           enterable: true, // 鼠标是否可进入提示框浮层中
           formatter: this.formatterHover// 修改鼠标悬停显示的内容
         },
+        legend: {
+          data: ['实际重量', '最低标准', '最高标准']
+        },
         xAxis: {
           type: 'category',
           boundaryGap: false,
           data: xAxisArr
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          axisLabel: {
+            formatter: '{value} g'
+          }
         },
         series: [
           {
             type: 'line',
+            name: '实际重量',
             data: yAxisArr,
+            stack: '实际重量',
+            itemStyle: {
+              normal: {
+                color: '#00FF00',
+                lineStyle: {
+                  color: '#00FF00'
+                }
+              }
+            }
+          },
+          {
+            type: 'line',
+            name: '最低标准',
+            data: minArr,
+            itemStyle: {}
+          },
+          {
+            type: 'line',
+            name: '最高标准',
+            data: maxArr,
             itemStyle: {}
           }
         ]
@@ -141,13 +177,22 @@ export default {
     },
     formatterHover(param) {
       var eqpId = ''
+      var fact = ''
+      var limitMin = ''
+      var limitMax = ''
       for (var i = 0; i < this.remarkArr.length; i++) {
         if (this.remarkArr[i].keyName === param.name) {
           eqpId = this.remarkArr[i].eqpId
+          fact = this.remarkArr[i].fact
+          limitMin = this.remarkArr[i].limitMin
+          limitMax = this.remarkArr[i].limitMax
         }
       }
-      return '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">date：' + param.name + '</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">value：' + param.data + '</span><br>' +
+
+      return '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">时间：' + param.name + '</span><br>' +
+							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">实际值：' + fact + ' g</span><br>' +
+							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最低标准：' + limitMin + ' g</span><br>' +
+							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最高标准：' + limitMax + ' g</span><br>' +
 							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">eqpId：' + eqpId + '</span>'
     },
     updateEqp() {
@@ -191,7 +236,7 @@ export default {
 		transition: border-color .2s cubic-bezier(.645,.045,.355,1);
 		width: 100%;
 	}
-	.el-col-9 div{
+	.el-col-6 div{
 		padding-bottom: 20px;
 	}
 	.el-date-editor .el-range-input, .el-date-editor .el-range-separator{

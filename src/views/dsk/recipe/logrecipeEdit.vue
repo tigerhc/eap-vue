@@ -128,6 +128,6 @@ export default {
     .el-table .warning-cell {
       background: yellow;
     }
-  
+
 </style>
 

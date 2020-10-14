@@ -10,7 +10,7 @@
             <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
           </el-form-item>
         </el-col>
-        <el-button type="primary" @click="search">查询</el-button>
+        <el-button type="primary" @click="check">查询</el-button>
       </el-row>
     </el-form>
     <el-tabs v-model="editableTabsValue" type="card" @tab-click="loadTempDataPart">
@@ -45,6 +45,7 @@ export default {
       editableTabs: [],
       tempsTitles: [],
       tempsValue: [],
+      flag: 0,
       list: [],
       chart: undefined,
       charLegend: ['运行温度', '设定温度', '低温报警', '高温报警']
@@ -61,6 +62,30 @@ export default {
   methods: {
     onValueChange(name) {
       this.form.eqpId = name
+    },
+    check() {
+      var start = this.form.dateTime[0].slice(8, 10)
+      var end = this.form.dateTime[1].slice(8, 10)
+      var startc = parseInt(start)
+      var endc = parseInt(end)
+      console.log('qq' + startc + 'ww' + endc)
+      if ((endc - startc) > 6) {
+        this.$alert('限制时间范围为7天内', '请重新选择时间范围！', {
+          confirmButtonText: '确定',
+          callback: action => {
+          } })
+        // eslint-disable-next-line brace-style
+      } else
+      if ((endc - startc) < 0 && (endc - startc) > -24) {
+        this.$alert('限制时间范围为7天内', '请重新选择时间范围！', {
+          confirmButtonText: '确定',
+          callback: action => {
+          } })
+        // eslint-disable-next-line brace-style
+      }
+      else {
+        this.search()
+      }
     },
     search() {
       this.$refs['form'].validate((valid) => {
@@ -95,6 +120,7 @@ export default {
             }
             this.editableTabsValue = this.editableTabs[0].title
             this.tempsValue = data.results
+            this.flag = this.tempsValue[0]['temp_min']
             this.initChart(0)
             // console.log(this.tempsValue)
             // console.log('this.tempsTitles', this.tempsTitles)
@@ -164,7 +190,8 @@ export default {
         },
         yAxis: [
           {
-            type: 'value'
+            type: 'value',
+            min: this.flag - 1
           }
         ],
         series: [
@@ -280,9 +307,23 @@ export default {
         var tempsValues = data[i].other_temps_value.split(',')
         result.push(tempsValues[key])
       }
+      // eslint-disable-next-line eqeqeq
+      // if (int == 2) {
+      //   var tem = data[0].other_temps_value.split(',')
+      //   this.flag = tem[key]
+      //   alert(this.flag)
+      // }
+
       return result
     },
     loadTempDataPart(tab) {
+      if (tab.index === 0 || tab.index === '0') {
+        this.flag = this.tempsValue[0]['temp_min']
+      } else {
+        var key = 4 * (tab.index - 1) + 2
+        var tem = this.tempsValue[0].other_temps_value.split(',')
+        this.flag = tem[key]
+      }
       this.initChart(tab.index)
     }
   }

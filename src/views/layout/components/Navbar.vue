@@ -103,7 +103,7 @@ export default {
     ...mapGetters(['sidebar', 'name', 'avatar', 'device', 'addRouters', 'project'])
   },
   mounted() {
-    getProject('2').then((res) => {
+    getProject('5').then((res) => {
       const obj = res.data
       this.$store.dispatch('getProject', obj)
     })
@@ -153,7 +153,7 @@ export default {
     // 获取一级菜单
     getFirstMeun() {
       const params = {
-        projectId: '2'
+        projectId: '5'
       }
       fetchMenuList(params).then((response) => {
         this.firstLeave = response.data

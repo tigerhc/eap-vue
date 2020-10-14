@@ -193,7 +193,7 @@ export default {
             stack: '总量',
             label: {
               show: true,
-              position: 'insideRight'
+              position: 'inside'
             },
             itemStyle: {
               color: function(params) {
@@ -207,7 +207,7 @@ export default {
             type: 'bar',
             stack: '总量',
             label: {
-              show: true,
+              show: false,
               position: 'insideRight'
             },
             itemStyle: {
@@ -222,7 +222,7 @@ export default {
             type: 'bar',
             stack: '总量',
             label: {
-              show: true,
+              show: false,
               position: 'insideRight'
             },
             itemStyle: {

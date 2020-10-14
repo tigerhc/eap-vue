@@ -8,7 +8,7 @@
 					</div>
 				</el-col>
 				<el-col :span="6">
-					<el-form-item label="线别" prop="lineNo">
+					<el-form-item label="站点" prop="lineNo">
             <el-select v-model="lineNo" @change="updateEqp">
               <el-option
                 v-for="item in lineNoOptions"
@@ -192,6 +192,9 @@ export default {
 		width: 100%;
 	}
 	.el-col-9 div{
-		height:39px !important;
+		padding-bottom: 20px;
+	}
+	.el-date-editor .el-range-input, .el-date-editor .el-range-separator{
+		height:20% !important;
 	}
 </style>

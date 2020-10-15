@@ -3,17 +3,23 @@
 		<div class="condition-panel">
 			<el-form class="form" label-width="90px" size="small">
 				<el-col :span="6">
-					<div class="condition">
-						<input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner">
-					</div>
+					<el-form-item label="批号:">
+						<div class="condition">
+							<input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner">
+						</div>
+					</el-form-item>
 				</el-col>
 				<el-col :span="6">
-					<div class="condition">
-						<input v-model="chartParam.productionNo" type="text" placeholder="品番" class="el-input__inner">
-					</div>
+					<el-form-item label="品番:">
+						<div class="condition">
+							<input v-model="chartParam.productionNo" type="text" placeholder="品番" class="el-input__inner">
+						</div>
+					</el-form-item>
 				</el-col>
 				<el-col :span="9">
+					<el-form-item label="日期:">
             <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
+					</el-form-item>
 				</el-col>
 			</el-form>
 
@@ -47,7 +53,7 @@ export default {
   methods: {
     searchClick() {
       if (this.chartParam.productionNo === '') {
-        alert('品番不可同时为空')
+        alert('批号和品番不可同时为空')
         return
       }
       if (this.dateTime.length === 1) {
@@ -95,7 +101,10 @@ export default {
           data: xAxisArr
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          axisLabel: {
+            formatter: '{value} %'
+          }
         },
         series: [
           {
@@ -115,7 +124,7 @@ export default {
         }
       }
       return '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">file：' + param.name + '</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">value：' + param.data + '</span><br>' +
+							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">value：' + param.data + '%</span><br>' +
 							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">crtTime：' + createTime + '</span>'
     }
   }

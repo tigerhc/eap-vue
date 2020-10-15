@@ -3,7 +3,7 @@
 		<div class="condition-panel">
 			<el-form class="form" label-width="90px" size="small">
 				<el-col :span="4">
-					<el-form-item label="站点" prop="lineNo">
+					<el-form-item label="站点：">
             <el-select v-model="lineNo" @change="updateEqp">
               <el-option
                 v-for="item in lineNoOptions"
@@ -16,8 +16,8 @@
 						<input v-model="chartParam.eqpId" type="text" placeholder="设备号" class="el-input__inner">
 					</div>-->
 				</el-col>
-				<el-col :span="6">
-					<el-form-item label="设备号" prop="eqpId">
+				<el-col :span="4">
+					<el-form-item label="设备号：">
 						<el-select v-model="chartParam.eqpId">
 							<el-option
 								v-for="item in eqpIdOptions"
@@ -27,10 +27,12 @@
 						</el-select>
 					</el-form-item>
 				</el-col>
-				<el-col :span="4">
-					<div class="condition">
-            <input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner">
-          </div>
+				<el-col :span="6">
+					<el-form-item label="批号：">
+						<div class="condition">
+							<input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner">
+						</div>
+					</el-form-item>
         </el-col>
 				<el-col :span="6">
             <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>

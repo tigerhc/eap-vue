@@ -131,6 +131,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       }
     },
     runtimeChunk: 'single',
+    minimize: false,
     minimizer: [
       new UglifyJsPlugin({
         uglifyOptions: {

@@ -144,20 +144,20 @@ export default {
           default: ['drag-canvas']
         },
         layout: {
-          type: 'dagre',
-          rankdir: 'LR',
-          nodesep: 50,
-          ranksep: 60
+          type: 'dagre', // 层次布局
+          rankdir: 'LR', // 从左至右布局
+          nodesep: 50, // 节点间距（px）
+          ranksep: 60 // 层间距（px）
         },
         defaultNode: {
           type: 'info',
           size: [300, 300]
         },
         defaultEdge: {
-          type: 'polyline',
+          type: 'polyline', // 折线
           style: {
-            offset: 30,
-            endArrow: true,
+            offset: 30, // 拐弯处距离节点最小距离
+            endArrow: true, // 箭头
             lineWidth: 3,
             stroke: '#C2C8D5'
           }
@@ -222,29 +222,63 @@ export default {
           })
         }
         // 构造节点
-        const nodes = this.chip_list.filter((itm) => {
-          if ((itm.eqpType & 12) > 0) {
-            return !eqs.hasOwnProperty(itm.id)
-          }
-          return true
-        })
-        // 构造边
-        const edges = []
-        this.chip_list.forEach(function(itm) {
-          const fkey = itm.fromTrayId ? '' + itm.fromTrayId + '-' + itm.fromX + '-' + itm.fromY : itm.key
-          if (tomap.hasOwnProperty(fkey)) {
-            const arr = tomap[fkey].filter((it) => {
-              return itm.id !== it.id && itm.startTime > it.time
-            })
-            if (arr.length > 0) {
-              const src = arr[0].id
-              edges.push({
-                source: eqs.hasOwnProperty(src) ? eqs[src] : src,
-                target: eqs.hasOwnProperty(itm.id) ? eqs[itm.id] : itm.id
-              })
+        //        const nodes = this.chip_list.filter((itm) => {
+        //          if ((itm.eqpType & 12) > 0) {
+        //            return !eqs.hasOwnProperty(itm.id)
+        //          }
+        //          return true
+        //        })
+
+        var nodes = []
+        for (var i = 0; i < this.chip_list.length; i++) {
+          if (i === 0) {
+            nodes.push(this.chip_list[i])
+          } else {
+            var nodesRpt = true
+            for (var j = 0; j < nodes.length; j++) {
+              if (nodes[j].eqpId === this.chip_list[i].eqpId) {
+                nodesRpt = false
+                break
+              }
+            }
+            if (nodesRpt) {
+              nodes.push(this.chip_list[i])
             }
           }
-        })
+        }
+
+        // 构造边
+        //        const edges = []
+        //        this.chip_list.forEach(function(itm) {
+        //          const fkey = itm.fromTrayId ? '' + itm.fromTrayId + '-' + itm.fromX + '-' + itm.fromY : itm.key
+        //          if (tomap.hasOwnProperty(fkey)) {
+        //            const arr = tomap[fkey].filter((it) => {
+        //              return itm.id !== it.id && itm.startTime > it.time
+        //            });
+        //            if (arr.length > 0) {
+        //              const src = arr[0].id
+        //                edges.push({
+        //                  source: eqs.hasOwnProperty(src) ? eqs[src] : src,
+        //                  target: eqs.hasOwnProperty(itm.id) ? eqs[itm.id] : itm.id
+        //                })
+        //              }
+        //            }
+        //        })
+
+        var edges = []
+        for (var edgesI = 0; edgesI < nodes.length; edgesI++) {
+          if (nodes[edgesI].nextEqpId) {
+            for (var edgesJ = 0; edgesJ < nodes.length; edgesJ++) {
+              if (nodes[edgesI].nextEqpId === nodes[edgesJ].eqpId) {
+                edges.push({
+                  source: nodes[edgesI].id,
+                  target: nodes[edgesJ].id
+                })
+              }
+            }
+          }
+        }
+
         this.renderG6({
           nodes,
           edges

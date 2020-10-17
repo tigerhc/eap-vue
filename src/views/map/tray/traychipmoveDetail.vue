@@ -179,48 +179,48 @@ export default {
           this.chip_list = resp.data.results
         }
         // 所有的to构造成map
-        const tomap = {}
+        // const tomap = {}
         // 所有的相同芯片
-        const eqsmap = {}
+        // const eqsmap = {}
         this.chip_list.forEach(function(itm) {
           // 时间转成数字，便于比较
           itm.startTime = Date.parse(itm.startTime)
           // g6的id必须为字符
           itm.id = '' + itm.id
           // 识别标识
-          const key = '' + itm.toTrayId + '-' + itm.toX + '-' + itm.toY
-          itm.key = key
-          if (!tomap.hasOwnProperty(key)) {
-            tomap[key] = []
-          }
-          tomap[key].push({
-            id: itm.id,
-            time: itm.startTime
-          })
-          if (itm.eqpType && (itm.eqpType & 12) > 0) {
-            if (!eqsmap.hasOwnProperty(key)) {
-              eqsmap[key] = []
-            }
-            eqsmap[key].push(itm.id)
-          }
+          // const key = '' + itm.toTrayId + '-' + itm.toX + '-' + itm.toY
+          // itm.key = key
+          // if (!tomap.hasOwnProperty(key)) {
+          //  tomap[key] = []
+          // }
+          // tomap[key].push({
+          //  id: itm.id,
+          //  time: itm.startTime
+          // })
+          // if (itm.eqpType && (itm.eqpType & 12) > 0) {
+          //  if (!eqsmap.hasOwnProperty(key)) {
+          //    eqsmap[key] = []
+          //  }
+          //  eqsmap[key].push(itm.id)
+          // }
         })
         // key为需要转换的ID,val为目标ID
-        const eqs = {}
-        for (const eqval of Object.values(eqsmap)) {
-          if (eqval) {
-            for (let i = 0; i < eqval.length; i++) {
-              if (i !== 0) {
-                eqs[eqval[i]] = eqval[0]
-              }
-            }
-          }
-        }
+        // const eqs = {}
+        // for (const eqval of Object.values(eqsmap)) {
+        //  if (eqval) {
+        //    for (let i = 0; i < eqval.length; i++) {
+        //      if (i !== 0) {
+        //        eqs[eqval[i]] = eqval[0]
+        //      }
+        //    }
+        //  }
+        // }
         // 排序，按时间由大到小
-        for (const toitm of Object.values(tomap)) {
-          toitm.sort((a, b) => {
-            return b.time - a.time
-          })
-        }
+        // for (const toitm of Object.values(tomap)) {
+        //  toitm.sort((a, b) => {
+        //    return b.time - a.time
+        //  })
+        // }
         // 构造节点
         //        const nodes = this.chip_list.filter((itm) => {
         //          if ((itm.eqpType & 12) > 0) {

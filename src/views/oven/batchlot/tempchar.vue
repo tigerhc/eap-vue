@@ -10,7 +10,7 @@
             <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
           </el-form-item>
         </el-col>
-        <el-button type="primary" @click="check">查询</el-button>
+        <el-button type="primary" @click="search">查询</el-button>
       </el-row>
     </el-form>
     <el-tabs v-model="editableTabsValue" type="card" @tab-click="loadTempDataPart">

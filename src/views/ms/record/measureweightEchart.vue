@@ -113,6 +113,7 @@ export default {
           remarkObj.limitMin = weightData[i].limitMin
           remarkObj.limitMax = weightData[i].limitMax
           remarkObj.fact = weightData[i].weight
+          remarkObj.lotNo = weightData[i].lotNo
           this.remarkArr.push(remarkObj)
         }
       }
@@ -175,10 +176,12 @@ export default {
       var fact = ''
       var limitMin = ''
       var limitMax = ''
+      var lotNo = ''
       for (var i = 0; i < this.remarkArr.length; i++) {
         if (this.remarkArr[i].keyName === param.name) {
           eqpId = this.remarkArr[i].eqpId
           fact = this.remarkArr[i].fact
+          lotNo = this.remarkArr[i].lotNo
           limitMin = this.remarkArr[i].limitMin
           limitMax = this.remarkArr[i].limitMax
         }
@@ -188,7 +191,8 @@ export default {
 							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">实际值：' + fact + ' g</span><br>' +
 							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最低标准：' + limitMin + ' g</span><br>' +
 							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最高标准：' + limitMax + ' g</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">eqpId：' + eqpId + '</span>'
+							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">eqpId：' + eqpId + '</span><br>' +
+							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">批号：' + lotNo + '</span>'
     },
     updateEqp() {
       var _this = this

@@ -14,3 +14,11 @@ export function kongdongChart(query) {
     params: query
   })
 }
+
+export function kongdongBar(query) {
+  return request({
+    url: '/mes/meslottrack/kongDongBar',
+    method: 'get',
+    params: query
+  })
+}

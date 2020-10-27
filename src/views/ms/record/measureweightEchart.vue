@@ -2,9 +2,16 @@
 	<div class="app-container calendar-list-container">
 		<div class="condition-panel">
 			<el-form class="form" label-width="90px" size="small">
-				<el-col :span="4">
-					<el-form-item label="站点：">
-            <el-select v-model="lineNo" @change="updateEqp">
+				<el-col :span="6">
+					<el-form-item label="批号:">
+						<div class="condition">
+							<input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner">
+						</div>
+					</el-form-item>
+				</el-col>
+				<el-col :span="6">
+					<el-form-item label="机种名：">
+            <el-select v-model="chartParam.productionNo" @change="updateEqp">
               <el-option
                 v-for="item in lineNoOptions"
                 :key="item.lineNo"
@@ -12,36 +19,18 @@
                 :value="item.lineNo" />
             </el-select>
           </el-form-item>
-					<!--<div class="condition">
-						<input v-model="chartParam.eqpId" type="text" placeholder="设备号" class="el-input__inner">
-					</div>-->
 				</el-col>
-				<el-col :span="4">
-					<el-form-item label="设备号：">
-						<el-select v-model="chartParam.eqpId">
-							<el-option
-								v-for="item in eqpIdOptions"
-								:key="item.eqpId"
-								:label="item.eqpName"
-								:value="item.eqpId" />
-						</el-select>
-					</el-form-item>
-				</el-col>
-				<el-col :span="6">
-					<el-form-item label="批号：">
-						<div class="condition">
-							<input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner">
-						</div>
-					</el-form-item>
-        </el-col>
 				<el-col :span="6">
             <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
 				</el-col>
 			</el-form>
-
 			<button type="button" class="el-button el-button--primary el-button--medium filter-item" style="margin-left: 10px;" @click="searchClick">
 				<i class="el-icon-search"/>
 				<span>搜索</span>
+			</button>
+			<button type="button" class="el-button el-button--primary el-button--medium filter-item" style="margin-left: 10px;" @click="refreshClick">
+				<i class="el-icon-refresh"/>
+				<span>清空</span>
 			</button>
 		</div>
 		<div id="echApp" :style="{width: '80%', height: '300px',float:'left'}"/>
@@ -61,35 +50,34 @@ export default {
       remarkArr: [],
       dateTime: [],
       chartParam: {
-        lotNo: '',
-        eqpId: '',
+        productionNo: '',
         startTime: '',
-        endTime: ''
+        endTime: '',
+        lotNo: ''
       },
-      lineNo: '',
-      lineNoOptions: [],
-      eqpIdOptions: []
+      lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }]
     }
   },
   created() {
-    var _this = this
-    request({
-      url: 'ms/msmeasurerecord/getLineNoOptions',
-      method: 'get'
-    }).then((response) => {
-      _this.lineNoOptions = response.data.lineNoOptions
-    })
+    //    var _this = this
+    //    request({
+    //      url: 'ms/msmeasurerecord/getLineNoOptions',
+    //      method: 'get'
+    //    }).then((response) => {
+    //      _this.lineNoOptions = response.data.lineNoOptions
+    //    })
   },
   methods: {
     searchClick() {
-      if (this.chartParam.lotNo === '' && this.chartParam.eqpId === '') {
-        alert('设备和批号不可同时为空')
-        return
-      }
       if (this.dateTime.length === 1) {
         alert('日期不完整')
         return
       }
+      if (this.chartParam.productionNo === '') {
+        alert('请选择机种')
+        return
+      }
+      this.chartParam.productionNo = this.chartParam.productionNo.toUpperCase()
       if (this.dateTime.length === 2) {
         this.chartParam.startTime = this.dateTime[0]
         this.chartParam.endTime = this.dateTime[1]
@@ -102,6 +90,11 @@ export default {
           alert(res.data.msg)
         }
       })
+    },
+    refreshClick() {
+      this.chartParam.productionNo = ''
+      this.chartParam.lotNo = ''
+      this.dateTime = []
     },
     initChart(weightData) {
       var xAxisArr = []

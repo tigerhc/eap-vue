@@ -46,7 +46,7 @@
           <i class="el-icon-caret-bottom"/>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="home" trigger="click" >
+          <el-dropdown-item :command="url" trigger="click" >
             {{ $t('navbar.home') }}
           </el-dropdown-item>
           <router-link to="/info">
@@ -96,7 +96,10 @@ export default {
       firstLeave: [],
       projectList: [],
       activeName: '',
-      home: ''
+      home: '',
+      url: {
+        href: 'http://10.160.144.8/#/home'
+      }
     }
   },
   computed: {
@@ -111,13 +114,8 @@ export default {
     this.getList()
   },
   methods: {
-    getHome(item) {
-      if (item === 'home') {
-        fetchHome('sys.page.homePageUrl').then((res) => {
-          this.home = res.data
-          window.open(this.home)
-        })
-      }
+    getHome(url) {
+      window.location.href = url.href
     },
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')

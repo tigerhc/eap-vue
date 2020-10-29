@@ -2,16 +2,24 @@
 	<div class="app-container calendar-list-container">
 		<div class="condition-panel">
 			<el-form class="form" label-width="90px" size="small">
-
-				<el-col :span="6">
+				<el-col :span="9">
 					<el-form-item label="机种名:">
 						<div class="condition">
-							<el-select v-model="chartParam.productionNo">
+							<el-select v-model="productionNo" @change="lineNoChange">
 								<el-option
 									v-for="item in lineNoOptions"
 									:key="item.lineNo"
 									:label="item.lineNo"
 									:value="item.lineNo" />
+							</el-select>
+						</div>
+						<div class="condition">
+							<el-select v-model="chartParam.productionNo">
+								<el-option
+									v-for="item in proNameOptions"
+									:key="item"
+									:label="item"
+									:value="item" />
 							</el-select>
 						</div>
 					</el-form-item>
@@ -47,7 +55,7 @@
 
 <script>
 import echarts from 'echarts'
-import { kongdongChart, kongdongBar } from '@/api/ms/monitor'
+import { kongdongChart, kongdongBar, proNameSelect } from '@/api/ms/monitor'
 export default {
   name: 'MeasureKongdongEchart',
   data() {
@@ -61,10 +69,26 @@ export default {
         startDate: '',
         endDate: ''
       },
+      productionNo: '',
+      proNameOptions: [],
       lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }]
     }
   },
   methods: {
+    lineNoChange() {
+      if (this.productionNo !== '') {
+        var _this = this
+        var paramObj = {}
+        paramObj.productionNo = this.productionNo
+        proNameSelect(paramObj).then(res => {
+          if (res.data.code === 0 || res.data.code === '0') {
+            _this.proNameOptions = res.data.allProName
+          } else {
+            alert(res.data.msg)
+          }
+        })
+      }
+    },
     searchClick() {
       if (this.chartParam.productionNo === '') {
         alert('机种名不可同时为空')

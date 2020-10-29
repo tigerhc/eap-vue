@@ -2,21 +2,28 @@
 	<div class="app-container calendar-list-container">
 		<div class="condition-panel">
 			<el-form class="form" label-width="90px" size="small">
-				<el-col :span="6">
+				<el-col :span="5">
 					<el-form-item label="批号:">
 						<div class="condition">
 							<input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner">
 						</div>
 					</el-form-item>
 				</el-col>
-				<el-col :span="6">
+				<el-col :span="9">
 					<el-form-item label="机种名：">
-            <el-select v-model="chartParam.productionNo" @change="updateEqp">
+            <el-select v-model="productionNo" @change="productionNoChange">
               <el-option
                 v-for="item in lineNoOptions"
                 :key="item.lineNo"
                 :label="item.lineNo"
                 :value="item.lineNo" />
+            </el-select>
+						<el-select v-model="chartParam.productionNo" @change="updateEqp">
+              <el-option
+                v-for="item in productionNoOptions"
+                :key="item"
+                :label="item"
+                :value="item" />
             </el-select>
           </el-form-item>
 				</el-col>
@@ -39,7 +46,7 @@
 
 <script>
 import echarts from 'echarts'
-import { weightChart } from '@/api/ms/monitor'
+import { weightChart, productionNoSelect } from '@/api/ms/monitor'
 import request from '@/utils/request'
 
 export default {
@@ -55,6 +62,8 @@ export default {
         endTime: '',
         lotNo: ''
       },
+      productionNoOptions: [],
+      productionNo: '',
       lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }]
     }
   },
@@ -68,6 +77,20 @@ export default {
     //    })
   },
   methods: {
+    productionNoChange() {
+      if (this.productionNo !== '') {
+        var _this = this
+        var param = {}
+        param.lineNo = this.productionNo
+        productionNoSelect(param).then(res => {
+          if (res.data.code === 0 || res.data.code === '0') {
+            _this.productionNoOptions = res.data.productionNoList
+          } else {
+            alert(res.data.msg)
+          }
+        })
+      }
+    },
     searchClick() {
       if (this.dateTime.length === 1) {
         alert('日期不完整')

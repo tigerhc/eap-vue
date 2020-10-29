@@ -22,3 +22,19 @@ export function kongdongBar(query) {
     params: query
   })
 }
+
+export function proNameSelect(query) {
+  return request({
+    url: '/mes/meslottrack/getAllProName',
+    method: 'get',
+    params: query
+  })
+}
+
+export function productionNoSelect(query) {
+  return request({
+    url: '/ms/msmeasurerecord/getAllProductionNo',
+    method: 'get',
+    params: query
+  })
+}

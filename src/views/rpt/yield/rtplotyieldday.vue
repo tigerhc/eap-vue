@@ -247,7 +247,7 @@ export default {
             // max: 60000,
             // interval: 6000,
             axisLabel: {
-              formatter: '{value} '
+              formatter: '{value} k'
             }
           },
           {
@@ -356,7 +356,7 @@ export default {
             // max: 60000,
             // interval: 6000,
             axisLabel: {
-              formatter: '{value} '
+              formatter: '{value} k '
             }
           }
         ],
@@ -434,7 +434,7 @@ export default {
             // max: 60000,
             // interval: 6000,
             axisLabel: {
-              formatter: '{value} '
+              formatter: '{value} k'
             }
           }
         ],

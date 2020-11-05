@@ -40,7 +40,7 @@
 				<span>清空</span>
 			</button>
 		</div>
-		<div id="echApp" :style="{width: '80%', height: '300px',float:'left'}"/>
+		<div id="echApp" :style="{width: '80%', height: '500px',float:'left'}"/>
 	</div>
 </template>
 
@@ -122,21 +122,26 @@ export default {
     initChart(weightData) {
       var xAxisArr = []
       var yAxisArr = []
+      var minWeight = []
+      var maxWeight = []
       var minArr = []
       var maxArr = []
       if (weightData.length > 0) {
         for (var i = 0; i < weightData.length; i++) {
-          xAxisArr.push(weightData[i].createDate)
-          yAxisArr.push(weightData[i].weight)
+          xAxisArr.push(weightData[i].lotNo)
+          yAxisArr.push(weightData[i].avgWeight)
+          minWeight.push(weightData[i].minWeight)
+          maxWeight.push(weightData[i].maxWeight)
           minArr.push(weightData[i].limitMin)
           maxArr.push(weightData[i].limitMax)
           var remarkObj = {}
-          remarkObj.keyName = weightData[i].createDate
-          remarkObj.eqpId = weightData[i].eqpId
           remarkObj.limitMin = weightData[i].limitMin
           remarkObj.limitMax = weightData[i].limitMax
           remarkObj.fact = weightData[i].weight
           remarkObj.lotNo = weightData[i].lotNo
+          remarkObj.minWeight = weightData[i].minWeight
+          remarkObj.maxWeight = weightData[i].maxWeight
+          remarkObj.avgWeight = weightData[i].avgWeight
           this.remarkArr.push(remarkObj)
         }
       }
@@ -150,7 +155,7 @@ export default {
           formatter: this.formatterHover// 修改鼠标悬停显示的内容
         },
         legend: {
-          data: ['实际重量', '最低标准', '最高标准']
+          data: ['平均重量', '最低标准', '最高标准', '最小重量', '最大重量']
         },
         xAxis: {
           type: 'category',
@@ -159,6 +164,7 @@ export default {
         },
         yAxis: {
           type: 'value',
+          scale: true,
           axisLabel: {
             formatter: '{value} g'
           }
@@ -166,9 +172,9 @@ export default {
         series: [
           {
             type: 'line',
-            name: '实际重量',
+            name: '平均重量',
             data: yAxisArr,
-            stack: '实际重量',
+            stack: '平均重量',
             itemStyle: {
               normal: {
                 color: '#00FF00',
@@ -189,32 +195,46 @@ export default {
             name: '最高标准',
             data: maxArr,
             itemStyle: {}
+          },
+          {
+            type: 'line',
+            name: '最小重量',
+            data: minWeight,
+            itemStyle: {}
+          },
+          {
+            type: 'line',
+            name: '最大重量',
+            data: maxWeight,
+            itemStyle: {}
           }
         ]
       }
       this.chart.setOption(option)
     },
     formatterHover(param) {
-      var eqpId = ''
       var fact = ''
       var limitMin = ''
       var limitMax = ''
       var lotNo = ''
+      var minWeight = ''
+      var maxWeight = ''
       for (var i = 0; i < this.remarkArr.length; i++) {
-        if (this.remarkArr[i].keyName === param.name) {
-          eqpId = this.remarkArr[i].eqpId
-          fact = this.remarkArr[i].fact
+        if (this.remarkArr[i].lotNo === param.name) {
+          fact = this.remarkArr[i].avgWeight
           lotNo = this.remarkArr[i].lotNo
           limitMin = this.remarkArr[i].limitMin
           limitMax = this.remarkArr[i].limitMax
+          minWeight = this.remarkArr[i].minWeight
+          maxWeight = this.remarkArr[i].maxWeight
         }
       }
 
-      return '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">时间：' + param.name + '</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">实际值：' + fact + ' g</span><br>' +
+      return '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">平均重量：' + fact + ' g</span><br>' +
+							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最小重量：' + minWeight + ' g</span><br>' +
+							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最大重量：' + maxWeight + ' g</span><br>' +
 							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最低标准：' + limitMin + ' g</span><br>' +
 							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最高标准：' + limitMax + ' g</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">eqpId：' + eqpId + '</span><br>' +
 							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">批号：' + lotNo + '</span>'
     },
     updateEqp() {
@@ -263,5 +283,8 @@ export default {
 	}
 	.el-date-editor .el-range-input, .el-date-editor .el-range-separator{
 		height:20% !important;
+	}
+	#echApp{
+		margin-top:150px;
 	}
 </style>

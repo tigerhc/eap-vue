@@ -49,7 +49,6 @@ export default {
       var param = this.$refs.ref.fdis()
       this.query.id = param
       // eslint-disable-next-line no-undef
-      alert(param)
       if (this.toolbarStatus.exportsLoading) {
         return
       }

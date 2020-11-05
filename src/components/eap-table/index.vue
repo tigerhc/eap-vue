@@ -272,6 +272,11 @@ export default {
       this.$emit('select', row)
       this.multipleSelection = row
     },
+    fdis() {
+      // eslint-disable-next-line no-unused-vars
+      var a = this.multipleSelection.map((i) => i.id).join(',')
+      return a
+    },
     // 删除行数据
     delete(row) {
       const p = [

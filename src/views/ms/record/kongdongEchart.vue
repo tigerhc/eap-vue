@@ -49,7 +49,14 @@
 				</el-form-item>
 			</el-col>
 		</el-form>
-		<div id="echApp" :style="{width: '80%', height: '200px',float:'left'}"/>
+		<div id="brD">
+			<div id="chartPanelLeft">
+				<div id="echApp" :style="{width: '90%', height: '350px'}"/>
+			</div>
+			<div id="chartPanelRight">
+				<div id="echAppRight" :style="{width: '90%', height: '350px'}"/>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -111,7 +118,7 @@ export default {
         this.chartParam.lotNo = this.chartParam.lotNo.toUpperCase()
         kongdongBar(this.chartParam).then(res => {
           if (res.data.code === 0 || res.data.code === '0') {
-            _this.initChart(res.data.kongdong)
+            _this.initChart(res.data.kongdong, res.data.config)
           } else {
             alert(res.data.msg)
           }
@@ -150,22 +157,43 @@ export default {
       }
       this.chart.setOption(option)
     },
-    initChart(kongdongData) {
+    initChart(kongdongData, config) {
       var xAxisArr = []
       var yAxisArr = []
+      var leftLimit = []
+      var yAxisRight = []
+      var rightLimit = []
+      var xAxisRight = []
       if (kongdongData.length > 0) {
         for (var i = 0; i < kongdongData.length; i++) {
-          xAxisArr.push(kongdongData[i].xAxis)
-          yAxisArr.push(kongdongData[i].kongdongVal)
-          var remarkObj = {}
-          remarkObj.keyName = kongdongData[i].xAxis
-          remarkObj.createTime = kongdongData[i].createTime
-          this.remarkArr.push(remarkObj)
+          if (config.length > 0) {
+            for (var j = 0; j < config.length; j++) {
+              if (kongdongData[i].xAxis.indexOf(config[j].lineType) > -1 && config[j].heightLmt <= 10) {
+                leftLimit.push(config[j].heightLmt)
+
+                xAxisArr.push(kongdongData[i].xAxis)
+                yAxisArr.push(kongdongData[i].kongdongVal)
+              }
+
+              if (kongdongData[i].xAxis.indexOf(config[j].lineType) > -1 && config[j].heightLmt > 10) {
+                rightLimit.push(config[j].heightLmt)
+
+                xAxisRight.push(kongdongData[i].xAxis)
+                yAxisRight.push(kongdongData[i].kongdongVal)
+              }
+            }
+          }
+          // xAxisArr.push(kongdongData[i].xAxis)
+          // yAxisArr.push(kongdongData[i].kongdongVal)
+          // var remarkObj = {}
+          // remarkObj.keyName = kongdongData[i].xAxis
+          // remarkObj.createTime = kongdongData[i].createTime
+          // this.remarkArr.push(remarkObj)
         }
       }
 
-      this.chart = echarts.init(document.getElementById('echApp'))
-      var option = {
+      this.chartLeft = echarts.init(document.getElementById('echApp'))
+      var optionLeft = {
         tooltip: {
           trigger: 'item',
           triggerOn: 'mousemove',
@@ -188,13 +216,53 @@ export default {
             barWidth: 20 + 'px',
             type: 'bar',
             data: yAxisArr,
-            itemStyle: {
-
-            }
+            itemStyle: {}
+          },
+          {
+            barWidth: 20 + 'px',
+            type: 'bar',
+            data: leftLimit,
+            itemStyle: {}
           }
         ]
       }
-      this.chart.setOption(option)
+      this.chartLeft.setOption(optionLeft)
+
+      this.chartRight = echarts.init(document.getElementById('echAppRight'))
+      var optionRight = {
+        tooltip: {
+          trigger: 'item',
+          triggerOn: 'mousemove',
+          enterable: true, // 鼠标是否可进入提示框浮层中
+          formatter: this.formatterBarHover// 修改鼠标悬停显示的内容
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: true,
+          data: xAxisRight
+        },
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+            formatter: '{value} %'
+          }
+        },
+        series: [
+          {
+            barWidth: 20 + 'px',
+            type: 'bar',
+            data: yAxisRight,
+            itemStyle: {}
+          },
+          {
+            barWidth: 20 + 'px',
+            type: 'bar',
+            data: rightLimit,
+            itemStyle: {}
+          }
+        ]
+      }
+      this.chartRight.setOption(optionRight)
     },
     formatterHover(param) {
       return '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">批号：' + param.name + '</span><br>' +
@@ -239,4 +307,16 @@ export default {
 	.el-col-9 div{
 		height:39px !important;
 	}
+	#chartPanelLeft{
+		float:left;
+		width:40%;
+		height:100%;
+		margin-left:0px;
+	}
+	#chartPanelRight{
+		float:left;
+		width:40%;
+		height:100%;
+	}
+	#brD{width:100%;height:350px;float:left;}
 </style>

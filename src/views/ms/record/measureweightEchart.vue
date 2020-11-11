@@ -119,21 +119,59 @@ export default {
       this.chartParam.lotNo = ''
       this.dateTime = []
     },
+    renderItem(params, api) {
+      var xValue = api.value(0)
+      var highPoint = api.coord([xValue, api.value(1)])
+      var lowPoint = api.coord([xValue, api.value(2)])
+      var halfWidth = api.size([1, 0])[0] * 0.1
+      var style = api.style({
+        stroke: api.visual('color'),
+        fill: null
+      })
+
+      return {
+        type: 'group',
+        children: [{
+          type: 'line',
+          shape: {
+            x1: highPoint[0] - halfWidth, y1: highPoint[1],
+            x2: highPoint[0] + halfWidth, y2: highPoint[1]
+          },
+          style: style
+        }, {
+          type: 'line',
+          shape: {
+            x1: highPoint[0], y1: highPoint[1],
+            x2: lowPoint[0], y2: lowPoint[1]
+          },
+          style: style
+        }, {
+          type: 'line',
+          shape: {
+            x1: lowPoint[0] - halfWidth, y1: lowPoint[1],
+            x2: lowPoint[0] + halfWidth, y2: lowPoint[1]
+          },
+          style: style
+        }]
+      }
+    },
     initChart(weightData) {
-      var xAxisArr = []
-      var yAxisArr = []
-      var minWeight = []
-      var maxWeight = []
+      var categoryData = []
+      var errorData = []
+      var barData = []
       var minArr = []
       var maxArr = []
       if (weightData.length > 0) {
         for (var i = 0; i < weightData.length; i++) {
-          xAxisArr.push(weightData[i].lotNo)
-          yAxisArr.push(weightData[i].avgWeight)
-          minWeight.push(weightData[i].minWeight)
-          maxWeight.push(weightData[i].maxWeight)
+          categoryData.push(weightData[i].lotNo)
+          errorData.push([
+            i,
+            weightData[i].minWeight,
+            weightData[i].maxWeight
+          ])
           minArr.push(weightData[i].limitMin)
           maxArr.push(weightData[i].limitMax)
+          barData.push(weightData[i].avgWeight)
           var remarkObj = {}
           remarkObj.limitMin = weightData[i].limitMin
           remarkObj.limitMax = weightData[i].limitMax
@@ -144,45 +182,43 @@ export default {
           remarkObj.avgWeight = weightData[i].avgWeight
           this.remarkArr.push(remarkObj)
         }
-      }
-
-      this.chart = echarts.init(document.getElementById('echApp'))
-      var option = {
-        tooltip: {
-          trigger: 'item',
-          triggerOn: 'mousemove',
-          enterable: true, // 鼠标是否可进入提示框浮层中
-          formatter: this.formatterHover// 修改鼠标悬停显示的内容
-        },
-        legend: {
-          data: ['平均重量', '最低标准', '最高标准', '最小重量', '最大重量']
-        },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: xAxisArr
-        },
-        yAxis: {
-          type: 'value',
-          scale: true,
-          axisLabel: {
-            formatter: '{value} g'
-          }
-        },
-        series: [
-          {
+        this.chart = echarts.init(document.getElementById('echApp'))
+        var option = {
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {},
+            enterable: true, // 鼠标是否可进入提示框浮层中
+            formatter: this.formatterHover// 修改鼠标悬停显示的内容
+          },
+          legend: {
+            data: ['平均重量', '测量值', '最低标准', '最高标准']
+          },
+          xAxis: {
+            data: categoryData
+          },
+          yAxis: {
+            axisLabel: {
+              formatter: '{value} mg'
+            },
+            scale: true
+          },
+          series: [{
             type: 'line',
             name: '平均重量',
-            data: yAxisArr,
-            stack: '平均重量',
+            data: barData,
+            itemStyle: {}
+          },
+          {
+            type: 'custom',
+            name: '测量值',
             itemStyle: {
               normal: {
-                color: '#00FF00',
-                lineStyle: {
-                  color: '#00FF00'
-                }
+                borderWidth: 1.5
               }
-            }
+            },
+            renderItem: this.renderItem,
+            data: errorData,
+            z: 100
           },
           {
             type: 'line',
@@ -195,22 +231,10 @@ export default {
             name: '最高标准',
             data: maxArr,
             itemStyle: {}
-          },
-          {
-            type: 'line',
-            name: '最小重量',
-            data: minWeight,
-            itemStyle: {}
-          },
-          {
-            type: 'line',
-            name: '最大重量',
-            data: maxWeight,
-            itemStyle: {}
-          }
-        ]
+          }]
+        }
+        this.chart.setOption(option)
       }
-      this.chart.setOption(option)
     },
     formatterHover(param) {
       var fact = ''
@@ -220,7 +244,7 @@ export default {
       var minWeight = ''
       var maxWeight = ''
       for (var i = 0; i < this.remarkArr.length; i++) {
-        if (this.remarkArr[i].lotNo === param.name) {
+        if (this.remarkArr[i].lotNo === param[0].axisValue) {
           fact = this.remarkArr[i].avgWeight
           lotNo = this.remarkArr[i].lotNo
           limitMin = this.remarkArr[i].limitMin
@@ -230,11 +254,11 @@ export default {
         }
       }
 
-      return '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">平均重量：' + fact + ' g</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最小重量：' + minWeight + ' g</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最大重量：' + maxWeight + ' g</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最低标准：' + limitMin + ' g</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最高标准：' + limitMax + ' g</span><br>' +
+      return '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最大重量：' + maxWeight + ' mg</span><br>' +
+							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">平均重量：' + fact + ' mg</span><br>' +
+							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最小重量：' + minWeight + ' mg</span><br>' +
+							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最高标准：' + limitMax + ' mg</span><br>' +
+							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最低标准：' + limitMin + ' mg</span><br>' +
 							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">批号：' + lotNo + '</span>'
     },
     updateEqp() {

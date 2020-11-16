@@ -67,6 +67,12 @@ export default {
       lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }]
     }
   },
+  mounted() {
+    var now = new Date()
+    var endDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10)
+    var startDate = endDate.slice(0, 8) + '01'
+    this.dateTime = [startDate, endDate]
+  },
   created() {
     //    var _this = this
     //    request({
@@ -108,7 +114,11 @@ export default {
       var _this = this
       weightChart(this.chartParam).then(res => {
         if (res.data.code === 0 || res.data.code === '0') {
-          _this.initChart(res.data.weightList)
+          if (res.data.weightList !== undefined && res.data.weightList !== null && res.data.weightList.length !== 0) {
+            _this.initChart(res.data.weightList)
+          } else {
+            alert('无数据')
+          }
         } else {
           alert(res.data.msg)
         }

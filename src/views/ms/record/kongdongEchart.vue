@@ -81,6 +81,12 @@ export default {
       lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }]
     }
   },
+  mounted() {
+    var now = new Date()
+    var endDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10)
+    var startDate = endDate.slice(0, 8) + '01'
+    this.dateTime = [startDate, endDate]
+  },
   methods: {
     lineNoChange() {
       if (this.productionNo !== '') {
@@ -109,7 +115,12 @@ export default {
       var _this = this
       kongdongChart(this.chartParam).then(res => {
         if (res.data.code === 0 || res.data.code === '0') {
-          _this.initLineChart(res.data.kongdong)
+          console.log(res.data.kongdong)
+          if (res.data.kongdong !== undefined && res.data.kongdong !== null) {
+            _this.initLineChart(res.data.kongdong)
+          } else {
+            alert('无数据')
+          }
         } else {
           alert(res.data.msg)
         }
@@ -220,7 +231,7 @@ export default {
           },
           {
             barWidth: 20 + 'px',
-            type: 'bar',
+            type: 'line',
             data: leftLimit,
             itemStyle: {}
           }
@@ -256,7 +267,7 @@ export default {
           },
           {
             barWidth: 20 + 'px',
-            type: 'bar',
+            type: 'line',
             data: rightLimit,
             itemStyle: {}
           }

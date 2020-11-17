@@ -189,19 +189,19 @@ export default {
           min11.push(weightData[i].limit11)
           max90.push(weightData[i].limit90)
           if (weightData[i].limitMax > yMax) {
-            yMax = weightData[i].limitMax + 10
+            yMax = weightData[i].limitMax + weightData[i].limitMax * 0.1
           }
           if (weightData[i].avgWeight > yMax) {
-            yMax = weightData[i].avgWeight + 10
+            yMax = weightData[i].avgWeight + weightData[i].avgWeight * 0.1
           }
           if (yMin === -1) {
-            yMin = weightData[i].limitMin - 10
+            yMin = weightData[i].limitMin - weightData[i].limitMin * 0.1
           }
           if (weightData[i].limitMin < yMin) {
-            yMin = weightData[i].limitMin - 10
+            yMin = weightData[i].limitMin - weightData[i].limitMin * 0.1
           }
           if (weightData[i].avgWeight < yMin) {
-            yMin = weightData[i].avgWeight - 10
+            yMin = weightData[i].avgWeight - weightData[i].avgWeight * 0.1
           }
 
           var remarkObj = {}

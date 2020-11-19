@@ -102,6 +102,10 @@ export default {
         })
       }
     },
+    echarClear(chartId) {
+      this.chart = echarts.init(document.getElementById(chartId))
+      this.chart.clear()
+    },
     searchClick() {
       if (this.chartParam.productionNo === '') {
         alert('机种名不可同时为空')
@@ -114,8 +118,8 @@ export default {
       }
       var _this = this
       kongdongChart(this.chartParam).then(res => {
+        _this.echarClear('echAppLine')
         if (res.data.code === 0 || res.data.code === '0') {
-          console.log(res.data.kongdong)
           if (res.data.kongdong !== undefined && res.data.kongdong !== null) {
             _this.initLineChart(res.data.kongdong)
           } else {
@@ -128,6 +132,8 @@ export default {
       if (this.chartParam.lotNo !== '') {
         this.chartParam.lotNo = this.chartParam.lotNo.toUpperCase()
         kongdongBar(this.chartParam).then(res => {
+          _this.echarClear('echApp')
+          _this.echarClear('echAppRight')
           if (res.data.code === 0 || res.data.code === '0') {
             _this.initChart(res.data.kongdong, res.data.config)
           } else {
@@ -233,7 +239,9 @@ export default {
             barWidth: 20 + 'px',
             type: 'line',
             data: leftLimit,
-            itemStyle: {}
+            itemStyle: {
+              color: 'red'
+            }
           }
         ]
       }
@@ -269,7 +277,9 @@ export default {
             barWidth: 20 + 'px',
             type: 'line',
             data: rightLimit,
-            itemStyle: {}
+            itemStyle: {
+              color: 'red'
+            }
           }
         ]
       }

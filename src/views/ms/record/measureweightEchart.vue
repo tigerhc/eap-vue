@@ -113,6 +113,7 @@ export default {
       }
       var _this = this
       weightChart(this.chartParam).then(res => {
+        _this.echarClear('echApp')
         if (res.data.code === 0 || res.data.code === '0') {
           if (res.data.weightList !== undefined && res.data.weightList !== null && res.data.weightList.length !== 0) {
             _this.initChart(res.data.weightList)
@@ -128,6 +129,10 @@ export default {
       this.chartParam.productionNo = ''
       this.chartParam.lotNo = ''
       this.dateTime = []
+    },
+    echarClear(chartId) {
+      this.chart = echarts.init(document.getElementById(chartId))
+      this.chart.clear()
     },
     renderItem(params, api) {
       var xValue = api.value(0)
@@ -189,19 +194,19 @@ export default {
           min11.push(weightData[i].limit11)
           max90.push(weightData[i].limit90)
           if (weightData[i].limitMax > yMax) {
-            yMax = weightData[i].limitMax + weightData[i].limitMax * 0.1
+            yMax = weightData[i].limitMax + weightData[i].limitMax * 0.05
           }
           if (weightData[i].avgWeight > yMax) {
-            yMax = weightData[i].avgWeight + weightData[i].avgWeight * 0.1
+            yMax = weightData[i].avgWeight + weightData[i].avgWeight * 0.05
           }
           if (yMin === -1) {
-            yMin = weightData[i].limitMin - weightData[i].limitMin * 0.1
+            yMin = weightData[i].limitMin - weightData[i].limitMin * 0.05
           }
           if (weightData[i].limitMin < yMin) {
-            yMin = weightData[i].limitMin - weightData[i].limitMin * 0.1
+            yMin = weightData[i].limitMin - weightData[i].limitMin * 0.05
           }
           if (weightData[i].avgWeight < yMin) {
-            yMin = weightData[i].avgWeight - weightData[i].avgWeight * 0.1
+            yMin = weightData[i].avgWeight - weightData[i].avgWeight * 0.05
           }
 
           var remarkObj = {}

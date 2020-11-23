@@ -25,6 +25,13 @@
                 :label="item"
                 :value="item" />
             </el-select>
+						<el-select v-model="chartParam.detailOption">
+              <el-option
+                v-for="item in detailOptions"
+                :key="item"
+                :label="item.dtlName"
+                :value="item.dtlValue" />
+            </el-select>
           </el-form-item>
 				</el-col>
 				<el-col :span="6">
@@ -58,13 +65,15 @@ export default {
       dateTime: [],
       chartParam: {
         productionNo: '',
+        detailOption: '',
         startTime: '',
         endTime: '',
         lotNo: ''
       },
       productionNoOptions: [],
       productionNo: '',
-      lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }]
+      lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }],
+      detailOptions: []
     }
   },
   mounted() {
@@ -84,6 +93,10 @@ export default {
   },
   methods: {
     productionNoChange() {
+      // 当下拉框中的值变化时，清除关联的下拉框原来的值
+      this.chartParam.productionNo = ''
+      this.chartParam.detailOption = ''
+
       if (this.productionNo !== '') {
         var _this = this
         var param = {}
@@ -95,6 +108,11 @@ export default {
             alert(res.data.msg)
           }
         })
+        if (this.productionNo === '5GI' || this.productionNo === '6GI') {
+          this.detailOptions = [{ 'dtlName': 'DB', 'dtlValue': '1' }, { 'dtlName': 'DM', 'dtlValue': '2' }, { 'dtlName': '二级管', 'dtlValue': '3' }, { 'dtlName': '电熔', 'dtlValue': '4' }]
+        } else {
+          this.detailOptions = []
+        }
       }
     },
     searchClick() {
@@ -105,6 +123,12 @@ export default {
       if (this.chartParam.productionNo === '') {
         alert('请选择机种')
         return
+      }
+      if (this.productionNo === '5GI' || this.productionNo === '6GI') {
+        if (this.chartParam.detailOption === '' || this.chartParam.detailOption === null) {
+          alert('请选择具体项')
+          return
+        }
       }
       this.chartParam.productionNo = this.chartParam.productionNo.toUpperCase()
       if (this.dateTime.length === 2) {
@@ -126,9 +150,11 @@ export default {
       })
     },
     refreshClick() {
+      this.productionNo = ''
+      this.chartParam.detailOption = ''
       this.chartParam.productionNo = ''
       this.chartParam.lotNo = ''
-      this.dateTime = []
+      //      this.dateTime = []
     },
     echarClear(chartId) {
       this.chart = echarts.init(document.getElementById(chartId))

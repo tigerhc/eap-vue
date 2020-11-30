@@ -5,7 +5,7 @@
 				<el-col :span="9">
 					<el-form-item label="机种名:">
 						<div class="condition">
-							<el-select v-model="productionNo" @change="lineNoChange">
+							<el-select v-model="chartParam.lineNo" @change="lineNoChange">
 								<el-option
 									v-for="item in lineNoOptions"
 									:key="item.lineNo"
@@ -14,7 +14,7 @@
 							</el-select>
 						</div>
 						<div class="condition">
-							<el-select v-model="chartParam.productionNo">
+							<el-select v-model="chartParam.productionName">
 								<el-option
 									v-for="item in proNameOptions"
 									:key="item"
@@ -71,8 +71,9 @@ export default {
       remarkArr: [],
       dateTime: [],
       chartParam: {
+        lineNo: '',
         lotNo: '',
-        productionNo: '',
+        productionName: '',
         startDate: '',
         endDate: ''
       },
@@ -89,10 +90,10 @@ export default {
   },
   methods: {
     lineNoChange() {
-      if (this.productionNo !== '') {
+      if (this.chartParam.lineNo !== '') {
         var _this = this
         var paramObj = {}
-        paramObj.productionNo = this.productionNo
+        paramObj.productionNo = this.chartParam.lineNo
         proNameSelect(paramObj).then(res => {
           if (res.data.code === 0 || res.data.code === '0') {
             _this.proNameOptions = res.data.allProName
@@ -107,11 +108,11 @@ export default {
       this.chart.clear()
     },
     searchClick() {
-      if (this.chartParam.productionNo === '') {
+      if (this.chartParam.productionName === '') {
         alert('机种名不可同时为空')
         return
       }
-      this.chartParam.productionNo = this.chartParam.productionNo.toUpperCase()
+      this.chartParam.productionNo = this.chartParam.productionName.toUpperCase()
       if (this.dateTime.length === 2) {
         this.chartParam.startDate = this.dateTime[0]
         this.chartParam.endDate = this.dateTime[1]
@@ -120,8 +121,8 @@ export default {
       kongdongChart(this.chartParam).then(res => {
         _this.echarClear('echAppLine')
         if (res.data.code === 0 || res.data.code === '0') {
-          if (res.data.kongdong !== undefined && res.data.kongdong !== null) {
-            _this.initLineChart(res.data.kongdong)
+          if (res.data.data !== undefined && res.data.data !== null) {
+            _this.initLineChart(res.data.data)
           } else {
             alert('无数据')
           }
@@ -144,7 +145,7 @@ export default {
     },
     refreshClick() {
       this.chartParam.lotNo = ''
-      this.chartParam.productionNo = ''
+      this.chartParam.productionName = ''
       this.dateTime = []
     },
     initLineChart(kongdongData) {

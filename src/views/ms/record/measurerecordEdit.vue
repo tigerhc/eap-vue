@@ -14,12 +14,12 @@
       <w-select-dic v-model="model.approveResult" style="width:100%" label="判定结果" dict="JUDGE_RESULT" />
       <el-input v-model="model.createBy" :disabled="true" label="量测人" />
       <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
-      <button class="exportBtn" @click="exportDetail">
-        <i class="fa-download"/>
-        <span>导出Excel</span>
-      </button>
     </w-form>
     <div class="model">
+      <el-button class="exportBtn" @click="exportDetail">
+        <i class="fa-download"/>
+        <span>导出Excel</span>
+      </el-button>
       <el-form v-if="rowData.length > 0" :model="model" disabled>
         <div v-for="(item,index) in rowData" :key="item.id">
           <el-row v-if="index%3==0">
@@ -285,7 +285,9 @@ export default {
   .exportBtn {
     width: 150px;
     height: 40px;
+    display: block;
     position: absolute;
+    top: 310px;
     right:40px;
     font-size: 14px;
     padding: 10px 20px;

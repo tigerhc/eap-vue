@@ -112,14 +112,14 @@ export default {
         alert('机种名不可同时为空')
         return
       }
-      this.chartParam.productionNo = this.chartParam.productionName.toUpperCase()
+      this.chartParam.productionName = this.chartParam.productionName.toUpperCase()
       if (this.dateTime.length === 2) {
         this.chartParam.startDate = this.dateTime[0]
         this.chartParam.endDate = this.dateTime[1]
       }
       var _this = this
+      _this.echarClear('echAppLine')
       kongdongChart(this.chartParam).then(res => {
-        _this.echarClear('echAppLine')
         if (res.data.code === 0 || res.data.code === '0') {
           if (res.data.data !== undefined && res.data.data !== null) {
             _this.initLineChart(res.data.data)
@@ -130,13 +130,13 @@ export default {
           alert(res.data.msg)
         }
       })
-      if (this.chartParam.lotNo !== '') {
+      if (this.chartParam.lotNo !== '' && this.chartParam.lineNo !== '5GI' && this.chartParam.lineNo !== '6GI') {
         this.chartParam.lotNo = this.chartParam.lotNo.toUpperCase()
+        _this.echarClear('echApp')
+        _this.echarClear('echAppRight')
         kongdongBar(this.chartParam).then(res => {
-          _this.echarClear('echApp')
-          _this.echarClear('echAppRight')
           if (res.data.code === 0 || res.data.code === '0') {
-            _this.initChart(res.data.kongdong, res.data.config)
+            _this.initChart(res.data.kongdong.barData, res.data.kongdong.configData)
           } else {
             alert(res.data.msg)
           }
@@ -176,39 +176,65 @@ export default {
       this.chart.setOption(option)
     },
     initChart(kongdongData, config) {
-      var xAxisArr = []
-      var yAxisArr = []
-      var leftLimit = []
-      var yAxisRight = []
-      var rightLimit = []
-      var xAxisRight = []
-      if (kongdongData.length > 0) {
-        for (var i = 0; i < kongdongData.length; i++) {
-          if (config.length > 0) {
-            for (var j = 0; j < config.length; j++) {
-              if (kongdongData[i].xAxis.indexOf(config[j].lineType) > -1 && config[j].heightLmt <= 10) {
-                leftLimit.push(config[j].heightLmt)
-
-                xAxisArr.push(kongdongData[i].xAxis)
-                yAxisArr.push(kongdongData[i].kongdongVal)
-              }
-
-              if (kongdongData[i].xAxis.indexOf(config[j].lineType) > -1 && config[j].heightLmt > 10) {
-                rightLimit.push(config[j].heightLmt)
-
-                xAxisRight.push(kongdongData[i].xAxis)
-                yAxisRight.push(kongdongData[i].kongdongVal)
-              }
+      var leftAxis = []
+      var leftLends = []
+      var leftSeries = []
+      var rightAxis = []
+      var rightLends = []
+      var rightSeries = []
+      var leftData = []
+      var rightData = []
+      // 构建数据柱状图需要的数据
+      for (var i = 0; i < kongdongData.length; i++) {
+        for (var j = 0; j < config.length; j++) {
+          if (kongdongData[i].lineType.indexOf(config[j].lineType) > -1) {
+            if (config[j].lmt <= 10) {
+              leftData.push(kongdongData[i].voidRatio)
+              leftAxis.push(kongdongData[i].lineType)
+            } else {
+              rightData.push(kongdongData[i].voidRatio)
+              rightAxis.push(kongdongData[i].lineType)
             }
+            break
           }
-          // xAxisArr.push(kongdongData[i].xAxis)
-          // yAxisArr.push(kongdongData[i].kongdongVal)
-          // var remarkObj = {}
-          // remarkObj.keyName = kongdongData[i].xAxis
-          // remarkObj.createTime = kongdongData[i].createTime
-          // this.remarkArr.push(remarkObj)
         }
       }
+
+      // 构建上限的折线图
+      for (var n = 0; n < config.length; n++) {
+        config[n].name = 'limit_' + config[n].lineType
+        config[n].type = 'line'
+        config[n].color = 'red'
+
+        var limitArr = []
+        if (config[n].lmt <= 10) {
+          for (var x = 0; x < leftData.length; x++) {
+            limitArr.push(config[n].lmt)
+          }
+          leftLends.push('limit_' + config[n].lineType)
+          config[n].data = limitArr
+          leftSeries.push(config[n])
+        } else {
+          for (var y = 0; y < rightData.length; y++) {
+            limitArr.push(config[n].lmt)
+          }
+          config[n].data = limitArr
+          rightLends.push('limit_' + config[n].lineType)
+          rightSeries.push(config[n])
+        }
+      }
+
+      var leftBar = {}
+      leftBar.type = 'bar'
+      leftBar.data = leftData
+      leftBar.barWidth = '20px'
+      leftSeries.push(leftBar)
+
+      var rightBar = {}
+      rightBar.type = 'bar'
+      rightBar.data = rightData
+      rightBar.barWidth = '20px'
+      rightSeries.push(rightBar)
 
       this.chartLeft = echarts.init(document.getElementById('echApp'))
       var optionLeft = {
@@ -218,10 +244,13 @@ export default {
           enterable: true, // 鼠标是否可进入提示框浮层中
           formatter: this.formatterBarHover// 修改鼠标悬停显示的内容
         },
+        legend: {
+          data: leftLends
+        },
         xAxis: {
           type: 'category',
           boundaryGap: true,
-          data: xAxisArr
+          data: leftAxis
         },
         yAxis: {
           type: 'value',
@@ -229,22 +258,7 @@ export default {
             formatter: '{value} %'
           }
         },
-        series: [
-          {
-            barWidth: 20 + 'px',
-            type: 'bar',
-            data: yAxisArr,
-            itemStyle: {}
-          },
-          {
-            barWidth: 20 + 'px',
-            type: 'line',
-            data: leftLimit,
-            itemStyle: {
-              color: 'red'
-            }
-          }
-        ]
+        series: leftSeries
       }
       this.chartLeft.setOption(optionLeft)
 
@@ -256,10 +270,13 @@ export default {
           enterable: true, // 鼠标是否可进入提示框浮层中
           formatter: this.formatterBarHover// 修改鼠标悬停显示的内容
         },
+        legend: {
+          data: rightLends
+        },
         xAxis: {
           type: 'category',
           boundaryGap: true,
-          data: xAxisRight
+          data: rightAxis
         },
         yAxis: {
           type: 'value',
@@ -267,22 +284,7 @@ export default {
             formatter: '{value} %'
           }
         },
-        series: [
-          {
-            barWidth: 20 + 'px',
-            type: 'bar',
-            data: yAxisRight,
-            itemStyle: {}
-          },
-          {
-            barWidth: 20 + 'px',
-            type: 'line',
-            data: rightLimit,
-            itemStyle: {
-              color: 'red'
-            }
-          }
-        ]
+        series: rightSeries
       }
       this.chartRight.setOption(optionRight)
     },

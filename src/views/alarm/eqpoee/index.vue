@@ -38,7 +38,7 @@
       :end-time="form.dateTime[1]"
       :list="list"
     />
-    <div v-show="showFlag2" id="eqpsoee" style="width: 800px;height: 600px;overflow: hidden;"/>
+    <div v-show="showFlag2" id="eqpsoee" style="width: 1000px;height: 600px;overflow: hidden;"/>
   </div>
 </template>
 <script>
@@ -65,6 +65,7 @@ export default {
       runlist: [],
       idlelist: [],
       downlist: [],
+      otherlist: [],
       showFlag: false,
       showFlag2: true,
       yAxis: [],
@@ -148,11 +149,13 @@ export default {
       this.idlelist = []
       this.downlist = []
       this.yAxis = []
+      this.otherlist = []
       for (let i = 0; i < this.list2.length; i++) {
         this.yAxis.push(this.list2[i].eqpId)
         this.runlist.push(this.list2[i].runTime)
         this.idlelist.push(this.list2[i].idleTime)
         this.downlist.push(this.list2[i].downTime)
+        this.otherlist.push(this.list2[i].otherTime)
       }
     },
     initChatrs2() {
@@ -168,7 +171,7 @@ export default {
           }
         },
         legend: {
-          data: ['RUN', 'IDLE', 'DOWN']
+          data: ['RUN', 'IDLE', 'DOWN', 'OTHER']
         },
         grid: {
           left: '3%',
@@ -231,6 +234,21 @@ export default {
               }
             },
             data: this.downlist
+          },
+          {
+            name: 'OTHER',
+            type: 'bar',
+            stack: '总量',
+            label: {
+              show: false,
+              position: 'insideleft'
+            },
+            itemStyle: {
+              color: function(params) {
+                return '#808080'
+              }
+            },
+            data: this.otherlist
           }
         ]
       }

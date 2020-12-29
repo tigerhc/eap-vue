@@ -9,7 +9,7 @@
         </div>
       </el-col>
       <el-col :span="16">
-        <div><span style="font-size: 20px"><strong>SIM工程生产情报</strong></span>  <date/></div>
+        <div><strong><span id="FirstTitle" style="font-size: 20px">SIM工程生产情报</span>  </strong><date/></div>
 
           <el-row>
             <el-col :span="24">
@@ -152,6 +152,12 @@ export default {
     clearInterval(this.timer)
   },
   mounted() {
+    // eslint-disable-next-line eqeqeq,no-empty
+    if (window.location.host == '10.160.144.9:82') {
+      var ele = window.document.getElementById('FirstTitle')
+      ele.innerHTML = 'APJ工程生产情报 '
+    }
+
     this.inIt()
     if (this.timer) {
       clearInterval(this.timer)

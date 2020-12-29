@@ -3,9 +3,8 @@
     <el-input v-model="model.trayModel" align="center" label="托盘编号" />
     <el-input v-model="model.trayRow" label="托盘行数" />
     <el-input v-model="model.trayCol" label="托盘列数" />
-
+    <w-select-dic v-model="model.trayType" style="width:100%" label="类型" dict="TRAY_TYPE" />
     <el-input v-model="model.remarks" col="24" label="描述" />
-
     <el-input v-model="model.createByName" :disabled="true" label="创建人" />
     <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
     <el-row col="24" />
@@ -15,10 +14,11 @@
 </template>
 <script>
 export default {
-  name: 'TrayConfigEdit',
+  name: 'TraytypeEdit',
   data() {
     return {
       model: {
+        trayType: '',
         trayId: '',
         trayRow: '',
         trayCol: '',

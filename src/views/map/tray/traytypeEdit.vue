@@ -1,6 +1,6 @@
 <template>
   <w-form v-bind="formConf" :col="3" :model="model">
-    <el-input v-model="model.trayModel" align="center" label="托盘编号" />
+    <el-input v-model="model.trayModel" align="center" label="种类编号" />
     <el-input v-model="model.trayRow" label="托盘行数" />
     <el-input v-model="model.trayCol" label="托盘列数" />
     <w-select-dic v-model="model.trayType" style="width:100%" label="类型" dict="TRAY_TYPE" />

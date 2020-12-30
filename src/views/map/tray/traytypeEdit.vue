@@ -18,6 +18,7 @@ export default {
   data() {
     return {
       model: {
+        trayModel: '',
         trayType: '',
         trayId: '',
         trayRow: '',
@@ -36,10 +37,11 @@ export default {
           VIEW: '功能详情'
         },
         rules: {
-          trayId: [{ required: true, message: '托盘编号必填', trigger: 'change' }],
+          trayModel: [{ required: true, message: '托盘编号必填', trigger: 'change' }],
           trayRow: [{ required: true, message: '托盘行数必填', trigger: 'change' }],
           trayCol: [{ required: true, message: '托盘列数必填', trigger: 'change' }],
-          status: [{ required: true, message: '有效标志必选', trigger: 'change' }]
+          status: [{ required: true, message: '有效标志必选', trigger: 'change' }],
+          trayType: [{ required: true, message: '有效标志必选', trigger: 'change' }]
         }
       }
     }

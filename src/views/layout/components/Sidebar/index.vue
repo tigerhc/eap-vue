@@ -2,7 +2,7 @@
   <el-scrollbar wrap-class="scrollbar-wrapper">
     <div v-show="!isCollapse" class="header-sidebar" @click="comeBack">
       <img :src="project.projectPhotoUrl">
-      <span>{{ project.projectName }}</span>
+      <span id="projectName"/>
     </div>
     <div v-show="isCollapse" style="padding-left:10px" class="header-sidebar" @click="comeBack">
       <img :src="project.projectPhotoUrl">
@@ -47,6 +47,13 @@ export default {
     },
     openeds() {
       return ['1']
+    }
+  },
+  mounted() {
+    if (window.location.hostname === '10.160.144.9') {
+      document.getElementById('projectName').innerHTML = 'CIM9(二栋)'
+    } else {
+      document.getElementById('projectName').innerHTML = 'CIM8(一栋)'
     }
   },
   methods: {

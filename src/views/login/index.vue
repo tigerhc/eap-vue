@@ -146,7 +146,11 @@ export default {
             .dispatch('LoginByUsername', this.loginForm)
             .then(() => {
               this.loading = false
-              this.$router.push({ path: 'dashboard' || '/' })
+              if (window.location.host === '10.160.144.9:82') {
+                this.$router.push({ path: 'board' || '/' })
+              } else {
+                this.$router.push({ path: 'dashboard' || '/' })
+              }
             })
             .catch((error) => {
               this.loading = false

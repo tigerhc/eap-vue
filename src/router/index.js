@@ -76,6 +76,13 @@ export const constantRouterMap = [
         // component: () => import('@/views/ms/record/measurerecordList'),
         name: 'Dashboard',
         meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
+      },
+      {
+        path: 'board',
+        component: () => import('@/views/fab/status/index'),
+        // component: () => import('@/views/ms/record/measurerecordList'),
+        name: 'Board',
+        meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
       }
     ]
   }

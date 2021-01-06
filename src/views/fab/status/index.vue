@@ -67,13 +67,68 @@
     <div class="content">
       <div v-for="(item,index) in tabData2[2]" :key="index" >
         <div class="item" >
-          <span :class="{ first: item.eqpId=='SIM-TRM1' }">{{ item.eqpId }}</span>
+          <span>{{ item.eqpId }}</span>
           <span>{{ item.lotNo }}</span>
           <span class="littlefont">{{ item.recipeCode }}</span>
           <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
         </div>
       </div>
     </div>
+
+    <div class="content">
+      <div v-for="(item,index) in tabData2[3]" :key="index" >
+        <div class="item" >
+          <span>{{ item.eqpId }}</span>
+          <span>{{ item.lotNo }}</span>
+          <span class="littlefont">{{ item.recipeCode }}</span>
+          <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div v-for="(item,index) in tabData2[4]" :key="index" >
+        <div class="item" >
+          <span>{{ item.eqpId }}</span>
+          <span>{{ item.lotNo }}</span>
+          <span class="littlefont">{{ item.recipeCode }}</span>
+          <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div v-for="(item,index) in tabData2[5]" :key="index" >
+        <div class="item" >
+          <span>{{ item.eqpId }}</span>
+          <span>{{ item.lotNo }}</span>
+          <span class="littlefont">{{ item.recipeCode }}</span>
+          <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div v-for="(item,index) in tabData2[6]" :key="index" >
+        <div class="item" >
+          <span>{{ item.eqpId }}</span>
+          <span>{{ item.lotNo }}</span>
+          <span class="littlefont">{{ item.recipeCode }}</span>
+          <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
+        </div>
+      </div>
+    </div>
+
+<!--    <div class="content">-->
+<!--      <div v-for="(item,index) in tabData2[2]" :key="index" >-->
+<!--        <div class="item" >-->
+<!--          <span :class="{ first: item.eqpId=='SIM-TRM1' }">{{ item.eqpId }}</span>-->
+<!--          <span>{{ item.lotNo }}</span>-->
+<!--          <span class="littlefont">{{ item.recipeCode }}</span>-->
+<!--          <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
   </div>
 </template>
@@ -216,12 +271,27 @@ export default {
         this.tabData2[1] = []
         this.tabData2[2] = []
         this.tabData2[3] = []
+        this.tabData2[4] = []
+        this.tabData2[5] = []
+        this.tabData2[6] = []
         this.tabData.forEach(item => {
-          if (item.eqpId === 'SIM-WB-1A') {
+          if (item.eqpId === 'APJ-FRD-SMT1') {
             lineIndex = 1
           }
-          if (item.eqpId === 'SIM-TRM1') {
+          if (item.eqpId === 'APJ-HB1-SORT1') {
             lineIndex = 2
+          }
+          if (item.eqpId === 'APJ-DBCT-SORT1') {
+            lineIndex = 3
+          }
+          if (item.eqpId === 'APJ-DBCB-SORT1') {
+            lineIndex = 4
+          }
+          if (item.eqpId === 'APJ-HB2-SORT1') {
+            lineIndex = 5
+          }
+          if (item.eqpId === 'APJ-TRM1') {
+            lineIndex = 6
           }
           this.tabData2[lineIndex].push(item)
         })

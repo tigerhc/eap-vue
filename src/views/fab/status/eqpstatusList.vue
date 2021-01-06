@@ -153,11 +153,6 @@ export default {
   },
   mounted() {
     // eslint-disable-next-line eqeqeq,no-empty
-    if (window.location.host == '10.160.144.9:82') {
-      var ele = window.document.getElementById('FirstTitle')
-      ele.innerHTML = 'APJ工程生产情报 '
-    }
-
     this.inIt()
     if (this.timer) {
       clearInterval(this.timer)

@@ -75,8 +75,8 @@ export default {
             attrs: {
               text: ' Tray=' + cfg.toTrayId + ', X=' + cfg.toX + ', Y=' + cfg.toY,
               x: cfg.x,
-              y: -28,
-              fontSize: 16,
+              y: -48,
+              fontSize: 26,
               textAlign: 'left',
               textBaseline: 'middle',
               fill: '#0000D9'
@@ -85,10 +85,10 @@ export default {
           })
           group.addShape('text', {
             attrs: {
-              text: ' 设备:' + cfg.eqpId + ', 时间:' + dateFormat(new Date(cfg.startTime)),
+              text: '设备:' + cfg.eqpId + ',\n 时间:' + dateFormat(new Date(cfg.startTime)),
               x: cfg.x,
-              y: -8,
-              fontSize: 14,
+              y: -18, // 备注的汉字的显示位置向上移动
+              fontSize: 19, // 备注的汉字的大小
               textAlign: 'left',
               textBaseline: 'middle',
               fill: '#333333'
@@ -138,8 +138,8 @@ export default {
         container: 'chip-move-info',
         fitView: true,
         fitCenter: true,
-        width: canvas_container.scrollWidth,
-        height: canvas_container.scrollHeight || 600,
+        width: canvas_container.scrollWidth || 3600, // 整个背景的宽度
+        height: canvas_container.scrollHeight || 1600, // 整个背景的高度
         modes: {
           default: ['drag-canvas']
         },
@@ -151,7 +151,7 @@ export default {
         },
         defaultNode: {
           type: 'info',
-          size: [300, 300]
+          size: [200, 200]
         },
         defaultEdge: {
           type: 'polyline', // 折线
@@ -235,8 +235,18 @@ export default {
             nodes.push(this.chip_list[i])
           } else {
             var nodesRpt = true
+            if (this.chip_list[i].eqpId === 'APJ-CHK') {
+              if (this.chip_list[i].nextEqpId === 'APJ-HB2-SMT2' && this.chip_list[i].fromTrayId.indexOf('J0014') >= 0) {
+                nodesRpt = false
+                continue
+              } else if (this.chip_list[i].nextEqpId === 'APJ-HB2-SMT1' && this.chip_list[i].fromTrayId.indexOf('J0015') >= 0) {
+                nodesRpt = false
+                continue
+              }
+            }
             for (var j = 0; j < nodes.length; j++) {
-              if (nodes[j].eqpId === this.chip_list[i].eqpId) {
+              // if (nodes[j].eqpId === this.chip_list[i].eqpId ) {
+              if (nodes[j].eqpId === this.chip_list[i].eqpId && (nodes[j].eqpId === 'APJ-HB2-SMT1' || nodes[j].eqpId === 'APJ-HB2-SMT2')) {
                 nodesRpt = false
                 break
               }
@@ -269,11 +279,21 @@ export default {
         for (var edgesI = 0; edgesI < nodes.length; edgesI++) {
           if (nodes[edgesI].nextEqpId) {
             for (var edgesJ = 0; edgesJ < nodes.length; edgesJ++) {
+              // 设备的上下游关系正确
               if (nodes[edgesI].nextEqpId === nodes[edgesJ].eqpId) {
-                edges.push({
-                  source: nodes[edgesI].id,
-                  target: nodes[edgesJ].id
-                })
+                if (nodes[edgesI].nextEqpId === 'APJ-HB2-SMT1' || nodes[edgesI].nextEqpId === 'APJ-HB2-SMT2') { // 贴片机
+                  edges.push({
+                    source: nodes[edgesI].id,
+                    target: nodes[edgesJ].id
+                  })
+                } else if ((nodes[edgesI].toTrayId === nodes[edgesJ].fromTrayId && nodes[edgesI].toX === nodes[edgesJ].fromX && nodes[edgesI].toY === nodes[edgesJ].fromY) ||
+								(nodes[edgesI].toTrayId === nodes[edgesJ].toTrayId && nodes[edgesI].toX === nodes[edgesJ].toX && nodes[edgesI].toY === nodes[edgesJ].toY)) {
+                  // 坐标正确
+                  edges.push({
+                    source: nodes[edgesI].id,
+                    target: nodes[edgesJ].id
+                  })
+                }
               }
             }
           }

@@ -117,6 +117,26 @@ export default {
                   this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
                 }
               }
+            } else if (this.tempsTitles[0].indexOf('0003相似度当前值') !== -1) {
+              this.tempsTitles.splice(0, 0, '0002相似度当前值')
+              this.tempsTitles.splice(1, 0, '0002相似度SET')
+              this.tempsTitles.splice(2, 0, '0002相似度MIN')
+              this.tempsTitles.splice(3, 0, '0002相似度MAX')
+              for (let index = 0; index < this.tempsTitles.length; index++) {
+                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
+                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
+                }
+              }
+            } else if (this.tempsTitles[0].indexOf('T102面积当前值') !== -1) {
+              this.tempsTitles.splice(0, 0, 'T101面积当前值')
+              this.tempsTitles.splice(1, 0, 'T101面积SET')
+              this.tempsTitles.splice(2, 0, 'T101面积MIN')
+              this.tempsTitles.splice(3, 0, 'T101面积MAX')
+              for (let index = 0; index < this.tempsTitles.length; index++) {
+                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
+                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
+                }
+              }
             } else {
               this.tempsTitles.splice(0, 0, '温度当前值')
               this.tempsTitles.splice(1, 0, '温度SET')

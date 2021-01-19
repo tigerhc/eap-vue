@@ -15,3 +15,11 @@ export function fetchEcharts(id) {
     id
   })
 }
+
+export function eqpList(tab, query) {
+  return request({
+    url: '/oven/ovnbatchlot/tempEqpList',
+    method: 'get',
+    params: query
+  })
+}

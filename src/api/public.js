@@ -103,6 +103,14 @@ export function tempbytime(eqpId, data) {
   })
 }
 
+export function tempbytimeOther(data) {
+  return request({
+    url: 'oven/ovnbatchlot/tempbytimeOther',
+    method: 'get',
+    params: data
+  })
+}
+
 export function selectAlarmCountByLine(data) {
   return request({
     url: 'edc/edcamsrecord/selectAlarmCountByLine',

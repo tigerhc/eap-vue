@@ -1,0 +1,388 @@
+.element{
+  margin: 0;
+  padding: 0;
+  /*font-weight: bold;*/
+}
+
+#zero{
+  font-size: 25px;
+  border:  4px dashed green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 40px;
+  height: 40px;
+  width: 7%;
+  top: 5%;
+  left: 18%;
+}
+active{
+  background-color: red;
+}
+#T101{
+  font-size: 25px;
+  border:  4px dashed green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 110px;
+  height: 110px;
+  width: 8.5%;
+  top: 25.5%;
+  left: 23.2%;
+}
+#T102{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 160px;
+  height: 160px;
+  width: 6.5%;
+  top: 51%;
+  left: 18.4%;
+}
+#T103{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 160px;
+  height: 160px;
+  width: 6.5%;
+  top: 51%;
+  left: 26.8%;
+}
+#T104{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 90px;
+  height: 90px;
+  width: 8.5%;
+  top:33.3%;
+  left: 34.6%;
+  transform: rotate(319deg);
+}
+#T105{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 160px;
+  height: 160px;
+  width: 5.2%;
+  top: 51%;
+  left: 53.5%;
+}
+#T106{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 160px;
+  height: 160px;
+  width: 5.2%;
+  top: 51%;
+  left: 60%;
+}
+#T107{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 160px;
+  height: 160px;
+  width: 5.7%;
+  top: 51%;
+  left: 67%;
+}
+#T108{
+  font-size: 25px;
+  border:  4px dashed green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 110px;
+  height: 110px;
+  width: 9.7%;
+  top: 25.5%;
+  left: 59.7%;
+}
+#T109{
+  font-size: 18px;
+  border:  4px dashed green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  height: 95px;
+  line-height: 95px;
+  width: 3.9%;
+  top: 28%;
+  left: 71.3%;
+}
+#T110{
+  font-size: 18px;
+  border:  4px dashed green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  height: 84px;
+  line-height: 84px;
+  width: 3.9%;
+  top: 33.5%;
+  left: 81%;
+}
+#T111{
+  font-size: 18px;
+  border:  4px dashed green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  height: 84px;
+  line-height: 84px;
+  width: 3.9%;
+  top: 33.5%;
+  left: 77%;
+}
+#T112{
+  font-size: 25px;
+  border:  4px dashed green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 40px;
+  height: 40px;
+  width: 1.5%;
+  top: 19%;
+  left: 14%;
+}
+#T113{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 40px;
+  height: 40px;
+  width: 1.5%;
+  top: 15%;
+  left: 21.5%;
+}
+#T114{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 40px;
+  height: 40px;
+  width: 1.5%;
+  top: 13%;
+  left: 27.5%;
+}
+#T115{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 40px;
+  height: 40px;
+  width: 1.5%;
+  top: 13%;
+  left: 34%;
+  transform: rotate(38deg);
+}
+#T116{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 40px;
+  height: 40px;
+  width: 1.5%;
+  top: 21.5%;
+  left: 37%;
+  transform: rotate(38deg);
+}
+#T117{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 40px;
+  height: 40px;
+  width: 1.5%;
+  top: 16%;
+  left: 53.5%;
+}
+#T118{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 40px;
+  height: 40px;
+  width: 1%;
+  top: 16%;
+  left: 61.5%;
+}
+#back{
+  margin: 0;
+  padding: 0;
+  height:700px;
+  background-repeat:no-repeat;
+  background-size: 100% 100%;
+  width: 60%;
+  position: relative;
+}
+#T119{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 40px;
+  height: 40px;
+  width: 1.3%;
+  top: 15%;
+  left: 67.5%;
+  transform: rotate(38deg);
+}
+#T120{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 40px;
+  height: 40px;
+  width: 1.3%;
+  top: 15%;
+  left: 77%;
+  transform: rotate(38deg);
+}
+#T121{
+  font-size: 15px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 18px;
+  height: 18px;
+  width: 4%;
+  top: 30%;
+  left: 78%;
+}
+#T122{
+  font-size: 15px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 18px;
+  height: 18px;
+  width: 4%;
+  top: 60%;
+  left: 82%;
+  transform: rotate(51deg);
+}
+#T123{
+  font-size: 15px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 18px;
+  height: 18px;
+  width: 3.4%;
+  top: 81%;
+  left: 72%;
+}
+#T124{
+  font-size: 15px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 18px;
+  height: 18px;
+  width: 3.4%;
+  top: 81%;
+  left: 63%;
+}
+#T125{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 40px;
+  height: 40px;
+  width: 1.5%;
+  top: 75%;
+  left: 51.5%;
+}
+#T126{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 40px;
+  height: 40px;
+  width: 1.5%;
+  top: 75%;
+  left: 40.5%;
+}
+.span{
+  display: block;
+  transform: rotate(40deg);
+}
+#T127{
+  font-size: 15px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 18px;
+  height: 18px;
+  width: 3.4%;
+  top: 81%;
+  left: 33%;
+}
+#T128{
+  font-size: 15px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 18px;
+  height: 18px;
+  width: 3.4%;
+  top: 47.5%;
+  left: 28%;
+}
+#T129{
+  font-size: 25px;
+  border:  4px solid green;
+  position: absolute;
+  background-color: limegreen;
+  text-align: center;
+  line-height: 40px;
+  height: 40px;
+  width: 1.5%;
+  top: 52%;
+  left: 16.5%;
+}

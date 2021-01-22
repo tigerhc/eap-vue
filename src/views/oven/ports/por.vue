@@ -310,7 +310,7 @@ export default {
         ],
         series: [
           {
-            name: '运行温度',
+            name: '面积',
             itemStyle: {
               normal: {
                 color: '#458B74',
@@ -327,7 +327,7 @@ export default {
             animationEasing: 'quadraticOut'
           },
           {
-            name: '设定温度',
+            name: '面积设定',
             smooth: true,
             type: 'line',
             itemStyle: {
@@ -345,7 +345,7 @@ export default {
             animationEasing: 'quadraticOut'
           },
           {
-            name: '低温报警',
+            name: '面积下限',
             smooth: true,
             type: 'line',
             itemStyle: {
@@ -363,7 +363,7 @@ export default {
             animationEasing: 'quadraticOut'
           },
           {
-            name: '高温报警',
+            name: '面积上限',
             smooth: true,
             type: 'line',
             itemStyle: {

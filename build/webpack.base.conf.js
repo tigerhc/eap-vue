@@ -36,7 +36,8 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      '@': resolve('src')
+      '@': resolve('src'),
+      "@img": path.join(__dirname, "..", "src", "assets" ,"img"),
     }
   },
   module: {

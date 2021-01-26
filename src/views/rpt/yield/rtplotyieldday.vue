@@ -26,17 +26,6 @@
             <!--            <w-select :str="form.productionNo" :multiple="true" :disabled="false" @input="onNoChange($event)"/>-->
           </el-form-item>
         </el-col>
-<!--           <span class="demonstration">站别</span>-->
-<!--        <el-col :span="5">-->
-<!--                   <el-form-item label="站别" prop="station_code">-->
-<!--             <el-cascader-->
-<!--               :props="aa"-->
-<!--               :options="noList1"-->
-<!--               multiple-->
-<!--               collapse-tags-->
-<!--               clearable/>-->
-<!--                   </el-form-item>-->
-<!--               </el-col>-->
         <el-col :span="9">
           <el-form-item label="日期" prop="dateTime">
             <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>

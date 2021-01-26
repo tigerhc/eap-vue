@@ -286,6 +286,11 @@ export default {
                     source: nodes[edgesI].id,
                     target: nodes[edgesJ].id
                   })
+                } else if (nodes[edgesI].nextEqpId === 'APJ-HB2-XRAY1') { // X射线与最后移载机连，原因是X射线的数据不提供from
+                  edges.push({
+                    source: nodes[edgesI].id,
+                    target: nodes[edgesJ].id
+                  })
                 } else if ((nodes[edgesI].toTrayId === nodes[edgesJ].fromTrayId && nodes[edgesI].toX === nodes[edgesJ].fromX && nodes[edgesI].toY === nodes[edgesJ].fromY) ||
 								(nodes[edgesI].toTrayId === nodes[edgesJ].toTrayId && nodes[edgesI].toX === nodes[edgesJ].toX && nodes[edgesI].toY === nodes[edgesJ].toY)) {
                   // 坐标正确

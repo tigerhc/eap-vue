@@ -238,7 +238,7 @@ active{
   top: 16%;
   left: 61.5%;
 }
-#back{
+#id{
   margin: 0;
   padding: 0;
   height:700px;
@@ -321,6 +321,15 @@ active{
   width: 3.4%;
   top: 81%;
   left: 63%;
+}
+#back{
+  margin: 0;
+  padding: 0;
+  height:700px;
+  background-repeat:no-repeat;
+  background-size: 100% 100%;
+  width: 80%;
+  position: relative;
 }
 #T125{
   font-size: 25px;

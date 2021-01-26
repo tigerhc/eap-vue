@@ -460,6 +460,10 @@ export default {
         mode = 'w-select-eqp'
         // re.str = conf.value ? conf.value : []
       }
+      if ('line' in conf) {
+        mode = 'w-select-line'
+        // re.str = conf.value ? conf.value : []
+      }
       if (conf.dict && typeof conf.dict === 'string') {
         mode = 'w-select-dic'
       }
@@ -512,6 +516,10 @@ export default {
                 //   this.$set(this.query, key, e.join(','))
                 //   this.query[key] = e.join(',')
                 // }
+              } else if (mode === 'w-select-line') {
+                console.info('ss->' + e)
+                this.$set(this.query, key, e)
+                this.query[key] = e
               } else {
                 setTimeout(() => {
                   this.$set(this.query, key, e)

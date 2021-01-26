@@ -2,7 +2,7 @@
   <div class="app-container calendar-list-container">
     <w-table v-slot="{row}" v-bind="table" url="/aps/apsplanpdtyield" sort="plan_date.desc" >
       <w-table-col name="productionNo" label="品番" width="100" sort fixed align="center" handler="view" query condition="like" />
-      <w-table-col name="productionName" label="品名" align="left" width="250" query condition="like" />
+      <w-table-col name="productionName" label="品名" sort fixed align="left" width="250" handler="view" query line namekey="id" condition="like"/>
       <w-table-col name="planDate" label="投入日期" width="100" align="center"/>
       <w-table-col name="lotQty" label="批次数量" width="100" align="right" />
       <w-table-col name="planQty" label="投入数" width="100" align="right" />

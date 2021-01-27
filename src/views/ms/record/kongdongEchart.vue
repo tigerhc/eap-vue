@@ -57,6 +57,9 @@
 				<div id="echAppRight" :style="{width: '90%', height: '350px'}"/>
 			</div>
 		</div>
+		<!-- <div class="picPanel">
+			<W-Select-Pic :list1="list" :url="picUrl"/>
+		</div> -->
 	</div>
 </template>
 
@@ -80,6 +83,8 @@ export default {
       productionNo: '',
       proNameOptions: [],
       lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }]
+      // list:[{name:"T100",left:"40%",top:"30%",width:"50px",height:"60px",rotate:180,"checked":true,backgroundColor:"red",position:"relative"}],
+      // picUrl:"11"
     }
   },
   mounted() {

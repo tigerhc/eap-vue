@@ -13,7 +13,7 @@
 
           <el-row>
             <el-col :span="24">
-              <eqp-panel-group ref="refs" @handleSetLineChartData="handleSetLineChartData"/>
+              <eqp-panel-group @handleSetLineChartData="handleSetLineChartData"/>
             </el-col>
           </el-row>
 
@@ -149,18 +149,10 @@ export default {
   },
   destroyed() {
     clearTimeout(this.timer)
-    clearInterval(this.timer)
   },
   mounted() {
     // eslint-disable-next-line eqeqeq,no-empty
     this.inIt()
-    if (this.timer) {
-      clearInterval(this.timer)
-    } else {
-      this.timer = setInterval(() => {
-        this.inIt()
-      }, 150000)
-    }
   },
   methods: {
     inIt() {
@@ -184,8 +176,7 @@ export default {
     timer() {
       setTimeout(() => {
         this.inIt()
-        this.$refs.refs.getData()
-      }, 150000)
+      }, 300000)
     },
 
     getYield() {
@@ -215,7 +206,7 @@ export default {
           if (item.eqpId === 'SIM-WB-1A') {
             lineIndex = 1
           }
-          if (item.eqpId === 'SIM-TRM1') {
+          if (item.eqpId === 'SIM-AOI1') {
             lineIndex = 2
           }
           this.tabData2[lineIndex].push(item)

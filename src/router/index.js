@@ -45,7 +45,7 @@ export const constantRouterMap = [
   },
   {
     path: '/oven/statusFull',
-    component: () => import('@/views/screenfull/statusFull/index'),
+    component: () => import('@/views/map/tray/traychipmoveList'),
     name: 'statusFull',
     hidden: true,
     meta: { title: '首页', icon: '', noCache: true }
@@ -72,8 +72,8 @@ export const constantRouterMap = [
     children: [
       {
         path: 'dashboard',
-        component: () => import('@/views/fab/status/eqpstatusList'),
-        // component: () => import('@/views/ms/record/measurerecordList'),
+        // component: () => import('@/views/fab/status/eqpstatusList'),
+        component: () => import('@/views/map/tray/traychipmoveList'),
         name: 'Dashboard',
         meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
       },

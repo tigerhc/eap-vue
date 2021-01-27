@@ -75,8 +75,8 @@ export default {
             attrs: {
               text: ' Tray=' + cfg.toTrayId + ', X=' + cfg.toX + ', Y=' + cfg.toY,
               x: cfg.x,
-              y: -28,
-              fontSize: 16,
+              y: -48,
+              fontSize: 26,
               textAlign: 'left',
               textBaseline: 'middle',
               fill: '#0000D9'
@@ -85,10 +85,10 @@ export default {
           })
           group.addShape('text', {
             attrs: {
-              text: ' 设备:' + cfg.eqpId + ', 时间:' + dateFormat(new Date(cfg.startTime)),
+              text: '设备:' + cfg.eqpId + ',\n 时间:' + dateFormat(new Date(cfg.startTime)),
               x: cfg.x,
-              y: -8,
-              fontSize: 14,
+              y: -18, // 备注的汉字的显示位置向上移动
+              fontSize: 19, // 备注的汉字的大小
               textAlign: 'left',
               textBaseline: 'middle',
               fill: '#333333'
@@ -138,26 +138,26 @@ export default {
         container: 'chip-move-info',
         fitView: true,
         fitCenter: true,
-        width: canvas_container.scrollWidth,
-        height: canvas_container.scrollHeight || 600,
+        width: canvas_container.scrollWidth || 3600, // 整个背景的宽度
+        height: canvas_container.scrollHeight || 1600, // 整个背景的高度
         modes: {
           default: ['drag-canvas']
         },
         layout: {
-          type: 'dagre',
-          rankdir: 'LR',
-          nodesep: 50,
-          ranksep: 60
+          type: 'dagre', // 层次布局
+          rankdir: 'LR', // 从左至右布局
+          nodesep: 50, // 节点间距（px）
+          ranksep: 60 // 层间距（px）
         },
         defaultNode: {
           type: 'info',
-          size: [300, 300]
+          size: [200, 200]
         },
         defaultEdge: {
-          type: 'polyline',
+          type: 'polyline', // 折线
           style: {
-            offset: 30,
-            endArrow: true,
+            offset: 30, // 拐弯处距离节点最小距离
+            endArrow: true, // 箭头
             lineWidth: 3,
             stroke: '#C2C8D5'
           }
@@ -179,72 +179,131 @@ export default {
           this.chip_list = resp.data.results
         }
         // 所有的to构造成map
-        const tomap = {}
+        // const tomap = {}
         // 所有的相同芯片
-        const eqsmap = {}
+        // const eqsmap = {}
         this.chip_list.forEach(function(itm) {
           // 时间转成数字，便于比较
           itm.startTime = Date.parse(itm.startTime)
           // g6的id必须为字符
           itm.id = '' + itm.id
           // 识别标识
-          const key = '' + itm.toTrayId + '-' + itm.toX + '-' + itm.toY
-          itm.key = key
-          if (!tomap.hasOwnProperty(key)) {
-            tomap[key] = []
-          }
-          tomap[key].push({
-            id: itm.id,
-            time: itm.startTime
-          })
-          if (itm.eqpType && (itm.eqpType & 12) > 0) {
-            if (!eqsmap.hasOwnProperty(key)) {
-              eqsmap[key] = []
-            }
-            eqsmap[key].push(itm.id)
-          }
+          // const key = '' + itm.toTrayId + '-' + itm.toX + '-' + itm.toY
+          // itm.key = key
+          // if (!tomap.hasOwnProperty(key)) {
+          //  tomap[key] = []
+          // }
+          // tomap[key].push({
+          //  id: itm.id,
+          //  time: itm.startTime
+          // })
+          // if (itm.eqpType && (itm.eqpType & 12) > 0) {
+          //  if (!eqsmap.hasOwnProperty(key)) {
+          //    eqsmap[key] = []
+          //  }
+          //  eqsmap[key].push(itm.id)
+          // }
         })
         // key为需要转换的ID,val为目标ID
-        const eqs = {}
-        for (const eqval of Object.values(eqsmap)) {
-          if (eqval) {
-            for (let i = 0; i < eqval.length; i++) {
-              if (i !== 0) {
-                eqs[eqval[i]] = eqval[0]
+        // const eqs = {}
+        // for (const eqval of Object.values(eqsmap)) {
+        //  if (eqval) {
+        //    for (let i = 0; i < eqval.length; i++) {
+        //      if (i !== 0) {
+        //        eqs[eqval[i]] = eqval[0]
+        //      }
+        //    }
+        //  }
+        // }
+        // 排序，按时间由大到小
+        // for (const toitm of Object.values(tomap)) {
+        //  toitm.sort((a, b) => {
+        //    return b.time - a.time
+        //  })
+        // }
+        // 构造节点
+        //        const nodes = this.chip_list.filter((itm) => {
+        //          if ((itm.eqpType & 12) > 0) {
+        //            return !eqs.hasOwnProperty(itm.id)
+        //          }
+        //          return true
+        //        })
+
+        var nodes = []
+        for (var i = 0; i < this.chip_list.length; i++) {
+          if (i === 0) {
+            nodes.push(this.chip_list[i])
+          } else {
+            var nodesRpt = true
+            if (this.chip_list[i].eqpId === 'APJ-CHK') {
+              if (this.chip_list[i].nextEqpId === 'APJ-HB2-SMT2' && this.chip_list[i].fromTrayId.indexOf('J0014') >= 0) {
+                nodesRpt = false
+                continue
+              } else if (this.chip_list[i].nextEqpId === 'APJ-HB2-SMT1' && this.chip_list[i].fromTrayId.indexOf('J0015') >= 0) {
+                nodesRpt = false
+                continue
+              }
+            }
+            for (var j = 0; j < nodes.length; j++) {
+              // if (nodes[j].eqpId === this.chip_list[i].eqpId ) {
+              if (nodes[j].eqpId === this.chip_list[i].eqpId && (nodes[j].eqpId === 'APJ-HB2-SMT1' || nodes[j].eqpId === 'APJ-HB2-SMT2')) {
+                nodesRpt = false
+                break
+              }
+            }
+            if (nodesRpt) {
+              nodes.push(this.chip_list[i])
+            }
+          }
+        }
+
+        // 构造边
+        //        const edges = []
+        //        this.chip_list.forEach(function(itm) {
+        //          const fkey = itm.fromTrayId ? '' + itm.fromTrayId + '-' + itm.fromX + '-' + itm.fromY : itm.key
+        //          if (tomap.hasOwnProperty(fkey)) {
+        //            const arr = tomap[fkey].filter((it) => {
+        //              return itm.id !== it.id && itm.startTime > it.time
+        //            });
+        //            if (arr.length > 0) {
+        //              const src = arr[0].id
+        //                edges.push({
+        //                  source: eqs.hasOwnProperty(src) ? eqs[src] : src,
+        //                  target: eqs.hasOwnProperty(itm.id) ? eqs[itm.id] : itm.id
+        //                })
+        //              }
+        //            }
+        //        })
+
+        var edges = []
+        for (var edgesI = 0; edgesI < nodes.length; edgesI++) {
+          if (nodes[edgesI].nextEqpId) {
+            for (var edgesJ = 0; edgesJ < nodes.length; edgesJ++) {
+              // 设备的上下游关系正确
+              if (nodes[edgesI].nextEqpId === nodes[edgesJ].eqpId) {
+                if (nodes[edgesI].nextEqpId === 'APJ-HB2-SMT1' || nodes[edgesI].nextEqpId === 'APJ-HB2-SMT2') { // 贴片机
+                  edges.push({
+                    source: nodes[edgesI].id,
+                    target: nodes[edgesJ].id
+                  })
+                } else if (nodes[edgesI].nextEqpId === 'APJ-HB2-XRAY1') { // X射线与最后移载机连，原因是X射线的数据不提供from
+                  edges.push({
+                    source: nodes[edgesI].id,
+                    target: nodes[edgesJ].id
+                  })
+                } else if ((nodes[edgesI].toTrayId === nodes[edgesJ].fromTrayId && nodes[edgesI].toX === nodes[edgesJ].fromX && nodes[edgesI].toY === nodes[edgesJ].fromY) ||
+								(nodes[edgesI].toTrayId === nodes[edgesJ].toTrayId && nodes[edgesI].toX === nodes[edgesJ].toX && nodes[edgesI].toY === nodes[edgesJ].toY)) {
+                  // 坐标正确
+                  edges.push({
+                    source: nodes[edgesI].id,
+                    target: nodes[edgesJ].id
+                  })
+                }
               }
             }
           }
         }
-        // 排序，按时间由大到小
-        for (const toitm of Object.values(tomap)) {
-          toitm.sort((a, b) => {
-            return b.time - a.time
-          })
-        }
-        // 构造节点
-        const nodes = this.chip_list.filter((itm) => {
-          if ((itm.eqpType & 12) > 0) {
-            return !eqs.hasOwnProperty(itm.id)
-          }
-          return true
-        })
-        // 构造边
-        const edges = []
-        this.chip_list.forEach(function(itm) {
-          const fkey = itm.fromTrayId ? '' + itm.fromTrayId + '-' + itm.fromX + '-' + itm.fromY : itm.key
-          if (tomap.hasOwnProperty(fkey)) {
-            const arr = tomap[fkey].filter((it) => {
-              return itm.id !== it.id && itm.startTime > it.time
-            })
-            if (arr.length > 0) {
-              const src = arr[0].id
-              edges.push({
-                source: eqs.hasOwnProperty(src) ? eqs[src] : src,
-                target: eqs.hasOwnProperty(itm.id) ? eqs[itm.id] : itm.id
-              })
-            }
-          }
-        })
+
         this.renderG6({
           nodes,
           edges

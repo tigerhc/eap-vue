@@ -99,11 +99,6 @@ export default {
         page: 1
       },
       dateOptions: {
-        disabledDate(datetime) {
-          const curTime = new Date().getTime()
-          const oneMonth = curTime - 31 * 24 * 3600 * 1000 // 一个月时间
-          return datetime.getTime() < oneMonth
-        },
         shortcuts: [
           {
             text: '最近2小时',

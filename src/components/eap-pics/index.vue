@@ -34,7 +34,7 @@ export default {
 </script>
 <style lang="scss" scoped>
   @import "src/styles/proindex";
-  .id{
+  id{
     width: 100%;
     height:100%;
   }

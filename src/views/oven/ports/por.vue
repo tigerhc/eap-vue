@@ -4,6 +4,9 @@
       <el-row>
 
         <el-col :span="4">
+          <el-input v-model="form.lotNo" placeholder="请输入批量号" clearable/>
+        </el-col>
+
           <el-form-item label="位置" prop="form.position">
             <el-select v-model="form.position" @change="ValueChange()">
               <el-option
@@ -14,11 +17,6 @@
                 :disabled="item.disabled" />
             </el-select>
           </el-form-item>
-        </el-col>
-        <el-col :span="4">
-          <el-input v-model="form.lotNo" placeholder="请输入批量号" clearable/>
-        </el-col>
-
         <el-button type="primary" @click="search">查询</el-button>
       </el-row>
     </el-form>

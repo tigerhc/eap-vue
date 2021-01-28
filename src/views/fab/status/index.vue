@@ -52,7 +52,6 @@
         </div>
       </div>
     </div>
-
     <div class="content">
       <div v-for="(item,index) in tabData2[1]" :key="index" >
         <div class="item" >
@@ -63,7 +62,6 @@
         </div>
       </div>
     </div>
-
     <div class="content">
       <div v-for="(item,index) in tabData2[2]" :key="index" >
         <div class="item" >
@@ -74,7 +72,7 @@
         </div>
       </div>
     </div>
-
+    <div class="contentBi" style="display: flex;flex-direction: row; ">
     <div class="content">
       <div v-for="(item,index) in tabData2[3]" :key="index" >
         <div class="item" >
@@ -86,7 +84,7 @@
       </div>
     </div>
 
-    <div class="content">
+    <div class="content" style="margin-left: 110px">
       <div v-for="(item,index) in tabData2[4]" :key="index" >
         <div class="item" >
           <span>{{ item.eqpId }}</span>
@@ -96,7 +94,7 @@
         </div>
       </div>
     </div>
-
+    </div>
     <div class="content">
       <div v-for="(item,index) in tabData2[5]" :key="index" >
         <div class="item" >

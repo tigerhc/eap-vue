@@ -321,7 +321,12 @@ export default {
             },
             data: ['temp_min'],
             animationDuration: 2000,
-            animationEasing: 'quadraticOut'
+            animationEasing: 'quadraticOut',
+            markLine: {
+              data: [
+                { type: 'max', name: '最大数据' }
+              ]
+            }
           },
           {
             name: '高温报警',
@@ -342,7 +347,12 @@ export default {
             },
             data: ['temp_max'],
             animationDuration: 2000,
-            animationEasing: 'quadraticOut'
+            animationEasing: 'quadraticOut',
+            markLine: {
+              data: [
+                { type: 'max', name: '最大数据' }
+              ]
+            }
           }
         ]
       }

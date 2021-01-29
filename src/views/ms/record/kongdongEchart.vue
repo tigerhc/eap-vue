@@ -170,12 +170,21 @@ export default {
           boundaryGap: false,
           data: kongdongData.xAxis
         },
-        yAxis: {
+        yAxis: [{
           type: 'value',
           axisLabel: {
             formatter: '{value} %'
           }
-        },
+        }, {
+          type: 'value',
+          name: '完成率',
+          min: 0,
+          // max: 150,
+          // interval: 5,
+          axisLabel: {
+            formatter: '{value} %'
+          }
+        }],
         series: kongdongData.series
       }
       this.chart.setOption(option)
@@ -218,12 +227,14 @@ export default {
           }
           leftLends.push('limit_' + config[n].lineType)
           config[n].data = limitArr
+          config[n].markLine = { data: [{ type: 'max', name: '最大数据' }] }
           leftSeries.push(config[n])
         } else {
           for (var y = 0; y < rightData.length; y++) {
             limitArr.push(config[n].lmt)
           }
           config[n].data = limitArr
+          config[n].markLine = { data: [{ type: 'max', name: '最大数据' }] }
           rightLends.push('limit_' + config[n].lineType)
           rightSeries.push(config[n])
         }

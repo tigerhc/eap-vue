@@ -2,7 +2,7 @@
   <div class="tempchar">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
-				<el-col :span="4">
+				<el-col :span="6">
 					<el-form-item label="设备号:">
 						<div class="condition">
 							<el-select v-model="form.eqpId">
@@ -152,16 +152,6 @@ export default {
                   this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
                 }
               }
-            } else if (this.tempsTitles[0].indexOf('下2') !== -1) {
-              this.tempsTitles.splice(0, 0, '下1')
-              this.tempsTitles.splice(1, 0, '下1SET')
-              this.tempsTitles.splice(2, 0, '下1MIN')
-              this.tempsTitles.splice(3, 0, '下1MAX')
-              for (let index = 0; index < this.tempsTitles.length; index++) {
-                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
-                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
-                }
-              }
             } else if (this.tempsTitles[0].indexOf('高温轨道2') !== -1) {
               this.tempsTitles.splice(0, 0, '高温轨道1当前值')
               this.tempsTitles.splice(1, 0, '高温轨道1SET')
@@ -177,6 +167,16 @@ export default {
               this.tempsTitles.splice(1, 0, '高温AC中转内SET')
               this.tempsTitles.splice(2, 0, '高温AC中转内MIN')
               this.tempsTitles.splice(3, 0, '高温AC中转内MAX')
+              for (let index = 0; index < this.tempsTitles.length; index++) {
+                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
+                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
+                }
+              }
+            } else if (this.tempsTitles[0].indexOf('洗净槽') !== -1 || this.tempsTitles[0].indexOf('下1') !== -1) {
+              // this.tempsTitles.splice(0, 0, '洗净槽当前值')
+              // this.tempsTitles.splice(1, 0, '洗净槽SET')
+              // this.tempsTitles.splice(2, 0, '洗净槽MIN')
+              // this.tempsTitles.splice(3, 0, '洗净槽MAX')
               for (let index = 0; index < this.tempsTitles.length; index++) {
                 if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
                   this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })

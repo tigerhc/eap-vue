@@ -298,6 +298,11 @@ export default {
             data: minArr,
             itemStyle: {
               color: 'red'
+            },
+            markLine: {
+              data: [
+                { type: 'max', name: '最大数据' }
+              ]
             }
           },
           {
@@ -306,6 +311,11 @@ export default {
             data: maxArr,
             itemStyle: {
               color: 'red'
+            },
+            markLine: {
+              data: [
+                { type: 'max', name: '最大数据' }
+              ]
             }
           },
           {
@@ -315,6 +325,11 @@ export default {
             data: min11,
             itemStyle: {
               color: '#06b8af'
+            },
+            markLine: {
+              data: [
+                { type: 'max', name: '最大数据' }
+              ]
             }
           },
           {
@@ -324,6 +339,11 @@ export default {
             data: max90,
             itemStyle: {
               color: '#06b8af'
+            },
+            markLine: {
+              data: [
+                { type: 'max', name: '最大数据' }
+              ]
             }
           }
           ]

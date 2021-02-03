@@ -151,10 +151,15 @@ export default {
             }
             this.editableTabsValue = this.editableTabs[0].title
             this.tempsValue = data.results
-            this.flag = this.tempsValue[0]['temp_min']
+            var tp = 100000
+            for (var i = 0; i < this.tempsValue.length; i++) {
+              var te = this.tempsValue[i]['temp_pv']
+              if (parseInt(te) < parseInt(tp)) {
+                tp = this.tempsValue[i]['temp_pv']
+              }
+            }
+            this.flag = parseInt(tp) < parseInt(this.tempsValue[0]['temp_min']) ? tp : this.tempsValue[0]['temp_min']
             this.initChart(0)
-            // console.log(this.tempsValue)
-            // console.log('this.tempsTitles', this.tempsTitles)
           })
         }
       })
@@ -359,25 +364,25 @@ export default {
     },
     loadTempDataPart(tab) {
       if (tab.index === 0 || tab.index === '0') {
-        this.flag = this.tempsValue[0]['temp_min']
-        var pv = this.tempsValue[0]['temp_pv']
-        this.flag = pv <= this.flag ? pv : this.flag
+        var tp = 100000
+        for (var i = 0; i < this.tempsValue.length; i++) {
+          var te = this.tempsValue[i]['temp_pv']
+          if (parseInt(te) < parseInt(tp)) {
+            tp = this.tempsValue[i]['temp_pv']
+          }
+        }
+        this.flag = parseInt(tp) < parseInt(this.tempsValue[0]['temp_min']) ? tp : this.tempsValue[0]['temp_min']
       } else {
         var key = 4 * (tab.index - 1)
-        // var key = 4 * (tab.index - 1)+2
-        // var tem = this.tempsValue[0].other_temps_value.split(',')
-        // this.flag = tem[key]
         var a = 100000
-        var sma = this.tempsValue[0].other_temps_value.split(',')
-        var two = sma[key + 2]
-        for (var i = 0; i < this.tempsValue.length; i++) {
-          var tem = this.tempsValue[i].other_temps_value.split(',')
-          if (a > tem[key]) {
+        this.tempsValue[0].other_temps_value.split(',')[key + 2]
+        for (var j = 0; j < this.tempsValue.length; j++) {
+          var tem = this.tempsValue[j].other_temps_value.split(',')
+          if (parseInt(a) > parseInt(tem[key])) {
             a = tem[key]
           }
         }
-        this.flag = a
-        this.flag = two <= this.flag ? two : this.flag
+        this.flag = parseInt(a) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 2]) ? a : this.tempsValue[0].other_temps_value.split(',')[key + 2]
       }
       this.initChart(tab.index)
     }

@@ -152,54 +152,10 @@ export default {
                   this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
                 }
               }
-            } else if (this.tempsTitles[0].indexOf('高温轨道2') !== -1) {
-              this.tempsTitles.splice(0, 0, '高温轨道1(1)当前值')
-              this.tempsTitles.splice(1, 0, '高温轨道1(1)SET')
-              this.tempsTitles.splice(2, 0, '高温轨道1(1)MIN')
-              this.tempsTitles.splice(3, 0, '高温轨道1(1)MAX')
-              for (let index = 0; index < this.tempsTitles.length; index++) {
-                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
-                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
-                }
-              }
-            } else if (this.tempsTitles[0].indexOf('高温DC加压头') !== -1) {
-              this.tempsTitles.splice(0, 0, '高温AC中转内(1)当前值')
-              this.tempsTitles.splice(1, 0, '高温AC中转内(1)SET')
-              this.tempsTitles.splice(2, 0, '高温AC中转内(1)MIN')
-              this.tempsTitles.splice(3, 0, '高温AC中转内(1)MAX')
-              for (let index = 0; index < this.tempsTitles.length; index++) {
-                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
-                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
-                }
-              }
-            } else if (this.tempsTitles[0].indexOf('下2') !== -1) {
-              this.tempsTitles.splice(0, 0, '下1(1)当前值')
-              this.tempsTitles.splice(1, 0, '下1(1)SET')
-              this.tempsTitles.splice(2, 0, '下1(1)MIN')
-              this.tempsTitles.splice(3, 0, '下1(1)MAX')
-              for (let index = 0; index < this.tempsTitles.length; index++) {
-                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
-                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
-                }
-              }
-            } else if (this.tempsTitles[0].indexOf('漂洗槽1') !== -1) {
-              this.tempsTitles.splice(0, 0, '洗净槽(1)当前值')
-              this.tempsTitles.splice(1, 0, '洗净槽(1)SET')
-              this.tempsTitles.splice(2, 0, '洗净槽(1)MIN')
-              this.tempsTitles.splice(3, 0, '洗净槽(1)MAX')
-              for (let index = 0; index < this.tempsTitles.length; index++) {
-                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
-                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
-                }
-              }
             } else {
-              this.tempsTitles.splice(0, 0, '温度当前值')
-              this.tempsTitles.splice(1, 0, '温度SET')
-              this.tempsTitles.splice(2, 0, '温度MIN')
-              this.tempsTitles.splice(3, 0, '温度MAX')
               for (let index = 0; index < this.tempsTitles.length; index++) {
-                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
-                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
+                if (this.tempsTitles[index] !== '' && this.tempsTitles[index] !== null) {
+                  this.editableTabs.push({ name: this.tempsTitles[index], title: this.tempsTitles[index] })
                 }
               }
             }

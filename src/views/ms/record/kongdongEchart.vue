@@ -41,7 +41,7 @@
 			</button>
 		</div>
 		<div :style="{width: '60%', height: '250px',margin:'20px auto'}" class="picPanel">
-			<chipImg :img-url="imgUrl" :img-option="imgOption"/>
+			<chipImg :img-url="imgUrl" :img-option="imgOption" :click-able="clickAble" @positionName="positionChange"/>
 		</div>
 		<div id="echAppLine" :style="{width: '80%', height: '300px',margin:'0 auto',position:'relative'}"/>
 		<el-form id="subEchart" class="form" label-width="90px" size="small">
@@ -89,6 +89,7 @@ export default {
       productionNo: '',
       imgUrl: '',
       imgOption: '',
+      clickAble: true,
       positionOptions: [],
       proNameOptions: [],
       lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }]
@@ -115,6 +116,12 @@ export default {
             alert(res.data.msg)
           }
         })
+      }
+    },
+    positionChange(pname) {
+      if (this.positionOptions.length > 0) {
+        this.chartParam.lineType = pname
+        this.imgOption = this.imgUrl + pname
       }
     },
     productionNameChange() {

@@ -38,3 +38,11 @@ export function productionNoSelect(query) {
     params: query
   })
 }
+
+export function positionSelect(query) {
+  return request({
+    url: '/ms/msmeasurekongdong/getPositionSelect',
+    method: 'get',
+    params: query
+  })
+}

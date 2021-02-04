@@ -2,7 +2,7 @@
 	<div class="app-container calendar-list-container">
 		<div class="condition-panel">
 			<el-form class="form" label-width="90px" size="small">
-				<el-col :span="9">
+				<el-col :span="10">
 					<el-form-item label="机种名:">
 						<div class="condition">
 							<el-select v-model="chartParam.lineNo" @change="lineNoChange">
@@ -14,12 +14,13 @@
 							</el-select>
 						</div>
 						<div class="condition">
-							<el-select v-model="chartParam.productionName">
-								<el-option
-									v-for="item in proNameOptions"
-									:key="item"
-									:label="item"
-									:value="item" />
+							<el-select v-model="chartParam.productionName" @change="productionNameChange">
+								<el-option v-for="item in proNameOptions" :key="item" :label="item" :value="item" />
+							</el-select>
+						</div>
+						<div class="condition">
+							<el-select v-model="chartParam.lineType" @change="lineTypeChange">
+								<el-option v-for="item in positionOptions" :key="item" :label="item" :value="item" />
 							</el-select>
 						</div>
 					</el-form-item>
@@ -39,8 +40,11 @@
 				<span>清空</span>
 			</button>
 		</div>
-		<div id="echAppLine" :style="{width: '80%', height: '300px',float:'left'}"/>
-		<el-form class="form" label-width="90px" size="small">
+		<div :style="{width: '60%', height: '250px',margin:'20px auto'}" class="picPanel">
+			<chipImg :img-url="imgUrl" :img-option="imgOption"/>
+		</div>
+		<div id="echAppLine" :style="{width: '80%', height: '300px',margin:'0 auto',position:'relative'}"/>
+		<el-form id="subEchart" class="form" label-width="90px" size="small">
 			<el-col :span="6">
 				<el-form-item label="批号:">
 					<div class="condition">
@@ -57,17 +61,18 @@
 				<div id="echAppRight" :style="{width: '90%', height: '350px'}"/>
 			</div>
 		</div>
-		<!-- <div class="picPanel">
-			<W-Select-Pic :list1="list" :url="picUrl"/>
-		</div> -->
 	</div>
 </template>
 
 <script>
 import echarts from 'echarts'
-import { kongdongChart, kongdongBar, proNameSelect } from '@/api/ms/monitor'
+import { kongdongChart, kongdongBar, proNameSelect, positionSelect } from '@/api/ms/monitor'
+import chipImg from '@/views/tool/chipimg/chipimg'
 export default {
   name: 'MeasureKongdongEchart',
+  components: {
+    chipImg
+  },
   data() {
     return {
       chart: null,
@@ -78,9 +83,13 @@ export default {
         lotNo: '',
         productionName: '',
         startDate: '',
-        endDate: ''
+        endDate: '',
+        lineType: ''
       },
       productionNo: '',
+      imgUrl: '',
+      imgOption: '',
+      positionOptions: [],
       proNameOptions: [],
       lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }]
       // list:[{name:"T100",left:"40%",top:"30%",width:"50px",height:"60px",rotate:180,"checked":true,backgroundColor:"red",position:"relative"}],
@@ -107,6 +116,25 @@ export default {
           }
         })
       }
+    },
+    productionNameChange() {
+      var param = {}
+      param.productionName = this.chartParam.productionName.replace('J.', '')
+      positionSelect(param).then(res => {
+        this.positionOptions = res.data.positionList
+      })
+      if (this.chartParam.productionName.indexOf('SX681') > -1) {
+        this.imgUrl = 'SX681'
+        this.imgOption = ''
+        this.chartParam.lineType = ''
+      } else if (this.chartParam.productionName.indexOf('SX680') > -1) {
+        this.imgUrl = 'SX680'
+        this.imgOption = ''
+        this.chartParam.lineType = ''
+      }
+    },
+    lineTypeChange() {
+      this.imgOption = this.imgUrl + this.chartParam.lineType
     },
     echarClear(chartId) {
       this.chart = echarts.init(document.getElementById(chartId))
@@ -151,6 +179,7 @@ export default {
     refreshClick() {
       this.chartParam.lotNo = ''
       this.chartParam.productionName = ''
+      this.chartParam.lineType = ''
       this.dateTime = []
     },
     initLineChart(kongdongData) {
@@ -359,4 +388,6 @@ export default {
 		height:100%;
 	}
 	#brD{width:100%;height:350px;float:left;}
+	.picPanel{border:1px solid #b7b2b2;position:relative;}
+	#subEchart{top:-300px;}
 </style>

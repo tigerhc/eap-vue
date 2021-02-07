@@ -155,7 +155,7 @@ export default {
       this.chartParam.productionName = this.chartParam.productionName.toUpperCase()
       if (this.dateTime.length === 2) {
         this.chartParam.startDate = this.dateTime[0]
-        this.chartParam.endDate = this.dateTime[1]
+        this.chartParam.endDate = this.dateTime[1] + ' 23:59:59'
       }
       var _this = this
       _this.echarClear('echAppLine')

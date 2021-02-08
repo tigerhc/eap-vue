@@ -22,6 +22,18 @@ service.interceptors.request.use(
       // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
       config.headers['access_token'] = getToken()
     }
+    if (config.params !== null && config.params !== undefined) {
+      for (var key in config.params) {
+        if (key === 'query.startDate||between') {
+          // console.log(key+":"+config.params[key]);
+          var times = config.params[key] + ''
+          times = times.split(',')
+          if (times.length === 2 && times[1].length === 10) {
+            config.params['query.startDate||between'] = times[0] + ',' + times[1] + ' 23:59:59'
+          }
+        }
+      }
+    }
     return config
   },
   error => {

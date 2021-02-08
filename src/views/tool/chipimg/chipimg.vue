@@ -80,17 +80,17 @@ export default {
 	.small{font-size: small;text-align:center;line-height: 22px;font-weight: 900;}
 
 	/**位置块 的位置*/
-	.sx680DI1_position{width:5%;height:9%;top: 57.5%;left: 7.2%;}
-	.sx680DI2_a_position{width:5%;height:8%;top: 57.5%;left: 14.2%;}
-	.sx680DI2_b_position{width:5%;height:8%;top: 69.5%;left: 14.5%;}
-	.sx680MOS3_a_position{width:7.2%;height:14%;top: 31.5%;left: 17.5%;}
-	.sx680MOS3_b_position{width:7.4%;height:14%;top: 31.5%;left: 28%;}
-	.sx680MOS4_a_position{width:7.4%;height:14%;top: 31.5%;left: 38.5%;}
-	.sx680MOS4_b_position{width:7.2%;height:14%;top: 31.5%;left: 56.4%;}
-	.sx680MOS5_a_position{width:7.4%;height:14%;top: 31.5%;left: 67.5%;}
-	.sx680MOS5_b_position{width:7.4%;height:14%;top: 31.5%;left: 79%;}
-	.sx680MIC6_position{width:15.4%;height:18%;top: 57.5%;left: 25.5%;}
-	.sx680MIC7_position{width:11.1%;height:16%;top: 59.5%;left: 66%;}
+	.sx680DI1_position{width:5.8%;height:9%;top: 57.5%;left: 8%;}
+	.sx680DI2_a_position{width:5.5%;height:8%;top: 57.5%;left: 15.8%;}
+	.sx680DI2_b_position{width:5.5%;height:8%;top: 69.5%;left: 16%;}
+	.sx680MOS3_a_position{width:8%;height:14%;top: 31.5%;left: 19.4%;}
+	.sx680MOS3_b_position{width:8%;height:14%;top: 31.5%;left: 31%;}
+	.sx680MOS4_a_position{width:8%;height:14%;top: 31.5%;left: 42.5%;}
+	.sx680MOS4_b_position{width:8%;height:14%;top: 31.5%;left: 62%;}
+	.sx680MOS5_a_position{width:8%;height:14%;top: 31.5%;left: 74.5%;}
+	.sx680MOS5_b_position{width:7.7%;height:14%;top: 31.5%;left: 87.5%;}
+	.sx680MIC6_position{width:16.4%;height:18%;top: 57.5%;left: 28.5%;}
+	.sx680MIC7_position{width:12.1%;height:16%;top: 59.5%;left: 73%;}
 
 	.sx681DI1_position{width:5.6%;height:10%;top: 53.5%;left: 85%;}
 	.sx681DI2_a_position{width:5.6%;height:10%;top:43%;left:7%;}

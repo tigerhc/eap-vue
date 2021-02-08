@@ -40,10 +40,10 @@
 				<span>清空</span>
 			</button>
 		</div>
-		<div :style="{width: '60%', height: '250px',margin:'20px auto'}" class="picPanel">
+		<div :style="{width: '39%', height: '250px',marginLeft:'58%', marginTop:'30px'}" class="picPanel">
 			<chipImg :img-url="imgUrl" :img-option="imgOption" :click-able="clickAble" @positionName="positionChange"/>
 		</div>
-		<div id="echAppLine" :style="{width: '80%', height: '300px',margin:'0 auto',position:'relative'}"/>
+		<div id="echAppLine" :style="{width: '55%', height: '300px',position:'relative',marginTop:'-250px'}"/>
 		<el-form id="subEchart" class="form" label-width="90px" size="small">
 			<el-col :span="6">
 				<el-form-item label="批号:">
@@ -129,6 +129,7 @@ export default {
       param.productionName = this.chartParam.productionName.replace('J.', '')
       positionSelect(param).then(res => {
         this.positionOptions = res.data.positionList
+        this.positionOptions.splice(0, 0, '全部')
       })
       if (this.chartParam.productionName.indexOf('SX681') > -1) {
         this.imgUrl = 'SX681'
@@ -159,6 +160,7 @@ export default {
       }
       var _this = this
       _this.echarClear('echAppLine')
+      this.chartParam.lineType = this.chartParam.lineType.replace('全部', '')
       kongdongChart(this.chartParam).then(res => {
         if (res.data.code === 0 || res.data.code === '0') {
           if (res.data.data !== undefined && res.data.data !== null) {
@@ -198,6 +200,14 @@ export default {
           enterable: true, // 鼠标是否可进入提示框浮层中
           formatter: this.formatterHover// 修改鼠标悬停显示的内容
         },
+        toolbox: {
+          feature: {
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ['line', 'bar'] },
+            restore: { show: true },
+            saveAsImage: { show: true }
+          }
+        },
         legend: {
           data: kongdongData.legend
         },
@@ -213,7 +223,7 @@ export default {
           }
         }, {
           type: 'value',
-          name: '完成率',
+          name: '空洞率',
           min: 0,
           // max: 150,
           // interval: 5,
@@ -379,6 +389,7 @@ export default {
 		-webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
 		transition: border-color .2s cubic-bezier(.645,.045,.355,1);
 		width: 100%;
+		overflow: hidden;
 	}
 	.el-col-9 div{
 		height:39px !important;

@@ -2,14 +2,14 @@
 	<div class="app-container calendar-list-container">
 		<div class="condition-panel">
 			<el-form class="form" label-width="90px" size="small">
-				<el-col :span="5">
+				<el-col :span="4">
 					<el-form-item label="批号:">
 						<div class="condition">
 							<input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner">
 						</div>
 					</el-form-item>
 				</el-col>
-				<el-col :span="9">
+				<el-col :span="10">
 					<el-form-item label="机种名：">
             <el-select v-model="productionNo" @change="productionNoChange">
               <el-option
@@ -47,7 +47,7 @@
 				<span>清空</span>
 			</button>
 		</div>
-		<div id="echApp" :style="{width: '80%', height: '600px',float:'left'}"/>
+		<div id="echApp" :style="{width: '80%', height: '600px',position:'relative',margin:'0 auto'}"/>
 	</div>
 </template>
 
@@ -253,6 +253,14 @@ export default {
             axisPointer: {},
             enterable: true, // 鼠标是否可进入提示框浮层中
             formatter: this.formatterHover// 修改鼠标悬停显示的内容
+          },
+          toolbox: {
+            feature: {
+              dataView: { show: true, readOnly: false },
+              magicType: { show: true, type: ['line', 'bar'] },
+              restore: { show: true },
+              saveAsImage: { show: true }
+            }
           },
           legend: {
             data: ['平均重量', '测量值', '设定管理下限', '设定管理上限', '工程管理上限', '工程管理下限']

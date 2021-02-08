@@ -125,7 +125,7 @@ export default {
           bottom: '10%',
           containLabel: true
         },
-        xAxis: { type: 'time', interval: 3600 * 12 * 1000, axisLabel: { formatter: function(value) { var date = new Date(value); return getzf(date.getHours()) + ':' + getzf(date.getMinutes()) + '\n' + (date.getMonth() + 1) + '-' + date.getDate() + ' '; function getzf(num) { if (parseInt(num) < 10) { num = '0' + num } return num } } }
+        xAxis: { type: 'time', interval: 3600 * 12 * 1000, axisLabel: { formatter: function(value) { var date = new Date(value); return getzf(date.getHours()) + ':' + getzf(date.getMinutes()) + '\n' + (date.getMonth() + 1) + '/' + date.getDate() + ' '; function getzf(num) { if (parseInt(num) < 10) { num = '0' + num } return num } } }
         },
         yAxis: {
           data: this.form.station_code

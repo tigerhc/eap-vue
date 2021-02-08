@@ -353,7 +353,7 @@ export default {
           span {
             /*line-height: 20px;*/
             text-align: center;
-            height: 20px;
+            height: 30px;
             border-bottom:0.5px solid #dcdfe6;
             font-size:12px;
           }

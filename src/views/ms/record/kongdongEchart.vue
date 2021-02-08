@@ -40,10 +40,10 @@
 				<span>清空</span>
 			</button>
 		</div>
-		<div :style="{width: '39%', height: '250px',marginLeft:'58%', marginTop:'30px'}" class="picPanel">
+		<div :style="{width: '35%', height: '250px',marginLeft:'63%', marginTop:'30px'}" class="picPanel">
 			<chipImg :img-url="imgUrl" :img-option="imgOption" :click-able="clickAble" @positionName="positionChange"/>
 		</div>
-		<div id="echAppLine" :style="{width: '55%', height: '300px',position:'relative',marginTop:'-250px'}"/>
+		<div id="echAppLine" :style="{width: '68%', height: '300px',position:'relative',marginTop:'-250px', marginLeft:'-5%'}"/>
 		<el-form id="subEchart" class="form" label-width="90px" size="small">
 			<el-col :span="6">
 				<el-form-item label="批号:">

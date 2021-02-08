@@ -142,3 +142,11 @@ export function findAllEqp(data) {
     params: data
   })
 }
+
+export function eqpStateTime(data) {
+  return request({
+    url: 'edc/edceqpstate/eqpStateTime',
+    method: 'get',
+    params: data
+  })
+}

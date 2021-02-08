@@ -23,3 +23,11 @@ export function eqpList(tab, query) {
     params: query
   })
 }
+
+export function eqpIdlist(tab, query) {
+  return request({
+    url: '/fab/fabequipment/eqpIdlist',
+    method: 'get',
+    params: query
+  })
+}

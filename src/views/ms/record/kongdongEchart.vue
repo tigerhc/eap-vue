@@ -40,7 +40,7 @@
 				<span>清空</span>
 			</button>
 		</div>
-		<div :style="{width: '35%', height: '250px',marginLeft:'63%', marginTop:'30px'}" class="picPanel">
+		<div :style="{width: '35%', height: '250px',marginLeft:'60%', marginTop:'30px'}" class="picPanel">
 			<chipImg :img-url="imgUrl" :img-option="imgOption" :click-able="clickAble" @positionName="positionChange"/>
 		</div>
 		<div id="echAppLine" :style="{width: '68%', height: '300px',position:'relative',marginTop:'-250px', marginLeft:'-5%'}"/>
@@ -206,7 +206,10 @@ export default {
             magicType: { show: true, type: ['line', 'bar'] },
             restore: { show: true },
             saveAsImage: { show: true }
-          }
+          },
+          orient: 'horizontal',
+          top: '10%',
+          left: '80%'
         },
         legend: {
           data: kongdongData.legend
@@ -217,11 +220,6 @@ export default {
           data: kongdongData.xAxis
         },
         yAxis: [{
-          type: 'value',
-          axisLabel: {
-            formatter: '{value} %'
-          }
-        }, {
           type: 'value',
           name: '空洞率',
           min: 0,

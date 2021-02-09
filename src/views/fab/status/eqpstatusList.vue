@@ -45,7 +45,7 @@
     <div class="content">
       <div v-for="(item,index) in tabData2[0]" :key="index" >
         <div class="item" >
-          <span>{{ item.eqpId }}</span>
+          <span class="first">{{ item.eqpId }}</span>
           <span>{{ item.lotNo }}</span>
           <span class="littlefont">{{ item.recipeCode }}</span>
           <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
@@ -56,7 +56,7 @@
     <div class="content">
       <div v-for="(item,index) in tabData2[1]" :key="index" >
         <div class="item" >
-          <span>{{ item.eqpId }}</span>
+          <span class="first">{{ item.eqpId }}</span>
           <span>{{ item.lotNo }}</span>
           <span class="littlefont">{{ item.recipeCode }}</span>
           <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>
@@ -67,7 +67,7 @@
     <div class="content">
       <div v-for="(item,index) in tabData2[2]" :key="index" >
         <div class="item" >
-          <span :class="{ first: item.eqpId=='SIM-TRM1' }">{{ item.eqpId }}</span>
+          <span class="first" >{{ item.eqpId }}</span>
           <span>{{ item.lotNo }}</span>
           <span class="littlefont">{{ item.recipeCode }}</span>
           <span :class="statusText[item.eqpStatus]">{{ item.eqpStatus }}</span>

@@ -260,7 +260,10 @@ export default {
               magicType: { show: true, type: ['line', 'bar'] },
               restore: { show: true },
               saveAsImage: { show: true }
-            }
+            },
+            orient: 'horizontal',
+            top: '5%',
+            left: '80%'
           },
           legend: {
             data: ['平均重量', '测量值', '设定管理下限', '设定管理上限', '工程管理上限', '工程管理下限']

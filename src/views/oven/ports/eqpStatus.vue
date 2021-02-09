@@ -139,7 +139,7 @@ export default {
               var categoryIndex = api.value(0)// 这里使用 api.value(0) 取出当前 dataItem 中第一个维度的数值。
               var start = api.coord([api.value(1), categoryIndex]) // 这里使用 api.coord(...) 将数值在当前坐标系中转换成为屏幕上的点的像素值。
               var end = api.coord([api.value(2), categoryIndex])
-              var height = 60// 柱体宽度
+              var height = 40// 柱体宽度
 
               return {
                 type: 'rect',

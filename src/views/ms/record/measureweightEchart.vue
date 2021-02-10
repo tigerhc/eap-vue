@@ -11,7 +11,7 @@
 				</el-col>
 				<el-col :span="10">
 					<el-form-item label="机种名：">
-            <el-select v-model="productionNo" @change="productionNoChange">
+            <el-select v-model="productionNo" class="wid90" @change="productionNoChange">
               <el-option
                 v-for="item in lineNoOptions"
                 :key="item.lineNo"
@@ -25,7 +25,7 @@
                 :label="item"
                 :value="item" />
             </el-select>
-						<el-select v-model="chartParam.detailOption">
+						<el-select v-model="chartParam.detailOption" class="wid90">
               <el-option
                 v-for="item in detailOptions"
                 :key="item"
@@ -47,7 +47,9 @@
 				<span>清空</span>
 			</button>
 		</div>
-		<div id="echApp" :style="{width: '80%', height: '600px',position:'relative',margin:'0 auto'}"/>
+		<div class="echAppPanel">
+			<div id="echApp" :style="{width: '100%', height: '100%',position:'relative',margin:'50px auto'}"/>
+		</div>
 	</div>
 </template>
 
@@ -402,7 +404,7 @@ export default {
 
 <style scoped>
 	.condition{
-		width:200px;height:35px;
+		width:90px;height:35px;
 		border-radius: 4px;
 		box-sizing: border-box;
 		display: inline-block;
@@ -436,5 +438,11 @@ export default {
 	}
 	#echApp{
 		margin-top:50px;
+	}
+	.wid90{width:90px;}
+	.echAppPanel{
+		width:100%;
+		height:400px;
+		float:left;
 	}
 </style>

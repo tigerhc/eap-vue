@@ -5,21 +5,17 @@
 				<el-col :span="10">
 					<el-form-item label="机种名:">
 						<div class="condition">
-							<el-select v-model="chartParam.lineNo" @change="lineNoChange">
+							<el-select v-model="chartParam.lineNo" class="wid90" @change="lineNoChange">
 								<el-option
 									v-for="item in lineNoOptions"
 									:key="item.lineNo"
 									:label="item.lineNo"
 									:value="item.lineNo" />
 							</el-select>
-						</div>
-						<div class="condition">
 							<el-select v-model="chartParam.productionName" @change="productionNameChange">
 								<el-option v-for="item in proNameOptions" :key="item" :label="item" :value="item" />
 							</el-select>
-						</div>
-						<div class="condition">
-							<el-select v-model="chartParam.lineType" @change="lineTypeChange">
+							<el-select v-model="chartParam.lineType" class="wid90" @change="lineTypeChange">
 								<el-option v-for="item in positionOptions" :key="item" :label="item" :value="item" />
 							</el-select>
 						</div>
@@ -40,10 +36,12 @@
 				<span>清空</span>
 			</button>
 		</div>
-		<div :style="{width: '35%', height: '250px',marginLeft:'60%', marginTop:'30px'}" class="picPanel">
-			<chipImg :img-url="imgUrl" :img-option="imgOption" :click-able="clickAble" @positionName="positionChange"/>
+		<div class="echartPanel">
+			<div :style="{width: '35%', height: '250px',marginLeft:'64%', marginTop:'30px'}" class="picPanel">
+				<chipImg :img-url="imgUrl" :img-option="imgOption" :click-able="clickAble" @positionName="positionChange"/>
+			</div>
+			<div id="echAppLine" :style="{width: '70%', height: '300px',position:'relative',marginTop:'-250px', marginLeft:'-4%'}"/>
 		</div>
-		<div id="echAppLine" :style="{width: '68%', height: '300px',position:'relative',marginTop:'-250px', marginLeft:'-5%'}"/>
 		<el-form id="subEchart" class="form" label-width="90px" size="small">
 			<el-col :span="6">
 				<el-form-item label="批号:">
@@ -362,8 +360,6 @@ export default {
 
 <style scoped>
 	.condition{
-		width:200px;height:35px;
-		border-radius: 4px;
 		box-sizing: border-box;
 		display: inline-block;
 		font-family: sans-serif;
@@ -406,4 +402,8 @@ export default {
 	#brD{width:100%;height:350px;float:left;}
 	.picPanel{border:1px solid #b7b2b2;position:relative;}
 	#subEchart{top:-300px;}
+	.echartPanel{
+		width:100%;height:300px;float:left;
+	}
+	.wid90{width:90px;}
 </style>

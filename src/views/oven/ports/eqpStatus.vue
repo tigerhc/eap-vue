@@ -173,7 +173,7 @@ export default {
     },
     getviewbystationTwo() {
       var myChart = echarts.init(document.getElementById('eqpChart'))
-      var colors = ['#2f4554', '#d48265', '#c23531']
+      var colors = ['#32CD32', '#B22222',	'#FFA500']
       var state = ['正常', '故障', '等待']
       var option = {
         color: colors,

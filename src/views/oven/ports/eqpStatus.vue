@@ -87,7 +87,11 @@ export default {
           }).then((res) => {
             const data = res.data
             this.list2 = data
-            this.getviewbystation()
+            if (this.form.dateTime[0] === this.form.dateTime[1]) {
+              this.getviewbystationTwo()
+            } else {
+              this.getviewbystation()
+            }
           })
         }
       })
@@ -140,6 +144,86 @@ export default {
               var start = api.coord([api.value(1), categoryIndex]) // 这里使用 api.coord(...) 将数值在当前坐标系中转换成为屏幕上的点的像素值。
               var end = api.coord([api.value(2), categoryIndex])
               var height = 40// 柱体宽度
+
+              return {
+                type: 'rect',
+                shape: echarts.graphic.clipRectByRect({
+                  x: start[0],
+                  y: start[1] - height / 2,
+                  width: end[0] - start[0],
+                  height: height
+                }, {
+                  x: params.coordSys.x,
+                  y: params.coordSys.y,
+                  width: params.coordSys.width,
+                  height: params.coordSys.height
+                }),
+                style: api.style()
+              }
+            },
+            encode: {
+              x: [1, 2],
+              y: 0
+            },
+            data: this.list2
+          }
+        ]
+      }
+      myChart.setOption(option)
+    },
+    getviewbystationTwo() {
+      var myChart = echarts.init(document.getElementById('eqpChart'))
+      var colors = ['#2f4554', '#d48265', '#c23531']
+      var state = ['正常', '故障', '等待']
+      var option = {
+        color: colors,
+        tooltip: {
+          formatter: function(params) {
+            return params.name + ':' + params.value[1] + '~' + params.value[2]
+          }
+        },
+        legend: {
+          data: state,
+          bottom: '1%',
+          selectedMode: false,
+          textStyle: {
+            color: '#000'
+          }
+        },
+        grid: {
+          left: '3%',
+          right: '3%',
+          top: '1%',
+          bottom: '10%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'time',
+          interval: 3600 * 1000,
+          axisLabel: { formatter: function(value) {
+            var date = new Date(value); return getzf(date.getHours()) + ':00'
+            function getzf(num) {
+              if (parseInt(num) < 10) { num = '0' + num }
+              return num
+            }
+          }
+          }
+        },
+        yAxis: {
+          data: this.form.station_code
+        },
+        series: [
+          { name: state[0], type: 'bar', data: [] },
+          { name: state[1], type: 'bar', data: [] },
+          { name: state[2], type: 'bar', data: [] },
+          {
+            type: 'custom',
+            renderItem: function(params, api) {
+              var categoryIndex = api.value(0)
+              var start = api.coord([api.value(1), categoryIndex])
+              var end = api.coord([api.value(2), categoryIndex])
+              // var height = api.size([0, 1])[1]
+              var height = 40
 
               return {
                 type: 'rect',

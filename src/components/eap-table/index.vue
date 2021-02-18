@@ -768,7 +768,7 @@ export default {
       props: { data: this.list, ...this.conf },
       style: {
         width: '100%',
-        height: this.hiddenQuery ? 'calc(100vh - 84px - 96px - 42px - 1px )' : 'calc(100vh - 84px - 96px - 42px - 46px - 1px )'
+        minHeight: this.hiddenQuery ? 'calc(100vh - 84px - 96px - 42px - 1px )' : 'calc(100vh - 84px - 96px - 42px - 46px - 1px )'
       },
       key: this.tableKey,
       ref: 'table',
@@ -914,6 +914,5 @@ function isHidden(conf) {
   /*96.4px 所以后面又减了1*/
   /*.el-table{*/
   /*  min-height: calc(100vh - 84px - 96px - 42px - 1px ) ;*/
-  /*  max-height: calc(100vh - 84px - 96px - 42px - 1px ) ;*/
   /*}*/
 </style>

@@ -32,6 +32,19 @@
 			<div :class="imgOption==='SX681MIC-D-7'?'MIC_act':'sxMIC7_bg'" class="sx681MIC7_position smaller" @click="positionClk('MIC-D-7')">MIC-D-7</div>
 			<div :class="imgOption==='SX681MIC-8'?'MIC_act':'sxMIC8_bg'" class="sx681MIC8_position smaller" @click="positionClk('MIC-8')">MIC-8</div>
 		</div>
+		<div v-show="imgUrl==='SIM'" class="sim">
+			<div :class="imgOption==='SIMDI-1'?'DI_act':'sxDI_bg'" class="simDI1_position smaller" @click="positionClk('DI-1')">DI-1</div>
+			<div :class="imgOption==='SIMDI-2'?'DI_act':'sxDI_bg'" class="simDI2_a_position smaller" @click="positionClk('DI-2')">DI-2</div>
+			<div :class="imgOption==='SIMDI-2'?'DI_act':'sxDI_bg'" class="simDI2_b_position smaller" @click="positionClk('DI-2')">DI-2</div>
+			<div :class="imgOption==='SIMMOS-3'?'MOS_act':'simMOS_bg'" class="simMOS3_a_position smaller" @click="positionClk('MOS-3')">MOS-3</div>
+			<div :class="imgOption==='SIMMOS-3'?'MOS_act':'simMOS_bg'" class="simMOS3_b_position smaller" @click="positionClk('MOS-3')">MOS-3</div>
+			<div :class="imgOption==='SIMMOS-4'?'MOS_act':'simMOS_bg'" class="simMOS4_a_position smaller" @click="positionClk('MOS-4')">MOS-4</div>
+			<div :class="imgOption==='SIMMOS-4'?'MOS_act':'simMOS_bg'" class="simMOS4_b_position smaller" @click="positionClk('MOS-4')">MOS-4</div>
+			<div :class="imgOption==='SIMMOS-5'?'MOS_act':'simMOS_bg'" class="simMOS5_a_position smaller" @click="positionClk('MOS-5')">MOS-5</div>
+			<div :class="imgOption==='SIMMOS-5'?'MOS_act':'simMOS_bg'" class="simMOS5_b_position smaller" @click="positionClk('MOS-5')">MOS-5</div>
+			<div :class="imgOption==='SIMMIC-D-6'?'MIC_act':'sxMIC6_bg'" class="simMIC6_position smaller" @click="positionClk('MIC-D-6')">MIC-D-6</div>
+			<div :class="imgOption==='SIMMIC-7'?'MIC_act':'simMIC7_bg'" class="simMIC7_position smaller" @click="positionClk('MIC-7')">MIC-7</div>
+		</div>
 	</div>
 </template>
 
@@ -75,6 +88,7 @@ export default {
 	/**背景图*/
 	.sx680{width:100%;height:100%;background:url(../../../assets/img/SX680.png);background-repeat:no-repeat;background-size: 100% 100%;}
 	.sx681{width:100%;height:100%;background:url(../../../assets/img/SX681.png);background-repeat:no-repeat;background-size: 100% 100%;}
+	.sim{width:100%;height:100%;background:url(../../../assets/img/SIM.png);background-repeat:no-repeat;background-size: 100% 100%;}
 
 	/**位置块文字的样式*/
 	.smaller{text-align:center;line-height: 22px;font-weight: 900;font-size:10px;display:block;-webkit-transform:scale(0.7);}
@@ -106,8 +120,20 @@ export default {
 	.sx681MIC7_position{width:29.5%;height:30%;top: 37%;left: 35%;}
 	.sx681MIC8_position{width:23.5%;height:23%;top: 66%;left: 38%;}
 
+	.simDI1_position{width:6.6%;height:15%;top: 29%;left: 69.8%;}
+	.simDI2_a_position{width:6.6%;height:12%;top: 34%;left: 74.8%;}
+	.simDI2_b_position{width:6.6%;height:12%;top: 36%;left: 79.8%;}
+	.simMOS3_a_position{width:10%;height:25%;top: 51%;left: 16.8%;}
+	.simMOS3_b_position{width:10%;height:25%;top: 51%;left: 25%;}
+	.simMOS4_a_position{width:7%;height:15%;top: 36%;left: 36.5%;transform:rotate(48deg);}
+	.simMOS4_b_position{width:10%;height:25%;top: 51%;left: 51%;}
+	.simMOS5_a_position{width:10%;height:25%;top: 51%;left: 59%;}
+	.simMOS5_b_position{width:10%;height:25%;top: 51%;left: 66%;}
+	.simMIC6_position{width:12%;height:22%;top: 24%;left: 58.5%;}
+	.simMIC7_position{width:12%;height:22%;top: 24%;left: 21.5%;}
+
 	/**位置块 的背景图片*/
-	.sxDI_bg{background:url(../../../assets/img/DI.jpg);}
+	.sxDI_bg{background:url(../../../assets/img/DI.png);}
 	.sxMOS90_bg{background:url(../../../assets/img/MOS90.jpg);}
 	.sxMOS_bg{background:url(../../../assets/img/MOS.jpg);}
 	.sxMIC_bg{background:url(../../../assets/img/MIC.jpg);}
@@ -115,6 +141,8 @@ export default {
 	.sxMIC7_bg{background:url(../../../assets/img/MIC7.jpg);}
 	.sxMIC8_bg{background:url(../../../assets/img/MIC8.jpg);}
 	.sx680MIC7_bg{background:url(../../../assets/img/680MIC7.jpg);}
+	.simMOS_bg{background:url(../../../assets/img/SIM_MOS.png);}
+	.simMIC7_bg{background:url(../../../assets/img/SIM_MIC7.png);}
 
 	/**位置块 被选中的背景颜色*/
 	.DI_act{background-color:#3cbf3c;}

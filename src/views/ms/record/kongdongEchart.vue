@@ -121,6 +121,7 @@ export default {
         this.chartParam.lineType = pname
         this.imgOption = this.imgUrl + pname
       }
+      this.searchClick()
     },
     productionNameChange() {
       var param = {}
@@ -135,6 +136,10 @@ export default {
         this.chartParam.lineType = ''
       } else if (this.chartParam.productionName.indexOf('SX680') > -1) {
         this.imgUrl = 'SX680'
+        this.imgOption = ''
+        this.chartParam.lineType = ''
+      } else if (this.chartParam.productionName.indexOf('SIM') > -1) {
+        this.imgUrl = 'SIM'
         this.imgOption = ''
         this.chartParam.lineType = ''
       }

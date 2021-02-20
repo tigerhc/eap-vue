@@ -138,9 +138,11 @@ export default {
         this.imgOption = ''
         this.chartParam.lineType = ''
       }
+      this.searchClick()
     },
     lineTypeChange() {
       this.imgOption = this.imgUrl + this.chartParam.lineType
+      this.searchClick()
     },
     echarClear(chartId) {
       this.chart = echarts.init(document.getElementById(chartId))

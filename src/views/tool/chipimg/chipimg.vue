@@ -33,12 +33,12 @@
 			<div :class="imgOption==='SIMDI-1'?'DI_act':'simDI_bg'" class="simDI1_position smaller" @click="positionClk('DI-1')">DI-1</div>
 			<div :class="imgOption==='SIMDI-2'?'DI_act':'simDI_bg'" class="simDI2_a_position smaller" @click="positionClk('DI-2')">DI-2</div>
 			<div :class="imgOption==='SIMDI-2'?'DI_act':'simDI_bg'" class="simDI2_b_position smaller" @click="positionClk('DI-2')">DI-2</div>
-			<div :class="imgOption==='SIMMOS-3'?'MOS_act':'simMOS_bg'" class="simMOS3_a_position smaller" @click="positionClk('MOS-3')">MOS-3</div>
-			<div :class="imgOption==='SIMMOS-3'?'MOS_act':'simMOS_bg'" class="simMOS3_b_position smaller" @click="positionClk('MOS-3')">MOS-3</div>
+			<div :class="imgOption==='SIMMOS-5'?'MOS_act':'simMOS_bg'" class="simMOS3_a_position smaller" @click="positionClk('MOS-5')">MOS-5</div>
+			<div :class="imgOption==='SIMMOS-5'?'MOS_act':'simMOS_bg'" class="simMOS3_b_position smaller" @click="positionClk('MOS-5')">MOS-5</div>
 			<div :class="imgOption==='SIMMOS-4'?'sim_mos4_act':'simMOS4_bg'" class="simMOS4_a_position smaller" @click="positionClk('MOS-4')">MOS-4</div>
-			<div :class="imgOption==='SIMMOS-5'?'MOS_act':'simMOS_bg'" class="simMOS4_b_position smaller" @click="positionClk('MOS-5')">MOS-5</div>
-			<div :class="imgOption==='SIMMOS-5'?'MOS_act':'simMOS_bg'" class="simMOS5_a_position smaller" @click="positionClk('MOS-5')">MOS-5</div>
-			<div :class="imgOption==='SIMMOS-5'?'MOS_act':'simMOS_bg'" class="simMOS5_b_position smaller" @click="positionClk('MOS-5')">MOS-5</div>
+			<div :class="imgOption==='SIMMOS-4'?'MOS_act':'simMOS_bg'" class="simMOS4_b_position smaller" @click="positionClk('MOS-4')">MOS-4</div>
+			<div :class="imgOption==='SIMMOS-3'?'MOS_act':'simMOS_bg'" class="simMOS5_a_position smaller" @click="positionClk('MOS-3')">MOS-3</div>
+			<div :class="imgOption==='SIMMOS-3'?'MOS_act':'simMOS_bg'" class="simMOS5_b_position smaller" @click="positionClk('MOS-3')">MOS-3</div>
 			<div :class="imgOption==='SIMMIC-D-6'?'MIC_act':'sxMIC6_bg'" class="simMIC6_position smaller" @click="positionClk('MIC-D-6')">MIC-D-6</div>
 			<div :class="imgOption==='SIMMIC-7'?'MIC_act':'simMIC7_bg'" class="simMIC7_position smaller" @click="positionClk('MIC-7')">MIC-7</div>
 		</div>

@@ -142,6 +142,10 @@ export default {
         this.imgUrl = 'SIM'
         this.imgOption = ''
         this.chartParam.lineType = ''
+      } else {
+        this.imgUrl = ''
+        this.imgOption = ''
+        this.chartParam.lineType = ''
       }
       this.searchClick()
     },

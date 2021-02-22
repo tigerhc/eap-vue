@@ -36,7 +36,7 @@
 			<div :class="imgOption==='SIMMOS-3'?'MOS_act':'simMOS_bg'" class="simMOS3_a_position smaller" @click="positionClk('MOS-3')">MOS-3</div>
 			<div :class="imgOption==='SIMMOS-3'?'MOS_act':'simMOS_bg'" class="simMOS3_b_position smaller" @click="positionClk('MOS-3')">MOS-3</div>
 			<div :class="imgOption==='SIMMOS-4'?'sim_mos4_act':'simMOS4_bg'" class="simMOS4_a_position smaller" @click="positionClk('MOS-4')">MOS-4</div>
-			<div :class="imgOption==='SIMMOS-4'?'MOS_act':'simMOS_bg'" class="simMOS4_b_position smaller" @click="positionClk('MOS-4')">MOS-4</div>
+			<div :class="imgOption==='SIMMOS-5'?'MOS_act':'simMOS_bg'" class="simMOS4_b_position smaller" @click="positionClk('MOS-5')">MOS-5</div>
 			<div :class="imgOption==='SIMMOS-5'?'MOS_act':'simMOS_bg'" class="simMOS5_a_position smaller" @click="positionClk('MOS-5')">MOS-5</div>
 			<div :class="imgOption==='SIMMOS-5'?'MOS_act':'simMOS_bg'" class="simMOS5_b_position smaller" @click="positionClk('MOS-5')">MOS-5</div>
 			<div :class="imgOption==='SIMMIC-D-6'?'MIC_act':'sxMIC6_bg'" class="simMIC6_position smaller" @click="positionClk('MIC-D-6')">MIC-D-6</div>
@@ -94,40 +94,40 @@ export default {
 	.sx680DI1_position{width:8.3%;height:12.6%;top: 55.6%;left: 7%;}
 	.sx680DI2_a_position{width:8.3%;height:12%;top: 55.5%;left: 14.2%;}
 	.sx680DI2_b_position{width:8.3%;height:12%;top: 67.5%;left: 15%;}
-	.sx680MOS3_a_position{width:11%;height:20%;top: 28.5%;left: 18%;}
-	.sx680MOS3_b_position{width:11%;height:20%;top: 28.5%;left: 29.5%;}
-	.sx680MOS4_a_position{width:11%;height:20%;top: 28.5%;left: 41%;}
-	.sx680MOS4_b_position{width:11%;height:20%;top: 28.5%;left: 60.6%;}
-	.sx680MOS5_a_position{width:11%;height:20%;top: 28.5%;left: 73%;}
-	.sx680MOS5_b_position{width:11%;height:20%;top: 28.5%;left: 86%;}
-	.sx680MIC6_position{width:23.4%;height:25%;top: 54.5%;left: 25%;}
-	.sx680MIC7_position{width:17.1%;height:21%;top: 57.5%;left: 70.5%;}
+	.sx680MOS3_a_position{width:11%;height:20%;top: 28.5%;left: 18%;padding-top: 15px;}
+	.sx680MOS3_b_position{width:11%;height:20%;top: 28.5%;left: 29.5%;padding-top: 15px;}
+	.sx680MOS4_a_position{width:11%;height:20%;top: 28.5%;left: 41%;padding-top: 15px;}
+	.sx680MOS4_b_position{width:11%;height:20%;top: 28.5%;left: 60.6%;padding-top: 15px;}
+	.sx680MOS5_a_position{width:11%;height:20%;top: 28.5%;left: 73%;padding-top: 15px;}
+	.sx680MOS5_b_position{width:11%;height:20%;top: 28.5%;left: 86%;padding-top: 15px;}
+	.sx680MIC6_position{width:23.4%;height:25%;top: 54.5%;left: 25%;padding-top: 20px;}
+	.sx680MIC7_position{width:17.1%;height:21%;top: 57.5%;left: 70.5%;padding-top: 15px;}
 
-	.sx681DI1_position{width:7.6%;height:14%;top: 51.5%;left: 84%;}
-	.sx681DI2_a_position{width:8.5%;height:15%;top:41%;left:5.5%;}
-	.sx681DI2_b_position{width:8.5%;height:15%;top:55%;left:5.5%;}
-	.sx681MOS3_a_position{width:11.5%;height:24%;top: 12%;left: 71.5%;}
-	.sx681MOS3_b_position{width:13.8%;height:22%;top: 21.5%;left: 84%;}
-	.sx681MOS4_a_position{width:11.8%;height:24%;top: 12%;left: 40.5%;}
-	.sx681MOS4_b_position{width:11.5%;height:24%;top: 12%;left: 54%;}
-	.sx681MOS5_a_position{width:13.5%;height:21%;top: 15%;left: 7%;}
-	.sx681MOS5_b_position{width:11.5%;height:24%;top: 12%;left: 29%;}
-	.sx681MIC5_a_position{width:21%;height:17%;top: 40%;left: 13%;}
-	.sx681MIC5_b_position{width:21%;height:17%;top: 40%;left: 62.5%;}
-	.sx681MIC7_position{width:29.5%;height:30%;top: 37%;left: 35%;}
-	.sx681MIC8_position{width:23.5%;height:23%;top: 66%;left: 38%;}
+	.sx681DI1_position{width:7.6%;height:14%;top: 51.5%;left: 84%;padding-top: 6px;}
+	.sx681DI2_a_position{width:8.5%;height:15%;top:41%;left:5.5%;padding-top: 6px;}
+	.sx681DI2_b_position{width:8.5%;height:15%;top:55%;left:5.5%;padding-top: 6px;}
+	.sx681MOS3_a_position{width:11.5%;height:24%;top: 12%;left: 71.5%;padding-top: 15px;}
+	.sx681MOS3_b_position{width:13.8%;height:22%;top: 21.5%;left: 84%;padding-top: 15px;}
+	.sx681MOS4_a_position{width:11.8%;height:24%;top: 12%;left: 40.5%;padding-top: 15px;}
+	.sx681MOS4_b_position{width:11.5%;height:24%;top: 12%;left: 54%;padding-top: 15px;}
+	.sx681MOS5_a_position{width:13.5%;height:21%;top: 15%;left: 7%;padding-top: 15px;}
+	.sx681MOS5_b_position{width:11.5%;height:24%;top: 12%;left: 29%;padding-top: 15px;}
+	.sx681MIC5_a_position{width:21%;height:17%;top: 40%;left: 13%;padding-top: 11px;}
+	.sx681MIC5_b_position{width:21%;height:17%;top: 40%;left: 62.5%;padding-top: 11px;}
+	.sx681MIC7_position{width:29.5%;height:30%;top: 37%;left: 35%;padding-top: 20px;}
+	.sx681MIC8_position{width:23.5%;height:23%;top: 66%;left: 38%;padding-top: 15px;}
 
-	.simDI1_position{width:6.6%;height:15%;top: 29%;left: 69.8%;}
+	.simDI1_position{width:6.6%;height:12%;top: 29%;left: 69.8%;}
 	.simDI2_a_position{width:6.6%;height:12%;top: 34%;left: 74.8%;}
 	.simDI2_b_position{width:6.6%;height:12%;top: 36%;left: 79.8%;}
-	.simMOS3_a_position{width:10%;height:25%;top: 51%;left: 16.8%;}
-	.simMOS3_b_position{width:10%;height:25%;top: 51%;left: 25%;}
+	.simMOS3_a_position{width:10%;height:25%;top: 51%;left: 16.8%;padding-top: 20px;}
+	.simMOS3_b_position{width:10%;height:25%;top: 51%;left: 25%;padding-top: 20px;}
 	.simMOS4_a_position{width:13%;height:28%;top: 29%;left: 33.3%;padding-top: 20px;}
-	.simMOS4_b_position{width:10%;height:25%;top: 51%;left: 51%;}
-	.simMOS5_a_position{width:10%;height:25%;top: 51%;left: 59%;}
-	.simMOS5_b_position{width:10%;height:25%;top: 51%;left: 66%;}
-	.simMIC6_position{width:12%;height:22%;top: 24%;left: 58.5%;}
-	.simMIC7_position{width:12%;height:22%;top: 24%;left: 21.5%;}
+	.simMOS4_b_position{width:10%;height:25%;top: 51%;left: 51%;padding-top: 20px;}
+	.simMOS5_a_position{width:10%;height:25%;top: 51%;left: 58.4%;padding-top: 20px;}
+	.simMOS5_b_position{width:10%;height:25%;top: 51%;left: 66%;padding-top: 20px;}
+	.simMIC6_position{width:12%;height:22%;top: 24%;left: 58.5%;padding-top: 18px;}
+	.simMIC7_position{width:12%;height:22%;top: 24%;left: 21.5%;padding-top: 18px;}
 
 	/**位置块 的背景图片*/
 	.sxDI_bg{background:url(../../../assets/img/DI.png);}

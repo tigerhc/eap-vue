@@ -48,7 +48,7 @@
 			</button>
 		</div>
 		<div class="echAppPanel">
-			<div id="echApp" :style="{width: '100%', height: '100%',position:'relative',margin:'50px auto'}"/>
+			<div id="echApp" :style="{width: '100%', height: '100%',position:'relative'}"/>
 		</div>
 	</div>
 </template>
@@ -111,7 +111,7 @@ export default {
           }
         })
         if (this.productionNo === '5GI' || this.productionNo === '6GI') {
-          this.detailOptions = [{ 'dtlName': 'DB', 'dtlValue': '1' }, { 'dtlName': 'DM', 'dtlValue': '2' }, { 'dtlName': '二级管', 'dtlValue': '3' }, { 'dtlName': '电熔', 'dtlValue': '4' }]
+          this.detailOptions = [{ 'dtlName': 'DB', 'dtlValue': '1' }, { 'dtlName': 'DM', 'dtlValue': '3' }, { 'dtlName': '二级管', 'dtlValue': '2' }, { 'dtlName': '电熔', 'dtlValue': '4' }]
         } else {
           this.detailOptions = []
         }

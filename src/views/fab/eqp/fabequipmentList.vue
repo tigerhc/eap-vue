@@ -12,7 +12,7 @@
       <!--<w-table-col name="sortNo" label="排序号" sort/>-->
       <!-- todo filterable 属性-->
       <w-table-col name="modelId" label="设备型号" hidden query dict url="/fab/fabequipmentmodel/list" namekey="modelName" querymode="select" condition="eq" filterable />
-      <w-table-col name="activeFlag" label="有效标志" width="80" align="center" dict="ACTIVE_FLAG" query condition="eq" />
+      <w-table-col name="activeFlag" label="有效标志" width="100" align="center" dict="ACTIVE_FLAG" query condition="eq" />
       <!--todo date 点击查询后,时间控件值消失-->
       <!--<w-table-col name="updateDate" label="更新时间" width="200" align="center" sort="1" query querymode="date" condition="between"/>-->
 

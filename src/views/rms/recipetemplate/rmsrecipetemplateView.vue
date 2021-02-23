@@ -32,10 +32,28 @@
       <w-table-toolbar name="add" hidden/>
       <w-table-toolbar name="batchDelete" hidden/>
       <w-table-button name="delete" hidden/>
+      <w-table-toolbar name="uploadRecipeTemplateButton" label="上传模板" type="primary" tip="上传模板？" icon="el-icon-circle-plus-outline" />
     </w-edt-table>
+
+    <el-dialog :visible.sync="dialogFormUploadRecipeTemplateVisible" title="上传模板">
+      <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
+      <el-form ref="dataModifyForm" :model="uploadRecipeTemplate" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+<!--        <el-form-item label="程序名称" prop="recipeName">-->
+<!--          <el-input v-model="uploadRecipeTemplate.recipeName"/>-->
+<!--        </el-form-item>-->
+        <el-form-item label="文件名称" prop="recipeName">
+          <el-input v-model="uploadRecipeTemplate.fileName"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormUploadRecipeTemplateVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="doUploadRecipeTemplate">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
+import request from '@/utils/request'
 export default {
   name: 'OvenEditModel',
   data() {
@@ -68,6 +86,10 @@ export default {
         param: {
           eqpModelId: ''
         }
+      },
+      dialogFormUploadRecipeTemplateVisible: false,
+      uploadRecipeTemplate: {
+        fileName: ''
       },
       formConf: {
         url: '/fab/fabequipmentmodel/',
@@ -105,6 +127,37 @@ export default {
     newGrid() {
       const p = { paraCode: '', paraName: '', paraShortName: '', paraUnit: '', setValue: '', showFlag: '', monitorFlag: '', sortNo: '' }
       this.model.detail.push(p)
+    },
+    // 弹出一个input框,输入后发送请求
+    uploadRecipeTemplateButton(row, table, ctx) {
+      this.dialogFormUploadRecipeTemplateVisible = true
+    },
+    doUploadRecipeTemplate() {
+      request({
+        url: 'rms/rmsrecipetemplate/uploadRecipeTemplate',
+        method: 'post',
+        params: {
+          eqpModelId: this.table.param.eqpModelId,
+          fileName: this.uploadRecipeTemplate.fileName
+        }
+      }).then((res) => {
+        if (res.data.code === 0) {
+          this.$notify({
+            title: '成功',
+            message: '上传模板成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.dialogFormUploadRecipeTemplateVisible = false
+        } else {
+          this.$notify({
+            title: '失败',
+            message: res.data.msg,
+            type: 'error',
+            duration: 2000
+          })
+        }
+      })
     }
   }
 }

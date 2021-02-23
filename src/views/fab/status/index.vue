@@ -248,7 +248,7 @@ export default {
 
     getYield() {
       fetchYield({
-        lineNo: 'SIM'
+        lineNo: 'APJ'
       }).then(response => {
         this.yieldList = response.data
       })

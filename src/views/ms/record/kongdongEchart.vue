@@ -117,11 +117,11 @@ export default {
       }
     },
     positionChange(pname) {
-      if (this.positionOptions.length > 0) {
+      if (this.positionOptions.length > 0 && this.imgUrl !== '5GI' && this.imgUrl !== '6GI') {
         this.chartParam.lineType = pname
         this.imgOption = this.imgUrl + pname
+        this.searchClick()
       }
-      this.searchClick()
     },
     productionNameChange() {
       var param = {}
@@ -140,6 +140,14 @@ export default {
         this.chartParam.lineType = ''
       } else if (this.chartParam.productionName.indexOf('SIM') > -1) {
         this.imgUrl = 'SIM'
+        this.imgOption = ''
+        this.chartParam.lineType = ''
+      } else if (this.chartParam.productionName.indexOf('5GI') > -1) {
+        this.imgUrl = '5GI'
+        this.imgOption = ''
+        this.chartParam.lineType = ''
+      } else if (this.chartParam.productionName.indexOf('6GI') > -1) {
+        this.imgUrl = '6GI'
         this.imgOption = ''
         this.chartParam.lineType = ''
       } else {

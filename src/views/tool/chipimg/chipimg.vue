@@ -42,6 +42,16 @@
 			<div :class="imgOption==='SIMMIC-D-6'?'MIC_act':'sxMIC6_bg'" class="simMIC6_position smaller" @click="positionClk('MIC-D-6')">MIC-D-6</div>
 			<div :class="imgOption==='SIMMIC-7'?'MIC_act':'simMIC7_bg'" class="simMIC7_position smaller" @click="positionClk('MIC-7')">MIC-7</div>
 		</div>
+		<div v-show="imgUrl==='5GI'" class="gi5">
+			<div :class="imgOption==='MIC'?'MIC_act':'gi5MIC_bg'" class="gi5_mic_position smaller" @click="positionClk('MIC')">MIC</div>
+			<div :class="imgOption==='IGBT'?'MIC_act':'gi5IGBT_bg'" class="gi5_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
+		</div>
+		<div v-show="imgUrl==='6GI'" class="gi6">
+			<div :class="imgOption==='IGBT'?'MIC_act':'gi5IGBT_bg'" class="gi6_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
+			<div :class="imgOption==='MIC'?'MIC_act':'sxMIC6_bg'" class="gi6_mic_position smaller" @click="positionClk('MIC')">MIC</div>
+			<div :class="imgOption==='DIOD'?'MIC_act':'gi5DOID_bg'" class="gi6_diod_position smaller" @click="positionClk('DIOD')">DIOD</div>
+			<div :class="imgOption==='C'?'MIC_act':'gi5C_bg'" class="gi6_c_position smaller" @click="positionClk('C')">C</div>
+		</div>
 	</div>
 </template>
 
@@ -86,6 +96,8 @@ export default {
 	.sx680{width:100%;height:100%;background:url(../../../assets/img/SX680.png);background-repeat:no-repeat;background-size: 100% 100%;}
 	.sx681{width:100%;height:100%;background:url(../../../assets/img/SX681.png);background-repeat:no-repeat;background-size: 100% 100%;}
 	.sim{width:100%;height:100%;background:url(../../../assets/img/SIM.png);background-repeat:no-repeat;background-size: 100% 100%;}
+	.gi5{width:100%;height:100%;background:url(../../../assets/img/5GI.png);background-repeat:no-repeat;background-size: 100% 100%;}
+	.gi6{width:100%;height:100%;background:url(../../../assets/img/6GI.png);background-repeat:no-repeat;background-size: 100% 100%;}
 
 	/**位置块文字的样式*/
 	.smaller{text-align:center;line-height: 22px;font-weight: 900;font-size:10px;display:block;-webkit-transform:scale(0.7);}
@@ -128,6 +140,12 @@ export default {
 	.simMOS5_b_position{width:10%;height:25%;top: 51%;left: 66%;padding-top: 20px;}
 	.simMIC6_position{width:12%;height:22%;top: 24%;left: 58.5%;padding-top: 18px;}
 	.simMIC7_position{width:12%;height:22%;top: 24%;left: 21.5%;padding-top: 18px;}
+	.gi5_igbt_position{width:29%;height:57%;top: 36.8%;left: 43.4%;padding-top: 63px;color:#1e19c3;}
+	.gi5_mic_position{width:25%;height:76%;top: 1%;left: 14.6%;padding-top: 82px;}
+	.gi6_igbt_position{width:30%;height:71%;top: 24.8%;left: 42.6%;padding-top: 82px;}
+	.gi6_mic_position{width:32%;height:30%;top: 45.8%;left: 11.4%;padding-top: 25px;}
+	.gi6_diod_position{width:10%;height:33%;top: 15%;left: 30.1%;padding-top: 33.5px;}
+	.gi6_c_position{width:10%;height:29%;top: 15.8%;left: 16.6%;padding-top: 26px;color:white}
 
 	/**位置块 的背景图片*/
 	.sxDI_bg{background:url(../../../assets/img/DI.png);}
@@ -144,6 +162,10 @@ export default {
 	.simMOS4_bg{background:url(../../../assets/img/SIM_MOS4_a.png);}
 	.simMIC7_bg{background:url(../../../assets/img/SIM_MIC7.png);}
 	.simDI_bg{background:url(../../../assets/img/DI90.png);}
+	.gi5MIC_bg{background:url(../../../assets/img/5GI_MIC.jpg);}
+	.gi5IGBT_bg{background:url(../../../assets/img/5GI_IGBT.png);}
+	.gi5DOID_bg{background:url(../../../assets/img/DOID.png);}
+	.gi5C_bg{background:url(../../../assets/img/5GI_C.png);}
 
 	/**位置块 被选中的背景颜色*/
 	.DI_act{background-color:#3cbf3c;}

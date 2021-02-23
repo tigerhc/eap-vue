@@ -45,6 +45,15 @@
       <el-table-column prop="toY" label="Y坐标" width="80"/>
       <el-table-column prop="judgeResult" label="质量" width="80"/>
       <el-table-column :formatter="colDateFormatter" prop="startTime" label="时间" width="180"/>
+			<el-table-column prop="productionParam" label="生产条件" width="180">
+				<template v-if="scope.row.productionParam" slot-scope="scope">
+          <el-button
+            type="text"
+            size="small"
+            @click="handleParamClick(scope.row)"
+          >{{ scope.row.productionParam }}</el-button>
+        </template>
+			</el-table-column>
     </el-table>
     <el-pagination
       :current-page="searchObj.page"
@@ -201,6 +210,10 @@ export default {
           type: 'VIEW'
         }
       })
+    },
+    handleParamClick(row) {
+      // this.$alert('内容', '名称', { confirmButtonText: '确定', callback: action => { this.$message({ type: 'info', message: `action: ${ action }` }); } });
+      this.$alert(row.productionTitle, row.productionParam, '参数标题', { confirmButtonText: '确定' })
     },
     toHistory() {
       this.$router.push({

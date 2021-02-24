@@ -56,7 +56,7 @@
 			<div :class="imgOption==='SMADI-1'?'DI_act':'DI270_bg'" class="smaDI1_a_position smaller" @click="positionClk('DI-1')">DI-1</div>
 			<div :class="imgOption==='SMADI-1'?'DI_act':'simDI_bg'" class="smaDI1_b_position smaller" @click="positionClk('DI-1')">DI-1</div>
 			<div :class="imgOption==='SMADI-1'?'DI_act':'sxDI180_bg'" class="smaDI1_c_position smaller" @click="positionClk('DI-1')">DI-1</div>
-			<div :class="imgOption==='SMAMOS-D-3'?'MIC_act':'gi5MIC_bg'" class="smaMIC3_position smaller" @click="positionClk('MIC-D-3')">MIC-D-3</div>
+			<div :class="imgOption==='SMAMIC-D-3'?'MIC_act':'gi5MIC_bg'" class="smaMIC3_position smaller" @click="positionClk('MIC-D-3')">MIC-D-3</div>
 			<div :class="imgOption==='SMAMOS-3-4'?'MOS_act':'smaMOS_bg'" class="smaMOS4_a_position smaller" @click="positionClk('MOS-3-4')">MOS-3-4</div>
 			<div :class="imgOption==='SMAMOS-3-4'?'MOS_act':'smaMOS_bg'" class="smaMOS4_b_position smaller" @click="positionClk('MOS-3-4')">MOS-3-4</div>
 			<div :class="imgOption==='SMAMOS-3-4'?'MOS_act':'smaMOS_bg'" class="smaMOS4_c_position smaller" @click="positionClk('MOS-3-4')">MOS-3-4</div>

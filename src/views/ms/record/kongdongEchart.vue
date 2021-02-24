@@ -37,10 +37,10 @@
 			</button>
 		</div>
 		<div class="echartPanel">
-			<div :style="{width: '35%', height: '250px',marginLeft:'64%', marginTop:'30px'}" class="picPanel">
+			<div id="echAppLine" :style="{width: '60%', height: '300px',float:'left', marginLeft:'-4%'}"/>
+			<div :style="{width: imgUrlWidth, height: imgUrlHeight, marginTop:'30px',float:'left'}" class="picPanel">
 				<chipImg :img-url="imgUrl" :img-option="imgOption" :click-able="clickAble" @positionName="positionChange"/>
 			</div>
-			<div id="echAppLine" :style="{width: '70%', height: '300px',position:'relative',marginTop:'-250px', marginLeft:'-4%'}"/>
 		</div>
 		<el-form id="subEchart" class="form" label-width="90px" size="small">
 			<el-col :span="6">
@@ -56,7 +56,7 @@
 				<div id="echApp" :style="{width: '90%', height: '350px'}"/>
 			</div>
 			<div id="chartPanelRight">
-				<div id="echAppRight" :style="{width: '90%', height: '350px'}"/>
+				<div id="echAppRight" :style="{width: imgUrlWidth, height: imgUrlHeight}"/>
 			</div>
 		</div>
 	</div>
@@ -90,9 +90,11 @@ export default {
       clickAble: true,
       positionOptions: [],
       proNameOptions: [],
-      lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }]
+      lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }],
       // list:[{name:"T100",left:"40%",top:"30%",width:"50px",height:"60px",rotate:180,"checked":true,backgroundColor:"red",position:"relative"}],
       // picUrl:"11"
+      imgUrlWidth: '35%',
+      imgUrlHeight: '250px'
     }
   },
   mounted() {
@@ -117,7 +119,7 @@ export default {
       }
     },
     positionChange(pname) {
-      if (this.positionOptions.length > 0 && this.imgUrl !== '5GI' && this.imgUrl !== '6GI') {
+      if (this.positionOptions.length > 0 && this.imgUrl !== 'KD5GI' && this.imgUrl !== 'KD6GI') {
         this.chartParam.lineType = pname
         this.imgOption = this.imgUrl + pname
         this.searchClick()
@@ -134,26 +136,37 @@ export default {
         this.imgUrl = 'SX681'
         this.imgOption = ''
         this.chartParam.lineType = ''
+        this.imgUrlWidth = '35%'
+        this.imgUrlHeight = '250px'
       } else if (this.chartParam.productionName.indexOf('SX680') > -1) {
         this.imgUrl = 'SX680'
         this.imgOption = ''
         this.chartParam.lineType = ''
+        this.imgUrlWidth = '35%'
+        this.imgUrlHeight = '250px'
       } else if (this.chartParam.productionName.indexOf('SIM') > -1) {
         this.imgUrl = 'SIM'
         this.imgOption = ''
         this.chartParam.lineType = ''
+        this.imgUrlWidth = '35%'
+        this.imgUrlHeight = '250px'
       } else if (this.chartParam.productionName.indexOf('5GI') > -1) {
-        this.imgUrl = '5GI'
-        this.imgOption = ''
+        this.imgUrl = 'KD5GI'
         this.chartParam.lineType = ''
+        this.imgUrlWidth = '25%'
+        this.imgUrlHeight = '360px'
       } else if (this.chartParam.productionName.indexOf('6GI') > -1) {
-        this.imgUrl = '6GI'
+        this.imgUrl = 'KD6GI'
         this.imgOption = ''
         this.chartParam.lineType = ''
+        this.imgUrlWidth = '25%'
+        this.imgUrlHeight = '360px'
       } else if (this.chartParam.productionName.indexOf('SMA') > -1) {
         this.imgUrl = 'SMA'
         this.imgOption = ''
         this.chartParam.lineType = ''
+        this.imgUrlWidth = '35%'
+        this.imgUrlHeight = '250px'
       } else {
         this.imgUrl = ''
         this.imgOption = ''

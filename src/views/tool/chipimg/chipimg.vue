@@ -46,11 +46,22 @@
 			<div :class="imgOption==='5GIMIC'?'MIC_act':'sxMIC6_bg'" class="gi5_mic_position smaller" @click="positionClk('MIC')">MIC</div>
 			<div :class="imgOption==='5GIIGBT'?'MIC_act':'gi5IGBT_bg'" class="gi5_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
 		</div>
+		<div v-show="imgUrl==='KD5GI'" class="gi5">
+			<div :class="imgOption==='5GIMIC'?'MIC_act':'sxMIC6_bg'" class="gi5_mic_position smaller opacity" @click="positionClk('MIC')">MIC</div>
+			<div :class="imgOption==='5GIIGBT'?'MIC_act':'gi5IGBT_bg'" class="gi5_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
+		</div>
+
 		<div v-show="imgUrl==='6GI'" class="gi6">
 			<div :class="imgOption==='6GIIGBT'?'MIC_act':'gi5IGBT_bg'" class="gi6_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
 			<div :class="imgOption==='6GIMIC'?'MIC_act':'sxMIC6_bg'" class="gi6_mic_position smaller" @click="positionClk('MIC')">MIC</div>
 			<div :class="imgOption==='6GIDIOD'?'MIC_act':'gi5DIOD_bg'" class="gi6_diod_position smaller" @click="positionClk('DIOD')">DIOD</div>
 			<div :class="imgOption==='6GIC'?'MIC_act':'gi5C_bg'" class="gi6_c_position smaller" @click="positionClk('C')">C</div>
+		</div>
+		<div v-show="imgUrl==='KD6GI'" class="gi6">
+			<div :class="imgOption==='6GIIGBT'?'MIC_act':'gi5IGBT_bg'" class="gi6_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
+			<div :class="imgOption==='6GIMIC'?'MIC_act':'sxMIC6_bg'" class="gi6_mic_position smaller opacity" @click="positionClk('MIC')">MIC</div>
+			<div :class="imgOption==='6GIDIOD'?'MIC_act':'gi5DIOD_bg'" class="gi6_diod_position smaller opacity" @click="positionClk('DIOD')">DIOD</div>
+			<div :class="imgOption==='6GIC'?'MIC_act':'gi5C_bg'" class="gi6_c_position smaller opacity" @click="positionClk('C')">C</div>
 		</div>
 		<div v-show="imgUrl==='SMA'" class="sma">
 			<div :class="imgOption==='SMADI-1'?'DI_act':'DI270_bg'" class="smaDI1_a_position smaller" @click="positionClk('DI-1')">DI-1</div>
@@ -160,6 +171,8 @@ export default {
 	.gi6_mic_position{width:29%;height:32%;top: 56.8%;left: 46.4%;padding-top: 45px;}
 	.gi6_diod_position{width:32%;height:11%;top: 59.5%;left: 16%;padding-top: 8px;}
 	.gi6_c_position{width:28%;height:10%;top: 73.5%;left: 16.6%;padding-top: 8px;color:white}
+	.gi5_igbtselect{width:64%;height:30%;top: 26%;left: 34%;border:1px solid red;}
+	.gi5KD_mic_position{width:84%;height:25%;top: 60%;left: -4.4%;padding-top: 40px;opacity: 0.6;}
 
 	.smaDI1_a_position{width:6%;height:15%;top: 24%;left: 9.6%;}
 	.smaDI1_b_position{width:6%;height:15%;top: 39%;left: 9.6%;}
@@ -204,4 +217,7 @@ export default {
 	/**旋转角度,尽量不要转特殊角度，容易图片不清晰*/
 	.rotate180{transform:rotate(180deg);}
 	.rotate180 div{width:100%;height:100%;}
+
+	/**透明度*/
+	.opacity{opacity:0.3;}
 </style>

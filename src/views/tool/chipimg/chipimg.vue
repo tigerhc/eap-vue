@@ -49,7 +49,7 @@
 		<div v-show="imgUrl==='6GI'" class="gi6">
 			<div :class="imgOption==='6GIIGBT'?'MIC_act':'gi5IGBT_bg'" class="gi6_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
 			<div :class="imgOption==='6GIMIC'?'MIC_act':'sxMIC6_bg'" class="gi6_mic_position smaller" @click="positionClk('MIC')">MIC</div>
-			<div :class="imgOption==='6GIDIOD'?'MIC_act':'gi5DOID_bg'" class="gi6_diod_position smaller" @click="positionClk('DIOD')">DIOD</div>
+			<div :class="imgOption==='6GIDIOD'?'MIC_act':'gi5DIOD_bg'" class="gi6_diod_position smaller" @click="positionClk('DIOD')">DIOD</div>
 			<div :class="imgOption==='6GIC'?'MIC_act':'gi5C_bg'" class="gi6_c_position smaller" @click="positionClk('C')">C</div>
 		</div>
 		<div v-show="imgUrl==='SMA'" class="sma">
@@ -190,7 +190,7 @@ export default {
 	.simDI_bg{background:url(../../../assets/img/DI90.png);}
 	.gi5MIC_bg{background:url(../../../assets/img/5GI_MIC.jpg);}
 	.gi5IGBT_bg{background:url(../../../assets/img/5GI_IGBT.png);}
-	.gi5DOID_bg{background:url(../../../assets/img/DIOD.png);}
+	.gi5DIOD_bg{background:url(../../../assets/img/DIOD.png);}
 	.gi5C_bg{background:url(../../../assets/img/5GI_C.png);}
 	.smaMOS_bg{background:url(../../../assets/img/SMA_MOS.png);}
 	.DI270_bg{background:url(../../../assets/img/DI270.png);}

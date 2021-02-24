@@ -107,20 +107,13 @@ export default {
   },
   methods: {
     weightPosition() {
-      if (this.imgUrl === '5GI') {
+      if (this.imgUrl === '5GI' || this.imgUrl === '6GI') {
         if (this.chartParam.detailOption === 1) {
-          this.imgOption = '5GIIGBT'
+          this.imgOption = this.imgUrl + 'IGBT'
         } else if (this.chartParam.detailOption === 2) {
-          this.imgOption = '5GIMIC'
-        }
-        this.searchClick()
-      } else if (this.imgUrl === '6GI') {
-        if (this.chartParam.detailOption === 1) {
-          this.imgOption = '6GIIGBT'
-        } else if (this.chartParam.detailOption === 2) {
-          this.imgOption = '6GIDIOD'
+          this.imgOption = this.imgUrl + 'MIC'
         } else if (this.chartParam.detailOption === 3) {
-          this.imgOption = '6GIMIC'
+          this.imgOption = '6GIDIOD'
         } else if (this.chartParam.detailOption === 4) {
           this.imgOption = '6GIC'
         }
@@ -128,24 +121,15 @@ export default {
       }
     },
     positionChange(pname) {
-      if (this.imgUrl === '5GI') {
+      if (this.imgUrl === '5GI' || this.imgUrl === '6GI') {
         if (pname === 'MIC') {
           this.chartParam.detailOption = 2
-          this.imgOption = '5GIMIC'
+          this.imgOption = this.imgUrl + 'MIC'
         } else if (pname === 'IGBT') {
           this.chartParam.detailOption = 1
-          this.imgOption = '5GIIGBT'
-        }
-        this.searchClick()
-      } else if (this.imgUrl === '6GI') {
-        if (pname === 'MIC') {
-          this.chartParam.detailOption = 3
-          this.imgOption = '6GIMIC'
-        } else if (pname === 'IGBT') {
-          this.chartParam.detailOption = 1
-          this.imgOption = '6GIIGBT'
+          this.imgOption = this.imgUrl + 'IGBT'
         } else if (pname === 'DIOD') {
-          this.chartParam.detailOption = 2
+          this.chartParam.detailOption = 3
           this.imgOption = '6GIDIOD'
         } else if (pname === 'C') {
           this.chartParam.detailOption = 4

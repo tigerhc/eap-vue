@@ -49,7 +49,7 @@
 		</div>
 		<div class="echAppPanel">
 			<div id="echApp" :style="{width: '60%', height: '100%', position: 'relative',float:'left'}"/>
-			<div :style="{width: '35%', height: '250px',marginLeft:'5%', marginTop:'50px'}" class="picPanel">
+			<div :style="{width: imgUrlWidth, height: imgUrlHeight,marginLeft:'5%', marginTop:'50px'}" class="picPanel">
 				<chipImg :img-url="imgUrl" :img-option="imgOption" :click-able="clickAble" @positionName="positionChange"/>
 			</div>
 		</div>
@@ -85,7 +85,9 @@ export default {
       productionNoOptions: [],
       productionNo: '',
       lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }],
-      detailOptions: [{ 'dtlName': 'DB', 'dtlValue': 1 }, { 'dtlName': 'DM', 'dtlValue': 2 }, { 'dtlName': '二级管', 'dtlValue': 3 }, { 'dtlName': '电熔', 'dtlValue': 4 }]
+      detailOptions: [{ 'dtlName': 'DB', 'dtlValue': 1 }, { 'dtlName': 'DM', 'dtlValue': 2 }, { 'dtlName': '二级管', 'dtlValue': 3 }, { 'dtlName': '电熔', 'dtlValue': 4 }],
+      imgUrlWidth: '35%',
+      imgUrlHeight: '250px'
     }
   },
   mounted() {
@@ -446,16 +448,28 @@ export default {
       var _this = this
       if (_this.chartParam.productionNo.indexOf('5GI') > -1) {
         _this.imgUrl = '5GI'
+        _this.imgUrlWidth = '25%'
+        _this.imgUrlHeight = '360px'
       } else if (_this.chartParam.productionNo.indexOf('6GI') > -1) {
         _this.imgUrl = '6GI'
+        _this.imgUrlWidth = '25%'
+        _this.imgUrlHeight = '360px'
       } else if (_this.chartParam.productionNo.indexOf('SX680') > -1) {
         _this.imgUrl = 'SX680'
+        _this.imgUrlWidth = '35%'
+        _this.imgUrlHeight = '250px'
       } else if (_this.chartParam.productionNo.indexOf('SX681') > -1) {
         _this.imgUrl = 'SX681'
+        _this.imgUrlWidth = '35%'
+        _this.imgUrlHeight = '250px'
       } else if (_this.chartParam.productionNo.indexOf('SIM') > -1) {
         _this.imgUrl = 'SIM'
+        _this.imgUrlWidth = '35%'
+        _this.imgUrlHeight = '250px'
       } else if (_this.chartParam.productionNo.indexOf('SMA') > -1) {
         _this.imgUrl = 'SMA'
+        _this.imgUrlWidth = '35%'
+        _this.imgUrlHeight = '250px'
       }
 
       request({

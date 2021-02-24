@@ -43,7 +43,7 @@
 			<div :class="imgOption==='SIMMIC-7'?'MIC_act':'simMIC7_bg'" class="simMIC7_position smaller" @click="positionClk('MIC-7')">MIC-7</div>
 		</div>
 		<div v-show="imgUrl==='5GI'" class="gi5">
-			<div :class="imgOption==='5GIMIC'?'MIC_act':'gi5MIC_bg'" class="gi5_mic_position smaller" @click="positionClk('MIC')">MIC</div>
+			<div :class="imgOption==='5GIMIC'?'MIC_act':'sxMIC6_bg'" class="gi5_mic_position smaller" @click="positionClk('MIC')">MIC</div>
 			<div :class="imgOption==='5GIIGBT'?'MIC_act':'gi5IGBT_bg'" class="gi5_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
 		</div>
 		<div v-show="imgUrl==='6GI'" class="gi6">
@@ -154,12 +154,12 @@ export default {
 	.simMOS5_b_position{width:10%;height:25%;top: 51%;left: 66%;padding-top: 20px;}
 	.simMIC6_position{width:12%;height:22%;top: 24%;left: 58.5%;padding-top: 18px;}
 	.simMIC7_position{width:12%;height:22%;top: 24%;left: 21.5%;padding-top: 18px;}
-	.gi5_igbt_position{width:29%;height:57%;top: 36.8%;left: 43.4%;padding-top: 63px;color:#1e19c3;}
-	.gi5_mic_position{width:25%;height:76%;top: 1%;left: 14.6%;padding-top: 82px;}
-	.gi6_igbt_position{width:30%;height:71%;top: 24.8%;left: 42.6%;padding-top: 82px;}
-	.gi6_mic_position{width:32%;height:30%;top: 45.8%;left: 11.4%;padding-top: 25px;}
-	.gi6_diod_position{width:10%;height:33%;top: 15%;left: 30.1%;padding-top: 33.5px;}
-	.gi6_c_position{width:10%;height:29%;top: 15.8%;left: 16.6%;padding-top: 26px;color:white}
+	.gi5_igbt_position{width:64%;height:30%;top: 26%;left: 34%;padding-top: 45px;}
+	.gi5_mic_position{width:84%;height:25%;top: 60%;left: -4.4%;padding-top: 40px;}
+	.gi6_igbt_position{width:71%;height:29%;top: 27.8%;left: 24.6%;padding-top: 46px;}
+	.gi6_mic_position{width:29%;height:32%;top: 56.8%;left: 46.4%;padding-top: 45px;}
+	.gi6_diod_position{width:32%;height:11%;top: 59.5%;left: 16%;padding-top: 8px;}
+	.gi6_c_position{width:28%;height:10%;top: 73.5%;left: 16.6%;padding-top: 8px;color:white}
 
 	.smaDI1_a_position{width:6%;height:15%;top: 24%;left: 9.6%;}
 	.smaDI1_b_position{width:6%;height:15%;top: 39%;left: 9.6%;}
@@ -190,7 +190,7 @@ export default {
 	.simDI_bg{background:url(../../../assets/img/DI90.png);}
 	.gi5MIC_bg{background:url(../../../assets/img/5GI_MIC.jpg);}
 	.gi5IGBT_bg{background:url(../../../assets/img/5GI_IGBT.png);}
-	.gi5DOID_bg{background:url(../../../assets/img/DOID.png);}
+	.gi5DOID_bg{background:url(../../../assets/img/DIOD.png);}
 	.gi5C_bg{background:url(../../../assets/img/5GI_C.png);}
 	.smaMOS_bg{background:url(../../../assets/img/SMA_MOS.png);}
 	.DI270_bg{background:url(../../../assets/img/DI270.png);}

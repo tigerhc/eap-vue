@@ -432,12 +432,12 @@ export default {
       var _this = this
       if (_this.chartParam.productionNo.indexOf('5GI') > -1) {
         _this.imgUrl = '5GI'
-        _this.imgUrlWidth = '25%'
-        _this.imgUrlHeight = '360px'
+        _this.imgUrlWidth = '200px'// 400
+        _this.imgUrlHeight = '320px'// 640
       } else if (_this.chartParam.productionNo.indexOf('6GI') > -1) {
         _this.imgUrl = '6GI'
-        _this.imgUrlWidth = '25%'
-        _this.imgUrlHeight = '360px'
+        _this.imgUrlWidth = '237.5px'// 475
+        _this.imgUrlHeight = '365px'// 730
       } else if (_this.chartParam.productionNo.indexOf('SX680') > -1) {
         _this.imgUrl = 'SX680'
         _this.imgUrlWidth = '35%'

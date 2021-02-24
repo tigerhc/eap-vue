@@ -43,14 +43,27 @@
 			<div :class="imgOption==='SIMMIC-7'?'MIC_act':'simMIC7_bg'" class="simMIC7_position smaller" @click="positionClk('MIC-7')">MIC-7</div>
 		</div>
 		<div v-show="imgUrl==='5GI'" class="gi5">
-			<div :class="imgOption==='MIC'?'MIC_act':'gi5MIC_bg'" class="gi5_mic_position smaller" @click="positionClk('MIC')">MIC</div>
-			<div :class="imgOption==='IGBT'?'MIC_act':'gi5IGBT_bg'" class="gi5_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
+			<div :class="imgOption==='5GIMIC'?'MIC_act':'gi5MIC_bg'" class="gi5_mic_position smaller" @click="positionClk('MIC')">MIC</div>
+			<div :class="imgOption==='5GIIGBT'?'MIC_act':'gi5IGBT_bg'" class="gi5_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
 		</div>
 		<div v-show="imgUrl==='6GI'" class="gi6">
-			<div :class="imgOption==='IGBT'?'MIC_act':'gi5IGBT_bg'" class="gi6_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
-			<div :class="imgOption==='MIC'?'MIC_act':'sxMIC6_bg'" class="gi6_mic_position smaller" @click="positionClk('MIC')">MIC</div>
-			<div :class="imgOption==='DIOD'?'MIC_act':'gi5DOID_bg'" class="gi6_diod_position smaller" @click="positionClk('DIOD')">DIOD</div>
-			<div :class="imgOption==='C'?'MIC_act':'gi5C_bg'" class="gi6_c_position smaller" @click="positionClk('C')">C</div>
+			<div :class="imgOption==='6GIIGBT'?'MIC_act':'gi5IGBT_bg'" class="gi6_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
+			<div :class="imgOption==='6GIMIC'?'MIC_act':'sxMIC6_bg'" class="gi6_mic_position smaller" @click="positionClk('MIC')">MIC</div>
+			<div :class="imgOption==='6GIDIOD'?'MIC_act':'gi5DOID_bg'" class="gi6_diod_position smaller" @click="positionClk('DIOD')">DIOD</div>
+			<div :class="imgOption==='6GIC'?'MIC_act':'gi5C_bg'" class="gi6_c_position smaller" @click="positionClk('C')">C</div>
+		</div>
+		<div v-show="imgUrl==='SMA'" class="sma">
+			<div :class="imgOption==='SMADI-1'?'DI_act':'DI270_bg'" class="smaDI1_a_position smaller" @click="positionClk('DI-1')">DI-1</div>
+			<div :class="imgOption==='SMADI-1'?'DI_act':'simDI_bg'" class="smaDI1_b_position smaller" @click="positionClk('DI-1')">DI-1</div>
+			<div :class="imgOption==='SMADI-1'?'DI_act':'sxDI180_bg'" class="smaDI1_c_position smaller" @click="positionClk('DI-1')">DI-1</div>
+			<div :class="imgOption==='SMAMOS-D-3'?'MIC_act':'gi5MIC_bg'" class="smaMIC3_position smaller" @click="positionClk('MIC-D-3')">MIC-D-3</div>
+			<div :class="imgOption==='SMAMOS-3-4'?'MOS_act':'smaMOS_bg'" class="smaMOS4_a_position smaller" @click="positionClk('MOS-3-4')">MOS-3-4</div>
+			<div :class="imgOption==='SMAMOS-3-4'?'MOS_act':'smaMOS_bg'" class="smaMOS4_b_position smaller" @click="positionClk('MOS-3-4')">MOS-3-4</div>
+			<div :class="imgOption==='SMAMOS-3-4'?'MOS_act':'smaMOS_bg'" class="smaMOS4_c_position smaller" @click="positionClk('MOS-3-4')">MOS-3-4</div>
+			<div :class="imgOption==='SMAMOS-2'?'MOS_act':'smaMOS_bg'" class="smaMOS2_a_position smaller" @click="positionClk('MOS-2')">MOS-2</div>
+			<div :class="imgOption==='SMAMOS-2'?'MOS_act':'smaMOS_bg'" class="smaMOS2_b_position smaller" @click="positionClk('MOS-2')">MOS-2</div>
+			<div :class="imgOption==='SMAMOS-2'?'MOS_act':'smaMOS_bg'" class="smaMOS2_c_position smaller" @click="positionClk('MOS-2')">MOS-2</div>
+			<div :class="imgOption==='SMAMIC-5'?'MIC_act':'simMIC7_bg'" class="smaMIC5_position smaller" @click="positionClk('MIC-5')">MIC-5</div>
 		</div>
 	</div>
 </template>
@@ -98,6 +111,7 @@ export default {
 	.sim{width:100%;height:100%;background:url(../../../assets/img/SIM.png);background-repeat:no-repeat;background-size: 100% 100%;}
 	.gi5{width:100%;height:100%;background:url(../../../assets/img/5GI.png);background-repeat:no-repeat;background-size: 100% 100%;}
 	.gi6{width:100%;height:100%;background:url(../../../assets/img/6GI.png);background-repeat:no-repeat;background-size: 100% 100%;}
+	.sma{width:100%;height:100%;background:url(../../../assets/img/SMA.png);background-repeat:no-repeat;background-size: 100% 100%;}
 
 	/**位置块文字的样式*/
 	.smaller{text-align:center;line-height: 22px;font-weight: 900;font-size:10px;display:block;-webkit-transform:scale(0.7);}
@@ -147,6 +161,18 @@ export default {
 	.gi6_diod_position{width:10%;height:33%;top: 15%;left: 30.1%;padding-top: 33.5px;}
 	.gi6_c_position{width:10%;height:29%;top: 15.8%;left: 16.6%;padding-top: 26px;color:white}
 
+	.smaDI1_a_position{width:6%;height:15%;top: 24%;left: 9.6%;}
+	.smaDI1_b_position{width:6%;height:15%;top: 39%;left: 9.6%;}
+	.smaDI1_c_position{width:6%;height:15%;top: 53.5%;left: 9.6%;}
+	.smaMIC3_position{width:11%;height:44%;top: 25%;left: 18.6%;writing-mode: vertical-rl;padding-right: 14px;}
+	.smaMOS4_a_position{width:13.2%;height:19%;top: 20%;left: 32.4%;padding-top: 15px;}
+	.smaMOS4_b_position{width:13.2%;height:19%;top: 35%;left: 32.4%;padding-top: 15px;}
+	.smaMOS4_c_position{width:13.2%;height:19%;top: 50%;left: 32.4%;padding-top: 15px;}
+	.smaMOS2_a_position{width:12.2%;height:19%;top: 26%;left: 55.4%;padding-top: 15px;}
+	.smaMOS2_b_position{width:12.2%;height:19%;top: 50%;left: 55.4%;padding-top: 15px;}
+	.smaMOS2_c_position{width:12.2%;height:19%;top: 21%;left: 72.2%;padding-top: 15px;}
+	.smaMIC5_position{width:9.2%;height:24%;top: 46%;left: 72.2%;padding-top: 15px;}
+
 	/**位置块 的背景图片*/
 	.sxDI_bg{background:url(../../../assets/img/DI.png);}
 	.sxDI180_bg{background:url(../../../assets/img/DI180.png);}
@@ -166,6 +192,8 @@ export default {
 	.gi5IGBT_bg{background:url(../../../assets/img/5GI_IGBT.png);}
 	.gi5DOID_bg{background:url(../../../assets/img/DOID.png);}
 	.gi5C_bg{background:url(../../../assets/img/5GI_C.png);}
+	.smaMOS_bg{background:url(../../../assets/img/SMA_MOS.png);}
+	.DI270_bg{background:url(../../../assets/img/DI270.png);}
 
 	/**位置块 被选中的背景颜色*/
 	.DI_act{background-color:#3cbf3c;}

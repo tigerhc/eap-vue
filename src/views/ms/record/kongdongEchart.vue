@@ -150,6 +150,10 @@ export default {
         this.imgUrl = '6GI'
         this.imgOption = ''
         this.chartParam.lineType = ''
+      } else if (this.chartParam.productionName.indexOf('SMA') > -1) {
+        this.imgUrl = 'SMA'
+        this.imgOption = ''
+        this.chartParam.lineType = ''
       } else {
         this.imgUrl = ''
         this.imgOption = ''

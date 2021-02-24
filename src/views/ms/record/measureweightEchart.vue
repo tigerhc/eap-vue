@@ -25,10 +25,10 @@
                 :label="item"
                 :value="item" />
             </el-select>
-						<el-select v-model="chartParam.detailOption" class="wid90">
+						<el-select v-show="productionNo==='5GI'||productionNo==='6GI'" v-model="chartParam.detailOption" class="wid90" @change="weightPosition">
               <el-option
                 v-for="item in detailOptions"
-                :key="item"
+                :key="item.dtlName"
                 :label="item.dtlName"
                 :value="item.dtlValue" />
             </el-select>
@@ -48,7 +48,10 @@
 			</button>
 		</div>
 		<div class="echAppPanel">
-			<div id="echApp" :style="{width: '100%', height: '100%',position:'relative'}"/>
+			<div id="echApp" :style="{width: '60%', height: '100%', position: 'relative',float:'left'}"/>
+			<div :style="{width: '35%', height: '250px',marginLeft:'5%', marginTop:'50px'}" class="picPanel">
+				<chipImg :img-url="imgUrl" :img-option="imgOption" :click-able="clickAble" @positionName="positionChange"/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -57,9 +60,13 @@
 import echarts from 'echarts'
 import { weightChart, productionNoSelect } from '@/api/ms/monitor'
 import request from '@/utils/request'
+import chipImg from '@/views/tool/chipimg/chipimg'
 
 export default {
   name: 'MeasureweightEchart',
+  components: {
+    chipImg
+  },
   data() {
     return {
       chart: null,
@@ -72,10 +79,13 @@ export default {
         endTime: '',
         lotNo: ''
       },
+      imgUrl: '',
+      imgOption: '',
+      clickAble: true,
       productionNoOptions: [],
       productionNo: '',
       lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }],
-      detailOptions: []
+      detailOptions: [{ 'dtlName': 'DB', 'dtlValue': 1 }, { 'dtlName': 'DM', 'dtlValue': 2 }, { 'dtlName': '二级管', 'dtlValue': 3 }, { 'dtlName': '电熔', 'dtlValue': 4 }]
     }
   },
   mounted() {
@@ -94,6 +104,54 @@ export default {
     //    })
   },
   methods: {
+    weightPosition() {
+      if (this.imgUrl === '5GI') {
+        if (this.chartParam.detailOption === 1) {
+          this.imgOption = '5GIIGBT'
+        } else if (this.chartParam.detailOption === 2) {
+          this.imgOption = '5GIMIC'
+        }
+        this.searchClick()
+      } else if (this.imgUrl === '6GI') {
+        if (this.chartParam.detailOption === 1) {
+          this.imgOption = '6GIIGBT'
+        } else if (this.chartParam.detailOption === 2) {
+          this.imgOption = '6GIDIOD'
+        } else if (this.chartParam.detailOption === 3) {
+          this.imgOption = '6GIMIC'
+        } else if (this.chartParam.detailOption === 4) {
+          this.imgOption = '6GIC'
+        }
+        this.searchClick()
+      }
+    },
+    positionChange(pname) {
+      if (this.imgUrl === '5GI') {
+        if (pname === 'MIC') {
+          this.chartParam.detailOption = 2
+          this.imgOption = '5GIMIC'
+        } else if (pname === 'IGBT') {
+          this.chartParam.detailOption = 1
+          this.imgOption = '5GIIGBT'
+        }
+        this.searchClick()
+      } else if (this.imgUrl === '6GI') {
+        if (pname === 'MIC') {
+          this.chartParam.detailOption = 3
+          this.imgOption = '6GIMIC'
+        } else if (pname === 'IGBT') {
+          this.chartParam.detailOption = 1
+          this.imgOption = '6GIIGBT'
+        } else if (pname === 'DIOD') {
+          this.chartParam.detailOption = 2
+          this.imgOption = '6GIDIOD'
+        } else if (pname === 'C') {
+          this.chartParam.detailOption = 4
+          this.imgOption = '6GIC'
+        }
+        this.searchClick()
+      }
+    },
     productionNoChange() {
       // 当下拉框中的值变化时，清除关联的下拉框原来的值
       this.chartParam.productionNo = ''
@@ -110,11 +168,6 @@ export default {
             alert(res.data.msg)
           }
         })
-        if (this.productionNo === '5GI' || this.productionNo === '6GI') {
-          this.detailOptions = [{ 'dtlName': 'DB', 'dtlValue': '1' }, { 'dtlName': 'DM', 'dtlValue': '2' }, { 'dtlName': '二级管', 'dtlValue': '3' }, { 'dtlName': '电熔', 'dtlValue': '4' }]
-        } else {
-          this.detailOptions = []
-        }
       }
     },
     searchClick() {
@@ -391,6 +444,20 @@ export default {
     },
     updateEqp() {
       var _this = this
+      if (_this.chartParam.productionNo.indexOf('5GI') > -1) {
+        _this.imgUrl = '5GI'
+      } else if (_this.chartParam.productionNo.indexOf('6GI') > -1) {
+        _this.imgUrl = '6GI'
+      } else if (_this.chartParam.productionNo.indexOf('SX680') > -1) {
+        _this.imgUrl = 'SX680'
+      } else if (_this.chartParam.productionNo.indexOf('SX681') > -1) {
+        _this.imgUrl = 'SX681'
+      } else if (_this.chartParam.productionNo.indexOf('SIM') > -1) {
+        _this.imgUrl = 'SIM'
+      } else if (_this.chartParam.productionNo.indexOf('SMA') > -1) {
+        _this.imgUrl = 'SMA'
+      }
+
       request({
         url: 'ms/msmeasurerecord/getEqpIdOptions?lineNo=' + this.lineNo,
         method: 'get'
@@ -445,4 +512,5 @@ export default {
 		height:400px;
 		float:left;
 	}
+	.picPanel{position: relative;float:left;border: 1px solid #b7b2b2;}
 </style>

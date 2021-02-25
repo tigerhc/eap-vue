@@ -153,14 +153,14 @@ export default {
       } else if (this.chartParam.productionName.indexOf('5GI') > -1) {
         this.imgUrl = 'KD5GI'
         this.chartParam.lineType = ''
-        this.imgUrlWidth = '25%'
-        this.imgUrlHeight = '360px'
+        this.imgUrlWidth = '200px'
+        this.imgUrlHeight = '320px'
       } else if (this.chartParam.productionName.indexOf('6GI') > -1) {
         this.imgUrl = 'KD6GI'
         this.imgOption = ''
         this.chartParam.lineType = ''
-        this.imgUrlWidth = '25%'
-        this.imgUrlHeight = '360px'
+        this.imgUrlWidth = '237.5px'
+        this.imgUrlHeight = '365px'
       } else if (this.chartParam.productionName.indexOf('SMA') > -1) {
         this.imgUrl = 'SMA'
         this.imgOption = ''

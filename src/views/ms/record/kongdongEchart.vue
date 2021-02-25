@@ -23,7 +23,7 @@
 				</el-col>
 				<el-col :span="9">
 					<el-form-item label="日期:">
-            <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
+            <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
 					</el-form-item>
 				</el-col>
 			</el-form>

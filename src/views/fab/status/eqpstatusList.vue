@@ -123,14 +123,16 @@ export default {
         ALARM: 'span-ALARM',
         DOWN: 'span-DOWN',
         RUN: 'span-RUN',
-        IDLE: 'span-IDLE'
+        IDLE: 'span-IDLE',
+        READY: 'span-READY'
       }, // 显示状态
       statusColor: {
         ALARM: '#FF0000',
         DOWN: '#808080',
         RUN: '#FFFF00',
         IDLE: '#43ca17',
-        IDLE2: '#8B0000'
+        IDLE2: '#8B0000',
+        READY: '#000000'
       }
 
     }
@@ -259,7 +261,8 @@ export default {
                   DOWN: '#808080',
                   IDLE: '#FFFF00',
                   RUN: '#43ca17',
-                  IDLE2: '#8B0000'
+                  IDLE2: '#8B0000',
+                  READY: '#87CEFA'
                 }
                 return statusColor2[params.name]
               }
@@ -299,6 +302,9 @@ export default {
 }
 .span-IDLE {
   background-color: yellow;
+}
+.span-READY {
+  background-color: #87CEFA;
 }
 .span-STOP {
   background-color: DarkRed;

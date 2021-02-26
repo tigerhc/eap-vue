@@ -124,6 +124,28 @@ export default {
     },
     // 弹出一个input框,输入后发送请求
     uploadRecipe(row, table, ctx) {
+      request({
+        url: 'rms/rmsrecipe/getRecipeList',
+        method: 'post',
+        params: this.uploadRecipe1
+      }).then((res) => {
+        if (res.data.code === 0) {
+          this.$notify({
+            title: '成功',
+            message: '上传recipe成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.dialogFormUploadRecipeVisible = false
+        } else {
+          this.$notify({
+            title: '失败',
+            message: res.data.msg,
+            type: 'error',
+            duration: 2000
+          })
+        }
+      })
       this.dialogFormUploadRecipeVisible = true
     },
     downloadRecipe(row, table, ctx) {

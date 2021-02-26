@@ -177,7 +177,7 @@ export default {
 	.smaDI1_a_position{width:6%;height:15%;top: 24%;left: 9.6%;}
 	.smaDI1_b_position{width:6%;height:15%;top: 39%;left: 9.6%;}
 	.smaDI1_c_position{width:6%;height:15%;top: 53.5%;left: 9.6%;}
-	.smaMIC3_position{width:11%;height:44%;top: 25%;left: 18.6%;writing-mode: vertical-rl;padding-right: 14px;}
+	.smaMIC3_position{width:11%;height:44%;top: 25%;left: 18.6%;padding-top: 36px;}/**writing-mode: vertical-rl;padding-right: 14px;*/
 	.smaMOS4_a_position{width:13.2%;height:19%;top: 20%;left: 32.4%;padding-top: 15px;}
 	.smaMOS4_b_position{width:13.2%;height:19%;top: 35%;left: 32.4%;padding-top: 15px;}
 	.smaMOS4_c_position{width:13.2%;height:19%;top: 50%;left: 32.4%;padding-top: 15px;}

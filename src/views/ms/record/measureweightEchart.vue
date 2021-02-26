@@ -18,7 +18,7 @@
                 :label="item.lineNo"
                 :value="item.lineNo" />
             </el-select>
-						<el-select v-model="chartParam.productionNo" @change="updateEqp">
+						<el-select v-model="chartParam.productionNo" class="wider" @change="updateEqp">
               <el-option
                 v-for="item in productionNoOptions"
                 :key="item"
@@ -35,7 +35,7 @@
           </el-form-item>
 				</el-col>
 				<el-col :span="6">
-            <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
+            <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
 				</el-col>
 			</el-form>
 			<button type="button" class="el-button el-button--primary el-button--medium filter-item" style="margin-left: 10px;" @click="searchClick">
@@ -511,4 +511,5 @@ export default {
 		float:left;
 	}
 	.picPanel{position: relative;float:left;border: 1px solid #b7b2b2;}
+	.wider{width:260px;}
 </style>

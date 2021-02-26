@@ -12,7 +12,7 @@
 									:label="item.lineNo"
 									:value="item.lineNo" />
 							</el-select>
-							<el-select v-model="chartParam.productionName" @change="productionNameChange">
+							<el-select v-model="chartParam.productionName" class="wider" @change="productionNameChange">
 								<el-option v-for="item in proNameOptions" :key="item" :label="item" :value="item" />
 							</el-select>
 							<el-select v-model="chartParam.lineType" class="wid90" @change="lineTypeChange">
@@ -441,5 +441,6 @@ export default {
 	.echartPanel{
 		width:100%;height:300px;float:left;
 	}
-	.wid90{width:90px;}
+	.wid90{width:100px;}
+	.wider{width:240px;}
 </style>

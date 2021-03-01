@@ -125,14 +125,16 @@ export default {
     // 弹出一个input框,输入后发送请求
     uploadRecipe(row, table, ctx) {
       request({
-        url: 'rms/rmsrecipe/getRecipeList',
-        method: 'post',
-        params: this.uploadRecipe1
+        url: '/rms2/rmsrecipe/getRecipeList',
+        method: 'get',
+        params: {
+          eqpId: 'NANO'
+        }
       }).then((res) => {
         if (res.data.code === 0) {
           this.$notify({
             title: '成功',
-            message: '上传recipe成功',
+            message: '查询recipe成功',
             type: 'success',
             duration: 2000
           })

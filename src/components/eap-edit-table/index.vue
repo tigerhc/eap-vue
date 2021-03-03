@@ -212,7 +212,6 @@ export default {
     },
     refresh(page = 1) {
       this.query.page = page
-      this.query.limit = this.limit
       this.query.queryFields = this.queryName
       this.getList(this.query)
     },

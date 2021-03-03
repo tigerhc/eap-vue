@@ -6,7 +6,7 @@
       <el-input v-model="model.fileType" :disabled="true" label="文件类型" />
     </w-form>
     <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
-    <w-edt-table v-slot="{row}" ref="language" v-bind="table" :params="table.param" :limit="99999" sort="sort_no.asc" url="/edc/edcconfigfilecsv/">
+    <w-edt-table v-slot="{row}" ref="language" v-bind="table" :params="table.param" sort="sort_no.asc" url="/edc/edcconfigfilecsv/">
       <w-table-col name="colCode" required label="参数代码" edit="false" query condition="like">
         <el-input v-model="table.model.colCode" />
       </w-table-col>

@@ -41,14 +41,14 @@
         <el-form-item label="程序名称" prop="recipeName">
 <!--          <el-input v-model="uploadRecipe1.recipeName"/>-->
           <el-select
-            v-model="uploadRecipe1.recipeName"
+            v-model="uploadRecipe1.recipeList"
             multiple
             collapse-tags
             filterable
             style="width:300px;"
             placeholder="请选择">
             <el-option
-              v-for="item in recipeList"
+              v-for="item in allRecipeList"
               :key="item.value"
               :label="item.label"
               :value="item.value"/>
@@ -100,7 +100,8 @@ export default {
         eqpId: '',
         recipeName: ''
       },
-      eqpIdList: []
+      eqpIdList: [],
+      allRecipeList: []
     }
   },
   watch: {
@@ -123,13 +124,13 @@ export default {
           if (!oary) {
             return
           }
-          this.recipeList = []
+          this.allRecipeList = []
           for (var i = 0; i < oary.length; i++) {
             var obj = {
               value: oary[i],
               label: oary[i]
             }
-            this.uploadRecipe1.recipeList.push(obj)
+            this.allRecipeList.push(obj)
           }
         } else {
           this.$notify({
@@ -140,7 +141,6 @@ export default {
           })
         }
       })
-      true
     }
   },
   created() {
@@ -184,10 +184,21 @@ export default {
     },
 
     doUploadRecipe(row, table, ctx) {
+      var oary = this.uploadRecipe1.recipeList
+      if (!oary) {
+        return
+      }
+      var recipe = ''
+      for (var i = 0; i < oary.length; i++) {
+        recipe = recipe + '@' + oary[i]
+      }
       request({
         url: 'rms/rmsrecipe/uploadrecipe',
         method: 'post',
-        params: this.uploadRecipe1
+        params: {
+          eqpId: this.downloadRecipe1.eqpId,
+          recipeList: recipe
+        }
       }).then((res) => {
         if (res.data.code === 0) {
           this.$notify({

@@ -39,7 +39,20 @@
           <w-select-eqp v-model="uploadRecipe1.eqpId" :multiple="false" param="filter" style="width:300px"/>
         </el-form-item>
         <el-form-item label="程序名称" prop="recipeName">
-          <el-input v-model="uploadRecipe1.recipeName"/>
+<!--          <el-input v-model="uploadRecipe1.recipeName"/>-->
+          <el-select
+            v-model="uploadRecipe1.recipeName"
+            multiple
+            collapse-tags
+            filterable
+            style="width:300px;"
+            placeholder="请选择">
+            <el-option
+              v-for="item in recipeList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"/>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -52,7 +65,7 @@
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
       <el-form ref="dataModifyForm" :model="downloadRecipe1" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="设备号" prop="eqpId">
-          <w-select-eqp v-model="downloadRecipe1.eqpId" :multiple="false" param="filter" style="width:300px"/>
+          <w-select-eqp v-model="downloadRecipe1.eqpId" :multiple="false" param="filter" style="width:300px" />
         </el-form-item>
         <el-form-item label="程序名称" prop="recipeName">
           <el-input v-model="downloadRecipe1.recipeName"/>
@@ -80,7 +93,7 @@ export default {
       dialogFormUploadRecipeVisible: false,
       uploadRecipe1: {
         eqpId: '',
-        recipeName: ''
+        recipeList: []
       },
       dialogFormDownloadRecipeVisible: false,
       downloadRecipe1: {
@@ -88,6 +101,46 @@ export default {
         recipeName: ''
       },
       eqpIdList: []
+    }
+  },
+  watch: {
+    'uploadRecipe1.eqpId': function(val) {
+      request({
+        url: '/rms2/rmsrecipe/getRecipeList',
+        method: 'get',
+        params: {
+          eqpId: val
+        }
+      }).then((res) => {
+        if (res.data.code === 0) {
+          this.$notify({
+            title: '成功',
+            message: '查询recipe成功',
+            type: 'success',
+            duration: 2000
+          })
+          var oary = res.data.results
+          if (!oary) {
+            return
+          }
+          this.recipeList = []
+          for (var i = 0; i < oary.length; i++) {
+            var obj = {
+              value: oary[i],
+              label: oary[i]
+            }
+            this.uploadRecipe1.recipeList.push(obj)
+          }
+        } else {
+          this.$notify({
+            title: '失败',
+            message: res.data.msg,
+            type: 'error',
+            duration: 2000
+          })
+        }
+      })
+      true
     }
   },
   created() {
@@ -124,30 +177,6 @@ export default {
     },
     // 弹出一个input框,输入后发送请求
     uploadRecipe(row, table, ctx) {
-      request({
-        url: '/rms2/rmsrecipe/getRecipeList',
-        method: 'get',
-        params: {
-          eqpId: 'NANO'
-        }
-      }).then((res) => {
-        if (res.data.code === 0) {
-          this.$notify({
-            title: '成功',
-            message: '查询recipe成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.dialogFormUploadRecipeVisible = false
-        } else {
-          this.$notify({
-            title: '失败',
-            message: res.data.msg,
-            type: 'error',
-            duration: 2000
-          })
-        }
-      })
       this.dialogFormUploadRecipeVisible = true
     },
     downloadRecipe(row, table, ctx) {

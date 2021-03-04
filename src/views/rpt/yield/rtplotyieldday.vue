@@ -398,7 +398,8 @@ export default {
             magicType: { show: true, type: ['line', 'bar'] },
             restore: { show: true },
             saveAsImage: { show: true }
-          }
+          },
+          top: '20%'
         },
         grid: {
           top: '37%',

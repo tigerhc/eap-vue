@@ -55,6 +55,12 @@
         </template>
 			</el-table-column>
     </el-table>
+    <el-dialog :visible.sync="dialogTableVisible" title="收货地址">
+      <el-table :data="gridData">
+        <el-table-column property="date" label="" width="150"/>
+        <el-table-column property="date" label="" width="150"/>
+      </el-table>
+    </el-dialog>
     <el-pagination
       :current-page="searchObj.page"
       :page-sizes="[50, 100, 200, 500]"
@@ -107,6 +113,25 @@ export default {
         pageSize: 50,
         page: 1
       },
+      dialogTableVisible: false,
+      gridData: [{
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-04',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-01',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-03',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }],
+      da: [],
       dateOptions: {
         shortcuts: [
           {
@@ -212,8 +237,17 @@ export default {
       })
     },
     handleParamClick(row) {
-      // this.$alert('内容', '名称', { confirmButtonText: '确定', callback: action => { this.$message({ type: 'info', message: `action: ${ action }` }); } });
-      this.$alert(row.productionTitle, row.productionParam, '参数标题', { confirmButtonText: '确定' })
+      var param = row.productionParam.split(',')
+      var title = row.productionTitle.split(',')
+      for (var i = 0; i < title.length; i++) {
+        var obj = []
+        obj[0] = title[i]
+        obj[1] = param[i]
+        this.da.push(obj)
+      }
+      // this.$alert('内容', '名称', { confirmButtonText: '确定', callback: action => { this.$message({ type: 'info', message: `action: ${action}` }) } })
+      // this.$alert(row.productionTitle, row.productionParam, '参数标题', { confirmButtonText: '确定' })
+      this.dialogTableVisible = true
     },
     toHistory() {
       this.$router.push({

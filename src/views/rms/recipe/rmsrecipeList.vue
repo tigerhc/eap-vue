@@ -34,9 +34,10 @@
 
     <el-dialog :visible.sync="dialogFormUploadRecipeVisible" title="上传recipe">
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
-      <el-form ref="dataModifyForm" :model="uploadRecipe1" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+      <el-form ref="dataModifyForm" :model="uploadRecipe1" label-position="left" label-width="100px" style="width: 580px; margin-left:50px;">
         <el-form-item label="设备号" prop="eqpId">
           <w-select-eqp v-model="uploadRecipe1.eqpId" :multiple="false" param="filter" style="width:300px"/>
+          <el-button type="primary" style="display: inline-block; float: right" @click="getRecipeList">查询recipe列表</el-button>
         </el-form-item>
         <el-form-item label="程序名称" prop="recipeName">
 <!--          <el-input v-model="uploadRecipe1.recipeName"/>-->
@@ -100,47 +101,14 @@ export default {
         eqpId: '',
         recipeName: ''
       },
+      eqpIdSel: '',
       eqpIdList: [],
       allRecipeList: []
     }
   },
   watch: {
     'uploadRecipe1.eqpId': function(val) {
-      request({
-        url: '/rms2/rmsrecipe/getRecipeList',
-        method: 'get',
-        params: {
-          eqpId: val
-        }
-      }).then((res) => {
-        if (res.data.code === 0) {
-          this.$notify({
-            title: '成功',
-            message: '查询recipe成功',
-            type: 'success',
-            duration: 2000
-          })
-          var oary = res.data.results
-          if (!oary) {
-            return
-          }
-          this.allRecipeList = []
-          for (var i = 0; i < oary.length; i++) {
-            var obj = {
-              value: oary[i],
-              label: oary[i]
-            }
-            this.allRecipeList.push(obj)
-          }
-        } else {
-          this.$notify({
-            title: '失败',
-            message: res.data.msg,
-            type: 'error',
-            duration: 2000
-          })
-        }
-      })
+      this.eqpIdSel = val
     }
   },
   created() {
@@ -193,10 +161,10 @@ export default {
         recipe = recipe + '@' + oary[i]
       }
       request({
-        url: 'rms/rmsrecipe/uploadrecipe',
+        url: 'rms2/rmsrecipe/uploadrecipe',
         method: 'post',
         params: {
-          eqpId: this.downloadRecipe1.eqpId,
+          eqpId: this.uploadRecipe1.eqpId,
           recipeList: recipe
         }
       }).then((res) => {
@@ -255,6 +223,53 @@ export default {
       }).then((res) => {
         this.eqpIdList = res.data.results
       })
+    },
+    // 查询recipe列表
+    getRecipeList() {
+      if (this.eqpIdSel === '') {
+        this.$notify({
+          title: '失败',
+          message: '请先选择设备',
+          type: 'error',
+          duration: 2000
+        })
+      } else {
+        request({
+          url: '/rms2/rmsrecipe/getRecipeList',
+          method: 'get',
+          params: {
+            eqpId: this.eqpIdSel
+          }
+        }).then((res) => {
+          if (res.data.code === 0) {
+            this.$notify({
+              title: '成功',
+              message: '查询recipe成功',
+              type: 'success',
+              duration: 2000
+            })
+            var oary = res.data.results
+            if (!oary) {
+              return
+            }
+            this.allRecipeList = []
+            for (var i = 0; i < oary.length; i++) {
+              var obj = {
+                value: oary[i],
+                label: oary[i]
+              }
+              this.allRecipeList.push(obj)
+            }
+          } else {
+            this.$notify({
+              title: '失败',
+              message: res.data.msg,
+              type: 'error',
+              duration: 2000
+            })
+          }
+        })
+      }
     }
   }
 }

@@ -228,10 +228,13 @@ export default {
     initLineChart(kongdongData) {
       this.chart = echarts.init(document.getElementById('echAppLine'))
       var option = {
+        grid: {
+          top: '25%'
+        },
         tooltip: {
           trigger: 'item',
           triggerOn: 'mousemove',
-          enterable: true, // 鼠标是否可进入提示框浮层中
+          enterable: true, // 鼠标是 否可进入提示框浮层中
           formatter: this.formatterHover// 修改鼠标悬停显示的内容
         },
         toolbox: {

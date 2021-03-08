@@ -45,21 +45,23 @@
       <el-table-column prop="toY" label="Y坐标" width="80"/>
       <el-table-column prop="judgeResult" label="质量" width="80"/>
       <el-table-column :formatter="colDateFormatter" prop="startTime" label="时间" width="180"/>
-			<el-table-column prop="productionParam" label="生产条件" width="180">
-				<template v-if="scope.row.productionParam" slot-scope="scope">
+      <el-table-column prop="productionParam" label="生产条件" width="180">
+        <template v-if="scope.row.productionParam" slot-scope="scope">
           <el-button
             type="text"
             size="small"
             @click="handleParamClick(scope.row)"
           >{{ scope.row.productionParam }}</el-button>
         </template>
-			</el-table-column>
+      </el-table-column>
     </el-table>
-    <el-dialog :visible.sync="dialogTableVisible" title="收货地址">
-      <el-table :data="gridData">
-        <el-table-column property="date" label="" width="150"/>
-        <el-table-column property="date" label="" width="150"/>
-      </el-table>
+    <el-dialog :visible.sync="dialogTableVisible" title="生产条件">
+      <div class="prodTitlePanel">
+        <div v-for="item in prodTitleArr" :key="item" :value="item" class="prodTitle">{{ item }}：</div>
+      </div>
+      <div class="prodValuePanel">
+        <div v-for="(item,index) in prodValueArr" :key="'pv'+index" :value="item" class="prodValue">{{ item }}</div>
+      </div>
     </el-dialog>
     <el-pagination
       :current-page="searchObj.page"
@@ -94,6 +96,10 @@
   color: #0033cc;
   margin: 4px;
 }
+.prodTitlePanel{width:30%;position:absolute;height:200px;}
+.prodValuePanel{width:70%;margin-left:32%;}
+.prodTitlePanel .prodTitle{width:100%;height:40px;background-color:#1e6abc;color:white;text-align:right;line-height:40px;font-weight:bold;border:1px solid white;}
+.prodValuePanel .prodValue{width:100%;height:40px;line-height:40px;padding-left:5px;}
 </style>
 
 <script>
@@ -114,23 +120,8 @@ export default {
         page: 1
       },
       dialogTableVisible: false,
-      gridData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
+      prodTitleArr: [],
+      prodValueArr: [],
       da: [],
       dateOptions: {
         shortcuts: [
@@ -247,6 +238,8 @@ export default {
       }
       // this.$alert('内容', '名称', { confirmButtonText: '确定', callback: action => { this.$message({ type: 'info', message: `action: ${action}` }) } })
       // this.$alert(row.productionTitle, row.productionParam, '参数标题', { confirmButtonText: '确定' })
+      this.prodTitleArr = row.productionTitle.split(',')
+      this.prodValueArr = row.productionParam.split(',')
       this.dialogTableVisible = true
     },
     toHistory() {

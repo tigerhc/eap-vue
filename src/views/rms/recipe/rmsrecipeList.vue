@@ -24,45 +24,73 @@
       <w-table-button hidden name="delete" />
 
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
-      <w-table-toolbar name="uploadRecipe" label="上传recipe" type="primary" tip="上传recipe？" icon="el-icon-circle-plus-outline" />
-      <w-table-toolbar name="downloadRecipe" label="下载recipe" type="primary" tip="下载recipe？" icon="fa-download" />
+<!--      <w-table-toolbar name="uploadRecipe" label="上传recipe" type="primary" tip="上传recipe？" icon="el-icon-circle-plus-outline" />-->
+<!--      <w-table-toolbar name="downloadRecipe" label="下载recipe" type="primary" tip="下载recipe？" icon="fa-download" />-->
+      <w-table-toolbar name="uploadRecipe" label="上传recipe" type="primary" icon="el-icon-circle-plus-outline" />
       <w-table-button name="edit" label="升级" url="views/rms/recipe/rmsrecipeEdit" icon="el-icon-setting" />
       <w-table-button v-if="row.approveStep === 0 && row.status !== 'Y'" name="enable" label="启用" tip="确认启用？" icon="el-icon-bell" />
       <w-table-button v-if="row.status === 'Y'" name="diable" label="停用" tip="确认停用？" icon="el-icon-circle-close" type="warning" />
 
     </w-table>
 
-    <el-dialog :visible.sync="dialogFormUploadRecipeVisible" title="上传recipe">
+    <el-dialog :visible.sync="dialogFormUploadRecipeVisible" :close-on-click-modal="false" title="上传recipe" style="width: 45%; margin: auto">
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
-      <el-form ref="dataModifyForm" :model="uploadRecipe1" label-position="left" label-width="100px" style="width: 580px; margin-left:50px;">
+      <el-form ref="dataModifyForm" :model="uploadRecipe1" label-position="left" label-width="60px" style="width: 400px">
         <el-form-item label="设备号" prop="eqpId">
           <w-select-eqp v-model="uploadRecipe1.eqpId" :multiple="false" param="filter" style="width:300px"/>
-          <el-button type="primary" style="display: inline-block; float: right" @click="getRecipeList">查询recipe列表</el-button>
         </el-form-item>
-        <el-form-item label="程序名称" prop="recipeName">
+<!--        <el-form-item label="程序名称" prop="recipeName">-->
 <!--          <el-input v-model="uploadRecipe1.recipeName"/>-->
-          <el-select
-            v-model="uploadRecipe1.recipeList"
-            multiple
-            collapse-tags
-            filterable
-            style="width:300px;"
-            placeholder="请选择">
-            <el-option
-              v-for="item in allRecipeList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-          </el-select>
-        </el-form-item>
+<!--          <el-select-->
+<!--            v-model="uploadRecipe1.recipeList"-->
+<!--            multiple-->
+<!--            collapse-tags-->
+<!--            filterable-->
+<!--            style="width:400px;"-->
+<!--            placeholder="请选择">-->
+<!--            <el-option-->
+<!--              v-for="item in allRecipeList"-->
+<!--              :key="item.value"-->
+<!--              :label="item.label"-->
+<!--              :value="item.value"/>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormUploadRecipeVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="getRecipeList">查询recipe列表</el-button>
+<!--        <el-button type="primary" @click="doUploadRecipe">{{ $t('table.confirm') }}</el-button>-->
+      </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="dialogFormRecipeList" :close-on-click-modal="false" title="配方列表" style="width: 45%; margin: auto">
+      <div class="filter-container">
+        <el-input v-model="searchValue" placeholder="配方名称" class="filter-item" style="width: 200px;" />
+        <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">{{ $t('table.search') }}</el-button>
+      </div>
+      <el-table
+        ref="multipleTable"
+        :data="searchRecipeList"
+        tooltip-effect="dark"
+        style="width: 100%"
+        height="350"
+        border
+        fit
+        @selection-change="selectionChange">
+        <el-table-column type="selection" width="39"/>
+        <el-table-column align="center" label="配方名称">
+          <template slot-scope="scope">
+            <span>{{ scope.row }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormRecipeList = false">{{ $t('table.cancel') }}</el-button>
         <el-button type="primary" @click="doUploadRecipe">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="dialogFormDownloadRecipeVisible" title="下载recipe">
+    <el-dialog :visible.sync="dialogFormDownloadRecipeVisible" :close-on-click-modal="false" title="下载recipe">
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
       <el-form ref="dataModifyForm" :model="downloadRecipe1" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="设备号" prop="eqpId">
@@ -84,9 +112,10 @@
 <script>
 import request from '@/utils/request'
 import WSelectEqp from '../../../components/eap-select-eqp/index'
+import WTable from '../../../components/eap-table/index'
 export default {
   name: 'RmsrecipeList',
-  components: { WSelectEqp },
+  components: { WTable, WSelectEqp },
   data() {
     return {
       table: {
@@ -101,9 +130,12 @@ export default {
         eqpId: '',
         recipeName: ''
       },
+      dialogFormRecipeList: false,
       eqpIdSel: '',
       eqpIdList: [],
-      allRecipeList: []
+      searchRecipeList: [],
+      allRecipeList: [],
+      searchValue: ''
     }
   },
   watch: {
@@ -175,7 +207,9 @@ export default {
             type: 'success',
             duration: 2000
           })
+          this.dialogFormRecipeList = false
           this.dialogFormUploadRecipeVisible = false
+          location.reload()
         } else {
           this.$notify({
             title: '失败',
@@ -248,18 +282,17 @@ export default {
               type: 'success',
               duration: 2000
             })
-            var oary = res.data.results
+            const oary = res.data.results
             if (!oary) {
               return
             }
             this.allRecipeList = []
-            for (var i = 0; i < oary.length; i++) {
-              var obj = {
-                value: oary[i],
-                label: oary[i]
-              }
-              this.allRecipeList.push(obj)
+            this.searchRecipeList = []
+            for (let i = 0; i < oary.length; i++) {
+              this.allRecipeList.push(oary[i])
+              this.searchRecipeList.push(oary[i])
             }
+            this.dialogFormRecipeList = true
           } else {
             this.$notify({
               title: '失败',
@@ -269,6 +302,26 @@ export default {
             })
           }
         })
+      }
+    },
+    // 选中
+    selectionChange: function(val) {
+      this.uploadRecipe1.recipeList = val
+      console.log(val)
+    },
+    // 查询
+    handleSearch: function() {
+      this.searchRecipeList = []
+      if (this.searchValue === '') {
+        for (let i = 0; i < this.allRecipeList.length; i++) {
+          this.searchRecipeList.push(this.allRecipeList[i])
+        }
+      } else {
+        for (let i = 0; i < this.allRecipeList.length; i++) {
+          if (this.allRecipeList[i].indexOf(this.searchValue) !== -1) {
+            this.searchRecipeList.push(this.allRecipeList[i])
+          }
+        }
       }
     }
   }

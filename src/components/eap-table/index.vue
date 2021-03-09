@@ -835,7 +835,7 @@ export default {
     const index = {
       type: 'index',
       label: '序号',
-      width: '50px',
+      width: '60px',
       align: 'center',
       fixed: true
     }

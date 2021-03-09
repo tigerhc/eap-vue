@@ -209,7 +209,6 @@ export default {
           })
           this.dialogFormRecipeList = false
           this.dialogFormUploadRecipeVisible = false
-          location.reload()
         } else {
           this.$notify({
             title: '失败',
@@ -307,7 +306,6 @@ export default {
     // 选中
     selectionChange: function(val) {
       this.uploadRecipe1.recipeList = val
-      console.log(val)
     },
     // 查询
     handleSearch: function() {

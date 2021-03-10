@@ -11,13 +11,13 @@
       <w-table-col name="paraName" align="left" label="参数名" width="300px" query condition="like">
         <el-input v-model="table.model.paraName" />
       </w-table-col>
-      <w-table-col name="paraShortName" label="参数简称" >
-        <el-input v-model="table.model.paraShortName" />
+      <w-table-col name="limitMin" label="最小值" >
+        <el-input v-model="table.model.limitMin" />
       </w-table-col>
-      <w-table-col name="paraUnit" label="单位" >
-        <el-input v-model="table.model.paraUnit" />
+      <w-table-col name="limitMax" label="最大值" >
+        <el-input v-model="table.model.limitMax" />
       </w-table-col>
-      <w-table-col name="setValue" label="设定值" width="300px" >
+      <w-table-col name="setValue" label="设定值" >
         <el-input v-model="table.model.setValue" />
       </w-table-col>
       <w-table-col name="showFlag" label="是否首页显示" query condition="eq" dict="SHOW_FLAG" >
@@ -75,8 +75,8 @@ export default {
         model: {
           paraCode: '',
           paraName: '',
-          paraShortName: '',
-          paraUnit: '',
+          limitMin: '',
+          limitMax: '',
           setValue: '',
           showFlag: '',
           monitorFlag: '',
@@ -125,7 +125,7 @@ export default {
       row.index = rowIndex
     },
     newGrid() {
-      const p = { paraCode: '', paraName: '', paraShortName: '', paraUnit: '', setValue: '', showFlag: '', monitorFlag: '', sortNo: '' }
+      const p = { paraCode: '', paraName: '', limitMin: '', limitMax: '', setValue: '', showFlag: '', monitorFlag: '', sortNo: '' }
       this.model.detail.push(p)
     },
     // 弹出一个input框,输入后发送请求

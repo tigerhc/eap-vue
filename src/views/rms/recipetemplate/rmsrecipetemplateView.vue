@@ -7,8 +7,8 @@
     </w-form>
     <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
     <w-edt-table v-slot="{row}" ref="language" v-bind="table" :params="table.param" url="/rms/rmsrecipetemplate/">
-      <w-table-col name="paraCode" required label="参数代码" query condition="like"/>
-      <w-table-col name="paraName" label="参数名" query condition="like">
+      <w-table-col name="paraCode" align="left" required label="参数代码" width="400px" query condition="like"/>
+      <w-table-col name="paraName" align="left" label="参数名" width="300px" query condition="like">
         <el-input v-model="table.model.paraName" />
       </w-table-col>
       <w-table-col name="paraShortName" label="参数简称" >
@@ -17,7 +17,7 @@
       <w-table-col name="paraUnit" label="单位" >
         <el-input v-model="table.model.paraUnit" />
       </w-table-col>
-      <w-table-col name="setValue" label="设定值" >
+      <w-table-col name="setValue" label="设定值" width="300px" >
         <el-input v-model="table.model.setValue" />
       </w-table-col>
       <w-table-col name="showFlag" label="是否首页显示" query condition="eq" dict="SHOW_FLAG" >

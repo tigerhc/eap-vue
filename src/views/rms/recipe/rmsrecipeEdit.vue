@@ -98,8 +98,8 @@
             @row-dblclick="doubleClick"
           >
             <el-table-column type="index" label="序号" width="50px" align="center"/>
-            <el-table-column prop="paraCode" label="参数CODE" align="center"/>
-            <el-table-column prop="paraName" label="参数名称" align="center"/>
+            <el-table-column prop="paraCode" label="参数CODE" align="left"/>
+            <el-table-column prop="paraName" label="参数名称" align="left"/>
             <el-table-column label="设定值" align="center">
               <el-table-column prop="setValue" label="New Value" align="center"/>
               <el-table-column prop="setValueOld" label="Old Value" align="center"/>

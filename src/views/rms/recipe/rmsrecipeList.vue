@@ -2,16 +2,16 @@
   <div class="app-container calendar-list-container">
     <w-table v-slot="{row}" v-bind="table" url="rms/rmsrecipe/" sort="updateDate.desc, createDate.desc" >
       <!--todo fixed属性导致当前列变为第一列-->
-      <w-table-col name="recipeCode" label="程序名称" width="130" sort fixed align="left" handler="view" query condition="like"/>
+      <w-table-col name="recipeCode" label="程序名称" width="240" sort fixed align="left" handler="view" query condition="like"/>
       <w-table-col name="eqpId" label="设备号" width="150" sort fixed align="center" query dict multiple eqp condition="in"/>
-      <w-table-col name="eqpModelName" width="200" label="设备类型" align="center" />
+      <w-table-col name="eqpModelName" width="120" label="设备类型" align="center" />
       <w-table-col name="eqpModelId" label="设备型号ID" hidden dict query url="/fab/fabequipmentmodel/list" namekey="modelName" condition="eq" filterable />
       <w-table-col name="versionType" label="程序等级" align="center" dict="RECIPE_VERSION_TYPE" query hiddenquery condition="eq" filterable />
       <w-table-col name="versionNo" label="版本号" align="center"/>
       <w-table-col name="status" label="状态" dict="RECIPE_STATUS" query hiddenquery condition="eq" filterable />
       <w-table-col name="approveStep" label="审核状态" width="100" align="center" dict="RECIPE_APPROVE_STEP" query hiddenquery condition="eq" filterable />
       <w-table-col name="approveResult" label="审核结果" width="100" align="center" dict="RECIPE_APPROVE_RESULT" query hiddenquery condition="eq" filterable foldcolor/>
-      <w-table-col name="createDate" label="创建时间" width="180" align="center"/>
+      <w-table-col name="createDate" label="创建时间" width="180" sort align="center"/>
       <w-table-col name="createByName" label="上传人" align="center" query hiddenquery condition="eq" />
       <!--<w-table-col name="versionNo" label="程序版本号" align="center"/>-->
       <!--<w-table-col name="versionNo" label="程序版本号" align="center"/>-->
@@ -78,7 +78,7 @@
         fit
         @selection-change="selectionChange">
         <el-table-column type="selection" width="39"/>
-        <el-table-column align="center" label="配方名称">
+        <el-table-column align="left" label="配方名称">
           <template slot-scope="scope">
             <span>{{ scope.row }}</span>
           </template>

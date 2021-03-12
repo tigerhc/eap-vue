@@ -150,3 +150,11 @@ export function eqpStateTime(data) {
     params: data
   })
 }
+
+export function findSxNumber(data) {
+  return request({
+    url: 'ms/measuresx/findSxNumber',
+    method: 'get',
+    params: data
+  })
+}

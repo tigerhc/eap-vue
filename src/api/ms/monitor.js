@@ -46,3 +46,11 @@ export function positionSelect(query) {
     params: query
   })
 }
+
+export function findSxNumber(query) {
+  return request({
+    url: '/ms/measuresx/findSxNumber',
+    method: 'get',
+    params: query
+  })
+}

@@ -31,3 +31,11 @@ export function eqpIdlist(tab, query) {
     params: query
   })
 }
+
+export function productionName(tab, query) {
+  return request({
+    url: '/ms/measuresx/productionName',
+    method: 'get',
+    params: query
+  })
+}

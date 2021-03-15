@@ -126,7 +126,7 @@ export default {
       option = {
         color: ['#3CB371', '#7B68EE', '#DA70D6', '#5F9EA0', '#FF0000', '#FFA500', '#800000', '#1E90FF'],
         title: {
-          text: '量测空洞倾向管理图'
+          text: '量测分离倾向管理图'
         },
         tooltip: {
           trigger: 'axis'

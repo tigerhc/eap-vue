@@ -2,8 +2,8 @@
 <template>
     <div class="condition-panel">
       <el-form class="form" label-width="90px" size="small">
-        <el-row>
-          <el-col :span="4">
+        <el-row :gutter="10">
+          <el-col :span="4" >
             <el-form-item label="类型:">
               <el-select v-model="form1.type" class="wid90" @change="findProduction">
                 <el-option v-for="item in TypeResult" :key="item.value" :label="item.label" :value="item.value" />
@@ -35,7 +35,7 @@
             <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
           </el-form-item>
         </el-col>
-          <el-col :span="4">
+          <el-col :span="4" :offset="-1">
           <el-form-item >
             <el-button type="primary" @click="search">查询</el-button>
           </el-form-item>

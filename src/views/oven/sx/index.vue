@@ -81,6 +81,7 @@ export default {
       form1: {
         type: ''
       },
+      myChart: null,
       dateTime: [],
       series: [],
       data: [],
@@ -119,8 +120,11 @@ export default {
       })
     },
     initChart() {
+      if (this.myChart != null) {
+        this.myChart.dispose()
+      }
       var chartDom = document.getElementById('main')
-      var myChart = echarts.init(chartDom)
+      this.myChart = echarts.init(chartDom)
       // var app = {};
       var option
       option = {
@@ -188,7 +192,7 @@ export default {
         //   }
         // ]
       }
-      myChart.setOption(option)
+      this.myChart.setOption(option)
       // if (option && typeof option === 'object') {
       //   myChart.setOption(option)
       // }

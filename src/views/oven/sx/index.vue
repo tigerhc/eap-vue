@@ -3,6 +3,13 @@
     <div class="condition-panel">
       <el-form class="form" label-width="90px" size="small">
         <el-row>
+          <el-col :span="4">
+            <el-form-item label="类型:">
+              <el-select v-model="form1.type" class="wid90" @change="findProduction">
+                <el-option v-for="item in TypeResult" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+            </el-form-item>
+          </el-col>
         <el-col :span="4">
           <el-form-item label="机种名:">
             <div class="condition">
@@ -66,9 +73,13 @@ export default {
     return {
       form: {
         number: '',
+        type: '',
         productionName: '',
         startDate: '',
         endDate: ''
+      },
+      form1: {
+        type: ''
       },
       dateTime: [],
       series: [],
@@ -81,16 +92,24 @@ export default {
       }, {
         value: '0002',
         label: '2'
+      }],
+      TypeResult: [{
+        value: 'LF',
+        label: 'LF'
+      }, {
+        value: 'check',
+        label: '检查'
       }]
     }
   },
-  created() {
-    productionName().then((response) => {
-      this.productionResult = response.data
-    })
-  },
   methods: {
+    findProduction() {
+      productionName(this.form1).then((response) => {
+        this.productionResult = response.data
+      })
+    },
     search() {
+      this.form.type = this.form1.type
       this.form.startDate = this.dateTime[0]
       this.form.endDate = this.dateTime[1]
       findSxNumber(this.form).then(res => {

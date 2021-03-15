@@ -32,7 +32,7 @@ export function eqpIdlist(tab, query) {
   })
 }
 
-export function productionName(tab, query) {
+export function productionName(query) {
   return request({
     url: '/ms/measuresx/productionName',
     method: 'get',

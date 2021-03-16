@@ -30,6 +30,13 @@
             </el-select>
           </el-form-item>
           </el-col>
+          <el-col :span="4">
+            <el-form-item label="位置:">
+              <el-select v-model="form.local" class="wid90" >
+                <el-option v-for="item in localResult" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+            </el-form-item>
+          </el-col>
         <el-col :span="4">
           <el-form-item label="日期:">
             <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
@@ -76,7 +83,8 @@ export default {
         type: '',
         productionName: '',
         startDate: '',
-        endDate: ''
+        endDate: '',
+        local: ''
       },
       form1: {
         type: ''
@@ -85,6 +93,7 @@ export default {
       dateTime: [],
       series: [],
       data: [],
+      min: undefined,
       productionResult: [],
       type: '',
       lineTypeResult: [{
@@ -100,6 +109,19 @@ export default {
       }, {
         value: 'check',
         label: '检查'
+      }],
+      localResult: [{
+        value: 'a',
+        label: 'A'
+      }, {
+        value: 'b',
+        label: 'B'
+      }, {
+        value: 'c',
+        label: 'C'
+      }, {
+        value: 'd',
+        label: 'D'
       }]
     }
   },
@@ -116,6 +138,7 @@ export default {
       findSxNumber(this.form).then(res => {
         this.data = res.data[0]
         this.series = res.data[1]
+        this.min = res.data[2].min
         this.initChart()
       })
     },
@@ -128,7 +151,7 @@ export default {
       // var app = {};
       var option
       option = {
-        color: ['#3CB371', '#7B68EE', '#DA70D6', '#5F9EA0', '#FF0000', '#FFA500', '#800000', '#1E90FF'],
+        color: ['#3CB371', '#7B68EE', '#FF0000', '#FF0000', '#FF0000', '#FFA500', '#800000', '#1E90FF'],
         title: {
           text: '量测分离倾向管理图'
         },
@@ -136,7 +159,7 @@ export default {
           trigger: 'axis'
         },
         legend: {
-          data: ['1:A', '1:B', '1:C', '1:D', '2:A', '2:B', '3:C', '4:D']
+          data: ['1:A', '1:B', '1:C', '1:D', '2:A', '2:B', '2:C', '2:D', '上限', '下限']
         },
         grid: {
           left: '3%',
@@ -156,7 +179,8 @@ export default {
           // data: ['周一', '周二', '周二', '周二', '周二', '周二', '周二']
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          min: this.min
         },
         series: this.series
         // series: [

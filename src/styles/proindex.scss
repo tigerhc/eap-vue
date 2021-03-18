@@ -1,4 +1,9 @@
-
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+@import './btn.scss';
 #zero{
   font-size: 25px;
   border:  4px dashed green;
@@ -139,6 +144,22 @@ active{
   width: 3.9%;
   top: 33.5%;
   left: 81%;
+}
+.frame {
+  width: 100%;
+  display: flex;
+  align-items :center;
+}
+#mainImg {
+  width: 20%;
+  height: 40%;
+}
+.arrow_box{
+  animation: glow 800ms ease-out infinite alternate;
+  width:300px;
+  height:40px;
+  margin-left: 100px;
+  margin-top: 100px;
 }
 #T111{
   font-size: 18px;

@@ -221,6 +221,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  @import "src/styles/proindex";
   .Rtplotyieldday {
     width: auto;
     height: auto;
@@ -236,30 +237,4 @@ export default {
       margin: 0;
     }
   }
-  .frame {
-    width: 100%;
-    display: flex;
-    align-items :center;
-  }
-  #mainImg {
-    width: 20%;
-    height: 40%;
-  }
-  /*.arrow_box{*/
-  /*  animation: glow 800ms ease-out infinite alternate;*/
-  /*  width:300px;*/
-  /*  height:40px;*/
-  /*  margin-left: 100px;*/
-  /*  margin-top: 100px;*/
-  /*}*/
-  /*@keyframes glow {*/
-  /*  0% {*/
-  /*    border-color: #393;*/
-  /*    box-shadow: 0 0 5px rgba(0,255,0,.2), inset 0 0 5px rgba(0,255,0,.1), 0 0px 0 #393;*/
-  /*  }*/
-  /*  100% {*/
-  /*    border-color: #6f6;*/
-  /*    box-shadow: 0 0 20px rgba(0,255,0,.6), inset 0 0 10px rgba(0,255,0,.4), 0 0px 0 #6f6;*/
-  /*  }*/
-  /*}*/
 </style>

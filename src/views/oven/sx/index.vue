@@ -25,13 +25,22 @@
           </el-form-item>
         </el-col>
           <el-col :span="4">
-            <el-form-item label="位置">
-              <el-cascader
-                v-model="value"
-                :options="options"
-                :props="{ expandTrigger: 'hover' }"
-                @change="search"/>
+            <el-form-item label="位置:">
+            <el-select v-model="form.local" class="wid90" @change="search">
+              <el-option
+                v-for="item in localResult"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value" />
+            </el-select>
             </el-form-item>
+<!--            <el-form-item label="位置">-->
+<!--              <el-cascader-->
+<!--                v-model="value"-->
+<!--                :options="options"-->
+<!--                :props="{ expandTrigger: 'hover' }"-->
+<!--                @change="search"/>-->
+<!--            </el-form-item>-->
           </el-col>
         <el-col :span="4" >
           <el-form-item label="日期:">
@@ -140,8 +149,7 @@ export default {
       })
     },
     search() {
-      this.form.number = this.value[0]
-      this.form.local = this.value[1]
+      this.form.number = '0001'
       this.form.type = this.form1.type
       this.form.startDate = this.dateTime[0]
       this.form.endDate = this.dateTime[1]
@@ -161,7 +169,7 @@ export default {
       // var app = {};
       var option
       option = {
-        color: ['#3CB371', '#7B68EE', '#FF0000', '#FF0000', '#FF0000', '#FFA500', '#800000', '#1E90FF'],
+        color: ['#3CB371', '#00FFFF', '#FF0000', '#FF0000', '#1E90FF', '#FFA500', '#800000', '#1E90FF'],
         title: {
           text: '量测分离倾向管理图'
         },
@@ -169,7 +177,7 @@ export default {
           trigger: 'axis'
         },
         legend: {
-          data: ['1:A', '1:B', '1:C', '1:D', '2:A', '2:B', '2:C', '2:D', '上限', '下限']
+          data: ['1-1:A', '1-2:A', '2-1:A', '2-2:A', '1-1:B', '1-2:B', '2-1:B', '2-2:B', '上限', '下限', '1-1:C', '1-2:C', '2-1:C', '2-2:C', '1-1:D', '1-2:D', '2-1:D', '2-2:D', '上限', '下限']
         },
         grid: {
           left: '3%',

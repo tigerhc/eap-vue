@@ -69,6 +69,7 @@ export default {
       formatArr: [],
       series: [],
       legend: [],
+      // 先写死
       lineNoOptions: [{
         value: 'SIM',
         label: 'SIM'

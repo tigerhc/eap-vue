@@ -34,13 +34,6 @@
                 :value="item.value" />
             </el-select>
             </el-form-item>
-<!--            <el-form-item label="位置">-->
-<!--              <el-cascader-->
-<!--                v-model="value"-->
-<!--                :options="options"-->
-<!--                :props="{ expandTrigger: 'hover' }"-->
-<!--                @change="search"/>-->
-<!--            </el-form-item>-->
           </el-col>
         <el-col :span="4" >
           <el-form-item label="日期:">
@@ -51,7 +44,10 @@
         </el-row>
       </el-form>
     </div>
-      <div id="main" style="width: 80%;height: 500px;overflow: hidden;"/>
+      <div class="frame">
+        <div id="main" style="width: 70%;height: 500px;overflow: hidden;"/>
+        <img id="mainImg" :src="picUrl" class="arrow_box">
+      </div>
     </div>
 </template>
 <script>
@@ -80,6 +76,11 @@ export default {
       min: undefined,
       productionResult: [],
       type: '',
+      picUrl: undefined,
+      picUrlA: require('../../../assets/img/sxA.png'),
+      picUrlB: require('../../../assets/img/sxB.png'),
+      picUrlC: require('../../../assets/img/sxC.png'),
+      picUrlD: require('../../../assets/img/sxD.png'),
       lineTypeResult: [{
         value: '0001',
         label: '1'
@@ -106,39 +107,6 @@ export default {
       }, {
         value: 'd',
         label: 'D'
-      }],
-      options: [{
-        value: '0001',
-        label: '1',
-        children: [{
-          value: 'a',
-          label: 'A'
-        }, {
-          value: 'b',
-          label: 'B'
-        }, {
-          value: 'c',
-          label: 'C'
-        }, {
-          value: 'd',
-          label: 'D'
-        }]
-      }, {
-        value: '0002',
-        label: '2',
-        children: [{
-          value: 'a',
-          label: 'A'
-        }, {
-          value: 'b',
-          label: 'B'
-        }, {
-          value: 'c',
-          label: 'C'
-        }, {
-          value: 'd',
-          label: 'D'
-        }]
       }]
     }
   },
@@ -149,6 +117,15 @@ export default {
       })
     },
     search() {
+      if (this.form.local === 'a') {
+        this.picUrl = this.picUrlA
+      } else if (this.form.local === 'b') {
+        this.picUrl = this.picUrlB
+      } else if (this.form.local === 'c') {
+        this.picUrl = this.picUrlC
+      } else if (this.form.local === 'd') {
+        this.picUrl = this.picUrlD
+      }
       this.form.number = '0001'
       this.form.type = this.form1.type
       this.form.startDate = this.dateTime[0]
@@ -259,4 +236,30 @@ export default {
       margin: 0;
     }
   }
+  .frame {
+    width: 100%;
+    display: flex;
+    align-items :center;
+  }
+  #mainImg {
+    width: 20%;
+    height: 40%;
+  }
+  /*.arrow_box{*/
+  /*  animation: glow 800ms ease-out infinite alternate;*/
+  /*  width:300px;*/
+  /*  height:40px;*/
+  /*  margin-left: 100px;*/
+  /*  margin-top: 100px;*/
+  /*}*/
+  /*@keyframes glow {*/
+  /*  0% {*/
+  /*    border-color: #393;*/
+  /*    box-shadow: 0 0 5px rgba(0,255,0,.2), inset 0 0 5px rgba(0,255,0,.1), 0 0px 0 #393;*/
+  /*  }*/
+  /*  100% {*/
+  /*    border-color: #6f6;*/
+  /*    box-shadow: 0 0 20px rgba(0,255,0,.6), inset 0 0 10px rgba(0,255,0,.4), 0 0px 0 #6f6;*/
+  /*  }*/
+  /*}*/
 </style>

@@ -317,6 +317,15 @@ export default {
       })
     },
     changeValue(row) {
+      if (row.minValue > row.maxValue) {
+        this.$notify({
+          title: '失败',
+          message: '最小值不应该比最大值大',
+          type: 'error',
+          duration: 2000
+        })
+        return
+      }
       request({
         url: 'rms/rmsrecipebody/changMaxMinValue',
         method: 'get',

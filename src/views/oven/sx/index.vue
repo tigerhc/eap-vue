@@ -45,7 +45,7 @@
       </el-form>
     </div>
       <div class="frame">
-        <div id="main" style="width: 70%;height: 500px;overflow: hidden;"/>
+        <div id="main" style="width: 65%;height: 300px;overflow: hidden;"/>
         <img id="mainImg" :src="picUrl" class="arrow_box">
       </div>
     </div>
@@ -171,45 +171,12 @@ export default {
           type: 'category',
           boundaryGap: false,
           data: this.data
-          // data: ['周一', '周二', '周二', '周二', '周二', '周二', '周二']
         },
         yAxis: {
           type: 'value',
           min: this.min
         },
         series: this.series
-        // series: [
-        //   {
-        //     name: '邮件营销',
-        //     type: 'line',
-        //     stack: '总量',
-        //     data: [120, 132, 101, 134, 90, 230, 210]
-        //   },
-        //   {
-        //     name: '联盟广告',
-        //     type: 'line',
-        //     stack: '总量',
-        //     data: [220, 182, 191, 234, 290, 330, 310]
-        //   },
-        //   {
-        //     name: '视频广告',
-        //     type: 'line',
-        //     stack: '总量',
-        //     data: [150, 232, 201, 154, 190, 330, 410]
-        //   },
-        //   {
-        //     name: '直接访问',
-        //     type: 'line',
-        //     stack: '总量',
-        //     data: [320, 332, 301, 334, 390, 330, 320]
-        //   },
-        //   {
-        //     name: '搜索引擎',
-        //     type: 'line',
-        //     stack: '总量',
-        //     data: [820, 932, 901, 934, 1290, 1330, 1320]
-        //   }
-        // ]
       }
       this.myChart.setOption(option)
       // if (option && typeof option === 'object') {

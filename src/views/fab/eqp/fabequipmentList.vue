@@ -12,7 +12,7 @@
       <!--<w-table-col name="sortNo" label="排序号" sort/>-->
       <!-- todo filterable 属性-->
       <w-table-col name="modelId" label="设备型号" hidden query dict url="/fab/fabequipmentmodel/list" namekey="modelName" querymode="select" condition="eq" filterable />
-      <w-table-col name="activeFlag" label="有效标志" width="100" align="center" dict="ACTIVE_FLAG" query condition="eq" />
+      <w-table-col name="activeFlag" label="有效标志" width="100" align="center" dict="ACTIVE_FLAG" query condition="eq" />//有效标志表中为0,1 数据字典为Y,N需要确定是改哪边
       <!--todo date 点击查询后,时间控件值消失-->
       <!--<w-table-col name="updateDate" label="更新时间" width="200" align="center" sort="1" query querymode="date" condition="between"/>-->
 
@@ -42,7 +42,7 @@ export default {
   methods: {
     enable(row, table, ctx) {
       request({
-        url: '/fab/fabequipment/active_flag/' + row.id + '/1',
+        url: '/fab/fabequipment/active_flag/' + row.id + '/Y',
         method: 'put'
       }).then(() => {
         ctx.refresh()
@@ -56,7 +56,7 @@ export default {
     },
     diable(row, table, ctx) {
       request({
-        url: '/fab/fabequipment/active_flag/' + row.id + '/0',
+        url: '/fab/fabequipment/active_flag/' + row.id + '/N',
         method: 'put'
       }).then(() => {
         ctx.refresh()

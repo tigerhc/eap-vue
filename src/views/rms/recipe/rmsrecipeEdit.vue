@@ -14,10 +14,9 @@
             <el-input v-model="editList.eqpId" disabled/>
           </el-form-item>
           <el-form-item label="状态" prop="status">
-            <el-select v-model="editList.status" filterable placeholder="请选择程序状态">
+            <el-select v-model="editList.status" disabled filterable placeholder="请选择程序状态">
               <el-option
                 v-for="item in dictList.statusList"
-                :disabled="item.remarks"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"/>

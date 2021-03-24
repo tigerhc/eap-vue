@@ -21,7 +21,7 @@
       <w-table-toolbar name="add" hidden url="views/rms/recipe/rmsrecipeEdit" />
       <w-table-toolbar hidden name="batchDelete" />
 
-      <w-table-button hidden name="delete" />
+      <!--<w-table-button hidden name="delete" />-->
 
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
 <!--      <w-table-toolbar name="uploadRecipe" label="上传recipe" type="primary" tip="上传recipe？" icon="el-icon-circle-plus-outline" />-->
@@ -30,6 +30,7 @@
       <w-table-button name="edit" label="升级" url="views/rms/recipe/rmsrecipeEdit" icon="el-icon-setting" />
       <w-table-button v-if="row.approveStep === 0 && row.status !== 'Y'" name="enable" label="启用" tip="确认启用？" icon="el-icon-bell" />
       <w-table-button v-if="row.status === 'Y'" name="diable" label="停用" tip="确认停用？" icon="el-icon-circle-close" type="warning" />
+      <w-table-button :hidden="row.versionType !== 'DRAFT'" name="delete" label="删除" tip="确认删除？" icon="el-icon-delete" type="warning" />
 
     </w-table>
 
@@ -170,6 +171,21 @@ export default {
         this.$notify({
           title: '成功',
           message: '已禁用',
+          type: 'success',
+          duration: 2000
+        })
+      })
+    },
+    delete(row, table, ctx) {
+      request({
+        url: '/rms/rmsrecipe/delete/' + row.id,
+        method: 'put'
+      }).then(() => {
+        debugger
+        ctx.refresh()
+        this.$notify({
+          title: '成功',
+          message: '已删除',
           type: 'success',
           duration: 2000
         })

@@ -37,10 +37,10 @@
           </el-col>
         <el-col :span="4" >
           <el-form-item label="日期:">
-            <el-date-picker v-model="dateTime" style="width: 130%" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
+            <el-date-picker v-model="dateTime" style="width: 160%" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
           </el-form-item>
         </el-col>
-          <el-button type="primary" style="height: 32px ;margin-left: 70px" @click="search">查询</el-button>
+          <el-button type="primary" style="height: 32px ;margin-left: 130px" @click="search">查询</el-button>
         </el-row>
       </el-form>
     </div>

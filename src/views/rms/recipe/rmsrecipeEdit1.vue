@@ -14,9 +14,10 @@
             <el-input v-model="editList.eqpId" disabled/>
           </el-form-item>
           <el-form-item label="状态" prop="status">
-            <el-select v-model="editList.status" disabled filterable placeholder="请选择程序状态">
+            <el-select v-model="editList.status" filterable placeholder="请选择程序状态">
               <el-option
                 v-for="item in dictList.statusList"
+                :disabled="item.remarks"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"/>
@@ -64,8 +65,18 @@
               placeholder="请输入内容"/>
           </el-form-item>
         </el-form>
+        <div v-if="showFlag">
+          <el-button type="primary" @click="save">提交</el-button>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="参数信息" name="second">
+        <div style="margin-bottom:20px">
+          <el-button type="primary" size="small" style="display: none" icon="el-icon-plus" >新增</el-button>
+          <el-button type="primary" size="small" style="display: none" icon="el-icon-delete" >删除</el-button>
+          <el-button type="primary" size="small" style="display: none" @click="setCopy">设定值复制</el-button>
+          <el-button type="primary" size="small" @click="maxCopy" >最大值复制</el-button>
+          <el-button type="primary" size="small" @click="minCopy">最小值复制</el-button>
+        </div>
         <el-form
           ref="ruleForm"
           :model="ruleForm"
@@ -86,35 +97,66 @@
             @row-click="rowClick"
             @row-dblclick="doubleClick"
           >
-            <el-table-column type="index" label="序号" width="80px" align="center"/>
+            <el-table-column type="index" label="序号" width="50px" align="center"/>
             <el-table-column prop="paraCode" label="参数CODE" align="left"/>
             <el-table-column prop="paraName" label="参数名称" align="left"/>
-            <el-table-column prop="setValue" label="设定值" align="center"/>
-            <el-table-column prop="minValue" label="最小值" align="center">
-              <template slot-scope="{row}">
-                <el-input
-                  v-if="row.index === doubleClickIndex"
-                  v-model="row.minValue"
-                />
-                <span v-if="row.index !== doubleClickIndex">{{ row.minValue }}</span>
-              </template>
+            <el-table-column label="设定值" align="center">
+              <el-table-column prop="setValue" label="New Value" align="center"/>
+              <el-table-column prop="setValueOld" label="Old Value" align="center"/>
             </el-table-column>
-            <el-table-column prop="maxValue" label="最大值" align="center">
-              <template slot-scope="{row}">
+            <el-table-column label="最小值" align="center">
+               <el-table-column prop="minValue" label="New Value" align="center">
+                 <template slot-scope="{row}">
+                  <el-input
+                    v-if="row.index === doubleClickIndex"
+                    v-model="row.minValue"
+                  />
+                  <span v-if="row.index !== doubleClickIndex" class="cell-text">{{ row.minValue }}</span>
+                </template>
+               </el-table-column>
+               <el-table-column prop="minValueOld" label="Old Value" align="center"/>
+
+            </el-table-column>
+            <el-table-column label="最大值" align="center">
+              <el-table-column prop="maxValue" label="New Value" align="center">
+                <template slot-scope="{row}">
                 <el-input
                   v-if="row.index === doubleClickIndex"
                   v-model="row.maxValue"
                 />
-                <span v-if="row.index !== doubleClickIndex">{{ row.maxValue }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center">
-              <template slot-scope="scope">
-                <el-button type="text" size="small" @click="changeValue(scope.row)">提交</el-button>
-              </template>
+                <span v-if="row.index !== doubleClickIndex" class="cell-text">{{ row.maxValue }}</span>
+                </template>
+               </el-table-column>
+               <el-table-column prop="maxValueOld" label="Old Value" align="center"/>
+
             </el-table-column>
           </el-table>
         </el-form>
+      </el-tab-pane>
+      <el-tab-pane label="附件" name="third">
+        <attachment-select :uploadurl="uploadurl" :biz="biz" @onSuccess="handleSuccessFile" />
+      </el-tab-pane>
+      <el-tab-pane label="图片" name="fourth">
+        <picutre-select :uploadurl="uploadimageurl" :biz="biz"/>
+<!--        <div style="margin-bottom:20px">-->
+<!--          <el-upload-->
+<!--            :action="uploadimageurl"-->
+<!--            :on-preview="handlePreview"-->
+<!--            :on-remove="handleRemove"-->
+<!--            :before-remove="beforeRemove"-->
+<!--            :limit="12"-->
+<!--            :on-exceed="handleExceed"-->
+<!--            :file-list="imageList"-->
+<!--            class="upload-demo"-->
+<!--            list-type="picture-card"-->
+<!--            multiple>-->
+<!--            <el-button size="small" type="primary">点击上传</el-button>-->
+<!--            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+<!--          </el-upload>-->
+<!--          <el-dialog :visible.sync="dialogVisible" width="500px" height="500px">-->
+<!--            <img :src="dialogImageUrl" width="100%" height="100%" alt="">-->
+<!--          </el-dialog>-->
+<!--        </div>-->
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -151,6 +193,13 @@ export default {
         approveResultList: []
       },
       biz: this.$route.query.id,
+      uploadurl: process.env.BASE_API + '/attach/upload?access_token=' + this.$store.getters.token + '&biz=' + this.$route.query.id,
+      uploadimageurl: process.env.BASE_API + '/attach/uploadimg?access_token=' + this.$store.getters.token + '&biz=' + this.$route.query.id,
+      dialogImageUrl: '',
+      dialogVisible: false,
+      imageList: [
+
+      ],
       eqpModelNameList: [],
       ruleForm: {
         tableData: []
@@ -180,6 +229,27 @@ export default {
     this.gePictureList()
   },
   methods: {
+    handleSuccessFile(file) {
+      this.$notify({
+        title: '上传成功',
+        type: 'success',
+        duration: 2000
+      })
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePreview(file) {
+      console.log(file)
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`)
+    },
     // 获取详情
     getDeteils() {
       request({
@@ -202,6 +272,10 @@ export default {
           this.editList.status = '禁用'
         }
       })
+      // deteils(this.tab, this.id).then(res => {
+      //   this.editList = res.data
+      //   this.ruleForm.tableData = res.data.rmsRecipeBodyDtlList
+      // })
     },
     getDictValue() {
       const typeList = ['RECIPE_VERSION_TYPE', 'RECIPE_STATUS_SELECT', 'RECIPE_APPROVE_STEP', 'RECIPE_APPROVE_RESULT']
@@ -261,6 +335,12 @@ export default {
       this.ruleForm.tableData.push(addInfo)
       this.doubleClickIndex = this.ruleForm.tableData.length - 1
     },
+    handleClick(tab, event) {
+      if (tab.index === '2') {
+        // 查询附件
+        this.queryFiles()
+      }
+    },
     // 获取index
     tableRowClassName({ row, rowIndex }) {
       row.index = rowIndex
@@ -297,6 +377,78 @@ export default {
         })
       }
     },
+    queryFiles() {
+      request({
+        url: 'rms/rmsrecipefile/' + this.id + '/findFileByRecipeId',
+        method: 'get',
+        params: { }
+      }).then((res) => {
+        this.fileData = res.data.results
+      })
+    },
+    save() {
+      let eqpModelName = ''
+      this.eqpModelNameList.forEach((item) => {
+        if (item.id === this.editList.eqpModelId) {
+          eqpModelName = item.manufacturerName + '-' + item.classCode
+        }
+      })
+      const params = {
+        id: this.id,
+        recipeCode: this.editList.recipeCode,
+        versionType: this.versionType,
+        versionNo: this.editList.versionNo,
+        eqpId: this.editList.eqpId,
+        eqpModelId: this.editList.eqpModelId,
+        eqpModelName,
+        status: this.editList.status,
+        approveStep: this.editList.approveStep,
+        approveResult: this.editList.approveResult,
+        remarks: this.editList.remarks
+      }
+      if (this.editList.status === '1' && this.versionType === 'DRAFT') {
+        this.$notify({
+          title: '失败',
+          message: '请选选择升级类型再提交审批',
+          type: 'error',
+          duration: 2000
+        })
+      } else {
+        console.log(params)
+        request({
+          url: 'rms/rmsrecipe/updatePermit',
+          method: 'get',
+          params: params
+        }).then((res) => {
+          console.log(res)
+          if (res.data.code === 0) {
+            this.addPermitList()
+            this.cancel()
+            this.$notify({
+              title: '成功',
+              message: '提交成功',
+              type: 'success',
+              duration: 2000
+            })
+          } else {
+            this.$notify({
+              title: '失败',
+              message: '提交失败,' + res.data.msg,
+              type: 'error',
+              duration: 2000
+            })
+          }
+        })
+      }
+    },
+    // 提交审批后先生成审批记录
+    addPermitList() {
+      request({
+        url: 'rms/rmsrecipepermit/addPermitList',
+        method: 'get',
+        params: { recipeId: this.id, versionType: this.versionType }
+      })
+    },
     getView() {
       const List = this.$store.state.tagsView.visitedViews
       for (const item of List) {
@@ -315,22 +467,29 @@ export default {
         this.$router.push({ path: preRoute && preRoute.path })
       })
     },
-    changeValue(row) {
-      if (row.minValue > row.maxValue) {
+    setCopy() {
+      request({
+        url: 'rms/rmsrecipe/copySetValue',
+        method: 'get',
+        params: { recipeIdNew: this.id, recipeIdOld: this.oldId }
+      }).then((res) => {
+        this.getDeteils()
         this.$notify({
-          title: '失败',
-          message: '最小值不应该比最大值大',
-          type: 'error',
+          title: '成功',
+          message: res.data.msg,
+          type: 'success',
           duration: 2000
         })
-        return
-      }
+      })
+    },
+    maxCopy() {
       request({
-        url: 'rms/rmsrecipebody/changMaxMinValue',
+        url: 'rms/rmsrecipe/copyMaxValue',
         method: 'get',
-        params: { id: row.id, maxValue: row.maxValue, minValue: row.minValue }
+        params: { recipeIdNew: this.id, recipeIdOld: this.oldId }
       }).then((res) => {
         if (res.data.code === 0) {
+          this.getDeteils()
           this.$notify({
             title: '成功',
             message: res.data.msg,
@@ -346,6 +505,42 @@ export default {
           })
         }
       })
+    },
+    minCopy() {
+      request({
+        url: 'rms/rmsrecipe/copyMinValue',
+        method: 'get',
+        params: { recipeIdNew: this.id, recipeIdOld: this.oldId }
+      }).then((res) => {
+        if (res.data.code === 0) {
+          this.getDeteils()
+          this.$notify({
+            title: '成功',
+            message: res.data.msg,
+            type: 'success',
+            duration: 2000
+          })
+        } else {
+          this.$notify({
+            title: '失败',
+            message: res.data.msg,
+            type: 'error',
+            duration: 2000
+          })
+        }
+      })
+    },
+    color({ row, column, rowIndex, columnIndex }) {
+      if (row.minValue !== row.minValueOld && columnIndex === 5) {
+        return 'warning-cell'
+      }
+      if (row.setValue !== row.setValueOld && columnIndex === 3) {
+        return 'warning-cell'
+      }
+      if (row.maxValue !== row.maxValueOld && columnIndex === 7) {
+        return 'warning-cell'
+      }
+      return ''
     }
   }
 }

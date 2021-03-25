@@ -14,7 +14,7 @@
         <el-col :span="4" >
           <el-form-item label="机种名:">
             <div class="condition">
-              <el-select v-model="form.productionName" class="wid90" >
+              <el-select v-model="form.productionName" class="wid90" @change="search">
                 <el-option
                   v-for="item in productionResult"
                   :key="item.label"

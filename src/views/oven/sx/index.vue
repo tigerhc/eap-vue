@@ -76,6 +76,7 @@ export default {
       min: undefined,
       productionResult: [],
       type: '',
+      formatter: '',
       picUrl: undefined,
       picUrlA: require('../../../assets/img/sxA.png'),
       picUrlB: require('../../../assets/img/sxB.png'),
@@ -117,6 +118,11 @@ export default {
       })
     },
     search() {
+      if (this.form.local === 'd') {
+        this.formatter = '{value} °'
+      } else {
+        this.formatter = '{value} mm'
+      }
       if (this.form.local === 'a') {
         this.picUrl = this.picUrlA
       } else if (this.form.local === 'b') {
@@ -174,7 +180,10 @@ export default {
         },
         yAxis: {
           type: 'value',
-          min: this.min
+          min: this.min,
+          axisLabel: {
+            formatter: this.formatter
+          }
         },
         series: this.series
       }

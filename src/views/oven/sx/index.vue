@@ -156,6 +156,15 @@ export default {
         title: {
           text: '量测分离倾向管理图'
         },
+        toolbox: {
+          show: true,
+          feature: {
+            dataView: { readOnly: false },
+            magicType: { type: ['line', 'bar'] },
+            restore: {},
+            saveAsImage: {}
+          }
+        },
         tooltip: {
           trigger: 'axis'
         },
@@ -167,11 +176,6 @@ export default {
           right: '4%',
           bottom: '3%',
           containLabel: true
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
         },
         xAxis: {
           type: 'category',

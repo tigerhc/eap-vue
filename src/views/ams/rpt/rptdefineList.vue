@@ -12,8 +12,8 @@
       <w-table-col name="activeDate" label="激活时间" width="200" align="center" sort="1"/>
       <w-table-toolbar name="add" url="views/ams/rpt/rptdefineEdit" />
       <w-table-toolbar name="initDefine" label="初始化数据" type="warning" />
-      <w-table-button v-if="row.activeFlag == 0" name="enable" label="启用" tip="确认启用？" icon="el-icon-bell" />
-      <w-table-button v-if="row.activeFlag == 1" name="diable" label="停用" tip="确认停用？" icon="el-icon-circle-close" type="warning" />
+      <w-table-button v-if="row.activeFlag == 'N'" name="enable" label="启用" tip="确认启用？" icon="el-icon-bell" />
+      <w-table-button v-if="row.activeFlag == 'Y'" name="diable" label="停用" tip="确认停用？" icon="el-icon-circle-close" type="warning" />
 
     </w-table>
 

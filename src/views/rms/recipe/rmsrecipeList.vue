@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-slot="{row}" v-bind="table" url="rms/rmsrecipe/" sort="updateDate.desc, createDate.desc" >
+    <w-table v-slot="{row}" v-bind="table" url="rms/rmsrecipe/" sort="updateDate.desc, createDate.desc">
       <!--todo fixed属性导致当前列变为第一列-->
       <w-table-col name="recipeCode" label="程序名称" width="240" sort fixed align="left" handler="view" query condition="like"/>
       <w-table-col name="eqpId" label="设备号" width="150" sort fixed align="center" query dict multiple eqp condition="in"/>
@@ -27,14 +27,46 @@
 <!--      <w-table-toolbar name="uploadRecipe" label="上传recipe" type="primary" tip="上传recipe？" icon="el-icon-circle-plus-outline" />-->
 <!--      <w-table-toolbar name="downloadRecipe" label="下载recipe" type="primary" tip="下载recipe？" icon="fa-download" />-->
       <w-table-toolbar name="uploadRecipe" label="上传recipe" type="primary" icon="el-icon-circle-plus-outline" />
+      <w-table-toolbar name="bdRecipe" label="比对recipe" type="primary" icon="el-icon-circle-plus-outline" />
       <w-table-button name="edit" label="升级" url="views/rms/recipe/rmsrecipeEdit" icon="el-icon-setting" />
-<!--      <w-table-button v-if="row.approveStep === 0 && row.status !== 'Y'" name="enable" label="启用" tip="确认启用？" icon="el-icon-bell" />-->
-<!--      <w-table-button v-if="row.status === 'Y'" name="diable" label="停用" tip="确认停用？" icon="el-icon-circle-close" type="warning" />-->
       <!--<w-table-button v-if="row.approveStep === 0 && row.status !== 'Y'" name="enable" label="启用" tip="确认启用？" icon="el-icon-bell" />-->
       <!--<w-table-button v-if="row.status === 'Y'" name="diable" label="停用" tip="确认停用？" icon="el-icon-circle-close" type="warning" />-->
       <w-table-button :hidden="row.versionType !== 'DRAFT'" name="delete" label="删除" tip="确认删除？" icon="el-icon-delete" type="warning" />
-
     </w-table>
+    <el-dialog :visible.sync="dialogFormbdRecipeVisible" :close-on-click-modal="false" title="比对recipe" style="width: 100%; margin: auto">
+      <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
+      <el-form ref="bdRecipeForm" :model="bdRecipeForm" label-position="left" >
+        <div class="programEdit">
+        <el-table
+          :data="bdRecipeForm.tableData"
+          :cell-class-name="color"
+          border
+          fit
+          style="width: 100%"
+          highlight-current-row
+        >
+          <el-table-column :label="bdRecipeForm.recipeCode" align="center" >
+          <el-table-column type="index" label="序号" width="50px" align="center"/>
+          <el-table-column prop="paraCode" label="参数CODE" align="left"/>
+          <el-table-column prop="paraName" label="参数名称" align="left"/>
+          <el-table-column label="设定值" align="center">
+            <el-table-column prop="setValue" label="New Value" align="center"/>
+            <el-table-column prop="setValueOld" label="Old Value" align="center"/>
+          </el-table-column>
+          <el-table-column label="最小值" align="center">
+            <el-table-column prop="minValue" label="New Value" align="center"/>
+            <el-table-column prop="minValueOld" label="Old Value" align="center"/>
+
+          </el-table-column>
+          <el-table-column label="最大值" align="center">
+            <el-table-column prop="maxValue" label="New Value" align="center"/>
+            <el-table-column prop="maxValueOld" label="Old Value" align="center"/>
+          </el-table-column>
+          </el-table-column>
+        </el-table>
+        </div>
+      </el-form>
+      </el-dialog>
 
     <el-dialog :visible.sync="dialogFormUploadRecipeVisible" :close-on-click-modal="false" title="上传recipe" style="width: 45%; margin: auto">
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
@@ -93,7 +125,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="dialogFormDownloadRecipeVisible" :close-on-click-modal="false" title="下载recipe">
+    <el-dialog :visible.sync="dialogFormDownloadRecipeVisible" :close-on-click-modal="false" title="下载recipe" >
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
       <el-form ref="dataModifyForm" :model="downloadRecipe1" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
         <el-form-item label="设备号" prop="eqpId">
@@ -122,6 +154,11 @@ export default {
   data() {
     return {
       table: {
+      },
+      dialogFormbdRecipeVisible: false,
+      bdRecipeForm: {
+        tableData: [],
+        recipeCode: ''
       },
       dialogFormUploadRecipeVisible: false,
       uploadRecipe1: {
@@ -191,6 +228,33 @@ export default {
           type: 'success',
           duration: 2000
         })
+      })
+    },
+    bdRecipe(row, table, ctx) {
+      debugger
+      const ids = []
+      for (const item of table.multipleSelection) {
+        ids.push(item.id)
+      }
+      ids.join(',')
+
+      request({
+        url: 'rms/rmsrecipe/' + ids.join(',') + '/findCompareRecipeTwo',
+        method: 'get'
+      }).then((res) => {
+        console.log(res)
+        if (res.data.code === 0) {
+          this.dialogFormbdRecipeVisible = true
+          this.bdRecipeForm.tableData = res.data.results.rmsRecipeBodyDtlList
+          this.bdRecipeForm.recipeCode = '参数名称：' + res.data.results.recipeName
+        } else {
+          this.$notify({
+            title: '失败',
+            message: '查询失败,' + res.data.msg,
+            type: 'error',
+            duration: 2000
+          })
+        }
       })
     },
     // 弹出一个input框,输入后发送请求
@@ -275,6 +339,18 @@ export default {
         this.eqpIdList = res.data.results
       })
     },
+    color({ row, column, rowIndex, columnIndex }) {
+      if (row.minValue !== row.minValueOld && columnIndex === 5) {
+        return 'warning-cell'
+      }
+      if (row.setValue !== row.setValueOld && columnIndex === 3) {
+        return 'warning-cell'
+      }
+      if (row.maxValue !== row.maxValueOld && columnIndex === 7) {
+        return 'warning-cell'
+      }
+      return ''
+    },
     // 查询recipe列表
     getRecipeList() {
       if (this.eqpIdSel === '') {
@@ -343,3 +419,18 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .programEdit {
+    .el-table thead.is-group th{
+      background-color: #1e6abc;
+    }
+    .cell-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .el-table .warning-cell {
+      background: yellow;
+    }
+  }
+</style>

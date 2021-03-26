@@ -1,5 +1,6 @@
 <template>
 	<div class="chipImg">
+		<!--SX-->
 		<div v-show="imgUrl==='SX680'" class="sx680">
 			<div :class="imgOption==='SX680DI-1' || imgOption==='SX680DI-2'?'DI_act':'sxDI_bg'" class="sx680DI1_position smaller" @click="positionClk('DI-1')">DI-1/2</div>
 			<div :class="imgOption==='SX680DI-1' || imgOption==='SX680DI-2'?'DI_act':'sxDI_bg'" class="sx680DI2_a_position smaller" @click="positionClk('DI-1')">DI-1/2</div>
@@ -24,11 +25,12 @@
 			<div :class="imgOption==='SX681MOS-5'?'MOS_act':'sxMOS90_bg'" class="sx681MOS5_a_position smaller" @click="positionClk('MOS-5')">MOS-5</div>
 			<div :class="imgOption==='SX681MOS-5'?'MOS_act':'sxMOS90_bg'" class="sx681MOS5_b_position smaller" @click="positionClk('MOS-5')">MOS-5</div>
 			<div :class="imgOption==='SX681JP-6'?'MIC_act':'sxMIC_bg'" class="sx681MIC5_a_position smaller" @click="positionClk('JP-6')">JP-6</div>
-			<div :class="imgOption==='SX681JP-6'?'MIC_act':'sxMIC180_bg'" class="sx681MIC5_b_position smaller" @click="positionClk('JP-6')">JP-6
-			</div>
+			<div :class="imgOption==='SX681JP-6'?'MIC_act':'sxMIC180_bg'" class="sx681MIC5_b_position smaller" @click="positionClk('JP-6')">JP-6</div>
 			<div :class="imgOption==='SX681MIC-D-7'?'MIC_act':'sxMIC7_bg'" class="sx681MIC7_position smaller" @click="positionClk('MIC-D-7')">MIC-D-7</div>
 			<div :class="imgOption==='SX681MIC-8'?'MIC_act':'sxMIC8_bg'" class="sx681MIC8_position smaller" @click="positionClk('MIC-8')">MIC-8</div>
 		</div>
+
+		<!--SIM-->
 		<div v-show="imgUrl==='SIM'" class="sim">
 			<div :class="imgOption==='SIMDI-1'?'DI_act':'simDI_bg'" class="simDI1_position smaller" @click="positionClk('DI-1')">DI-1</div>
 			<div :class="imgOption==='SIMDI-2'?'DI_act':'simDI_bg'" class="simDI2_a_position smaller" @click="positionClk('DI-2')">DI-2</div>
@@ -42,27 +44,42 @@
 			<div :class="imgOption==='SIMMIC-D-6'?'MIC_act':'sxMIC6_bg'" class="simMIC6_position smaller" @click="positionClk('MIC-D-6')">MIC-D-6</div>
 			<div :class="imgOption==='SIMMIC-7'?'MIC_act':'simMIC7_bg'" class="simMIC7_position smaller" @click="positionClk('MIC-7')">MIC-7</div>
 		</div>
-		<div v-show="imgUrl==='5GI'" class="gi5">
-			<div :class="imgOption==='5GIMIC'?'MIC_act':'sxMIC6_bg'" class="gi5_mic_position smaller" @click="positionClk('MIC')">MIC</div>
-			<div :class="imgOption==='5GIIGBT'?'MIC_act':'gi5IGBT_bg'" class="gi5_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
-		</div>
-		<div v-show="imgUrl==='KD5GI'" class="gi5">
-			<div :class="imgOption==='5GIMIC'?'MIC_act':'sxMIC6_bg'" class="gi5_mic_position smaller opacity" @click="positionClk('MIC')">MIC</div>
-			<div :class="imgOption==='5GIIGBT'?'MIC_act':'gi5IGBT_bg'" class="gi5_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
+
+		<!--5GI-->
+		<div v-show="imgUrl.indexOf('GI5')>-1" class="gi5">
+			<!--MIC 透明展示 2860/28645-->
+			<div v-show="imgUrl.indexOf('opacity')>-1 && (imgUrl.indexOf('GI5_2860')>-1 || imgUrl.indexOf('GI5_28645')>-1)" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5mic_2860_position smaller opacity" @click="positionClk('MIC')">MIC</div>
+			<!--MIC 不透明展示 2860/28645-->
+			<div v-show="imgUrl.indexOf('opacity')<0 && (imgUrl.indexOf('GI5_2860')>-1 || imgUrl.indexOf('GI5_28645')>-1)" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5mic_2860_position smaller" @click="positionClk('MIC')">MIC</div>
+			<!--MIC 透明展示 2866-->
+			<div v-show="imgUrl.indexOf('opacity')>-1 && imgUrl.indexOf('GI5_2866')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5_mic_position smaller opacity" @click="positionClk('MIC')">MIC</div>
+			<!--MIC 不透明展示 2866-->
+			<div v-show="imgUrl.indexOf('opacity')<0 && imgUrl.indexOf('GI5_2866')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5_mic_position smaller" @click="positionClk('MIC')">MIC</div>
+			<!--IGBT 展示 2860-->
+			<div v-show="imgUrl.indexOf('GI5_2860')>-1" :class="imgOption.indexOf('IGBT')>-1?'MIC_act':'gi5IGBT_2860'" class="gi5_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
+			<!--IGBT 展示 28645/2866-->
+			<div v-show="imgUrl.indexOf('GI5_2860')<0" :class="imgOption.indexOf('IGBT')>-1?'MIC_act':'gi5IGBT_28645'" class="gi5_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
 		</div>
 
-		<div v-show="imgUrl==='6GI'" class="gi6">
-			<div :class="imgOption==='6GIIGBT'?'MIC_act':'gi5IGBT_bg'" class="gi6_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
-			<div :class="imgOption==='6GIMIC'?'MIC_act':'sxMIC6_bg'" class="gi6_mic_position smaller" @click="positionClk('MIC')">MIC</div>
-			<div :class="imgOption==='6GIDIOD'?'MIC_act':'gi5DIOD_bg'" class="gi6_diod_position smaller" @click="positionClk('DIOD')">DIOD</div>
-			<div :class="imgOption==='6GIC'?'MIC_act':'gi5C_bg'" class="gi6_c_position smaller" @click="positionClk('C')">C</div>
+		<!--6GI-->
+		<div v-show="imgUrl.indexOf('GI6')>-1" class="gi6">
+			<!--IGBT 展示-->
+			<div :class="imgOption==='GI6IGBT'?'MIC_act':'gi5IGBT_bg'" class="gi6_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
+			<!--MIC 透明展示-->
+			<div v-show="imgUrl.indexOf('opacity')>-1" :class="imgOption==='GI6MIC'?'MIC_act':'sxMIC6_bg'" class="gi6_mic_position smaller opacity" @click="positionClk('MIC')">MIC</div>
+			<!--MIC 不透明展示-->
+			<div v-show="imgUrl.indexOf('opacity')<0" :class="imgOption==='GI6MIC'?'MIC_act':'sxMIC6_bg'" class="gi6_mic_position smaller" @click="positionClk('MIC')">MIC</div>
+			<!--DIOD 透明展示-->
+			<div v-show="imgUrl.indexOf('opacity')>-1" :class="imgOption==='GI6DIOD'?'MIC_act':'gi5DIOD_bg'" class="gi6_diod_position smaller opacity" @click="positionClk('DIOD')">DIOD</div>
+			<!--DIOD 不透明展示-->
+			<div v-show="imgUrl.indexOf('opacity')<0" :class="imgOption==='GI6DIOD'?'MIC_act':'gi5DIOD_bg'" class="gi6_diod_position smaller" @click="positionClk('DIOD')">DIOD</div>
+			<!--C 透明展示-->
+			<div v-show="imgUrl.indexOf('opacity')>-1" :class="imgOption==='GI6C'?'MIC_act':'gi5C_bg'" class="gi6_c_position smaller opacity" @click="positionClk('C')">C</div>
+			<!--C 不透明展示-->
+			<div v-show="imgUrl.indexOf('opacity')<0" :class="imgOption==='GI6C'?'MIC_act':'gi5C_bg'" class="gi6_c_position smaller" @click="positionClk('C')">C</div>
 		</div>
-		<div v-show="imgUrl==='KD6GI'" class="gi6">
-			<div :class="imgOption==='6GIIGBT'?'MIC_act':'gi5IGBT_bg'" class="gi6_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
-			<div :class="imgOption==='6GIMIC'?'MIC_act':'sxMIC6_bg'" class="gi6_mic_position smaller opacity" @click="positionClk('MIC')">MIC</div>
-			<div :class="imgOption==='6GIDIOD'?'MIC_act':'gi5DIOD_bg'" class="gi6_diod_position smaller opacity" @click="positionClk('DIOD')">DIOD</div>
-			<div :class="imgOption==='6GIC'?'MIC_act':'gi5C_bg'" class="gi6_c_position smaller opacity" @click="positionClk('C')">C</div>
-		</div>
+
+		<!--SMA-->
 		<div v-show="imgUrl==='SMA'" class="sma">
 			<div :class="imgOption==='SMADI-1'?'DI_act':'DI270_bg'" class="smaDI1_a_position smaller" @click="positionClk('DI-1')">DI-1</div>
 			<div :class="imgOption==='SMADI-1'?'DI_act':'simDI_bg'" class="smaDI1_b_position smaller" @click="positionClk('DI-1')">DI-1</div>
@@ -167,6 +184,7 @@ export default {
 	.simMIC7_position{width:12%;height:22%;top: 24%;left: 21.5%;padding-top: 18px;}
 	.gi5_igbt_position{width:64%;height:30%;top: 26%;left: 34%;padding-top: 45px;}
 	.gi5_mic_position{width:84%;height:25%;top: 60%;left: -4.4%;padding-top: 40px;}
+	.gi5mic_2860_position{width:96%;height:25%;top: 60%;left: -10.4%;padding-top: 40px;}
 	.gi6_igbt_position{width:71%;height:29%;top: 27.8%;left: 24.6%;padding-top: 46px;}
 	.gi6_mic_position{width:29%;height:32%;top: 56.8%;left: 46.4%;padding-top: 45px;}
 	.gi6_diod_position{width:32%;height:11%;top: 59.5%;left: 16%;padding-top: 8px;}
@@ -207,6 +225,9 @@ export default {
 	.gi5C_bg{background:url(../../../assets/img/5GI_C.png);}
 	.smaMOS_bg{background:url(../../../assets/img/SMA_MOS.png);}
 	.DI270_bg{background:url(../../../assets/img/DI270.png);}
+	.gi5IGBT_2860{background:url(../../../assets/img/5GI_2860IGBT.png);}
+	.gi5IGBT_28645{background:url(../../../assets/img/5GI_28645.png);}
+	.gi5MIC_2860{background:url(../../../assets/img/5GI_2860MIC.png);}
 
 	/**位置块 被选中的背景颜色*/
 	.DI_act{background-color:#3cbf3c;}

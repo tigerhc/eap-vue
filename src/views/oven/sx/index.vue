@@ -14,7 +14,7 @@
         <el-col :span="4" >
           <el-form-item label="机种名:">
             <div class="condition">
-              <el-select v-model="form.productionName" class="wid90" >
+              <el-select v-model="form.productionName" class="wid90" @change="search">
                 <el-option
                   v-for="item in productionResult"
                   :key="item.label"
@@ -37,10 +37,10 @@
           </el-col>
         <el-col :span="4" >
           <el-form-item label="日期:">
-            <el-date-picker v-model="dateTime" style="width: 160%" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
+            <el-date-picker v-model="dateTime" style="width: 250%" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
           </el-form-item>
         </el-col>
-          <el-button type="primary" style="height: 32px ;margin-left: 130px" @click="search">查询</el-button>
+          <el-button type="primary" style="height: 32px ;margin-left: 290px" @click="search">查询</el-button>
         </el-row>
       </el-form>
     </div>
@@ -76,6 +76,7 @@ export default {
       min: undefined,
       productionResult: [],
       type: '',
+      formatter: '',
       picUrl: undefined,
       picUrlA: require('../../../assets/img/sxA.png'),
       picUrlB: require('../../../assets/img/sxB.png'),
@@ -117,6 +118,11 @@ export default {
       })
     },
     search() {
+      if (this.form.local === 'd') {
+        this.formatter = '{value} °'
+      } else {
+        this.formatter = '{value} mm'
+      }
       if (this.form.local === 'a') {
         this.picUrl = this.picUrlA
       } else if (this.form.local === 'b') {
@@ -150,6 +156,15 @@ export default {
         title: {
           text: '量测分离倾向管理图'
         },
+        toolbox: {
+          show: true,
+          feature: {
+            dataView: { readOnly: false },
+            magicType: { type: ['line', 'bar'] },
+            restore: {},
+            saveAsImage: {}
+          }
+        },
         tooltip: {
           trigger: 'axis'
         },
@@ -162,11 +177,6 @@ export default {
           bottom: '3%',
           containLabel: true
         },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
         xAxis: {
           type: 'category',
           boundaryGap: false,
@@ -174,7 +184,10 @@ export default {
         },
         yAxis: {
           type: 'value',
-          min: this.min
+          min: this.min,
+          axisLabel: {
+            formatter: this.formatter
+          }
         },
         series: this.series
       }

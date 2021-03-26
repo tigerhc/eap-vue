@@ -107,21 +107,21 @@ export default {
   },
   methods: {
     weightPosition() {
-      if (this.imgUrl === '5GI' || this.imgUrl === '6GI') {
+      if (this.imgUrl.indexOf('GI5') > -1 || this.imgUrl.indexOf('GI6') > -1) {
         if (this.chartParam.detailOption === 1) {
           this.imgOption = this.imgUrl + 'IGBT'
         } else if (this.chartParam.detailOption === 2) {
           this.imgOption = this.imgUrl + 'MIC'
         } else if (this.chartParam.detailOption === 3) {
-          this.imgOption = '6GIDIOD'
+          this.imgOption = 'GI6DIOD'
         } else if (this.chartParam.detailOption === 4) {
-          this.imgOption = '6GIC'
+          this.imgOption = 'GI6C'
         }
         this.searchClick()
       }
     },
     positionChange(pname) {
-      if (this.imgUrl === '5GI' || this.imgUrl === '6GI') {
+      if (this.imgUrl.indexOf('GI5') > -1 || this.imgUrl.indexOf('GI6') > -1) {
         if (pname === 'MIC') {
           this.chartParam.detailOption = 2
           this.imgOption = this.imgUrl + 'MIC'
@@ -130,10 +130,10 @@ export default {
           this.imgOption = this.imgUrl + 'IGBT'
         } else if (pname === 'DIOD') {
           this.chartParam.detailOption = 3
-          this.imgOption = '6GIDIOD'
+          this.imgOption = 'GI6DIOD'
         } else if (pname === 'C') {
           this.chartParam.detailOption = 4
-          this.imgOption = '6GIC'
+          this.imgOption = 'GI6C'
         }
         this.searchClick()
       }
@@ -430,12 +430,20 @@ export default {
     },
     updateEqp() {
       var _this = this
-      if (_this.chartParam.productionNo.indexOf('5GI') > -1) {
-        _this.imgUrl = '5GI'
+      if (_this.chartParam.productionNo.indexOf('5GI-2860') > -1) {
+        _this.imgUrl = 'GI5_2860'
+        _this.imgUrlWidth = '200px'// 400
+        _this.imgUrlHeight = '320px'// 640
+      } else if (_this.chartParam.productionNo.indexOf('5GI-2864') > -1 || _this.chartParam.productionNo.indexOf('5GI-2865') > -1) {
+        _this.imgUrl = 'GI5_28645'
+        _this.imgUrlWidth = '200px'// 400
+        _this.imgUrlHeight = '320px'// 640
+      } else if (_this.chartParam.productionNo.indexOf('5GI-2866') > -1) {
+        _this.imgUrl = 'GI5_2866'
         _this.imgUrlWidth = '200px'// 400
         _this.imgUrlHeight = '320px'// 640
       } else if (_this.chartParam.productionNo.indexOf('6GI') > -1) {
-        _this.imgUrl = '6GI'
+        _this.imgUrl = 'GI6'
         _this.imgUrlWidth = '237.5px'// 475
         _this.imgUrlHeight = '365px'// 730
       } else if (_this.chartParam.productionNo.indexOf('SX680') > -1) {

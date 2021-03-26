@@ -119,7 +119,7 @@ export default {
       }
     },
     positionChange(pname) {
-      if (this.positionOptions.length > 0 && this.imgUrl !== 'KD5GI' && this.imgUrl !== 'KD6GI') {
+      if (this.positionOptions.length > 0 && this.chartParam.productionName.indexOf('5GI') < 0 && this.chartParam.productionName.indexOf('6GI') < 0) {
         this.chartParam.lineType = pname
         this.imgOption = this.imgUrl + pname
         this.searchClick()
@@ -150,13 +150,23 @@ export default {
         this.chartParam.lineType = ''
         this.imgUrlWidth = '35%'
         this.imgUrlHeight = '250px'
-      } else if (this.chartParam.productionName.indexOf('5GI') > -1) {
-        this.imgUrl = 'KD5GI'
+      } else if (this.chartParam.productionName.indexOf('5GI-2860') > -1) {
+        this.imgUrl = 'GI5_2860_opacity'
+        this.chartParam.lineType = ''
+        this.imgUrlWidth = '200px'
+        this.imgUrlHeight = '320px'
+      } else if (this.chartParam.productionName.indexOf('5GI-2864') > -1 || this.chartParam.productionName.indexOf('5GI-2865') > -1) {
+        this.imgUrl = 'GI5_28645_opacity'
+        this.chartParam.lineType = ''
+        this.imgUrlWidth = '200px'
+        this.imgUrlHeight = '320px'
+      } else if (this.chartParam.productionName.indexOf('5GI-2866') > -1) {
+        this.imgUrl = 'GI5_2866_opacity'
         this.chartParam.lineType = ''
         this.imgUrlWidth = '200px'
         this.imgUrlHeight = '320px'
       } else if (this.chartParam.productionName.indexOf('6GI') > -1) {
-        this.imgUrl = 'KD6GI'
+        this.imgUrl = 'GI6_opacity'
         this.imgOption = ''
         this.chartParam.lineType = ''
         this.imgUrlWidth = '237.5px'

@@ -7,3 +7,11 @@ export function getModels() {
     params: {}
   })
 }
+
+export function getTrayEqpList() {
+  return request({
+    url: '/map/maptraytype/getTrayEqpList',
+    method: 'get',
+    params: {}
+  })
+}

@@ -9,7 +9,14 @@
           <el-input v-model="searchObj.chipId" placeholder="请输入芯片编号" clearable/>
         </el-col>
         <el-col :span="5" class="tray-chip-eqp-selet">
-          <w-select-eqp v-model="searchObj.eqpIds"/>
+          <!--<w-select-eqp v-model="searchObj.eqpIds"/>-->
+							<el-select v-model="searchObj.eqpIds">
+								<el-option
+									v-for="item in eqps"
+									:key="item.eqpId"
+									:label="item.eqpId"
+									:value="item.eqpId" />
+							</el-select>
         </el-col>
         <el-date-picker
           v-model="searchObj.time"
@@ -25,6 +32,7 @@
         />
         <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
         <el-button type="text" class="a-tray-job-history" @click="toHistory">任务历史</el-button>
+				<el-button type="primary" icon="el-icon-search" @click="goEchart">图表</el-button>
       </el-row>
     </div>
     <el-table :data="tableData" border style="width: 100%">
@@ -105,6 +113,8 @@
 <script>
 import request from '@/utils/request'
 import dateFormat from '@/utils/dateformat'
+import { getTrayEqpList } from '@/api/map/monitor'
+
 export default {
   name: 'TrayChipMoveList',
   data() {
@@ -117,8 +127,10 @@ export default {
         time: [],
         total: 0,
         pageSize: 50,
-        page: 1
+        page: 1,
+        eqpId: ''
       },
+      eqps: [],
       dialogTableVisible: false,
       prodTitleArr: [],
       prodValueArr: [],
@@ -170,6 +182,11 @@ export default {
       }
     }
   },
+  created() {
+    getTrayEqpList().then((response) => {
+      this.eqps = response.data.eqps
+    })
+  },
   methods: {
     search() {
       const data = {}
@@ -203,6 +220,9 @@ export default {
           this.tableData = resp.data.results
         }
       })
+    },
+    goEchart() {
+
     },
     handleSizeChange(val) {
       this.searchObj.pageSize = val

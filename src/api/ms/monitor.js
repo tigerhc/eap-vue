@@ -54,3 +54,11 @@ export function findSxNumber(query) {
     params: query
   })
 }
+
+export function findDustCount(query) {
+  return request({
+    url: '/oven/ovnparticle/echartData',
+    method: 'get',
+    params: query
+  })
+}

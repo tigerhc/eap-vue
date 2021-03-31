@@ -60,7 +60,7 @@ export default {
       var option = {
         color: colors,
         title: {
-          text: '尘埃例子计数器'
+          text: '尘埃粒子计数器'
         },
         legend: {
           data: ['温度', '0.5μm', '风速', '1μm', '流量', '3μm', '5μm', '10μm', '压差', '湿度', '0.3μm']

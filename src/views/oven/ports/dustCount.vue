@@ -1,8 +1,44 @@
 <template>
-  <div>
-  <div id="main" style="width:95%;height:600px;"/>
-  <el-button type="primary" @click=" search">查询</el-button>
+  <div class="Rtplotyieldday">
+    <el-form ref="form" :model="form" :inline="true" class="form" label-width="90px" size="small">
+      <el-row>
+        <el-col :span="5">
+          <el-form-item label="设备" prop="station_code">
+            <el-select :multiple="true" filterable placeholder="请选择" >
+              <el-option
+                v-for="item in list"
+                :key="item.id"
+                :label="item.id"
+                :value="item.id"/>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="5">
+          <el-form-item label="类型" prop="station_code">
+            <el-select v-model="form.eqpId" filterable placeholder="请选择" >
+              <el-option
+                v-for="item in list2"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"/>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="日期" prop="dateTime">
+            <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="1">
+          <el-button type="primary" @click="search">查询</el-button>
+        </el-col>
+      </el-row>
+    </el-form>
+    <div id="main" style="width:95%;height:550px;"/>
+<!--    <div id="eqpChart" style="width: 95%;height: 600px;overflow: hidden;"/>-->
   </div>
+<!--  <div id="main" style="width:95%;height:600px;"/>-->
+<!--  <el-button type="primary" @click=" search">查询</el-button>-->
 </template>
 <script>
 import echarts from 'echarts'
@@ -12,51 +48,149 @@ export default {
     return {
       value: [],
       form: {
-        eqpId: 'test',
+        eqpId: '',
+        // dateTime: [],
         beginTime: '2021-03-21',
         endTime: '2021-03-29'
       },
-      date: Array,
-      temp: Array,
-      piont5μm: Array,
-      windSpeed: Array,
-      oneμm: Array,
-      flow: Array,
-      threeμm: Array,
-      fourμm: Array,
-      fiveμm: Array,
-      tenμm: Array,
-      pressure: Array,
-      wet: Array,
-      piont3μm: Array
+      type: '',
+      list: [],
+      list2: [{
+        value: 'μm',
+        label: 'μm',
+        disabled: true
+      }, {
+        value: 'temp',
+        label: '温度'
+      }, {
+        value: 'wet',
+        label: '湿度',
+        disabled: true
+      }, {
+        value: 'flow',
+        label: '流量',
+        disabled: true
+      }],
+      total: {
+        date: Array,
+        temp: Array,
+        piont5μm: Array,
+        windSpeed: Array,
+        oneμm: Array,
+        flow: Array,
+        threeμm: Array,
+        fourμm: Array,
+        fiveμm: Array,
+        tenμm: Array,
+        pressure: Array,
+        wet: Array,
+        piont3μm: Array },
+      myChart: undefined
     }
   },
   methods: {
     search() {
+      var a = this.form.eqpId
+      this.form.eqpId = 'test'
       findDustCount(this.form).then(res => {
         // this.data = res.data[0]
         // this.series = res.data[1]
         // this.min = res.data[2].min
-        this.temp = res.data.data['温度']
-        this.date = res.data.data['date']
-        this.piont5μm = res.data.data['0.5μm']
-        this.windSpeed = res.data.data['风速']
-        this.oneμm = res.data.data['1μm']
-        this.flow = res.data.data['流量']
-        this.threeμm = res.data.data['3μm']
-        this.fiveμm = res.data.data['5μm']
-        this.tenμm = res.data.data['10μm']
-        this.pressure = res.data.data['压差']
-        this.piont3μm = res.data.data['0.3μm']
-        this.wet = res.data.data['湿度']
+        this.total['temp'] = res.data.data['温度']
+        this.total['date'] = res.data.data['date']
+        this.total['piont5μm'] = res.data.data['0.5μm']
+        this.total['windSpeed'] = res.data.data['风速']
+        this.total['oneμm'] = res.data.data['1μm']
+        this.total['flow'] = res.data.data['流量']
+        this.total['threeμm'] = res.data.data['3μm']
+        this.total['fiveμm'] = res.data.data['5μm']
+        this.total['tenμm'] = res.data.data['10μm']
+        this.total['pressure'] = res.data.data['压差']
+        this.total['piont3μm'] = res.data.data['0.3μm']
+        this.total['wet'] = res.data.data['湿度']
         // this.series = res.data[1]
         // this.min = res.data[2].min
-        this.handleChange()
+        if (a === 'temp' || a === 'wet' || a === 'flow') {
+          this.tem(a)
+        } else {
+          this.handleChange()
+        }
       })
     },
+    tem(a) {
+      var b = this.total[a]
+      if (this.myChart != null) {
+        this.myChart.dispose()
+      }
+      this.myChart = echarts.init(document.getElementById('main'))
+      var option = {
+        tooltip: {
+          trigger: 'axis',
+          position: function(pt) {
+            return [pt[0], '10%']
+          }
+        },
+        title: {
+          left: 'center',
+          text: '尘埃粒子计数器'
+        },
+        toolbox: {
+          feature: {
+            dataZoom: {
+              yAxisIndex: 'none'
+            },
+            restore: {},
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: this.total['date']
+        },
+        yAxis: {
+          type: 'value',
+          boundaryGap: [0, '100%']
+        },
+        dataZoom: [{
+          type: 'inside',
+          start: 0,
+          end: 100
+        }, {
+          start: 0,
+          end: 10
+        }],
+        series: [
+          {
+            name: '模拟数据',
+            type: 'line',
+            symbol: 'none',
+            sampling: 'lttb',
+            itemStyle: {
+              color: 'rgb(255, 70, 131)'
+            },
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                offset: 0,
+                color: 'rgb(255, 158, 68)'
+              }, {
+                offset: 1,
+                color: 'rgb(255, 70, 131)'
+              }])
+            },
+            // eslint-disable-next-line no-undef
+            data: b
+          }
+        ]
+      }
+      this.myChart.setOption(option)
+    },
     handleChange() {
-      var myChart = echarts.init(document.getElementById('main'))
-      var colors = ['#FD2446', '#248EFD', '#C916F2', '#6669B1', '#00BFFF', '#5F9EA0', '#00CED1', '#32CD32', '#FFD700', '#FFA500', '#B22222']
+      if (this.myChart != null) {
+        this.myChart.dispose()
+      }
+      this.myChart = echarts.init(document.getElementById('main'))
+      var colors = ['#FD2446', '#248EFD', '#C916F2', '#B22222', '#FFA500', '#5F9EA0', '#00CED1', '#32CD32', '#FFD700', '#FFA500', '#6669B1']
       var option = {
         color: colors,
         title: {
@@ -72,7 +206,7 @@ export default {
           }
         },
         xAxis: {
-          data: this.date
+          data: this.total['date']
         },
         grid: {
           top: '10%',
@@ -81,26 +215,27 @@ export default {
           bottom: '10%'
         },
         yAxis: [
+          // {
+          //   position: 'left',
+          //   type: 'value',
+          //   name: '温度',
+          //   axisLine: {
+          //     lineStyle: {
+          //       color: colors[0]
+          //     }
+          //   },
+          //   axisLabel: {
+          //     formatter: '{value}'
+          //   }
+          // },
           {
             position: 'left',
             type: 'value',
-            name: '温度',
+            name: '0.5μm',
+            max: 1200,
             axisLine: {
               lineStyle: {
                 color: colors[0]
-              }
-            },
-            axisLabel: {
-              formatter: '{value}'
-            }
-          },
-          {
-            position: 'right',
-            type: 'value',
-            name: '0.5μm',
-            axisLine: {
-              lineStyle: {
-                color: colors[1]
               }
             },
             axisLabel: {
@@ -114,7 +249,7 @@ export default {
             name: '风速',
             axisLine: {
               lineStyle: {
-                color: colors[2]
+                color: colors[1]
               }
             },
             axisLabel: {
@@ -124,8 +259,37 @@ export default {
           {
             position: 'right',
             offset: 140,
+            max: 400,
             type: 'value',
             name: '1μm',
+            axisLine: {
+              lineStyle: {
+                color: colors[2]
+              }
+            },
+            axisLabel: {
+              formatter: '{value}'
+            }
+          },
+          // {
+          //   position: 'right',
+          //   offset: 210,
+          //   type: 'value',
+          //   name: '流量',
+          //   axisLine: {
+          //     lineStyle: {
+          //       color: colors[4]
+          //     }
+          //   },
+          //   axisLabel: {
+          //     formatter: '{value}'
+          //   }
+          // },
+          {
+            position: 'right',
+            offset: 210,
+            type: 'value',
+            name: '3μm',
             axisLine: {
               lineStyle: {
                 color: colors[3]
@@ -137,9 +301,10 @@ export default {
           },
           {
             position: 'right',
-            offset: 210,
+            offset: 280,
             type: 'value',
-            name: '流量',
+            name: '5μm',
+            max: 50,
             axisLine: {
               lineStyle: {
                 color: colors[4]
@@ -151,9 +316,10 @@ export default {
           },
           {
             position: 'right',
-            offset: 280,
+            offset: 350,
             type: 'value',
-            name: '3μm',
+            max: 30,
+            name: '10μm',
             axisLine: {
               lineStyle: {
                 color: colors[5]
@@ -165,9 +331,9 @@ export default {
           },
           {
             position: 'right',
-            offset: 350,
+            offset: 420,
             type: 'value',
-            name: '5μm',
+            name: '压差',
             axisLine: {
               lineStyle: {
                 color: colors[6]
@@ -177,56 +343,28 @@ export default {
               formatter: '{value}'
             }
           },
-          {
-            position: 'right',
-            offset: 420,
-            type: 'value',
-            name: '10μm',
-            axisLine: {
-              lineStyle: {
-                color: colors[7]
-              }
-            },
-            axisLabel: {
-              formatter: '{value}'
-            }
-          },
+          // {
+          //   position: 'right',
+          //   offset: 560,
+          //   type: 'value',
+          //   name: '湿度',
+          //   axisLine: {
+          //     lineStyle: {
+          //       color: colors[9]
+          //     }
+          //   },
+          //   axisLabel: {
+          //     formatter: '{value}'
+          //   }
+          // },
           {
             position: 'right',
             offset: 490,
             type: 'value',
-            name: '压差',
-            axisLine: {
-              lineStyle: {
-                color: colors[8]
-              }
-            },
-            axisLabel: {
-              formatter: '{value}'
-            }
-          },
-          {
-            position: 'right',
-            offset: 560,
-            type: 'value',
-            name: '湿度',
-            axisLine: {
-              lineStyle: {
-                color: colors[9]
-              }
-            },
-            axisLabel: {
-              formatter: '{value}'
-            }
-          },
-          {
-            position: 'right',
-            offset: 630,
-            type: 'value',
             name: '0.3μm',
             axisLine: {
               lineStyle: {
-                color: colors[10]
+                color: colors[7]
               }
             },
             axisLabel: {
@@ -236,6 +374,12 @@ export default {
         ],
         toolbox: {
           show: true,
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
+            }
+          },
           feature: {
             magicType: { show: true, type: ['line', 'bar'] },
             dataView: {
@@ -249,19 +393,19 @@ export default {
 
         },
         series: [
-          {
-            name: '温度',
-            type: 'line',
-            barMaxWidth: '20%',
-            label: {
-              normal: {
-                show: true,
-                position: 'top'
-              }
-            },
-            yAxisIndex: '0',
-            data: this.temp
-          },
+          // {
+          //   name: '温度',
+          //   type: 'line',
+          //   barMaxWidth: '20%',
+          //   label: {
+          //     normal: {
+          //       show: true,
+          //       position: 'top'
+          //     }
+          //   },
+          //   yAxisIndex: '0',
+          //   data: this.total['temp']
+          // },
           {
             name: '0.5μm',
             type: 'line',
@@ -272,8 +416,8 @@ export default {
                 position: 'top'
               }
             },
-            yAxisIndex: '1',
-            data: this.piont5μm
+            yAxisIndex: '0',
+            data: this.total['piont5μm']
           },
           {
             name: '风速',
@@ -285,8 +429,8 @@ export default {
                 position: 'top'
               }
             },
-            yAxisIndex: '2',
-            data: this.windSpeed
+            yAxisIndex: '1',
+            data: this.total['windSpeed']
           },
           {
             name: '1μm',
@@ -298,22 +442,22 @@ export default {
                 position: 'top'
               }
             },
-            yAxisIndex: '3',
-            data: this.oneμm
+            yAxisIndex: '2',
+            data: this.total['oneμm']
           },
-          {
-            name: '流量',
-            type: 'line',
-            barMaxWidth: '20%',
-            label: {
-              normal: {
-                show: true,
-                position: 'top'
-              }
-            },
-            yAxisIndex: '4',
-            data: this.flow
-          },
+          // {
+          //   name: '流量',
+          //   type: 'line',
+          //   barMaxWidth: '20%',
+          //   label: {
+          //     normal: {
+          //       show: true,
+          //       position: 'top'
+          //     }
+          //   },
+          //   yAxisIndex: '4',
+          //   data: this.total['flow']
+          // },
           {
             name: '3μm',
             type: 'line',
@@ -324,8 +468,8 @@ export default {
                 position: 'top'
               }
             },
-            yAxisIndex: '5',
-            data: this.threeμm
+            yAxisIndex: '3',
+            data: this.total['threeμm']
           },
           {
             name: '5μm',
@@ -337,8 +481,8 @@ export default {
                 position: 'top'
               }
             },
-            yAxisIndex: '6',
-            data: this.fiveμm
+            yAxisIndex: '4',
+            data: this.total['fiveμm']
           },
           {
             name: '10μm',
@@ -350,8 +494,8 @@ export default {
                 position: 'top'
               }
             },
-            yAxisIndex: '7',
-            data: this.tenμm
+            yAxisIndex: '5',
+            data: this.total['tenμm']
           },
           {
             name: '压差',
@@ -363,22 +507,22 @@ export default {
                 position: 'top'
               }
             },
-            yAxisIndex: '8',
-            data: this.pressure
+            yAxisIndex: '6',
+            data: this.total['pressure']
           },
-          {
-            name: '湿度',
-            type: 'line',
-            barMaxWidth: '20%',
-            label: {
-              normal: {
-                show: true,
-                position: 'top'
-              }
-            },
-            yAxisIndex: '9',
-            data: this.wet
-          },
+          // {
+          //   name: '湿度',
+          //   type: 'line',
+          //   barMaxWidth: '20%',
+          //   label: {
+          //     normal: {
+          //       show: true,
+          //       position: 'top'
+          //     }
+          //   },
+          //   yAxisIndex: '9',
+          //   data: this.total['wet']
+          // },
           {
             name: '0.3μm',
             type: 'line',
@@ -389,18 +533,25 @@ export default {
                 position: 'top'
               }
             },
-            yAxisIndex: '10',
-            data: this.piont3μm
+            yAxisIndex: '7',
+            data: this.total['piont3μm']
           }
         ]
       }
-      myChart.setOption(option)
+      this.myChart.setOption(option)
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .Rtplotyieldday {
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+  .form {
+    margin-top: 20px;
+  }}
   .arrow_box{
     animation: glow 800ms ease-out infinite alternate;
     width:300px;

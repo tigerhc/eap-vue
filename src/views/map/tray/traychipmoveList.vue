@@ -36,8 +36,8 @@
       </el-row>
     </div>
     <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="lotNo" label="批次号" width="150" fixed/>
-      <el-table-column prop="chipId" label="芯片编号" width="150" fixed>
+      <el-table-column prop="lotNo" label="批次号" width="70" fixed/>
+      <el-table-column prop="chipId" label="芯片编号" width="200" fixed>
         <template v-if="scope.row.chipId" slot-scope="scope">
           <el-button
             type="text"
@@ -47,12 +47,19 @@
         </template>
       </el-table-column>
       <el-table-column prop="eqpId" label="设备号" width="150" fixed/>
-      <el-table-column prop="productionNo" label="品番号" width="150"/>
+      <el-table-column prop="productionNo" label="品番号" width="80"/>
       <el-table-column prop="toTrayId" label="托盘ID" width="100"/>
-      <el-table-column prop="toX" label="X坐标" width="80"/>
-      <el-table-column prop="toY" label="Y坐标" width="80"/>
-      <el-table-column prop="judgeResult" label="质量" width="80"/>
+      <el-table-column prop="toX" label="X坐标" width="60"/>
+      <el-table-column prop="toY" label="Y坐标" width="60"/>
+      <el-table-column prop="judgeResult" label="质量" width="60"/>
       <el-table-column :formatter="colDateFormatter" prop="startTime" label="时间" width="180"/>
+			<el-table-column prop="dmId" label="晶圆ID" width="100">
+				<template v-if="scope.row.dmId" slot-scope="scope">
+          <el-button type="text" size="small" @click="handleDMClick(scope.row)">{{ scope.row.dmId }}</el-button>
+        </template>
+			</el-table-column>
+      <el-table-column prop="dmX" label="晶圆X" width="60"/>
+      <el-table-column prop="dmY" label="晶圆Y" width="60"/>
       <el-table-column prop="productionParam" label="生产条件" width="180">
         <template v-if="scope.row.productionParam" slot-scope="scope">
           <el-button
@@ -196,6 +203,7 @@ export default {
 
       if (this.searchObj.chipId && this.searchObj.chipId.trim() !== '') {
         this.searchObj.time = []
+        data.lotNo = this.searchObj.lotNo
         data.chipIds = this.searchObj.chipId.trim().split(',')
       } else {
         if (
@@ -203,7 +211,7 @@ export default {
           this.searchObj.time == null ||
           this.searchObj.time.length === 0
         ) {
-          this.searchObj.time = [dateFormat(new Date(new Date().toLocaleDateString())), dateFormat(new Date())]
+          // this.searchObj.time = [dateFormat(new Date(new Date().toLocaleDateString())), dateFormat(new Date())]
         }
         data.lotNo = this.searchObj.lotNo
         data.eqpIds = this.searchObj.eqpIds
@@ -241,6 +249,15 @@ export default {
     handleChipClick(row) {
       this.$router.push({
         name: 'views/map/tray/traychipmoveDetail',
+        query: {
+          id: row.chipId,
+          type: 'VIEW'
+        }
+      })
+    },
+    handleDMClick(row) {
+      this.$router.push({
+        name: 'views/map/tray/trayDmDetail',
         query: {
           id: row.chipId,
           type: 'VIEW'

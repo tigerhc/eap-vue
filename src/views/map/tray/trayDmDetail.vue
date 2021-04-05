@@ -5,7 +5,7 @@
 				<ChipDm eqp-id="IBGT"/>
 				<div
 v-for="(item,index) in igbt1.lightPst"
-:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
+					:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
 					:key="'i1'+item.dmX+'_'+item.dmY"
 					class="lightPst"
 					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt1')"/>
@@ -18,11 +18,11 @@ v-for="(item,index) in igbt1.lightPst"
 			<div v-if="igbtIndex > 1" :style="{left:'250px'}" class="chip_dm_panel">
 				<ChipDm eqp-id="IBGT"/>
 				<div
-v-for="item in igbt2.lightPst"
-:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
-				:key="'i2'+item.dmX+'_'+item.dmY"
+v-for="(item,index) in igbt2.lightPst"
+					:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
+					:key="'i2'+item.dmX+'_'+item.dmY"
 					class="lightPst"
-				@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt2')"/>
+					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt2')"/>
 				<div class="dm_info_panel">
 					<div class="dmIdDiv">{{ igbt2.dmId }}</div>
 					<div class="dmPstDiv">{{ igbt2.content }}</div>
@@ -32,12 +32,11 @@ v-for="item in igbt2.lightPst"
 			<div v-if="igbtIndex > 2" :style="{left:'500px'}" class="chip_dm_panel">
 				<ChipDm eqp-id="IBGT"/>
 				<div
-v-for="item in igbt3.lightPst"
-:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
-				:key="'i3'+item.dmX+'_'+item.dmY"
-
+v-for="(item,index) in igbt3.lightPst"
+					:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
+					:key="'i3'+item.dmX+'_'+item.dmY"
 					class="lightPst"
-				@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt3')"/>
+					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt3')"/>
 				<div class="dm_info_panel">
 					<div class="dmIdDiv">{{ igbt3.dmId }}</div>
 					<div class="dmPstDiv">{{ igbt3.content }}</div>
@@ -47,7 +46,7 @@ v-for="item in igbt3.lightPst"
 			<div v-if="igbtIndex > 3" :style="{left:'750px'}" class="chip_dm_panel">
 				<ChipDm eqp-id="IBGT"/>
 				<div
-					v-for="item in igbt4.lightPst"
+v-for="(item,index) in igbt4.lightPst"
 					:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
 					:key="'i4'+item.dmX+'_'+item.dmY"
 					class="lightPst"
@@ -61,11 +60,11 @@ v-for="item in igbt3.lightPst"
 			<div v-if="igbtIndex > 4" :style="{left:'1000px'}" class="chip_dm_panel">
 				<ChipDm eqp-id="IBGT"/>
 				<div
-v-for="item in igbt5.lightPst"
-:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
-				:key="'i5'+item.dmX+'_'+item.dmY"
+v-for="(item,index) in igbt5.lightPst"
+					:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
+					:key="'i5'+item.dmX+'_'+item.dmY"
 					class="lightPst"
-				@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt5')"/>
+					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt5')"/>
 				<div class="dm_info_panel">
 					<div class="dmIdDiv">{{ igbt5.dmId }}</div>
 					<div class="dmPstDiv">{{ igbt5.content }}</div>
@@ -75,12 +74,11 @@ v-for="item in igbt5.lightPst"
 			<div v-if="igbtIndex > 5" :style="{left:'1250px'}" class="chip_dm_panel">
 				<ChipDm eqp-id="IBGT"/>
 				<div
-v-for="item in igbt6.lightPst"
-:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
-				:key="'i6'+item.dmX+'_'+item.dmY"
-
+v-for="(item,index) in igbt6.lightPst"
+					:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
+					:key="'i6'+item.dmX+'_'+item.dmY"
 					class="lightPst"
-				@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt6')"/>
+					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt6')"/>
 				<div class="dm_info_panel">
 					<div class="dmIdDiv">{{ igbt6.dmId }}</div>
 					<div class="dmPstDiv">{{ igbt6.content }}</div>
@@ -92,12 +90,11 @@ v-for="item in igbt6.lightPst"
 			<div class="chip_dm_panel">
 				<ChipDm eqp-id="FRD"/>
 				<div
-v-for="item in frd1.lightPst"
-:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
-				:key="'f1'+item.dmX+'_'+item.dmY"
-
+v-for="(item,index) in frd1.lightPst"
+					:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
+					:key="'f1'+item.dmX+'_'+item.dmY"
 					class="lightPst"
-				@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd1')"/>
+					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd1')"/>
 				<div class="dm_info_panel">
 					<div class="dmIdDiv">{{ frd1.dmId }}</div>
 					<div class="dmPstDiv">{{ frd1.content }}</div>
@@ -107,11 +104,11 @@ v-for="item in frd1.lightPst"
 			<div v-if="frdIndex > 1" :style="{left:'500px'}" class="chip_dm_panel">
 				<ChipDm eqp-id="FRD"/>
 				<div
-v-for="item in frd2.lightPst"
-:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
-				:key="'f2'+item.dmX+'_'+item.dmY"
-				class="lightPst"
-				@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd2')"/>
+v-for="(item,index) in frd2.lightPst"
+					:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
+					:key="'f2'+item.dmX+'_'+item.dmY"
+					class="lightPst"
+					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd2')"/>
 				<div class="dm_info_panel">
 					<div class="dmIdDiv">{{ frd2.dmId }}</div>
 					<div class="dmPstDiv">{{ frd2.content }}</div>
@@ -121,11 +118,11 @@ v-for="item in frd2.lightPst"
 			<div v-if="frdIndex > 2" :style="{left:'500px'}" class="chip_dm_panel">
 				<ChipDm eqp-id="FRD"/>
 				<div
-v-for="item in frd3.lightPst"
-:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
-				:key="'f3'+item.dmX+'_'+item.dmY"
-				class="lightPst"
-				@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd3')"/>
+v-for="(item,index) in frd3.lightPst"
+					:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
+					:key="'f3'+item.dmX+'_'+item.dmY"
+					class="lightPst"
+					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd3')"/>
 				<div class="dm_info_panel">
 					<div class="dmIdDiv">{{ frd3.dmId }}</div>
 					<div class="dmPstDiv">{{ frd3.content }}</div>
@@ -135,11 +132,11 @@ v-for="item in frd3.lightPst"
 			<div v-if="frdIndex > 3" :style="{left:'500px'}" class="chip_dm_panel">
 				<ChipDm eqp-id="FRD"/>
 				<div
-v-for="item in frd4.lightPst"
-:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
-				:key="'f4'+item.dmX+'_'+item.dmY"
-				class="lightPst"
-				@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd4')"/>
+v-for="(item,index) in frd4.lightPst"
+					:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
+					:key="'f4'+item.dmX+'_'+item.dmY"
+					class="lightPst"
+					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd4')"/>
 				<div class="dm_info_panel">
 					<div class="dmIdDiv">{{ frd4.dmId }}</div>
 					<div class="dmPstDiv">{{ frd4.content }}</div>
@@ -149,11 +146,11 @@ v-for="item in frd4.lightPst"
 			<div v-if="frdIndex > 4" :style="{left:'500px'}" class="chip_dm_panel">
 				<ChipDm eqp-id="FRD"/>
 				<div
-v-for="item in frd5.lightPst"
-:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
-				:key="'f5'+item.dmX+'_'+item.dmY"
-				class="lightPst"
-				@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd5')"/>
+v-for="(item,index) in frd5.lightPst"
+					:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
+					:key="'f5'+item.dmX+'_'+item.dmY"
+					class="lightPst"
+					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd5')"/>
 				<div class="dm_info_panel">
 					<div class="dmIdDiv">{{ frd5.dmId }}</div>
 					<div class="dmPstDiv">{{ frd5.content }}</div>
@@ -163,11 +160,11 @@ v-for="item in frd5.lightPst"
 			<div v-if="frdIndex > 5" :style="{left:'500px'}" class="chip_dm_panel">
 				<ChipDm eqp-id="FRD"/>
 				<div
-v-for="item in frd6.lightPst"
-:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
-				:key="'f6'+item.dmX+'_'+item.dmY"
-				class="lightPst"
-				@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd6')"/>
+v-for="(item,index) in frd6.lightPst"
+					:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
+					:key="'f6'+item.dmX+'_'+item.dmY"
+					class="lightPst"
+					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd6')"/>
 				<div class="dm_info_panel">
 					<div class="dmIdDiv">{{ frd6.dmId }}</div>
 					<div class="dmPstDiv">{{ frd6.content }}</div>
@@ -279,47 +276,47 @@ export default {
           break
         case 'igbt2':
           this.igbt2.content = content
-          this.igbt2.showTime = this.igbt1.startTime.split(',')[index]
+          this.igbt2.showTime = this.igbt2.startTime.split(',')[index]
           break
         case 'igbt3':
           this.igbt3.content = content
-          this.igbt3.showTime = this.igbt1.startTime.split(',')[index]
+          this.igbt3.showTime = this.igbt3.startTime.split(',')[index]
           break
         case 'igbt4':
           this.igbt4.content = content
-          this.igbt4.showTime = this.igbt1.startTime.split(',')[index]
+          this.igbt4.showTime = this.igbt4.startTime.split(',')[index]
           break
         case 'igbt5':
           this.igbt5.content = content
-          this.igbt5.showTime = this.igbt1.startTime.split(',')[index]
+          this.igbt5.showTime = this.igbt5.startTime.split(',')[index]
           break
         case 'igbt6':
           this.igbt6.content = content
-          this.igbt6.showTime = this.igbt1.startTime.split(',')[index]
+          this.igbt6.showTime = this.igbt6.startTime.split(',')[index]
           break
         case 'frd1':
           this.frd1.content = content
-          this.frd1.showTime = this.igbt1.startTime.split(',')[index]
+          this.frd1.showTime = this.frd1.startTime.split(',')[index]
           break
         case 'frd2':
           this.frd2.content = content
-          this.frd2.showTime = this.igbt1.startTime.split(',')[index]
+          this.frd2.showTime = this.frd2.startTime.split(',')[index]
           break
         case 'frd3':
           this.frd3.content = content
-          this.frd3.showTime = this.igbt1.startTime.split(',')[index]
+          this.frd3.showTime = this.frd3.startTime.split(',')[index]
           break
         case 'frd4':
           this.frd4.content = content
-          this.frd4.showTime = this.igbt1.startTime.split(',')[index]
+          this.frd4.showTime = this.frd4.startTime.split(',')[index]
           break
         case 'frd5':
           this.frd5.content = content
-          this.frd5.showTime = this.igbt1.startTime.split(',')[index]
+          this.frd5.showTime = this.frd5.startTime.split(',')[index]
           break
         case 'frd6':
           this.frd6.content = content
-          this.frd6.showTime = this.igbt1.startTime.split(',')[index]
+          this.frd6.showTime = this.frd6.startTime.split(',')[index]
           break
       }
       this.$forceUpdate()// 强制刷新obj

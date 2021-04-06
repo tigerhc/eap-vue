@@ -4,7 +4,7 @@
       <el-row>
         <el-col :span="5">
           <el-form-item label="设备" prop="station_code">
-            <el-select :multiple="true" filterable placeholder="请选择" >
+            <el-select v-model="form.eqpId" filterable placeholder="请选择" >
               <el-option
                 v-for="item in list"
                 :key="item.eqpId"
@@ -15,7 +15,7 @@
         </el-col>
         <el-col :span="5">
           <el-form-item label="类型" prop="station_code">
-            <el-select v-model="form.eqpId" filterable placeholder="请选择" >
+            <el-select v-model="type" filterable placeholder="请选择" >
               <el-option
                 v-for="item in list2"
                 :key="item.value"
@@ -26,7 +26,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="日期" prop="dateTime">
-            <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"/>
+            <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"/>
           </el-form-item>
         </el-col>
         <el-col :span="1">
@@ -49,10 +49,10 @@ export default {
       value: [],
       form: {
         eqpId: '',
-        // dateTime: [],
         beginTime: '2021-03-21',
         endTime: '2021-03-29'
       },
+      dateTime: [],
       type: '',
       list: [],
       list2: [{
@@ -95,8 +95,10 @@ export default {
   },
   methods: {
     search() {
-      var a = this.form.eqpId
-      this.form.eqpId = 'test'
+      alert(this.form.eqpId)
+      var a = this.type
+      this.form.beginTime = this.dateTime[0]
+      this.form.endTime = this.dateTime[1]
       findDustCount(this.form).then(res => {
         // this.data = res.data[0]
         // this.series = res.data[1]

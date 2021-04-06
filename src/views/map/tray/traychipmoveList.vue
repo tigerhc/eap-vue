@@ -6,7 +6,7 @@
           <el-input v-model="searchObj.lotNo" placeholder="请输入批次号" clearable/>
         </el-col>
         <el-col :span="4">
-          <el-input v-model="searchObj.chipId" placeholder="请输入芯片编号" clearable/>
+          <el-input v-model="searchObj.chipId" placeholder="请输入制品序号" clearable/>
         </el-col>
         <el-col :span="5" class="tray-chip-eqp-selet">
           <!--<w-select-eqp v-model="searchObj.eqpIds"/>-->
@@ -37,7 +37,7 @@
     </div>
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="lotNo" label="批次号" width="70" fixed/>
-      <el-table-column prop="chipId" label="芯片编号" width="200" fixed>
+      <el-table-column prop="chipId" label="制品号" width="200" fixed>
         <template v-if="scope.row.chipId" slot-scope="scope">
           <el-button
             type="text"

@@ -281,7 +281,19 @@ export default {
             for (var edgesJ = 0; edgesJ < nodes.length; edgesJ++) {
               // 设备的上下游关系正确
               if (nodes[edgesI].nextEqpId === nodes[edgesJ].eqpId) {
-                if (nodes[edgesI].nextEqpId === 'APJ-HB2-SMT1' || nodes[edgesI].nextEqpId === 'APJ-HB2-SMT2') { // 贴片机
+                if (nodes[edgesI].eqpId === 'APJ-VI1') {
+                  if (nodes[edgesI].toTrayId.indexOf('J0015') > -1 && nodes[edgesJ].eqpId === 'APJ-HB2-SMT2') {
+                    edges.push({
+                      source: nodes[edgesI].id,
+                      target: nodes[edgesJ].id
+                    })
+                  } else if (nodes[edgesI].toTrayId.indexOf('J0014') > -1 && nodes[edgesJ].eqpId === 'APJ-HB2-SMT1') {
+                    edges.push({
+                      source: nodes[edgesI].id,
+                      target: nodes[edgesJ].id
+                    })
+                  }
+                } else if (nodes[edgesI].nextEqpId === 'APJ-HB2-SMT1' || nodes[edgesI].nextEqpId === 'APJ-HB2-SMT2') { // 贴片机
                   edges.push({
                     source: nodes[edgesI].id,
                     target: nodes[edgesJ].id

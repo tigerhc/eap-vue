@@ -7,9 +7,9 @@
             <el-select :multiple="true" filterable placeholder="请选择" >
               <el-option
                 v-for="item in list"
-                :key="item.id"
-                :label="item.id"
-                :value="item.id"/>
+                :key="item.eqpId"
+                :label="item.eqpName"
+                :value="item.eqpId"/>
             </el-select>
           </el-form-item>
         </el-col>
@@ -42,7 +42,7 @@
 </template>
 <script>
 import echarts from 'echarts'
-import { findDustCount } from '@/api/ms/monitor'
+import { findDustCount, findDustEqps } from '@/api/ms/monitor'
 export default {
   data() {
     return {
@@ -87,6 +87,11 @@ export default {
         piont3μm: Array },
       myChart: undefined
     }
+  },
+  created() {
+    findDustEqps().then(res => {
+      this.list = res.data.eqps
+    })
   },
   methods: {
     search() {

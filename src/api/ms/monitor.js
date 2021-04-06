@@ -62,3 +62,10 @@ export function findDustCount(query) {
     params: query
   })
 }
+
+export function findDustEqps() {
+  return request({
+    url: '/oven/ovnparticle/getParticleEqps',
+    method: 'get'
+  })
+}

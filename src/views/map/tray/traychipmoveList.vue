@@ -31,8 +31,8 @@
           align="right"
         />
         <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
+				<el-button type="primary" icon="el-icon-refresh" @click="clnParam">清空</el-button>
         <el-button type="text" class="a-tray-job-history" @click="toHistory">任务历史</el-button>
-				<el-button type="primary" icon="el-icon-search" @click="goEchart">图表</el-button>
       </el-row>
     </div>
     <el-table :data="tableData" border style="width: 100%">
@@ -60,7 +60,7 @@
 			</el-table-column>
       <el-table-column prop="dmX" label="晶圆X" width="60"/>
       <el-table-column prop="dmY" label="晶圆Y" width="60"/>
-      <el-table-column prop="productionParam" label="生产条件" width="180">
+      <el-table-column prop="productionParam" label="生产条件" width="80">
         <template v-if="scope.row.productionParam" slot-scope="scope">
           <el-button
             type="text"
@@ -213,6 +213,9 @@ export default {
         ) {
           // this.searchObj.time = [dateFormat(new Date(new Date().toLocaleDateString())), dateFormat(new Date())]
         }
+        if (this.searchObj.lotNo !== null && this.searchObj.lotNo !== undefined) {
+          this.searchObj.lotNo = this.searchObj.lotNo.toUpperCase()
+        }
         data.lotNo = this.searchObj.lotNo
         data.eqpIds = this.searchObj.eqpIds
         data.sTime = this.searchObj.time[0]
@@ -231,6 +234,13 @@ export default {
     },
     goEchart() {
 
+    },
+    clnParam() {
+      this.searchObj.lotNo = null
+      this.searchObj.eqpIds = []
+      this.searchObj.eqpId = ''
+      this.searchObj.time = []
+      this.searchObj.chipId = ''
     },
     handleSizeChange(val) {
       this.searchObj.pageSize = val

@@ -97,8 +97,8 @@ export default {
     search() {
       alert(this.form.eqpId)
       var a = this.type
-      this.form.beginTime = this.dateTime[0]
-      this.form.endTime = this.dateTime[1]
+      this.form.beginTime = this.dateTime[0] + ' 00:00:00'
+      this.form.endTime = this.dateTime[1] + ' 23:59:59'
       findDustCount(this.form).then(res => {
         // this.data = res.data[0]
         // this.series = res.data[1]
@@ -239,7 +239,7 @@ export default {
             position: 'left',
             type: 'value',
             name: '0.5μm',
-            max: 1200,
+            // max: 1200,
             axisLine: {
               lineStyle: {
                 color: colors[0]
@@ -266,7 +266,7 @@ export default {
           {
             position: 'right',
             offset: 140,
-            max: 400,
+            // max: 400,
             type: 'value',
             name: '1μm',
             axisLine: {
@@ -311,7 +311,7 @@ export default {
             offset: 280,
             type: 'value',
             name: '5μm',
-            max: 50,
+            // max: 50,
             axisLine: {
               lineStyle: {
                 color: colors[4]
@@ -325,7 +325,7 @@ export default {
             position: 'right',
             offset: 350,
             type: 'value',
-            max: 30,
+            // max: 30,
             name: '10μm',
             axisLine: {
               lineStyle: {

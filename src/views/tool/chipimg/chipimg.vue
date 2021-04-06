@@ -47,14 +47,20 @@
 
 		<!--5GI-->
 		<div v-show="imgUrl.indexOf('GI5')>-1" class="gi5">
-			<!--MIC 透明展示 2860/28645-->
-			<div v-show="imgUrl.indexOf('opacity')>-1 && (imgUrl.indexOf('GI5_2860')>-1 || imgUrl.indexOf('GI5_28645')>-1)" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5mic_2860_position smaller opacity" @click="positionClk('MIC')">MIC</div>
+			<!--MIC 透明展示 2860-->
+			<div v-show="imgUrl.indexOf('opacity')>-1 && imgUrl.indexOf('GI5_2860')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5mic_2860_position smaller opacity" @click="positionClk('MIC')">MIC</div>
 			<!--MIC 不透明展示 2860/28645-->
-			<div v-show="imgUrl.indexOf('opacity')<0 && (imgUrl.indexOf('GI5_2860')>-1 || imgUrl.indexOf('GI5_28645')>-1)" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5mic_2860_position smaller" @click="positionClk('MIC')">MIC</div>
+			<div v-show="imgUrl.indexOf('opacity')<0 && imgUrl.indexOf('GI5_2860')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5mic_2860_position smaller" @click="positionClk('MIC')">MIC</div>
+
+			<!--MIC 透明展示 28645-->
+			<div v-show="imgUrl.indexOf('opacity')>-1 && imgUrl.indexOf('GI5_28645')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5_mic_position smaller opacity" @click="positionClk('MIC')">MIC</div>
+			<!--MIC 不透明展示 2860/28645-->
+			<div v-show="imgUrl.indexOf('opacity')<0 && imgUrl.indexOf('GI5_28645')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5_mic_position smaller" @click="positionClk('MIC')">MIC</div>
+
 			<!--MIC 透明展示 2866-->
-			<div v-show="imgUrl.indexOf('opacity')>-1 && imgUrl.indexOf('GI5_2866')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5_mic_position smaller opacity" @click="positionClk('MIC')">MIC</div>
+			<div v-show="imgUrl.indexOf('opacity')>-1 && imgUrl.indexOf('GI5_2866')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5_2866_position smaller opacity" @click="positionClk('MIC')">MIC</div>
 			<!--MIC 不透明展示 2866-->
-			<div v-show="imgUrl.indexOf('opacity')<0 && imgUrl.indexOf('GI5_2866')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5_mic_position smaller" @click="positionClk('MIC')">MIC</div>
+			<div v-show="imgUrl.indexOf('opacity')<0 && imgUrl.indexOf('GI5_2866')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5_2866_position smaller" @click="positionClk('MIC')">MIC</div>
 			<!--IGBT 展示 2860-->
 			<div v-show="imgUrl.indexOf('GI5_2860')>-1" :class="imgOption.indexOf('IGBT')>-1?'MIC_act':'gi5IGBT_2860'" class="gi5_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
 			<!--IGBT 展示 28645/2866-->
@@ -191,6 +197,7 @@ export default {
 	.gi6_c_position{width:28%;height:10%;top: 73.5%;left: 16.6%;padding-top: 8px;color:white}
 	.gi5_igbtselect{width:64%;height:30%;top: 26%;left: 34%;border:1px solid red;}
 	.gi5KD_mic_position{width:84%;height:25%;top: 60%;left: -4.4%;padding-top: 40px;opacity: 0.6;}
+	.gi5_2866_position{width:75%;height:25%;top: 60%;left: -0.4%;padding-top: 40px;}
 
 	.smaDI1_a_position{width:6%;height:15%;top: 24%;left: 9.6%;}
 	.smaDI1_b_position{width:6%;height:15%;top: 39%;left: 9.6%;}

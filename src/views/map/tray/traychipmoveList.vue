@@ -201,7 +201,7 @@ export default {
       data.offset = (this.searchObj.page - 1) * this.searchObj.pageSize
       data.total = this.searchObj.total
 
-      if (this.searchObj.chipId && this.searchObj.chipId.trim() !== '') {
+      /** *if (this.searchObj.chipId && this.searchObj.chipId.trim() !== '') {
         this.searchObj.time = []
         data.lotNo = this.searchObj.lotNo
         data.chipIds = this.searchObj.chipId.trim().split(',')
@@ -220,7 +220,24 @@ export default {
         data.eqpIds = this.searchObj.eqpIds
         data.sTime = this.searchObj.time[0]
         data.eTime = this.searchObj.time[1]
+      }***/
+      if (this.searchObj.lotNo !== null && this.searchObj.lotNo !== '') {
+        data.lotNo = this.searchObj.lotNo
       }
+      if (this.searchObj.chipId && this.searchObj.chipId.trim() !== '') {
+        if (this.searchObj.lotNo === null || this.searchObj.lotNo === '') {
+          return
+        }
+        data.chipIds = this.searchObj.chipId.trim().split(',')
+      }
+      if (this.searchObj.time === null) {
+        this.searchObj.time = []
+      }
+      if (this.searchObj.time[0] !== undefined && this.searchObj.time[1] !== undefined) {
+        data.sTime = this.searchObj.time[0]
+        data.eTime = this.searchObj.time[1]
+      }
+      data.eqpIds = this.searchObj.eqpIds
       request({
         url: '/map/maptraychipmove/page',
         method: 'post',

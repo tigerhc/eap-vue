@@ -95,7 +95,6 @@ export default {
   },
   methods: {
     search() {
-      alert(this.form.eqpId)
       var a = this.type
       this.form.beginTime = this.dateTime[0] + ' 00:00:00'
       this.form.endTime = this.dateTime[1] + ' 23:59:59'

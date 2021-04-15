@@ -55,6 +55,8 @@ export default {
       dateTime: [],
       type: '',
       list: [],
+      maxValue: undefined,
+      minValue: undefined,
       list2: [{
         value: 'μm',
         label: 'μm',
@@ -117,6 +119,13 @@ export default {
         // this.series = res.data[1]
         // this.min = res.data[2].min
         if (a === 'temp' || a === 'wet' || a === 'flow') {
+          if (a === 'temp') {
+            this.maxValue = 26
+            this.minValue = 20
+          } else if (a === 'wet') {
+            this.maxValue = 60
+            this.minValue = 40
+          }
           this.tem(a)
         } else {
           this.handleChange()
@@ -168,12 +177,43 @@ export default {
         }],
         series: [
           {
-            name: '模拟数据',
+            name: '数值',
             type: 'line',
             symbol: 'none',
             sampling: 'lttb',
             itemStyle: {
               color: 'rgb(255, 70, 131)'
+            },
+            markLine: {
+              symbol: ['none', 'arrow'],
+              label: {
+                position: 'end'
+              },
+              data: [{
+                name: '管理上限',
+                silent: true,
+                lineStyle: {
+                  type: 'dotted',
+                  color: '#FA3934',
+                  width: 3
+                },
+                label: {
+                  formatter: this.maxValue + '   管理上限'
+                },
+                yAxis: this.maxValue
+              }, {
+                name: '管理下限',
+                silent: true,
+                lineStyle: {
+                  type: 'dotted',
+                  color: '#1E90FF',
+                  width: 3
+                },
+                label: {
+                  formatter: this.minValue + '   管理下限'
+                },
+                yAxis: this.minValue
+              }]
             },
             areaStyle: {
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -213,9 +253,9 @@ export default {
                 x2: 0,
                 y2: 1,
                 colorStops: [{
-                  offset: 0, color: 'red '// 0% 处的颜色
+                  offset: 0, color: 'red '
                 }, {
-                  offset: 1, color: 'blue' // 100% 处的颜色
+                  offset: 1, color: 'blue'
                 }],
                 global: false // 缺省为 false
               }
@@ -441,19 +481,19 @@ export default {
             type: 'line',
             barMaxWidth: '20%',
             markLine: {
-              symbol: ['none', 'arrow'], // ['none']表示是一条横线；['arrow', 'none']表示线的左边是箭头，右边没右箭头；['none','arrow']表示线的左边没有箭头，右边有箭头
+              symbol: ['none', 'arrow'],
               label: {
-                position: 'end', // 将警示值放在哪个位置，三个值“start”,"middle","end" 开始 中点 结束
+                position: 'end',
                 formatter: '管理上限'
               },
               data: [{
-                silent: true, // 鼠标悬停事件 true没有，false有
-                lineStyle: { // 警戒线的样式 ，虚实 颜色
-                  type: 'dotted', // 样式  ‘solid’和'dotted'
+                silent: true,
+                lineStyle: {
+                  type: 'dotted',
                   color: '#FA3934',
-                  width: 3 // 宽度
+                  width: 3
                 },
-                yAxis: 8000 // 警戒线的标注值，可以有多个yAxis,多条警示线 或者采用 {type : 'average', name: '平均值'}，type值有 max min average，分为最大，最小，平均值
+                yAxis: 8000
               }]
             },
             label: {

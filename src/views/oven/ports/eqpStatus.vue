@@ -3,7 +3,7 @@
   <div class="Rtplotyieldday">
     <el-form ref="form" :model="form" :inline="true" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="4">
+        <el-col :span="5">
           <el-form-item label="设备" prop="station_code">
             <el-select v-model="form.station_code" :multiple="true" filterable placeholder="请选择" >
               <el-option
@@ -14,12 +14,12 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="7">
           <el-form-item label="日期" prop="dateTime">
             <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="5">
         <el-button type="primary" @click="serch">查询</el-button>
         </el-col>
       </el-row>

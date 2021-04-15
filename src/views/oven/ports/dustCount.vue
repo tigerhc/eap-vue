@@ -202,6 +202,30 @@ export default {
         title: {
           text: '尘埃粒子计数器'
         },
+        itemStyle: {
+          normal: {
+            lineStyle: {
+              type: 'solid',
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'red '// 0% 处的颜色
+                }, {
+                  offset: 1, color: 'blue' // 100% 处的颜色
+                }],
+                global: false // 缺省为 false
+              }
+            },
+            label: {
+              show: true,
+              position: 'middle'
+            }
+          }
+        },
         legend: {
           data: ['温度', '0.5μm', '风速', '1μm', '流量', '3μm', '5μm', '10μm', '压差', '湿度', '0.3μm']
         },
@@ -238,7 +262,7 @@ export default {
             position: 'left',
             type: 'value',
             name: '0.5μm',
-            // max: 1200,
+            max: 10000,
             axisLine: {
               lineStyle: {
                 color: colors[0]
@@ -390,7 +414,7 @@ export default {
             magicType: { show: true, type: ['line', 'bar'] },
             dataView: {
               show: true,
-              title: '某地区的、单位数、职工人数、和平均工资'
+              title: '原始数据列表'
             },
             restore: { show: true }
           },
@@ -416,6 +440,22 @@ export default {
             name: '0.5μm',
             type: 'line',
             barMaxWidth: '20%',
+            markLine: {
+              symbol: ['none', 'arrow'], // ['none']表示是一条横线；['arrow', 'none']表示线的左边是箭头，右边没右箭头；['none','arrow']表示线的左边没有箭头，右边有箭头
+              label: {
+                position: 'end', // 将警示值放在哪个位置，三个值“start”,"middle","end" 开始 中点 结束
+                formatter: '管理上限'
+              },
+              data: [{
+                silent: true, // 鼠标悬停事件 true没有，false有
+                lineStyle: { // 警戒线的样式 ，虚实 颜色
+                  type: 'dotted', // 样式  ‘solid’和'dotted'
+                  color: '#FA3934',
+                  width: 3 // 宽度
+                },
+                yAxis: 8000 // 警戒线的标注值，可以有多个yAxis,多条警示线 或者采用 {type : 'average', name: '平均值'}，type值有 max min average，分为最大，最小，平均值
+              }]
+            },
             label: {
               normal: {
                 show: true,

@@ -57,6 +57,7 @@ export default {
       editableTabs: [],
       tempsTitles: [],
       tempsValue: [],
+      extraTitle: ['运行温度', '设定温度', '低温报警', '高温报警'],
       flag: 10000,
       list: [],
       chart: undefined,
@@ -232,7 +233,7 @@ export default {
         ],
         series: [
           {
-            name: '运行温度',
+            name: this.extraTitle[0],
             itemStyle: {
               normal: {
                 color: '#458B74',
@@ -249,7 +250,7 @@ export default {
             animationEasing: 'quadraticOut'
           },
           {
-            name: '设定温度',
+            name: this.extraTitle[1],
             smooth: true,
             type: 'line',
             itemStyle: {
@@ -267,7 +268,7 @@ export default {
             animationEasing: 'quadraticOut'
           },
           {
-            name: '低温报警',
+            name: this.extraTitle[2],
             smooth: true,
             type: 'line',
             itemStyle: {
@@ -290,7 +291,7 @@ export default {
             }
           },
           {
-            name: '高温报警',
+            name: this.extraTitle[3],
             smooth: true,
             type: 'line',
             itemStyle: {
@@ -383,6 +384,14 @@ export default {
           }
         }
         this.flag = parseInt(a) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 2]) ? a : this.tempsValue[0].other_temps_value.split(',')[key + 2]
+      }
+      // eslint-disable-next-line eqeqeq
+      if (this.form.eqpId === 'SIM-PRINTER1' && tab.index == 1) {
+        this.extraTitle = ['运行湿度', '设定湿度', '湿度下限报警', '湿度上限报警']
+        this.charLegend = ['运行湿度', '设定湿度', '湿度下限报警', '湿度上限报警']
+      } else {
+        this.extraTitle = ['运行温度', '设定温度', '低温报警', '高温报警']
+        this.charLegend = ['运行温度', '设定温度', '低温报警', '高温报警']
       }
       this.initChart(tab.index)
     }

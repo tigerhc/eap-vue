@@ -55,6 +55,8 @@ export default {
       dateTime: [],
       type: '',
       list: [],
+      maxValue: undefined,
+      minValue: undefined,
       list2: [{
         value: 'μm',
         label: 'μm',
@@ -117,6 +119,13 @@ export default {
         // this.series = res.data[1]
         // this.min = res.data[2].min
         if (a === 'temp' || a === 'wet' || a === 'flow') {
+          if (a === 'temp') {
+            this.maxValue = 26
+            this.minValue = 20
+          } else if (a === 'wet') {
+            this.maxValue = 60
+            this.minValue = 40
+          }
           this.tem(a)
         } else {
           this.handleChange()
@@ -168,12 +177,43 @@ export default {
         }],
         series: [
           {
-            name: '模拟数据',
+            name: '数值',
             type: 'line',
             symbol: 'none',
             sampling: 'lttb',
             itemStyle: {
               color: 'rgb(255, 70, 131)'
+            },
+            markLine: {
+              symbol: ['none', 'arrow'],
+              label: {
+                position: 'end'
+              },
+              data: [{
+                name: '管理上限',
+                silent: true,
+                lineStyle: {
+                  type: 'dotted',
+                  color: '#FA3934',
+                  width: 3
+                },
+                label: {
+                  formatter: this.maxValue + '   管理上限'
+                },
+                yAxis: this.maxValue
+              }, {
+                name: '管理下限',
+                silent: true,
+                lineStyle: {
+                  type: 'dotted',
+                  color: '#1E90FF',
+                  width: 3
+                },
+                label: {
+                  formatter: this.minValue + '   管理下限'
+                },
+                yAxis: this.minValue
+              }]
             },
             areaStyle: {
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -201,6 +241,30 @@ export default {
         color: colors,
         title: {
           text: '尘埃粒子计数器'
+        },
+        itemStyle: {
+          normal: {
+            lineStyle: {
+              type: 'solid',
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                  offset: 0, color: 'red '
+                }, {
+                  offset: 1, color: 'blue'
+                }],
+                global: false // 缺省为 false
+              }
+            },
+            label: {
+              show: true,
+              position: 'middle'
+            }
+          }
         },
         legend: {
           data: ['温度', '0.5μm', '风速', '1μm', '流量', '3μm', '5μm', '10μm', '压差', '湿度', '0.3μm']
@@ -238,7 +302,7 @@ export default {
             position: 'left',
             type: 'value',
             name: '0.5μm',
-            // max: 1200,
+            max: 10000,
             axisLine: {
               lineStyle: {
                 color: colors[0]
@@ -390,7 +454,7 @@ export default {
             magicType: { show: true, type: ['line', 'bar'] },
             dataView: {
               show: true,
-              title: '某地区的、单位数、职工人数、和平均工资'
+              title: '原始数据列表'
             },
             restore: { show: true }
           },
@@ -416,6 +480,22 @@ export default {
             name: '0.5μm',
             type: 'line',
             barMaxWidth: '20%',
+            markLine: {
+              symbol: ['none', 'arrow'],
+              label: {
+                position: 'end',
+                formatter: '管理上限'
+              },
+              data: [{
+                silent: true,
+                lineStyle: {
+                  type: 'dotted',
+                  color: '#FA3934',
+                  width: 3
+                },
+                yAxis: 8000
+              }]
+            },
             label: {
               normal: {
                 show: true,

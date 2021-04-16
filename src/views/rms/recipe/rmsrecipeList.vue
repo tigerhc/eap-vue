@@ -66,7 +66,7 @@
         </el-table>
         </div>
       </el-form>
-      </el-dialog>
+    </el-dialog>
 
     <el-dialog :visible.sync="dialogFormUploadRecipeVisible" :close-on-click-modal="false" title="上传recipe" style="width: 45%; margin: auto">
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
@@ -235,6 +235,15 @@ export default {
       const ids = []
       for (const item of table.multipleSelection) {
         ids.push(item.id)
+      }
+      if (ids.length === 0) {
+        this.$notify({
+          title: '失败',
+          message: '请先勾选两条recipe',
+          type: 'error',
+          duration: 2000
+        })
+        return
       }
       ids.join(',')
 

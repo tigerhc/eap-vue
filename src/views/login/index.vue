@@ -86,6 +86,7 @@ export default {
   name: 'Login',
   components: { SysConfig, LangSelect },
   data() {
+    // eslint-disable-next-line no-unused-vars
     const validateUsername = (rule, value, callback) => {
       if (!isvalidUsername(value)) {
         callback(new Error('Please enter the correct user name'))
@@ -93,6 +94,7 @@ export default {
         callback()
       }
     }
+    // eslint-disable-next-line no-unused-vars
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
         callback(new Error('The password can not be less than 6 digits'))
@@ -106,8 +108,10 @@ export default {
         password: '123456'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        // password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [{ required: true, trigger: 'blur' }],
+        password: [{ required: true, trigger: 'blur' }]
       },
       passwordType: 'password',
       loading: false,

@@ -54,7 +54,30 @@ export default {
       },
       dateTime: [],
       type: '',
+      text: '',
       list: [],
+      areaStyle: undefined,
+      areaStyle0: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: 'rgb(255, 158, 68)'
+        }, {
+          offset: 1,
+          color: 'rgb(255, 70, 131)'
+        }])
+      },
+      areaStyle1: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: 'rgba(80,141,255,0.39)'
+        }, {
+          offset: 0.34,
+          color: 'rgba(56,155,255,0.25)'
+        }, {
+          offset: 1,
+          color: 'rgba(38,197,254,0.00)'
+        }])
+      },
       maxValue: undefined,
       minValue: undefined,
       list2: [{
@@ -122,9 +145,13 @@ export default {
           if (a === 'temp') {
             this.maxValue = 26
             this.minValue = 20
+            this.text = '尘埃粒子计数器(温度)'
+            this.areaStyle = this.areaStyle0
           } else if (a === 'wet') {
             this.maxValue = 60
             this.minValue = 40
+            this.text = '尘埃粒子计数器(湿度)'
+            this.areaStyle = this.areaStyle1
           }
           this.tem(a)
         } else {
@@ -147,7 +174,7 @@ export default {
         },
         title: {
           left: 'center',
-          text: '尘埃粒子计数器'
+          text: this.text
         },
         toolbox: {
           feature: {
@@ -215,15 +242,7 @@ export default {
                 yAxis: this.minValue
               }]
             },
-            areaStyle: {
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                offset: 0,
-                color: 'rgb(255, 158, 68)'
-              }, {
-                offset: 1,
-                color: 'rgb(255, 70, 131)'
-              }])
-            },
+            areaStyle: this.areaStyle,
             // eslint-disable-next-line no-undef
             data: b
           }
@@ -240,7 +259,7 @@ export default {
       var option = {
         color: colors,
         title: {
-          text: '尘埃粒子计数器'
+          text: this.text
         },
         itemStyle: {
           normal: {

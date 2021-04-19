@@ -274,8 +274,9 @@ export default {
       return val
     },
     handleChipClick(row) {
+      // name: 'views/map/tray/traychipmoveDetail',
       this.$router.push({
-        name: 'views/map/tray/traychipmoveDetail',
+        name: 'views/map/tray/chip2D',
         query: {
           id: row.chipId,
           type: 'VIEW'

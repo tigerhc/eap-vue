@@ -155,6 +155,7 @@ export default {
           }
           this.tem(a)
         } else {
+          this.text = '尘埃粒子计数器(μm)'
           this.handleChange()
         }
       })

@@ -7,15 +7,15 @@
         <!--<div class="content" style="color:#fff">DSK CIM,当前采集SIM线 PRINTER, DM , GAZO, REFLOW生产和操作日志</div>-->
 
         <!--北京-->
-<!--        <div class="title" style="color:#fff">数采平台</div>-->
-<!--        <div class="content" style="color:#fff">当前支持以下设备类型-->
-<!--          <br>白光干涉仪-->
-<!--          <br>方阻测试仪-->
-<!--          <br>膜厚仪-->
-<!--          <br>台阶仪-->
-<!--          <br>椭偏仪-->
-<!--          <br>原子力显微镜</div>-->
-        <sys-config config_key="sys.login.leftSystemDesc"/>
+        <!--        <div class="title" style="color:#fff">数采平台</div>-->
+        <!--        <div class="content" style="color:#fff">当前支持以下设备类型-->
+        <!--          <br>白光干涉仪-->
+        <!--          <br>方阻测试仪-->
+        <!--          <br>膜厚仪-->
+        <!--          <br>台阶仪-->
+        <!--          <br>椭偏仪-->
+        <!--          <br>原子力显微镜</div>-->
+        <sys-config config_key="sys.login.leftSystemDesc" />
       </div>
       <el-form
         ref="loginForm"
@@ -63,9 +63,10 @@
         <el-button
           :loading="loading"
           type="primary"
-          style="width:100%;margin-bottom:30px;"
+          style="width: 100%; margin-bottom: 30px"
           @click.native.prevent="handleLogin"
-        >{{ $t('login.logIn') }}</el-button>
+          >{{ $t('login.logIn') }}</el-button
+        >
 
         <div class="tips">
           <span>{{ $t('login.username') }} : admin</span>
@@ -211,6 +212,9 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
+  background-image: url(../../assets/img/bg1.jpg);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   .el-input {
     display: inline-block;
     height: 47px;
@@ -252,7 +256,7 @@ $light_gray: #eee;
   position: fixed;
   height: 100%;
   width: 100%;
-  overflow-y: scroll;
+  //overflow-y: scroll;
   background-color: #fff;
   //  background:url(../../assets/img/beijing1.jpg) no-repeat;
   //   background-size:100% 100%;
@@ -271,15 +275,15 @@ $light_gray: #eee;
       text-indent: 2em;
       // height: 50%;
       // background-color: linear-gradient(0deg, #3a485a 0%, #607089 100%);
-
-      background: linear-gradient(0deg, #3a485a 0%, #607089 100%);
+      background: rgba(0, 0, 0, 0.2);
+      //background: linear-gradient(0deg, #3a485a 0%, #607089 100%);
       // filter:  opacity(50%);
       // -webkit-filter: opacity(50%);
       // opacity: 0.9;
       background-size: 100% 100%;
       padding: 20px;
       position: relative;
-     &::before {
+      &::before {
         content: '';
         position: absolute;
         top: 0;
@@ -289,16 +293,14 @@ $light_gray: #eee;
         background: url(../../assets/img/left-1.png) no-repeat 0 0;
       }
       &::after {
-            content: '';
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
         bottom: 0;
         right: 0;
         background: url(../../assets/img/left-2.png) no-repeat right bottom;
-
       }
-
     }
     .login-form {
       float: left;
@@ -310,7 +312,9 @@ $light_gray: #eee;
       max-width: 100%;
       padding: 35px 35px 15px 35px;
       // margin: 120px auto;
-      background-color: #545353;
+      background-image: url(../../assets/img/bg.jpg);
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
       box-sizing: border-box;
     }
     .tips {

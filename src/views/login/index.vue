@@ -382,5 +382,10 @@ $light_gray: #eee;
     height: 100% !important;
   }
 }
+@media (min-width: 770px) and (max-width: 850px) {
+  .el-input {
+    width: 150px;
+  }
+}
 </style>
 

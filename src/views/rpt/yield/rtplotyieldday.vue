@@ -99,6 +99,12 @@ export default {
     this.form.dateTime = [startDate, endDate]
   },
   created() {
+    if (window.location.hostname === '10.160.144.9') {
+      this.lineNoOptions = [{
+        value: 'APJ',
+        label: 'APJ'
+      }]
+    }
   },
   methods: {
     serch() {

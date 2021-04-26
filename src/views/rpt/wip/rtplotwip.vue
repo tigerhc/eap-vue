@@ -72,6 +72,15 @@ export default {
     // this.serch()
   },
   created() {
+    if (window.location.hostname === '10.160.144.9') {
+      this.form = {
+        lineNo: 'APJ'
+      }
+      this.lineNoOptions = [{
+        value: 'APJ',
+        label: 'APJ'
+      }]
+    }
     this.initStation()
   },
   methods: {

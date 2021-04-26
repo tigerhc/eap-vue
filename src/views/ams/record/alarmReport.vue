@@ -63,8 +63,24 @@ export default {
       source2: [],
       // 先写死
       lineNoOptions: [{
-        value: 'APJ',
-        label: 'APJ'
+        value: 'SIM',
+        label: 'SIM'
+      }, {
+        value: 'SMA',
+        label: 'SMA',
+        disabled: true
+      }, {
+        value: 'SX',
+        label: 'SX',
+        disabled: true
+      }, {
+        value: '5GI',
+        label: '5GI',
+        disabled: true
+      }, {
+        value: '6GI',
+        label: '6GI',
+        disabled: true
       }]
     }
   },

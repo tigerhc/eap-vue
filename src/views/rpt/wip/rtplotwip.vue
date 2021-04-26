@@ -44,7 +44,7 @@ export default {
       ], // 列集合
       lineNo: '',
       form: {
-        lineNo: 'APJ'
+        lineNo: 'SIM'
       },
       formRules: {
         lineNo: [{ required: true, message: '请选择线别！', trigger: 'change' }]
@@ -52,8 +52,14 @@ export default {
       source: [],
       // 先写死
       lineNoOptions: [{
-        value: 'APJ',
-        label: 'APJ'
+        value: 'SIM',
+        label: 'SIM'
+      }, {
+        value: 'SMA',
+        label: 'SMA'
+      }, {
+        value: 'SX',
+        label: 'SX'
       }]
     }
   },

@@ -67,11 +67,11 @@
           @click.native.prevent="handleLogin"
           >{{ $t('login.logIn') }}</el-button
         >
-
+        <!--
         <div class="tips">
           <span>{{ $t('login.username') }} : admin</span>
           <span>{{ $t('login.password') }} : 123456</span>
-        </div>
+        </div> -->
       </el-form>
     </div>
   </div>
@@ -212,7 +212,7 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
-  background-image: url(../../assets/img/bg1.jpg);
+  background-image: url(../../assets/img/bg2.jpg);
   background-repeat: no-repeat;
   background-size: 100% 100%;
   .el-input {
@@ -235,8 +235,8 @@ $cursor: #fff;
     }
   }
   .el-form-item {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgb(255, 255, 255);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 5px;
     color: #454545;
   }

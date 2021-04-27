@@ -56,7 +56,7 @@
 				<div id="echApp" :style="{width: '90%', height: '350px'}"/>
 			</div>
 			<div id="chartPanelRight">
-				<div id="echAppRight" :style="{width: imgUrlWidth, height: imgUrlHeight}"/>
+				<div id="echAppRight" :style="{width: '90%', height: '350px'}"/>
 			</div>
 		</div>
 	</div>

@@ -57,7 +57,7 @@ export function findSxNumber(query) {
 
 export function findDustCount(query) {
   return request({
-    url: '/oven/ovnparticle/echartData',
+    url: '/edc/edcparticle/echartData',
     method: 'get',
     params: query
   })
@@ -65,7 +65,7 @@ export function findDustCount(query) {
 
 export function findDustEqps() {
   return request({
-    url: '/oven/ovnparticle/getParticleEqps',
+    url: '/edc/edcparticle/getParticleEqps',
     method: 'get'
   })
 }

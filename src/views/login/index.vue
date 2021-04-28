@@ -270,9 +270,9 @@ $light_gray: #eee;
     .login-introduce {
       float: left;
       width: 100%;
-      color: #000;
-      text-align: center;
-      text-indent: 2em;
+      color: #fff;
+      // text-align: center;
+      // text-indent: 2em;
       // height: 50%;
       // background-color: linear-gradient(0deg, #3a485a 0%, #607089 100%);
       background: rgba(0, 0, 0, 0.2);

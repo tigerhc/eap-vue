@@ -32,6 +32,9 @@
         <el-col :span="1">
           <el-button type="primary" @click="search">查询</el-button>
         </el-col>
+        <el-col :span="1">
+          <el-button type="primary" @click="finddetail">导出</el-button>
+        </el-col>
       </el-row>
     </el-form>
     <div id="main" style="width:95%;height:550px;"/>
@@ -43,6 +46,7 @@
 <script>
 import echarts from 'echarts'
 import { findDustCount, findDustEqps } from '@/api/ms/monitor'
+import api from './fetch'
 export default {
   data() {
     return {
@@ -57,6 +61,7 @@ export default {
       text: '',
       list: [],
       areaStyle: undefined,
+      api: api('/edc/edcparticle/export23'),
       areaStyle0: {
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
           offset: 0,
@@ -80,6 +85,9 @@ export default {
       },
       maxValue: undefined,
       minValue: undefined,
+      toolbarStatus: {
+        exportsLoading: false
+      },
       list2: [{
         value: 'μm',
         label: 'μm',
@@ -119,6 +127,38 @@ export default {
     })
   },
   methods: {
+    finddetail() {
+      // var param = this.$refs.ref.fdis()
+      // this.query.id = param
+      // eslint-disable-next-line no-undef
+      if (this.toolbarStatus.exportsLoading) {
+        return
+      }
+      this.toolbarStatus.exportsLoading = true
+      // const q = (this.query)
+      const q = (this.form)
+      // alert(q)
+      this.api
+        .export(q)
+        .then((response) => {
+          if (response.code === 0) {
+            return import('./Export2Excel').then((excel) => {
+              excel.export_byte_to_excel(response.bytes, response.title)
+              this.toolbarStatus.exportsLoading = false
+            })
+          } else {
+            this.$notify.error({
+              title: '失败',
+              message: (response && response.errmsg) || '导出失败!',
+              duration: 2000
+            })
+            this.toolbarStatus.exportsLoading = false
+          }
+        })
+        .catch((e) => {
+          this.toolbarStatus.exportsLoading = false
+        })
+    },
     search() {
       var a = this.type
       this.form.beginTime = this.dateTime[0] + ' 00:00:00'

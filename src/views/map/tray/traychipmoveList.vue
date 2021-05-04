@@ -277,6 +277,7 @@ export default {
       // name: 'views/map/tray/traychipmoveDetail',
       this.$router.push({
         name: 'views/map/tray/chip2D',
+        // name: 'views/map/tray/traychipmoveDetail',
         query: {
           id: row.chipId,
           type: 'VIEW'

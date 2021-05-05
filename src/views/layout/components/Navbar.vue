@@ -69,6 +69,7 @@
 </template>
 
 <script>
+// eslint-disable-next-line no-unused-vars
 import { fetchProList, fetchHome, getProject } from '@/api/sys/project'
 import { mapGetters } from 'vuex'
 import { fetchMenuList, fetchMeunRouterList } from '@/api/sys/menu'
@@ -98,7 +99,7 @@ export default {
       activeName: '',
       home: '',
       url: {
-        href: 'http://10.160.144.8/#/home'
+        href: 'http://10.160.144.8:82/#/home'
       }
     }
   },

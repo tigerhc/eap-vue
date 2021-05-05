@@ -40,7 +40,12 @@
             <el-date-picker v-model="dateTime" style="width: 250%" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
           </el-form-item>
         </el-col>
-          <el-button type="primary" style="height: 32px ;margin-left: 290px" @click="search">查询</el-button>
+          <el-col :span="1">
+            <el-button type="primary" style="margin-left: 295px ;height: 32px" @click="search">查询</el-button>
+          </el-col>
+          <el-col :span="1">
+            <el-button type="primary" style="margin-left: 300px ;height: 32px" @click="finddetail">导出</el-button>
+          </el-col>
         </el-row>
       </el-form>
     </div>
@@ -52,6 +57,7 @@
 </template>
 <script>
 import echarts from 'echarts'
+import api from '../ports/fetch'
 import { productionName } from '@/api/oven/temperature'
 import { findSxNumber } from '@/api/ms/monitor'
 export default {
@@ -66,8 +72,12 @@ export default {
         endDate: '',
         local: ''
       },
+      api: api('/ms/measuresx/findSxNumberExport'),
       form1: {
         type: ''
+      },
+      toolbarStatus: {
+        exportsLoading: false
       },
       myChart: null,
       dateTime: [],
@@ -112,6 +122,42 @@ export default {
     }
   },
   methods: {
+    finddetail() {
+      // var param = this.$refs.ref.fdis()
+      // this.query.id = param
+      // eslint-disable-next-line no-undef
+      this.form.number = '0001'
+      this.form.type = this.form1.type
+      this.form.startDate = this.dateTime[0]
+      this.form.endDate = this.dateTime[1]
+      if (this.toolbarStatus.exportsLoading) {
+        return
+      }
+      this.toolbarStatus.exportsLoading = true
+      // const q = (this.query)
+      const q = (this.form)
+      // alert(q)
+      this.api
+        .export(q)
+        .then((response) => {
+          if (response.code === 0) {
+            return import('../ports/Export2Excel').then((excel) => {
+              excel.export_byte_to_excel(response.bytes, response.title)
+              this.toolbarStatus.exportsLoading = false
+            })
+          } else {
+            this.$notify.error({
+              title: '失败',
+              message: (response && response.errmsg) || '导出失败!',
+              duration: 2000
+            })
+            this.toolbarStatus.exportsLoading = false
+          }
+        })
+        .catch((e) => {
+          this.toolbarStatus.exportsLoading = false
+        })
+    },
     findProduction() {
       productionName(this.form1).then((response) => {
         this.productionResult = response.data

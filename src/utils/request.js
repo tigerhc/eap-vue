@@ -32,6 +32,15 @@ service.interceptors.request.use(
             config.params['query.startDate||between'] = times[0] + ',' + times[1] + ' 23:59:59'
           }
         }
+        if (key === 'query.createDate||between') {
+          // console.log(key+":"+config.params[key]);
+          var time = config.params[key] + ''
+          time = time.split(',')
+          if (time.length === 2 && time[1].length === 10) {
+            config.params['query.createDate||between'] = time[0] + ' 00:00:00,' + time[1] + ' 23:59:59'
+            // alert(config.params['query.createDate||between'])
+          }
+        }
       }
     }
     return config

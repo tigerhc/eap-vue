@@ -15,10 +15,13 @@
 						</div>
 					</el-form-item>
 				</el-col>
-        <el-col :span="9">
+        <el-col :span="7">
           <el-form-item label="日期" prop="dateTime">
             <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
           </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-input v-model="limitY" type="primary" placeholder="下限-上限" @change="changTempY"/>
         </el-col>
         <el-button type="primary" @click="search">查询</el-button>
       </el-row>
@@ -61,7 +64,9 @@ export default {
       flag: 10000,
       list: [],
       chart: undefined,
-      charLegend: ['运行温度', '设定温度', '低温报警', '高温报警']
+      charLegend: ['运行温度', '设定温度', '低温报警', '高温报警'],
+      limitY: '',
+      tpMaxY: 0
     }
   },
   mounted() {
@@ -153,13 +158,22 @@ export default {
             this.editableTabsValue = this.editableTabs[0].title
             this.tempsValue = data.results
             var tp = 100000
+            var maxTp = 0
             for (var i = 0; i < this.tempsValue.length; i++) {
               var te = this.tempsValue[i]['temp_pv']
               if (parseInt(te) < parseInt(tp)) {
                 tp = this.tempsValue[i]['temp_pv']
               }
+              if (parseInt(te) > maxTp) {
+                maxTp = this.tempsValue[i]['temp_pv']
+              }
             }
             this.flag = parseInt(tp) < parseInt(this.tempsValue[0]['temp_min']) ? tp : this.tempsValue[0]['temp_min']
+            this.tpMaxY = parseInt(maxTp) < parseInt(this.tempsValue[0]['temp_max']) ? this.tempsValue[0]['temp_max'] : parseInt(maxTp)
+            if (this.form.eqpId === 'APJ-FREEZER3') {
+              this.flag = -30
+              this.tpMaxY = 30
+            }
             this.initChart(0)
           })
         }
@@ -227,6 +241,7 @@ export default {
         },
         yAxis: [
           {
+            max: this.tpMaxY + 1,
             type: 'value',
             min: this.flag - 1
           }
@@ -366,24 +381,38 @@ export default {
     loadTempDataPart(tab) {
       if (tab.index === 0 || tab.index === '0') {
         var tp = 100000
+        var maxTpTab0 = 0
         for (var i = 0; i < this.tempsValue.length; i++) {
           var te = this.tempsValue[i]['temp_pv']
           if (parseInt(te) < parseInt(tp)) {
             tp = this.tempsValue[i]['temp_pv']
           }
+          if (parseInt(te) > maxTpTab0) {
+            maxTpTab0 = parseInt(te)
+          }
         }
         this.flag = parseInt(tp) < parseInt(this.tempsValue[0]['temp_min']) ? tp : this.tempsValue[0]['temp_min']
+        this.tpMaxY = parseInt(maxTpTab0) < parseInt(this.tempsValue[0]['temp_max']) ? this.tempsValue[0]['temp_max'] : parseInt(maxTpTab0)
       } else {
         var key = 4 * (tab.index - 1)
         var a = 100000
+        var maxTpTab = 0
         this.tempsValue[0].other_temps_value.split(',')[key + 2]
         for (var j = 0; j < this.tempsValue.length; j++) {
           var tem = this.tempsValue[j].other_temps_value.split(',')
           if (parseInt(a) > parseInt(tem[key])) {
             a = tem[key]
           }
+          if (parseInt(tem[key]) > maxTpTab) {
+            maxTpTab = parseInt(tem[key])
+          }
         }
         this.flag = parseInt(a) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 2]) ? a : this.tempsValue[0].other_temps_value.split(',')[key + 2]
+        this.tpMaxY = parseInt(maxTpTab) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3]) ? parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3]) : parseInt(maxTpTab)
+      }
+      if (this.form.eqpId === 'APJ-FREEZER3') {
+        this.flag = -30
+        this.tpMaxY = 30
       }
       // eslint-disable-next-line eqeqeq
       if (this.form.eqpId === 'SIM-PRINTER1' && tab.index == 1) {
@@ -394,6 +423,14 @@ export default {
         this.charLegend = ['运行温度', '设定温度', '低温报警', '高温报警']
       }
       this.initChart(tab.index)
+    },
+    changTempY() {
+      var lmt = this.limitY.split('-')
+      if (lmt.length === 2) {
+        this.tpMaxY = parseInt(lmt[1])
+        this.flag = lmt[0]
+        this.initChart(lmt[2])
+      }
     }
   }
 }

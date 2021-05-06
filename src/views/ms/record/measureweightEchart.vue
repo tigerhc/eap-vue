@@ -34,7 +34,7 @@
             </el-select>
           </el-form-item>
 				</el-col>
-				<el-col :span="6">
+				<el-col :span="5">
             <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
 				</el-col>
 			</el-form>
@@ -46,6 +46,10 @@
 				<i class="el-icon-refresh"/>
 				<span>清空</span>
 			</button>
+      <button type="button" class="el-button el-button--primary el-button--medium filter-item" style="margin-left: 10px;" @click="finddetail">
+        <i class="el-icon-refresh"/>
+        <span>导出</span>
+      </button>
 		</div>
 		<div class="echAppPanel">
 			<div id="echApp" :style="{width: '60%', height: '100%', position: 'relative',float:'left'}"/>
@@ -61,6 +65,7 @@ import echarts from 'echarts'
 import { weightChart, productionNoSelect } from '@/api/ms/monitor'
 import request from '@/utils/request'
 import chipImg from '@/views/tool/chipimg/chipimg'
+import api from '../../oven/ports/fetch'
 
 export default {
   name: 'MeasureweightEchart',
@@ -78,6 +83,10 @@ export default {
         startTime: '',
         endTime: '',
         lotNo: ''
+      },
+      api: api('/ms/msmeasurerecord/weightChartExport'),
+      toolbarStatus: {
+        exportsLoading: false
       },
       imgUrl: '',
       imgOption: '',
@@ -106,6 +115,40 @@ export default {
     //    })
   },
   methods: {
+    finddetail() {
+      this.chartParam.productionNo = this.chartParam.productionNo.toUpperCase()
+      if (this.dateTime.length === 2) {
+        this.chartParam.startTime = this.dateTime[0]
+        this.chartParam.endTime = this.dateTime[1]
+      }
+      // eslint-disable-next-line no-undef
+      if (this.toolbarStatus.exportsLoading) {
+        return
+      }
+      this.toolbarStatus.exportsLoading = true
+      // const q = (this.query)
+      const q = (this.chartParam)
+      this.api
+        .export(q)
+        .then((response) => {
+          if (response.code === 0) {
+            return import('../../oven/ports/Export2Excel').then((excel) => {
+              excel.export_byte_to_excel(response.bytes, response.title)
+              this.toolbarStatus.exportsLoading = false
+            })
+          } else {
+            this.$notify.error({
+              title: '失败',
+              message: (response && response.errmsg) || '导出失败!',
+              duration: 2000
+            })
+            this.toolbarStatus.exportsLoading = false
+          }
+        })
+        .catch((e) => {
+          this.toolbarStatus.exportsLoading = false
+        })
+    },
     weightPosition() {
       if (this.imgUrl.indexOf('GI5') > -1 || this.imgUrl.indexOf('GI6') > -1) {
         if (this.chartParam.detailOption === 1) {

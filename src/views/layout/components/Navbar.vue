@@ -99,7 +99,7 @@ export default {
       activeName: '',
       home: '',
       url: {
-        href: 'http://10.160.144.8:82/#/home'
+        href: 'http://10.160.144.8/#/home'
       }
     }
   },

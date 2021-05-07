@@ -35,6 +35,10 @@
 				<i class="el-icon-refresh"/>
 				<span>清空</span>
 			</button>
+      <button type="button" class="el-button el-button--primary el-button--medium filter-item" style="margin-left: 10px;" @click="finddetail">
+        <i class="el-icon-refresh"/>
+        <span>导出</span>
+      </button>
 		</div>
 		<div class="echartPanel">
 			<div id="echAppLine" :style="{width: '60%', height: '300px',float:'left', marginLeft:'-4%'}"/>
@@ -64,6 +68,7 @@
 
 <script>
 import echarts from 'echarts'
+import api from '../../oven/ports/fetch'
 import { kongdongChart, kongdongBar, proNameSelect, positionSelect } from '@/api/ms/monitor'
 import chipImg from '@/views/tool/chipimg/chipimg'
 export default {
@@ -84,6 +89,10 @@ export default {
         endDate: '',
         lineType: ''
       },
+      toolbarStatus: {
+        exportsLoading: false
+      },
+      api: api('/ms/msmeasurekongdong/kongdongChartExport'),
       productionNo: '',
       imgUrl: '',
       imgOption: '',
@@ -104,6 +113,43 @@ export default {
     this.dateTime = [startDate, endDate]
   },
   methods: {
+    finddetail() {
+      if (this.chartParam.productionName === '') {
+        alert('机种名不可同时为空')
+        return
+      }
+      this.chartParam.productionName = this.chartParam.productionName.toUpperCase()
+      if (this.dateTime.length === 2) {
+        this.chartParam.startDate = this.dateTime[0]
+        this.chartParam.endDate = this.dateTime[1] + ' 23:59:59'
+      }
+      this.chartParam.lineType = this.chartParam.lineType.replace('全部', '')
+      if (this.toolbarStatus.exportsLoading) {
+        return
+      }
+      this.toolbarStatus.exportsLoading = true
+      const q = (this.chartParam)
+      this.api
+        .export(q)
+        .then((response) => {
+          if (response.code === 0) {
+            return import('../../oven/ports/Export2Excel').then((excel) => {
+              excel.export_byte_to_excel(response.bytes, response.title)
+              this.toolbarStatus.exportsLoading = false
+            })
+          } else {
+            this.$notify.error({
+              title: '失败',
+              message: (response && response.errmsg) || '导出失败!',
+              duration: 2000
+            })
+            this.toolbarStatus.exportsLoading = false
+          }
+        })
+        .catch((e) => {
+          this.toolbarStatus.exportsLoading = false
+        })
+    },
     lineNoChange() {
       if (this.chartParam.lineNo !== '') {
         var _this = this

@@ -60,22 +60,36 @@
 			</el-table-column>
       <el-table-column prop="dmX" label="晶圆X" width="60"/>
       <el-table-column prop="dmY" label="晶圆Y" width="60"/>
-      <el-table-column prop="productionParam" label="生产条件" width="80">
-        <template v-if="scope.row.productionParam" slot-scope="scope">
+      <el-table-column prop="productionParam" label="生产条件" width="100">
+        <template slot-scope="scope">
+          <!-- <el-button
+            type="text"
+            size="small"
+            @click="handleParamClick(scope.row)"
+          >{{ scope.row.productionParam }}</el-button>-->
           <el-button
             type="text"
             size="small"
             @click="handleParamClick(scope.row)"
-          >{{ scope.row.productionParam }}</el-button>
+          >生产条件明细</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-dialog :visible.sync="dialogTableVisible" title="生产条件">
       <div class="prodTitlePanel">
-        <div v-for="item in prodTitleArr" :key="item" :value="item" class="prodTitle">{{ item }}：</div>
+        <div v-for="(item,index) in prodTitleArr" :key="'T'+index" :value="item" class="prodTitle">{{ item.colName }}：</div>
       </div>
       <div class="prodValuePanel">
-        <div v-for="(item,index) in prodValueArr" :key="'pv'+index" :value="item" class="prodValue">{{ item }}</div>
+        <div v-for="(item,index) in prodValueArr" :key="'pvA'+index" :value="item" :class="prodAlarmValue.indexOf(','+index+',')>-1?'prodAlarmValue':'prodValue'">{{ item }}</div>
+      </div>
+      <div class="prodMinPanel">
+        <div v-for="(item,index) in prodTitleArr" :key="'pvMin'+index" :value="item" class="prodTitleMinValue">最小值:{{ item.limitMin }}</div>
+      </div>
+      <div class="prodMaxPanel">
+        <div v-for="(item,index) in prodTitleArr" :key="'pvMax'+index" :value="item" class="prodTitleMaxValue">最大值:{{ item.limitMax }}</div>
+      </div>
+      <div class="prodSetPanel">
+        <div v-for="(item,index) in prodTitleArr" :key="'pvS'+index" :value="item" class="prodTitleSetValue">设定值:{{ item.defaultValue }}</div>
       </div>
     </el-dialog>
     <el-pagination
@@ -111,16 +125,24 @@
   color: #0033cc;
   margin: 4px;
 }
-.prodTitlePanel{width:30%;position:absolute;height:200px;}
-.prodValuePanel{width:70%;margin-left:32%;}
+.prodTitlePanel{width:20%;position:absolute;height:200px;}
+.prodValuePanel{width:20%;position:absolute;margin-left:20%;}
+.prodMinPanel{width:15%;position:absolute;margin-left:40%;}
+.prodMaxPanel{width:15%;position:absolute;margin-left:55%;}
+.prodSetPanel{width:15%;margin-left:73%;}
+
 .prodTitlePanel .prodTitle{width:100%;height:40px;background-color:#1e6abc;color:white;text-align:right;line-height:40px;font-weight:bold;border:1px solid white;}
-.prodValuePanel .prodValue{width:100%;height:40px;line-height:40px;padding-left:5px;}
+.prodValue{width:100%;height:40px;line-height:40px;padding-left:5px;}
+.prodTitleMinValue{width:100%;height:40px;line-height:40px;padding-left:5px;background-color: #d0d0d7}/**background:url(../../../assets/img/proParamMin.jpg);*/
+.prodTitleMaxValue{width:100%;height:40px;line-height:40px;padding-left:5px;background-color: #d0d0d7}
+.prodTitleSetValue{width:100%;height:40px;line-height:40px;padding-left:5px;background-color: #d0d0d7}
+.prodValuePanel .prodAlarmValue{width:100%;height:40px;line-height:40px;padding-left:5px;background-color: #DD4A68}
 </style>
 
 <script>
 import request from '@/utils/request'
 import dateFormat from '@/utils/dateformat'
-import { getTrayEqpList } from '@/api/map/monitor'
+import { getTrayEqpList, getPuctionParam } from '@/api/map/monitor'
 
 export default {
   name: 'TrayChipMoveList',
@@ -141,6 +163,7 @@ export default {
       dialogTableVisible: false,
       prodTitleArr: [],
       prodValueArr: [],
+      prodAlarmValue: ',',
       da: [],
       dateOptions: {
         shortcuts: [
@@ -294,24 +317,64 @@ export default {
       })
     },
     handleParamClick(row) {
-      var param = row.productionParam.split(',')
-      var title = row.productionTitle.split(',')
-      for (var i = 0; i < title.length; i++) {
-        var obj = []
-        obj[0] = title[i]
-        obj[1] = param[i]
-        this.da.push(obj)
-      }
-      // this.$alert('内容', '名称', { confirmButtonText: '确定', callback: action => { this.$message({ type: 'info', message: `action: ${action}` }) } })
-      // this.$alert(row.productionTitle, row.productionParam, '参数标题', { confirmButtonText: '确定' })
-      this.prodTitleArr = row.productionTitle.split(',')
-      this.prodValueArr = row.productionParam.split(',')
-      this.dialogTableVisible = true
+      var _this = this
+      getPuctionParam(row.id).then((response) => {
+        var paramObj = response.data.paramObj
+        if (paramObj !== undefined && paramObj !== null) {
+          // 标题
+          _this.prodTitleArr = paramObj.title
+
+          if (paramObj.paramValue !== undefined && paramObj.paramValue !== null) {
+            var pvs = paramObj.paramValue.split(',')
+            if (pvs.length > paramObj.title.length) {
+              for (var j = 0; j < paramObj.title.length; j++) {
+                // 告警的变量记录下标
+                if (_this._chkParamValue(pvs[j], paramObj.title[j])) {
+                  _this.prodAlarmValue = _this.prodAlarmValue + j + ','
+                }
+                // 添加到生产条件的list中
+                _this.prodValueArr.push(pvs[j])
+              }
+            } else {
+              for (var m = 0; m < pvs.length; m++) {
+                // 告警的变量记录下标
+                if (_this._chkParamValue(pvs[m], paramObj.title[m])) {
+                  _this.prodAlarmValue = _this.prodAlarmValue + m + ','
+                }
+                // 添加到生产条件的list中
+                _this.prodValueArr.push(pvs[m])
+              }
+            }
+          }
+        }
+        _this.dialogTableVisible = true
+      })
     },
     toHistory() {
       this.$router.push({
         name: 'views/map/tray/trayjobhistoryList'
       })
+    },
+    // true :不在范围内或 不是设定值
+    _chkParamValue(paramV, titleObj) {
+      if (titleObj !== undefined) {
+        // 比较设定值
+        if (titleObj.defaultValue !== undefined && titleObj.defaultValue !== '' && titleObj.defaultValue !== null) {
+          return titleObj.defaultValue !== paramV
+        }
+        // 比较上下限
+        var numRe = new RegExp('^[-\\+]?([0-9]+\\.?)?[0-9]+$')
+        if (numRe.test(titleObj.limitMin) && numRe.test(titleObj.limitMax)) {
+          var min = parseFloat(titleObj.limitMin)
+          var max = parseFloat(titleObj.limitMax)
+          var rs = paramV >= min && paramV <= max
+          return !rs
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
     }
   }
 }

@@ -1,14 +1,6 @@
 <template>
   <div class="Eqpoee">
-    <el-form
-      ref="form"
-      :model="form"
-      :inline="true"
-      :rules="formRules"
-      class="form"
-      label-width="90px"
-      size="small"
-    >
+    <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
         <el-col :span="9">
           <el-form-item label="日期" prop="dateTime">
@@ -24,7 +16,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="设备号" prop="eqpId">
-            <w-select-eqp :span="8" :str="form.eqpId" :disabled="false" @input="onValueChange($event)"/>
+            <w-select-eqp :span="8" :str="form.eqpId" :disabled="false" @input="onValueChange($event)" />
           </el-form-item>
         </el-col>
         <el-button type="primary" @click="serch">查询</el-button>
@@ -38,13 +30,13 @@
       :end-time="form.dateTime[1]"
       :list="list"
     />
-    <div v-show="showFlag2" id="eqpsoee" style="width: 1000px;height: 600px;overflow: hidden;"/>
+    <div v-show="showFlag2" id="eqpsoee" style="width: 1000px; height: 600px; overflow: hidden" />
   </div>
 </template>
 <script>
 import AlarmCake from '@/components/Charts/alarmCake'
 import { rpteqpstateday } from '@/api/public'
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import WSelectEqp from '../../../components/eap-select-eqp/index'
 
 export default {
@@ -77,11 +69,9 @@ export default {
   },
   mounted() {
     // var now = new Date();
-
     // var startDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10);
     // alert(startDate)
     // this.form.dateTime[0] = startDate
-
   },
   created() {
     this.onValueChange()
@@ -135,9 +125,12 @@ export default {
       var startTime = this.getDate(start)
       var endTime = this.getDate(end)
       var dateArr = []
-      while ((endTime.getTime() - startTime.getTime()) > 0) {
+      while (endTime.getTime() - startTime.getTime() > 0) {
         var year = startTime.getFullYear()
-        var month = startTime.getMonth().toString().length === 1 ? '0' + (parseInt(startTime.getMonth().toString(), 10) + 1) : (startTime.getMonth() + 1)
+        var month =
+          startTime.getMonth().toString().length === 1
+            ? '0' + (parseInt(startTime.getMonth().toString(), 10) + 1)
+            : startTime.getMonth() + 1
         var day = startTime.getDate().toString().length === 1 ? '0' + startTime.getDate() : startTime.getDate()
         dateArr.push(year + '-' + month + '-' + day)
         startTime.setDate(startTime.getDate() + 1)
@@ -166,7 +159,8 @@ export default {
       const option = {
         tooltip: {
           trigger: 'axis',
-          axisPointer: { // 坐标轴指示器，坐标轴触发有效
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
             type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
           }
         },

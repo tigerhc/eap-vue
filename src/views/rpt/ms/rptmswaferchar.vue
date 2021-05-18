@@ -6,64 +6,77 @@
           <el-form-item label="线别" prop="lineNo">
             <el-select v-model="form.lineNo">
               <el-option
-v-for="item in lineNoOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value"
-                         :disabled="item.disabled" />
+                v-for="item in lineNoOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+                :disabled="item.disabled"
+              />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="9">
           <el-form-item label="日期" prop="dateTime">
-            <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
+            <el-date-picker
+              v-model="form.dateTime"
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            />
           </el-form-item>
         </el-col>
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>
     </el-form>
     <div class="model">
-      <div style="width: 100%;display: flex;flex-direction: row;justify-content: center;align-items: center;">
-        <div class="jk-bg-round-red" style="position: relative; min-width:400px;min-height:400px;display: flex;flex-direction: row;justify-content: center;align-items: center;">
-          <div style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
-            <div v-for="item in listleft" :key="item" style="margin-right: 40px;">
+      <div style="width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center">
+        <div
+          class="jk-bg-round-red"
+          style="
+            position: relative;
+            min-width: 400px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+          "
+        >
+          <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
+            <div v-for="item in listleft" :key="item" style="margin-right: 40px">
               <div>{{ item }}</div>
             </div>
           </div>
-          <div style="display: flex;flex-direction: column;justify-content: space-between;align-items: center;">
-            <div v-for="item in listpre" :key="item" style="line-height: 40px;">
+          <div style="display: flex; flex-direction: column; justify-content: space-between; align-items: center">
+            <div v-for="item in listpre" :key="item" style="line-height: 40px">
               <div>{{ item }}</div>
             </div>
           </div>
-          <div style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
-            <div v-for="item in listright" :key="item" style="margin-left: 40px;">
+          <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center">
+            <div v-for="item in listright" :key="item" style="margin-left: 40px">
               <div>{{ item }}</div>
             </div>
           </div>
         </div>
       </div>
     </div>
-<!--    <div id="yieldDayChart" style="width: 100%;height: 580px;overflow: hidden;"/>-->
+    <!--    <div id="yieldDayChart" style="width: 100%;height: 580px;overflow: hidden;"/>-->
   </div>
 </template>
 <script>
 import { rtplotyieldday } from '@/api/public'
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 
 export default {
   name: 'Rtplotyieldday',
   components: {},
   data() {
     return {
-      listpre: [
-        '111', '222', '333', '444', '555'
-      ],
-      listleft: [
-        '666', '777'
-      ],
-      listright: [
-        '888', '999'
-      ],
+      listpre: ['111', '222', '333', '444', '555'],
+      listleft: ['666', '777'],
+      listright: ['888', '999'],
       form: {
         lineNo: undefined,
         dateTime: []
@@ -75,26 +88,32 @@ export default {
       list: [],
       source: [],
       // 先写死
-      lineNoOptions: [{
-        value: 'SIM',
-        label: 'SIM'
-      }, {
-        value: 'SMA',
-        label: 'SMA',
-        disabled: true
-      }, {
-        value: 'SX',
-        label: 'SX',
-        disabled: true
-      }, {
-        value: '5GI',
-        label: '5GI',
-        disabled: true
-      }, {
-        value: '6GI',
-        label: '6GI',
-        disabled: true
-      }]
+      lineNoOptions: [
+        {
+          value: 'SIM',
+          label: 'SIM'
+        },
+        {
+          value: 'SMA',
+          label: 'SMA',
+          disabled: true
+        },
+        {
+          value: 'SX',
+          label: 'SX',
+          disabled: true
+        },
+        {
+          value: '5GI',
+          label: '5GI',
+          disabled: true
+        },
+        {
+          value: '6GI',
+          label: '6GI',
+          disabled: true
+        }
+      ]
     }
   },
   mounted() {
@@ -104,8 +123,7 @@ export default {
     this.form.dateTime = [startDate, endDate]
     // this.initChart()
   },
-  created() {
-  },
+  created() {},
   methods: {
     serch() {
       this.$refs['form'].validate((valid) => {
@@ -218,19 +236,19 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .Rtplotyieldday {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
+.Rtplotyieldday {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
 
-    .form {
-      margin-top: 20px;
-    }
+  .form {
+    margin-top: 20px;
   }
-  .jk-bg-round-red {
-    background: url("/src/assets/img/yuan.png") no-repeat;
-    background-size: 100%;
-  }
+}
+.jk-bg-round-red {
+  background: url('/src/assets/img/yuan.png') no-repeat;
+  background-size: 100%;
+}
 </style>
 <style>
 </style>

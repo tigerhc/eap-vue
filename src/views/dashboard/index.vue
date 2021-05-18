@@ -1,11 +1,11 @@
 <template>
   <div class="monitor">
-    <div style="height: 300px;">
-      <div id="monitorChart" :style="{width: '80%', height: '300px',float:'left'}"/>
+    <div style="height: 300px">
+      <div id="monitorChart" :style="{ width: '80%', height: '300px', float: 'left' }" />
     </div>
 
     <div class="content">
-      <div v-for="(item,index) in tabData" :key="index" class="item">
+      <div v-for="(item, index) in tabData" :key="index" class="item">
         <div class="item-text">
           <label>设备号</label> <span>{{ item.eqpId }}</span>
         </div>
@@ -24,13 +24,15 @@
         <div class="item-text">
           <label>程序号</label> <span>{{ item.ptNo }}</span>
         </div>
-        <div :class="statusText[item.eqpStatus]" style="text-align: center;display: inline;" class="item-text">{{ item.eqpStatus }}</div>
+        <div :class="statusText[item.eqpStatus]" style="text-align: center; display: inline" class="item-text">
+          {{ item.eqpStatus }}
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import { fetchList, fetchChart } from '@/api/dashboard/dashboard'
 import Screenfull from '@/components/Screenfull'
 export default {
@@ -49,7 +51,7 @@ export default {
         DOWN: 'span-DOWN',
         RUN: 'span-RUN',
         IDLE: 'span-IDLE'
-      }// 显示状态
+      } // 显示状态
     }
   },
   watch: {
@@ -82,7 +84,7 @@ export default {
       }, 60000)
     },
     getData() {
-      fetchChart().then(response => {
+      fetchChart().then((response) => {
         for (const item of response.data) {
           this.statusList.push(item.EQP_STATUS)
         }
@@ -92,13 +94,13 @@ export default {
     },
     getList() {
       const params = {
-        'sort': 'updateDate',
+        sort: 'updateDate',
         'page.pn': 1,
         'page.size': 999999,
-        'delFlag': 0,
-        'queryFields': 'eqpId,controlState,lotId,eqpStatus,connectionStatus,recipeCode,lockFlag,'
+        delFlag: 0,
+        queryFields: 'eqpId,controlState,lotId,eqpStatus,connectionStatus,recipeCode,lockFlag,'
       }
-      fetchList(params).then(res => {
+      fetchList(params).then((res) => {
         this.tabData = res.data
       })
     },
@@ -141,7 +143,7 @@ export default {
       }
       option.legend.data = this.statusList
       const arry = []
-      this.dataList.forEach(item => {
+      this.dataList.forEach((item) => {
         const obj = {}
         obj.name = item.EQP_STATUS
         obj.value = item.COUNT
@@ -167,35 +169,35 @@ export default {
   background-color: yellow;
 }
 .monitor {
-    .content {
-        border-top : 1px solid #dcdfe6;
-        padding-top: 20px;
+  .content {
+    border-top: 1px solid #dcdfe6;
+    padding-top: 20px;
+    display: flex;
+    //  justify-content: center;
+    flex-wrap: wrap;
+    .item {
+      display: flex;
+      width: 200px;
+      height: 350px;
+      border: 1px solid #500f0f;
+      flex-direction: column;
+      margin-left: 20px;
+      margin-top: 20px;
+      .item-text {
         display: flex;
-      //  justify-content: center;
-        flex-wrap: wrap;
-        .item {
-            display: flex;
-            width: 200px;
-            height: 350px;
-            border: 1px solid #500f0f;
-            flex-direction: column ;
-            margin-left: 20px;
-            margin-top: 20px;
-            .item-text {
-               display: flex;
-               line-height: 50px;
-               height: 50px;
-               border-bottom: 1px solid #dcdfe6;
-               justify-content: space-between;
-               label {
-                 font-weight: 900;
-                 margin-left: 20px;
-              }
-               span {
-                margin-right: 20px;
-              }
-            }
+        line-height: 50px;
+        height: 50px;
+        border-bottom: 1px solid #dcdfe6;
+        justify-content: space-between;
+        label {
+          font-weight: 900;
+          margin-left: 20px;
         }
+        span {
+          margin-right: 20px;
+        }
+      }
     }
+  }
 }
 </style>

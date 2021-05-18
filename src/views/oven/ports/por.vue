@@ -2,27 +2,27 @@
   <div class="tempchar">
     <el-form ref="form" :model="form" :rules="formRules" :inline="true" class="form" label-width="90px" size="small">
       <el-row>
-
         <el-col :span="4">
-          <el-input v-model="form.lotNo" placeholder="请输入批量号" clearable/>
+          <el-input v-model="form.lotNo" placeholder="请输入批量号" clearable />
         </el-col>
 
-          <el-form-item label="位置" prop="form.position">
-            <el-select v-model="form.position" @change="ValueChange()">
-              <el-option
-                v-for="item in positionList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-                :disabled="item.disabled" />
-            </el-select>
-          </el-form-item>
+        <el-form-item label="位置" prop="form.position">
+          <el-select v-model="form.position" @change="ValueChange()">
+            <el-option
+              v-for="item in positionList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              :disabled="item.disabled"
+            />
+          </el-select>
+        </el-form-item>
         <el-button type="primary" @click="search">查询</el-button>
       </el-row>
     </el-form>
     <div v-show="fistPic" id="back">
-      <div id="zero" class="element" >T100</div>
-      <div id="T101" :class="{'active':position=='T101'}" class="element">T101</div>
+      <div id="zero" class="element">T100</div>
+      <div id="T101" :class="{ active: position == 'T101' }" class="element">T101</div>
       <div id="T102" class="element">T102</div>
       <div id="T103" class="element">T103</div>
       <div id="T104" class="element"><span class="span">T104</span></div>
@@ -52,13 +52,13 @@
       <div id="T128" class="element">T128</div>
       <div id="T129" class="element">T129</div>
     </div>
-    <div id="tempChart" style="width: 100%;height: 500px;overflow: hidden;"/>
+    <div id="tempChart" style="width: 100%; height: 500px; overflow: hidden" />
   </div>
 </template>
 <!--<script type="text/javascript" src="../../../views/oven/ports/jquery-3.2.1.min.js" ></script>-->
 <script>
 import { tempbytimeOther } from '@/api/public'
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 
 export default {
   name: 'Por',
@@ -76,94 +76,124 @@ export default {
         eqpId: [{ required: true, message: '请选择设备！', trigger: 'change' }],
         position: [{ required: true, message: '请选择位置！', trigger: 'change' }]
       },
-      positionList: [{
-        value: 'T101',
-        label: 'T101'
-      }, {
-        value: 'T102',
-        label: 'T102'
-      }, {
-        value: 'T103',
-        label: 'T103'
-      }, {
-        value: 'T104',
-        label: 'T104'
-      }, {
-        value: 'T105',
-        label: 'T105'
-      }, {
-        value: 'T106',
-        label: 'T106'
-      }, {
-        value: 'T107',
-        label: 'T107'
-      }, {
-        value: 'T108',
-        label: 'T108'
-      }, {
-        value: 'T109',
-        label: 'T109'
-      }, {
-        value: 'T110',
-        label: 'T110'
-      }, {
-        value: 'T111',
-        label: 'T111'
-      }, {
-        value: 'T112',
-        label: 'T112'
-      }, {
-        value: 'T113',
-        label: 'T113'
-      }, {
-        value: 'T114',
-        label: 'T114'
-      }, {
-        value: 'T115',
-        label: 'T115'
-      }, {
-        value: 'T116',
-        label: 'T116'
-      }, {
-        value: 'T117',
-        label: 'T117'
-      }, {
-        value: 'T118',
-        label: 'T118'
-      }, {
-        value: 'T119',
-        label: 'T119'
-      }, {
-        value: 'T120',
-        label: 'T120'
-      }, {
-        value: 'T121',
-        label: 'T121'
-      }, {
-        value: 'T122',
-        label: 'T122'
-      }, {
-        value: 'T123',
-        label: 'T123'
-      }, {
-        value: 'T124',
-        label: 'T124'
-      }, {
-        value: 'T125',
-        label: 'T125'
-      }, {
-        value: 'T126',
-        label: 'T126'
-      }, {
-        value: 'T127',
-        label: 'T127'
-      }, {
-        value: 'T128',
-        label: 'T128'
-      }, {
-        value: 'T129',
-        label: 'T129'
-      }],
+      positionList: [
+        {
+          value: 'T101',
+          label: 'T101'
+        },
+        {
+          value: 'T102',
+          label: 'T102'
+        },
+        {
+          value: 'T103',
+          label: 'T103'
+        },
+        {
+          value: 'T104',
+          label: 'T104'
+        },
+        {
+          value: 'T105',
+          label: 'T105'
+        },
+        {
+          value: 'T106',
+          label: 'T106'
+        },
+        {
+          value: 'T107',
+          label: 'T107'
+        },
+        {
+          value: 'T108',
+          label: 'T108'
+        },
+        {
+          value: 'T109',
+          label: 'T109'
+        },
+        {
+          value: 'T110',
+          label: 'T110'
+        },
+        {
+          value: 'T111',
+          label: 'T111'
+        },
+        {
+          value: 'T112',
+          label: 'T112'
+        },
+        {
+          value: 'T113',
+          label: 'T113'
+        },
+        {
+          value: 'T114',
+          label: 'T114'
+        },
+        {
+          value: 'T115',
+          label: 'T115'
+        },
+        {
+          value: 'T116',
+          label: 'T116'
+        },
+        {
+          value: 'T117',
+          label: 'T117'
+        },
+        {
+          value: 'T118',
+          label: 'T118'
+        },
+        {
+          value: 'T119',
+          label: 'T119'
+        },
+        {
+          value: 'T120',
+          label: 'T120'
+        },
+        {
+          value: 'T121',
+          label: 'T121'
+        },
+        {
+          value: 'T122',
+          label: 'T122'
+        },
+        {
+          value: 'T123',
+          label: 'T123'
+        },
+        {
+          value: 'T124',
+          label: 'T124'
+        },
+        {
+          value: 'T125',
+          label: 'T125'
+        },
+        {
+          value: 'T126',
+          label: 'T126'
+        },
+        {
+          value: 'T127',
+          label: 'T127'
+        },
+        {
+          value: 'T128',
+          label: 'T128'
+        },
+        {
+          value: 'T129',
+          label: 'T129'
+        }
+      ],
       editableTabsValue: 0,
       editableTabs: [],
       tempsTitles: [],
@@ -177,7 +207,8 @@ export default {
   watch: {
     data() {
       alert(this.form.position)
-    } },
+    }
+  },
   methods: {
     ValueChange() {
       if (this.fistPic === false) {
@@ -213,8 +244,14 @@ export default {
               this.tempsTitles.splice(2, 0, '第1温区温度MIN')
               this.tempsTitles.splice(3, 0, '第1温区温度MAX')
               for (let index = 0; index < this.tempsTitles.length; index++) {
-                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
-                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
+                if (
+                  this.tempsTitles[index].indexOf('当前值') !== -1 ||
+                  this.tempsTitles[index].indexOf('现在值') !== -1
+                ) {
+                  this.editableTabs.push({
+                    name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''),
+                    title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '')
+                  })
                 }
               }
             } else {
@@ -223,8 +260,14 @@ export default {
               this.tempsTitles.splice(2, 0, '温度MIN')
               this.tempsTitles.splice(3, 0, '温度MAX')
               for (let index = 0; index < this.tempsTitles.length; index++) {
-                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
-                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
+                if (
+                  this.tempsTitles[index].indexOf('当前值') !== -1 ||
+                  this.tempsTitles[index].indexOf('现在值') !== -1
+                ) {
+                  this.editableTabs.push({
+                    name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''),
+                    title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '')
+                  })
                 }
               }
             }
@@ -360,9 +403,7 @@ export default {
             animationDuration: 2000,
             animationEasing: 'quadraticOut',
             markLine: {
-              data: [
-                { type: 'max', name: '最大数据' }
-              ]
+              data: [{ type: 'max', name: '最大数据' }]
             }
           },
           {
@@ -386,9 +427,7 @@ export default {
             animationDuration: 2000,
             animationEasing: 'quadraticOut',
             markLine: {
-              data: [
-                { type: 'max', name: '最大数据' }
-              ]
+              data: [{ type: 'max', name: '最大数据' }]
             }
           }
         ]
@@ -446,19 +485,19 @@ export default {
 }
 </script>
   <style lang="scss" scoped>
-    @import "src/styles/proindex";
-                     .tempchar {
-                       width: 100%;
-                       height: 100%;
-                       margin: 0 auto;
+@import 'src/styles/proindex';
+.tempchar {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
 
   .form {
     margin-top: 20px;
   }
-  }
-    #back{
-      background:url(../../../assets/img/11.png);
-      background-repeat:no-repeat;
-      background-size: 100% 100%;
-    }
+}
+#back {
+  background: url(../../../assets/img/11.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
 </style>

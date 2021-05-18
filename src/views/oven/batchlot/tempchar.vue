@@ -2,44 +2,43 @@
   <div class="tempchar">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
-				<el-col :span="6">
-					<el-form-item label="设备号:">
-						<div class="condition">
-							<el-select v-model="form.eqpId">
-								<el-option
-									v-for="item in tempEqpId"
-									:key="item.eqpId"
-									:label="item.eqpId"
-									:value="item.eqpId" />
-							</el-select>
-						</div>
-					</el-form-item>
-				</el-col>
+        <el-col :span="6">
+          <el-form-item label="设备号:">
+            <div class="condition">
+              <el-select v-model="form.eqpId">
+                <el-option v-for="item in tempEqpId" :key="item.eqpId" :label="item.eqpId" :value="item.eqpId" />
+              </el-select>
+            </div>
+          </el-form-item>
+        </el-col>
         <el-col :span="7">
           <el-form-item label="日期" prop="dateTime">
-            <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
+            <el-date-picker
+              v-model="form.dateTime"
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="3">
-          <el-input v-model="limitY" type="primary" placeholder="下限-上限" @change="changTempY"/>
+          <el-input v-model="limitY" type="primary" placeholder="下限-上限" @change="changTempY" />
         </el-col>
         <el-button type="primary" @click="search">查询</el-button>
       </el-row>
     </el-form>
     <el-tabs v-model="editableTabsValue" type="card" @tab-click="loadTempDataPart">
-      <el-tab-pane
-        v-for="item in editableTabs"
-        :key="item.title"
-        :label="item.title"
-        :name="item.title"/>
+      <el-tab-pane v-for="item in editableTabs" :key="item.title" :label="item.title" :name="item.title" />
     </el-tabs>
 
-    <div id="tempChart" style="width: 100%;height: 500px;overflow: hidden;"/>
+    <div id="tempChart" style="width: 100%; height: 500px; overflow: hidden" />
   </div>
 </template>
 <script>
 import { tempbytime } from '@/api/public'
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import { eqpList } from '@/api/oven/temperature'
 
 export default {
@@ -90,21 +89,19 @@ export default {
       var startc = parseInt(start)
       var endc = parseInt(end)
       console.log('qq' + startc + 'ww' + endc)
-      if ((endc - startc) > 6) {
+      if (endc - startc > 6) {
         this.$alert('限制时间范围为7天内', '请重新选择时间范围！', {
           confirmButtonText: '确定',
-          callback: action => {
-          } })
+          callback: (action) => {}
+        })
         // eslint-disable-next-line brace-style
-      } else
-      if ((endc - startc) < 0 && (endc - startc) > -24) {
+      } else if (endc - startc < 0 && endc - startc > -24) {
         this.$alert('限制时间范围为7天内', '请重新选择时间范围！', {
           confirmButtonText: '确定',
-          callback: action => {
-          } })
+          callback: (action) => {}
+        })
         // eslint-disable-next-line brace-style
-      }
-      else {
+      } else {
         this.search()
       }
     },
@@ -124,8 +121,14 @@ export default {
               this.tempsTitles.splice(2, 0, '第1温区温度MIN')
               this.tempsTitles.splice(3, 0, '第1温区温度MAX')
               for (let index = 0; index < this.tempsTitles.length; index++) {
-                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
-                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
+                if (
+                  this.tempsTitles[index].indexOf('当前值') !== -1 ||
+                  this.tempsTitles[index].indexOf('现在值') !== -1
+                ) {
+                  this.editableTabs.push({
+                    name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''),
+                    title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '')
+                  })
                 }
               }
             } else if (this.tempsTitles[0].indexOf('0003相似度当前值') !== -1) {
@@ -134,8 +137,14 @@ export default {
               this.tempsTitles.splice(2, 0, '0002相似度MIN')
               this.tempsTitles.splice(3, 0, '0002相似度MAX')
               for (let index = 0; index < this.tempsTitles.length; index++) {
-                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
-                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
+                if (
+                  this.tempsTitles[index].indexOf('当前值') !== -1 ||
+                  this.tempsTitles[index].indexOf('现在值') !== -1
+                ) {
+                  this.editableTabs.push({
+                    name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''),
+                    title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '')
+                  })
                 }
               }
             } else if (this.tempsTitles[0].indexOf('T102面积当前值') !== -1) {
@@ -144,8 +153,14 @@ export default {
               this.tempsTitles.splice(2, 0, 'T101面积MIN')
               this.tempsTitles.splice(3, 0, 'T101面积MAX')
               for (let index = 0; index < this.tempsTitles.length; index++) {
-                if (this.tempsTitles[index].indexOf('当前值') !== -1 || this.tempsTitles[index].indexOf('现在值') !== -1) {
-                  this.editableTabs.push({ name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''), title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '') })
+                if (
+                  this.tempsTitles[index].indexOf('当前值') !== -1 ||
+                  this.tempsTitles[index].indexOf('现在值') !== -1
+                ) {
+                  this.editableTabs.push({
+                    name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''),
+                    title: this.tempsTitles[index].replace('当前值', '').replace('现在值', '')
+                  })
                 }
               }
             } else {
@@ -169,7 +184,10 @@ export default {
               }
             }
             this.flag = parseInt(tp) < parseInt(this.tempsValue[0]['temp_min']) ? tp : this.tempsValue[0]['temp_min']
-            this.tpMaxY = parseInt(maxTp) < parseInt(this.tempsValue[0]['temp_max']) ? this.tempsValue[0]['temp_max'] : parseInt(maxTp)
+            this.tpMaxY =
+              parseInt(maxTp) < parseInt(this.tempsValue[0]['temp_max'])
+                ? this.tempsValue[0]['temp_max']
+                : parseInt(maxTp)
             if (this.form.eqpId === 'APJ-FREEZER3') {
               this.flag = -30
               this.tpMaxY = 30
@@ -300,9 +318,7 @@ export default {
             animationDuration: 2000,
             animationEasing: 'quadraticOut',
             markLine: {
-              data: [
-                { type: 'max', name: '最大数据' }
-              ]
+              data: [{ type: 'max', name: '最大数据' }]
             }
           },
           {
@@ -326,9 +342,7 @@ export default {
             animationDuration: 2000,
             animationEasing: 'quadraticOut',
             markLine: {
-              data: [
-                { type: 'max', name: '最大数据' }
-              ]
+              data: [{ type: 'max', name: '最大数据' }]
             }
           }
         ]
@@ -392,7 +406,10 @@ export default {
           }
         }
         this.flag = parseInt(tp) < parseInt(this.tempsValue[0]['temp_min']) ? tp : this.tempsValue[0]['temp_min']
-        this.tpMaxY = parseInt(maxTpTab0) < parseInt(this.tempsValue[0]['temp_max']) ? this.tempsValue[0]['temp_max'] : parseInt(maxTpTab0)
+        this.tpMaxY =
+          parseInt(maxTpTab0) < parseInt(this.tempsValue[0]['temp_max'])
+            ? this.tempsValue[0]['temp_max']
+            : parseInt(maxTpTab0)
       } else {
         var key = 4 * (tab.index - 1)
         var a = 100000
@@ -407,8 +424,14 @@ export default {
             maxTpTab = parseInt(tem[key])
           }
         }
-        this.flag = parseInt(a) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 2]) ? a : this.tempsValue[0].other_temps_value.split(',')[key + 2]
-        this.tpMaxY = parseInt(maxTpTab) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3]) ? parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3]) : parseInt(maxTpTab)
+        this.flag =
+          parseInt(a) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 2])
+            ? a
+            : this.tempsValue[0].other_temps_value.split(',')[key + 2]
+        this.tpMaxY =
+          parseInt(maxTpTab) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3])
+            ? parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3])
+            : parseInt(maxTpTab)
       }
       if (this.form.eqpId === 'APJ-FREEZER3') {
         this.flag = -30
@@ -436,16 +459,15 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .tempchar {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
+.tempchar {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
 
-    .form {
-      margin-top: 20px;
-    }
+  .form {
+    margin-top: 20px;
   }
-
+}
 </style>
 <style>
 </style>

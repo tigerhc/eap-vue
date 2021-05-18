@@ -3,33 +3,48 @@
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
         <el-form-item label="设备号" prop="eqpId">
-          <w-select-eqp :span="8" :str="form.eqpId" :multiple="false" :disabled="false" @input="onValueChange($event)"/>
+          <w-select-eqp
+            :span="8"
+            :str="form.eqpId"
+            :multiple="false"
+            :disabled="false"
+            @input="onValueChange($event)"
+          />
         </el-form-item>
         <el-col :span="9">
           <el-form-item label="日期" prop="dateTime">
-            <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
+            <el-date-picker
+              v-model="form.dateTime"
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            />
           </el-form-item>
         </el-col>
         <el-button type="primary" @click="search">查询</el-button>
       </el-row>
     </el-form>
-    <template v-for="(tempName) in otherTempsTitles">
+    <template v-for="tempName in otherTempsTitles">
       <el-button
         v-if="tempName.indexOf('当前值') !== -1 || tempName.indexOf('现在值') !== -1"
         :key="tempName"
         type="primary"
         icon="el-icon-arrow-right"
-        style="margin:5px;"
-        @click="loadTempDataPart(tempName)"> {{ tempName.replace('当前值','').replace('现在值','') }}
+        style="margin: 5px"
+        @click="loadTempDataPart(tempName)"
+      >
+        {{ tempName.replace('当前值', '').replace('现在值', '') }}
       </el-button>
     </template>
 
-      <div id="tempChart" style="width: 100%;height: 500px;overflow: hidden;"/>
+    <div id="tempChart" style="width: 100%; height: 500px; overflow: hidden" />
   </div>
 </template>
 <script>
 import { tempbytime } from '@/api/public'
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 
 export default {
   name: 'Tempchar',
@@ -58,8 +73,7 @@ export default {
     var startDate = endDate.slice(0, 8) + '01'
     this.form.dateTime = [startDate, endDate]
   },
-  created() {
-  },
+  created() {},
   methods: {
     onValueChange(name) {
       this.form.eqpId = name
@@ -299,16 +313,15 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .tempchar {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
+.tempchar {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
 
-    .form {
-      margin-top: 20px;
-    }
+  .form {
+    margin-top: 20px;
   }
-
+}
 </style>
 <style>
 </style>

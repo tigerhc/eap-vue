@@ -4,29 +4,28 @@
       <el-row>
         <el-col :span="5">
           <el-form-item label="设备" prop="station_code">
-            <el-select v-model="form.eqpId" filterable placeholder="请选择" >
-              <el-option
-                v-for="item in list"
-                :key="item.eqpId"
-                :label="item.eqpName"
-                :value="item.eqpId"/>
+            <el-select v-model="form.eqpId" filterable placeholder="请选择">
+              <el-option v-for="item in list" :key="item.eqpId" :label="item.eqpName" :value="item.eqpId" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="5">
           <el-form-item label="类型" prop="station_code">
-            <el-select v-model="type" filterable placeholder="请选择" >
-              <el-option
-                v-for="item in list2"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"/>
+            <el-select v-model="type" filterable placeholder="请选择">
+              <el-option v-for="item in list2" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="日期" prop="dateTime">
-            <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"/>
+            <el-date-picker
+              v-model="dateTime"
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="-"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="1">
@@ -37,14 +36,14 @@
         </el-col>
       </el-row>
     </el-form>
-    <div id="main" style="width:95%;height:550px;"/>
-<!--    <div id="eqpChart" style="width: 95%;height: 600px;overflow: hidden;"/>-->
+    <div id="main" style="width: 95%; height: 550px" />
+    <!--    <div id="eqpChart" style="width: 95%;height: 600px;overflow: hidden;"/>-->
   </div>
-<!--  <div id="main" style="width:95%;height:600px;"/>-->
-<!--  <el-button type="primary" @click=" search">查询</el-button>-->
+  <!--  <div id="main" style="width:95%;height:600px;"/>-->
+  <!--  <el-button type="primary" @click=" search">查询</el-button>-->
 </template>
 <script>
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import { findDustCount, findDustEqps } from '@/api/ms/monitor'
 import api from './fetch'
 export default {
@@ -63,47 +62,59 @@ export default {
       areaStyle: undefined,
       api: api('/edc/edcparticle/export23'),
       areaStyle0: {
-        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-          offset: 0,
-          color: 'rgb(255, 158, 68)'
-        }, {
-          offset: 1,
-          color: 'rgb(255, 70, 131)'
-        }])
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          {
+            offset: 0,
+            color: 'rgb(255, 158, 68)'
+          },
+          {
+            offset: 1,
+            color: 'rgb(255, 70, 131)'
+          }
+        ])
       },
       areaStyle1: {
-        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-          offset: 0,
-          color: 'rgba(80,141,255,0.39)'
-        }, {
-          offset: 0.34,
-          color: 'rgba(56,155,255,0.25)'
-        }, {
-          offset: 1,
-          color: 'rgba(38,197,254,0.00)'
-        }])
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          {
+            offset: 0,
+            color: 'rgba(80,141,255,0.39)'
+          },
+          {
+            offset: 0.34,
+            color: 'rgba(56,155,255,0.25)'
+          },
+          {
+            offset: 1,
+            color: 'rgba(38,197,254,0.00)'
+          }
+        ])
       },
       maxValue: undefined,
       minValue: undefined,
       toolbarStatus: {
         exportsLoading: false
       },
-      list2: [{
-        value: 'μm',
-        label: 'μm',
-        disabled: true
-      }, {
-        value: 'temp',
-        label: '温度'
-      }, {
-        value: 'wet',
-        label: '湿度',
-        disabled: true
-      }, {
-        value: 'flow',
-        label: '流量',
-        disabled: true
-      }],
+      list2: [
+        {
+          value: 'μm',
+          label: 'μm',
+          disabled: true
+        },
+        {
+          value: 'temp',
+          label: '温度'
+        },
+        {
+          value: 'wet',
+          label: '湿度',
+          disabled: true
+        },
+        {
+          value: 'flow',
+          label: '流量',
+          disabled: true
+        }
+      ],
       total: {
         date: Array,
         temp: Array,
@@ -117,12 +128,13 @@ export default {
         tenμm: Array,
         pressure: Array,
         wet: Array,
-        piont3μm: Array },
+        piont3μm: Array
+      },
       myChart: undefined
     }
   },
   created() {
-    findDustEqps().then(res => {
+    findDustEqps().then((res) => {
       this.list = res.data.eqps
     })
   },
@@ -136,7 +148,7 @@ export default {
       }
       this.toolbarStatus.exportsLoading = true
       // const q = (this.query)
-      const q = (this.form)
+      const q = this.form
       // alert(q)
       this.api
         .export(q)
@@ -163,7 +175,7 @@ export default {
       var a = this.type
       this.form.beginTime = this.dateTime[0] + ' 00:00:00'
       this.form.endTime = this.dateTime[1] + ' 23:59:59'
-      findDustCount(this.form).then(res => {
+      findDustCount(this.form).then((res) => {
         // this.data = res.data[0]
         // this.series = res.data[1]
         // this.min = res.data[2].min
@@ -235,14 +247,17 @@ export default {
           type: 'value',
           boundaryGap: [0, '100%']
         },
-        dataZoom: [{
-          type: 'inside',
-          start: 0,
-          end: 100
-        }, {
-          start: 0,
-          end: 10
-        }],
+        dataZoom: [
+          {
+            type: 'inside',
+            start: 0,
+            end: 100
+          },
+          {
+            start: 0,
+            end: 10
+          }
+        ],
         series: [
           {
             name: '数值',
@@ -257,31 +272,34 @@ export default {
               label: {
                 position: 'end'
               },
-              data: [{
-                name: '管理上限',
-                silent: true,
-                lineStyle: {
-                  type: 'dotted',
-                  color: '#FA3934',
-                  width: 3
+              data: [
+                {
+                  name: '管理上限',
+                  silent: true,
+                  lineStyle: {
+                    type: 'dotted',
+                    color: '#FA3934',
+                    width: 3
+                  },
+                  label: {
+                    formatter: this.maxValue + '   管理上限'
+                  },
+                  yAxis: this.maxValue
                 },
-                label: {
-                  formatter: this.maxValue + '   管理上限'
-                },
-                yAxis: this.maxValue
-              }, {
-                name: '管理下限',
-                silent: true,
-                lineStyle: {
-                  type: 'dotted',
-                  color: '#1E90FF',
-                  width: 3
-                },
-                label: {
-                  formatter: this.minValue + '   管理下限'
-                },
-                yAxis: this.minValue
-              }]
+                {
+                  name: '管理下限',
+                  silent: true,
+                  lineStyle: {
+                    type: 'dotted',
+                    color: '#1E90FF',
+                    width: 3
+                  },
+                  label: {
+                    formatter: this.minValue + '   管理下限'
+                  },
+                  yAxis: this.minValue
+                }
+              ]
             },
             areaStyle: this.areaStyle,
             // eslint-disable-next-line no-undef
@@ -296,7 +314,19 @@ export default {
         this.myChart.dispose()
       }
       this.myChart = echarts.init(document.getElementById('main'))
-      var colors = ['#FD2446', '#248EFD', '#C916F2', '#B22222', '#FFA500', '#5F9EA0', '#00CED1', '#32CD32', '#FFD700', '#FFA500', '#6669B1']
+      var colors = [
+        '#FD2446',
+        '#248EFD',
+        '#C916F2',
+        '#B22222',
+        '#FFA500',
+        '#5F9EA0',
+        '#00CED1',
+        '#32CD32',
+        '#FFD700',
+        '#FFA500',
+        '#6669B1'
+      ]
       var option = {
         color: colors,
         title: {
@@ -312,11 +342,16 @@ export default {
                 y: 0,
                 x2: 0,
                 y2: 1,
-                colorStops: [{
-                  offset: 0, color: 'red '
-                }, {
-                  offset: 1, color: 'blue'
-                }],
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: 'red '
+                  },
+                  {
+                    offset: 1,
+                    color: 'blue'
+                  }
+                ],
                 global: false // 缺省为 false
               }
             },
@@ -520,7 +555,6 @@ export default {
           },
           saveAsImage: { show: true },
           restore: { show: true }
-
         },
         series: [
           // {
@@ -546,15 +580,17 @@ export default {
                 position: 'end',
                 formatter: '管理上限'
               },
-              data: [{
-                silent: true,
-                lineStyle: {
-                  type: 'dotted',
-                  color: '#FA3934',
-                  width: 3
-                },
-                yAxis: 8000
-              }]
+              data: [
+                {
+                  silent: true,
+                  lineStyle: {
+                    type: 'dotted',
+                    color: '#FA3934',
+                    width: 3
+                  },
+                  yAxis: 8000
+                }
+              ]
             },
             label: {
               normal: {
@@ -691,28 +727,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .Rtplotyieldday {
-    width: auto;
-    height: auto;
-    margin: 0 auto;
+.Rtplotyieldday {
+  width: auto;
+  height: auto;
+  margin: 0 auto;
   .form {
     margin-top: 20px;
-  }}
-  .arrow_box{
-    animation: glow 800ms ease-out infinite alternate;
-    width:300px;
-    height:40px;
-    margin-left: 100px;
-    margin-top: 100px;
   }
-  @keyframes glow {
-    0% {
-      border-color: #393;
-      box-shadow: 0 0 5px rgba(0,255,0,.2), inset 0 0 5px rgba(0,255,0,.1), 0 0px 0 #393;
-    }
-    100% {
-      border-color: #6f6;
-      box-shadow: 0 0 20px rgba(0,255,0,.6), inset 0 0 10px rgba(0,255,0,.4), 0 0px 0 #6f6;
-    }
+}
+.arrow_box {
+  animation: glow 800ms ease-out infinite alternate;
+  width: 300px;
+  height: 40px;
+  margin-left: 100px;
+  margin-top: 100px;
+}
+@keyframes glow {
+  0% {
+    border-color: #393;
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.2), inset 0 0 5px rgba(0, 255, 0, 0.1), 0 0px 0 #393;
   }
+  100% {
+    border-color: #6f6;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.6), inset 0 0 10px rgba(0, 255, 0, 0.4), 0 0px 0 #6f6;
+  }
+}
 </style>

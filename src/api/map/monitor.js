@@ -15,3 +15,11 @@ export function getTrayEqpList() {
     params: {}
   })
 }
+
+export function getPuctionParam(id) {
+  return request({
+    url: '/map/maptraychipmove/getProductionParam?id=' + id,
+    method: 'get',
+    params: {}
+  })
+}

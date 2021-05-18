@@ -311,12 +311,15 @@ export default {
       this.$router.push({
         name: 'views/map/tray/trayDmDetail',
         query: {
-          id: row.chipId,
+          id: row.id,
           type: 'VIEW'
         }
       })
     },
     handleParamClick(row) {
+      // 初始化使用的数据变量
+      this.prodAlarmValue = ','
+      this.prodValueArr = []
       var _this = this
       getPuctionParam(row.id).then((response) => {
         var paramObj = response.data.paramObj

@@ -1,7 +1,8 @@
 <template>
   <div class="app-container">
 		<div class="igbt_chipdm_panel">
-			<div class="igbt_dm_panel">
+      <div class="igbt_title">IGBT</div>
+			<div v-if="igbtIndex > 0" class="chip_wigbt_panel">
 				<ChipDm eqp-id="IBGT"/>
 				<div
 v-for="(item,index) in igbt1.lightPst"
@@ -15,7 +16,7 @@ v-for="(item,index) in igbt1.lightPst"
 					<div class="dmTimeDiv">{{ igbt1.showTime }}</div>
 				</div>
 			</div>
-			<div v-if="igbtIndex > 1" :style="{left:'250px'}" class="chip_dm_panel">
+			<div v-if="igbtIndex > 1" :style="{left:'250px'}" class="chip_wigbt_panel">
 				<ChipDm eqp-id="IBGT"/>
 				<div
 v-for="(item,index) in igbt2.lightPst"
@@ -29,7 +30,7 @@ v-for="(item,index) in igbt2.lightPst"
 					<div class="dmTimeDiv">{{ igbt2.showTime }}</div>
 				</div>
 			</div>
-			<div v-if="igbtIndex > 2" :style="{left:'500px'}" class="chip_dm_panel">
+			<div v-if="igbtIndex > 2" :style="{left:'500px'}" class="chip_wigbt_panel">
 				<ChipDm eqp-id="IBGT"/>
 				<div
 v-for="(item,index) in igbt3.lightPst"
@@ -43,7 +44,7 @@ v-for="(item,index) in igbt3.lightPst"
 					<div class="dmTimeDiv">{{ igbt3.showTime }}</div>
 				</div>
 			</div>
-			<div v-if="igbtIndex > 3" :style="{left:'750px'}" class="chip_dm_panel">
+			<div v-if="igbtIndex > 3" :style="{left:'750px'}" class="chip_wigbt_panel">
 				<ChipDm eqp-id="IBGT"/>
 				<div
 v-for="(item,index) in igbt4.lightPst"
@@ -57,7 +58,7 @@ v-for="(item,index) in igbt4.lightPst"
 					<div class="dmTimeDiv">{{ igbt4.showTime }}</div>
 				</div>
 			</div>
-			<div v-if="igbtIndex > 4" :style="{left:'1000px'}" class="chip_dm_panel">
+			<div v-if="igbtIndex > 4" :style="{left:'1000px'}" class="chip_wigbt_panel">
 				<ChipDm eqp-id="IBGT"/>
 				<div
 v-for="(item,index) in igbt5.lightPst"
@@ -71,7 +72,7 @@ v-for="(item,index) in igbt5.lightPst"
 					<div class="dmTimeDiv">{{ igbt5.showTime }}</div>
 				</div>
 			</div>
-			<div v-if="igbtIndex > 5" :style="{left:'1250px'}" class="chip_dm_panel">
+			<div v-if="igbtIndex > 5" :style="{left:'1250px'}" class="chip_wigbt_panel">
 				<ChipDm eqp-id="IBGT"/>
 				<div
 v-for="(item,index) in igbt6.lightPst"
@@ -87,7 +88,8 @@ v-for="(item,index) in igbt6.lightPst"
 			</div>
 		</div>
 		<div class="frd_chipdm_panel">
-			<div class="chip_dm_panel">
+      <div class="frd_title">FRD</div>
+			<div v-if="frdIndex > 0" class="chip_dm_panel">
 				<ChipDm eqp-id="FRD"/>
 				<div
 v-for="(item,index) in frd1.lightPst"
@@ -176,11 +178,14 @@ v-for="(item,index) in frd6.lightPst"
 </template>
 
 <style lang="scss">
-	.igbt_chipdm_panel{width:100%; height:336px;position: relative;border:1px solid red;}
+	.igbt_chipdm_panel{width:100%; height:336px;position: relative;margin-left:50px;}
 	.chip_dm_panel{width:334px;height:184px;border:1px solid #5e5f5e;position: absolute;top:100px;}
+  .chip_wigbt_panel{width:218px;height:234px;border:1px solid #5e5f5e;position: absolute;top:100px;}
+  .igbt_title{width:50px;height:100%;margin-left:-50px;line-height: 336px;}
+  .frd_title{width:50px;height:100%;margin-left:-50px;line-height: 336px;}
 
 	.igbt_dm_panel{width:220px;height:234px;border:1px solid #5e5f5e;position: absolute;top:100px;}
-	.frd_chipdm_panel{width:100%; height:285px;position: relative; border:1px solid red;}
+	.frd_chipdm_panel{width:100%; height:285px;position: relative;margin-left:50px;}
 
 	.lightPst{background-color:#03f957;position:absolute;border:1px solid #5e5f5e;}
 	.dm_info_panel{width:220px;height:100px;position: absolute;top:-100px;}
@@ -221,7 +226,7 @@ export default {
     request({
       url: '/map/maptraychipmove/dmDetail',
       method: 'post',
-      data: { chipId: this.$route.query.id }
+      data: { id: this.$route.query.id }
     }).then((resp) => {
       var datas = resp.data.results
       for (var i = 0; i < datas.length; i++) {
@@ -262,12 +267,23 @@ export default {
     })
   },
   beforeDestroy() {
-
+    this.dmList = []
+    this.igbt1 = {}
+    this.igbt2 = {}
+    this.igbt3 = {}
+    this.igbt4 = {}
+    this.igbt5 = {}
+    this.igbt6 = {}
+    this.frd1 = {}
+    this.frd2 = {}
+    this.frd3 = {}
+    this.frd4 = {}
+    this.frd5 = {}
+    this.frd6 = {}
+    this.igbtIndex = 0
+    this.frdIndex = 0
   },
   methods: {
-    getIgbtObj(index) {
-
-    },
     showXy(content, index, flag) {
       switch (flag) {
         case 'igbt1':

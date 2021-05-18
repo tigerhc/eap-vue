@@ -3,10 +3,10 @@
     <el-option
       v-for="item in data"
       :key="item.id"
-      :label="item[valuekey]"
+      :label="item[namekey]"
       :value="item[valuekey]">
       <span style="float: left;">{{ item[valuekey] }}</span>&nbsp;&nbsp;
-      <span style="color: #8492a6; font-size: 12px">{{ item[namekey] }}</span>
+      <span style="color: #8492a6; font-size: 12px">{{ item.name }}</span>
     <!--<span style="float: left; font-size: 13px">{{ item[valuekey]  }}</span>-->
     <!--<span style="float: right; color: #8492a6; font-size: 13px">{{ item[namekey] }}</span>-->
     </el-option>

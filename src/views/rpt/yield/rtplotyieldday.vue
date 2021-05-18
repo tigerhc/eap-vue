@@ -6,43 +6,51 @@
           <el-form-item label="线别" prop="lineNo">
             <el-select v-model="form.lineNo" @change="ValueChange(1)">
               <el-option
-                          v-for="item in lineNoOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value"
-                         :disabled="item.disabled" />
+                v-for="item in lineNoOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+                :disabled="item.disabled"
+              />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="站别" prop="station_code">
-            <el-select v-model="form.station_code" filterable placeholder="请选择" >
+            <el-select v-model="form.station_code" filterable placeholder="请选择">
               <el-option
                 v-for="item in noList"
                 :key="item.station_code"
                 :label="item.station_code"
-                :value="item.station_code"/>
+                :value="item.station_code"
+              />
             </el-select>
             <!--            <w-select :str="form.productionNo" :multiple="true" :disabled="false" @input="onNoChange($event)"/>-->
           </el-form-item>
         </el-col>
         <el-col :span="9">
           <el-form-item label="日期" prop="dateTime">
-            <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
+            <el-date-picker
+              v-model="form.dateTime"
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            />
           </el-form-item>
         </el-col>
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>
     </el-form>
-    <div id="yieldDayChart" style="width: 100%;height: 300px;overflow: hidden;"/>
-    <div id="findAllEqp" style="width: 100%;height: 280px;"/>
-    <div id="eqpChart" style="width: 100%;height: 250px;overflow: hidden;"/>
-
+    <div id="yieldDayChart" style="width: 100%; height: 300px; overflow: hidden" />
+    <div id="findAllEqp" style="width: 100%; height: 280px" />
+    <div id="eqpChart" style="width: 100%; height: 250px; overflow: hidden" />
   </div>
 </template>
 <script>
 import { rtplotyieldday, selectEqp, findAllEqp } from '@/api/public'
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import request from '@/utils/request'
 
 export default {
@@ -70,26 +78,32 @@ export default {
       series: [],
       legend: [],
       // 先写死
-      lineNoOptions: [{
-        value: 'SIM',
-        label: 'SIM'
-      }, {
-        value: 'SMA',
-        label: 'SMA',
-        disabled: true
-      }, {
-        value: 'SX',
-        label: 'SX',
-        disabled: true
-      }, {
-        value: '5GI',
-        label: '5GI',
-        disabled: true
-      }, {
-        value: '6GI',
-        label: '6GI',
-        disabled: true
-      }]
+      lineNoOptions: [
+        {
+          value: 'SIM',
+          label: 'SIM'
+        },
+        {
+          value: 'SMA',
+          label: 'SMA',
+          disabled: true
+        },
+        {
+          value: 'SX',
+          label: 'SX',
+          disabled: true
+        },
+        {
+          value: '5GI',
+          label: '5GI',
+          disabled: true
+        },
+        {
+          value: '6GI',
+          label: '6GI',
+          disabled: true
+        }
+      ]
     }
   },
   mounted() {
@@ -100,10 +114,12 @@ export default {
   },
   created() {
     if (window.location.hostname === '10.160.144.9') {
-      this.lineNoOptions = [{
-        value: 'APJ',
-        label: 'APJ'
-      }]
+      this.lineNoOptions = [
+        {
+          value: 'APJ',
+          label: 'APJ'
+        }
+      ]
     }
   },
   methods: {
@@ -388,7 +404,30 @@ export default {
         //
         //   // padding: [20, 20]
         // },
-        color: ['#FFA500', '#D2691E', '#B0C4DE', '#778899', '#FF69B4', '#FF1493', '#00FFFF', '#00CED1', '#808000', '#BDB76B', '#FF7F50', '#FF4500', '#32CD32', '#00FF00', '#FFFF00', '#BDB76B', '#0000FF', '#1E90FF', '#EE82EE', '#FF00FF', '#87CEFA', '#00BFFF'],
+        color: [
+          '#FFA500',
+          '#D2691E',
+          '#B0C4DE',
+          '#778899',
+          '#FF69B4',
+          '#FF1493',
+          '#00FFFF',
+          '#00CED1',
+          '#808000',
+          '#BDB76B',
+          '#FF7F50',
+          '#FF4500',
+          '#32CD32',
+          '#00FF00',
+          '#FFFF00',
+          '#BDB76B',
+          '#0000FF',
+          '#1E90FF',
+          '#EE82EE',
+          '#FF00FF',
+          '#87CEFA',
+          '#00BFFF'
+        ],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -450,15 +489,15 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .Rtplotyieldday {
-    width: auto;
-    height: auto;
-    margin: 0 auto;
+.Rtplotyieldday {
+  width: auto;
+  height: auto;
+  margin: 0 auto;
 
-    .form {
-      margin-top: 20px;
-    }
+  .form {
+    margin-top: 20px;
   }
+}
 </style>
 <style>
 </style>

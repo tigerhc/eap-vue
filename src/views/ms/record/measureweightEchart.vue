@@ -1,67 +1,88 @@
 <template>
-	<div class="app-container calendar-list-container">
-		<div class="condition-panel">
-			<el-form class="form" label-width="90px" size="small">
-				<el-col :span="4">
-					<el-form-item label="批号:">
-						<div class="condition">
-							<input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner">
-						</div>
-					</el-form-item>
-				</el-col>
-				<el-col :span="10">
-					<el-form-item label="机种名：">
+  <div class="app-container calendar-list-container">
+    <div class="condition-panel">
+      <el-form class="form" label-width="90px" size="small">
+        <el-col :span="4">
+          <el-form-item label="批号:">
+            <div class="condition">
+              <input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner" >
+            </div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="10">
+          <el-form-item label="机种名：">
             <el-select v-model="productionNo" class="wid90" @change="productionNoChange">
-              <el-option
-                v-for="item in lineNoOptions"
-                :key="item.lineNo"
-                :label="item.lineNo"
-                :value="item.lineNo" />
+              <el-option v-for="item in lineNoOptions" :key="item.lineNo" :label="item.lineNo" :value="item.lineNo" />
             </el-select>
-						<el-select v-model="chartParam.productionNo" class="wider" @change="updateEqp">
-              <el-option
-                v-for="item in productionNoOptions"
-                :key="item"
-                :label="item"
-                :value="item" />
+            <el-select v-model="chartParam.productionNo" class="wider" @change="updateEqp">
+              <el-option v-for="item in productionNoOptions" :key="item" :label="item" :value="item" />
             </el-select>
-						<el-select v-show="productionNo==='5GI'||productionNo==='6GI'" v-model="chartParam.detailOption" class="wid90" @change="weightPosition">
+            <el-select
+              v-show="productionNo === '5GI' || productionNo === '6GI'"
+              v-model="chartParam.detailOption"
+              class="wid90"
+              @change="weightPosition"
+            >
               <el-option
                 v-for="item in detailOptions"
                 :key="item.dtlName"
                 :label="item.dtlName"
-                :value="item.dtlValue" />
+                :value="item.dtlValue"
+              />
             </el-select>
           </el-form-item>
-				</el-col>
-				<el-col :span="5">
-            <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
-				</el-col>
-			</el-form>
-			<button type="button" class="el-button el-button--primary el-button--medium filter-item" style="margin-left: 10px;" @click="searchClick">
-				<i class="el-icon-search"/>
-				<span>搜索</span>
-			</button>
-			<button type="button" class="el-button el-button--primary el-button--medium filter-item" style="margin-left: 10px;" @click="refreshClick">
-				<i class="el-icon-refresh"/>
-				<span>清空</span>
-			</button>
-      <button type="button" class="el-button el-button--primary el-button--medium filter-item" style="margin-left: 10px;" @click="finddetail">
-        <i class="el-icon-refresh"/>
+        </el-col>
+        <el-col :span="5">
+          <el-date-picker
+            v-model="dateTime"
+            type="daterange"
+            value-format="yyyy-MM-dd"
+            range-separator="-"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            class="dateTimeClass"
+          />
+        </el-col>
+      </el-form>
+      <button
+        type="button"
+        class="el-button el-button--primary el-button--medium filter-item"
+        style="margin-left: 10px"
+        @click="searchClick"
+      >
+        <i class="el-icon-search" />
+        <span>搜索</span>
+      </button>
+      <button
+        type="button"
+        class="el-button el-button--primary el-button--medium filter-item"
+        style="margin-left: 10px"
+        @click="refreshClick"
+      >
+        <i class="el-icon-refresh" />
+        <span>清空</span>
+      </button>
+      <button
+        type="button"
+        class="el-button el-button--primary el-button--medium filter-item"
+        style="margin-left: 10px"
+        @click="finddetail"
+      >
+        <i class="el-icon-refresh" />
         <span>导出</span>
       </button>
-		</div>
-		<div class="echAppPanel">
-			<div id="echApp" :style="{width: '60%', height: '100%', position: 'relative',float:'left'}"/>
-			<div :style="{width: imgUrlWidth, height: imgUrlHeight,marginLeft:'5%', marginTop:'50px'}" class="picPanel">
-				<chipImg :img-url="imgUrl" :img-option="imgOption" :click-able="clickAble" @positionName="positionChange"/>
-			</div>
-		</div>
-	</div>
+    </div>
+    <div class="echAppPanel">
+      <div id="echApp" :style="{ width: '60%', height: '100%', position: 'relative', float: 'left' }" />
+      <div :style="{ width: imgUrlWidth, height: imgUrlHeight, marginLeft: '5%', marginTop: '50px' }" class="picPanel">
+        <chipImg :img-url="imgUrl" :img-option="imgOption" :click-able="clickAble" @positionName="positionChange" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import { weightChart, productionNoSelect } from '@/api/ms/monitor'
 import request from '@/utils/request'
 import chipImg from '@/views/tool/chipimg/chipimg'
@@ -93,8 +114,13 @@ export default {
       clickAble: true,
       productionNoOptions: [],
       productionNo: '',
-      lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }],
-      detailOptions: [{ 'dtlName': 'DB', 'dtlValue': 1 }, { 'dtlName': 'DM', 'dtlValue': 2 }, { 'dtlName': '二级管', 'dtlValue': 3 }, { 'dtlName': '电熔', 'dtlValue': 4 }],
+      lineNoOptions: [{ lineNo: 'SMA' }, { lineNo: 'SX' }, { lineNo: 'SIM' }, { lineNo: '5GI' }, { lineNo: '6GI' }],
+      detailOptions: [
+        { dtlName: 'DB', dtlValue: 1 },
+        { dtlName: 'DM', dtlValue: 2 },
+        { dtlName: '二级管', dtlValue: 3 },
+        { dtlName: '电熔', dtlValue: 4 }
+      ],
       imgUrlWidth: '35%',
       imgUrlHeight: '250px'
     }
@@ -127,7 +153,7 @@ export default {
       }
       this.toolbarStatus.exportsLoading = true
       // const q = (this.query)
-      const q = (this.chartParam)
+      const q = this.chartParam
       this.api
         .export(q)
         .then((response) => {
@@ -190,7 +216,7 @@ export default {
         var _this = this
         var param = {}
         param.lineNo = this.productionNo
-        productionNoSelect(param).then(res => {
+        productionNoSelect(param).then((res) => {
           if (res.data.code === 0 || res.data.code === '0') {
             _this.productionNoOptions = res.data.productionNoList
           } else {
@@ -220,7 +246,7 @@ export default {
         this.chartParam.endTime = this.dateTime[1]
       }
       var _this = this
-      weightChart(this.chartParam).then(res => {
+      weightChart(this.chartParam).then((res) => {
         _this.echarClear('echApp')
         if (res.data.code === 0 || res.data.code === '0') {
           if (res.data.weightList !== undefined && res.data.weightList !== null && res.data.weightList.length !== 0) {
@@ -256,28 +282,38 @@ export default {
 
       return {
         type: 'group',
-        children: [{
-          type: 'line',
-          shape: {
-            x1: highPoint[0] - halfWidth, y1: highPoint[1],
-            x2: highPoint[0] + halfWidth, y2: highPoint[1]
+        children: [
+          {
+            type: 'line',
+            shape: {
+              x1: highPoint[0] - halfWidth,
+              y1: highPoint[1],
+              x2: highPoint[0] + halfWidth,
+              y2: highPoint[1]
+            },
+            style: style
           },
-          style: style
-        }, {
-          type: 'line',
-          shape: {
-            x1: highPoint[0], y1: highPoint[1],
-            x2: lowPoint[0], y2: lowPoint[1]
+          {
+            type: 'line',
+            shape: {
+              x1: highPoint[0],
+              y1: highPoint[1],
+              x2: lowPoint[0],
+              y2: lowPoint[1]
+            },
+            style: style
           },
-          style: style
-        }, {
-          type: 'line',
-          shape: {
-            x1: lowPoint[0] - halfWidth, y1: lowPoint[1],
-            x2: lowPoint[0] + halfWidth, y2: lowPoint[1]
-          },
-          style: style
-        }]
+          {
+            type: 'line',
+            shape: {
+              x1: lowPoint[0] - halfWidth,
+              y1: lowPoint[1],
+              x2: lowPoint[0] + halfWidth,
+              y2: lowPoint[1]
+            },
+            style: style
+          }
+        ]
       }
     },
     initChart(weightData) {
@@ -293,11 +329,7 @@ export default {
       if (weightData.length > 0) {
         for (var i = 0; i < weightData.length; i++) {
           categoryData.push(weightData[i].lotNo)
-          errorData.push([
-            i,
-            weightData[i].minWeight,
-            weightData[i].maxWeight
-          ])
+          errorData.push([i, weightData[i].minWeight, weightData[i].maxWeight])
           minArr.push(weightData[i].limitMin)
           maxArr.push(weightData[i].limitMax)
           barData.push(weightData[i].avgWeight)
@@ -336,7 +368,7 @@ export default {
             trigger: 'axis',
             axisPointer: {},
             enterable: true, // 鼠标是否可进入提示框浮层中
-            formatter: this.formatterHover// 修改鼠标悬停显示的内容
+            formatter: this.formatterHover // 修改鼠标悬停显示的内容
           },
           toolbox: {
             feature: {
@@ -366,81 +398,74 @@ export default {
             max: yMax,
             name: '重量mg'
           },
-          series: [{
-            symbolSize: 10,
-            type: 'line',
-            name: '平均重量',
-            data: barData,
-            itemStyle: {
-              color: 'blue'
-            }
-          },
-          {
-            type: 'custom',
-            name: '测量值',
-            itemStyle: {
-              normal: {
-                borderWidth: 1.5
+          series: [
+            {
+              symbolSize: 10,
+              type: 'line',
+              name: '平均重量',
+              data: barData,
+              itemStyle: {
+                color: 'blue'
               }
             },
-            renderItem: this.renderItem,
-            data: errorData,
-            z: 100
-          },
-          {
-            type: 'line',
-            name: '设定管理下限',
-            data: minArr,
-            itemStyle: {
-              color: 'red'
+            {
+              type: 'custom',
+              name: '测量值',
+              itemStyle: {
+                normal: {
+                  borderWidth: 1.5
+                }
+              },
+              renderItem: this.renderItem,
+              data: errorData,
+              z: 100
             },
-            markLine: {
-              data: [
-                { type: 'max', name: '最大数据' }
-              ]
-            }
-          },
-          {
-            type: 'line',
-            name: '设定管理上限',
-            data: maxArr,
-            itemStyle: {
-              color: 'red'
+            {
+              type: 'line',
+              name: '设定管理下限',
+              data: minArr,
+              itemStyle: {
+                color: 'red'
+              },
+              markLine: {
+                data: [{ type: 'max', name: '最大数据' }]
+              }
             },
-            markLine: {
-              data: [
-                { type: 'max', name: '最大数据' }
-              ]
-            }
-          },
-          {
-            symbolSize: 10,
-            type: 'line',
-            name: '工程管理下限',
-            data: min11,
-            itemStyle: {
-              color: '#06b8af'
+            {
+              type: 'line',
+              name: '设定管理上限',
+              data: maxArr,
+              itemStyle: {
+                color: 'red'
+              },
+              markLine: {
+                data: [{ type: 'max', name: '最大数据' }]
+              }
             },
-            markLine: {
-              data: [
-                { type: 'max', name: '最大数据' }
-              ]
-            }
-          },
-          {
-            symbolSize: 10,
-            type: 'line',
-            name: '工程管理上限',
-            data: max90,
-            itemStyle: {
-              color: '#06b8af'
+            {
+              symbolSize: 10,
+              type: 'line',
+              name: '工程管理下限',
+              data: min11,
+              itemStyle: {
+                color: '#06b8af'
+              },
+              markLine: {
+                data: [{ type: 'max', name: '最大数据' }]
+              }
             },
-            markLine: {
-              data: [
-                { type: 'max', name: '最大数据' }
-              ]
+            {
+              symbolSize: 10,
+              type: 'line',
+              name: '工程管理上限',
+              data: max90,
+              itemStyle: {
+                color: '#06b8af'
+              },
+              markLine: {
+                data: [{ type: 'max', name: '最大数据' }]
+              }
             }
-          }
           ]
         }
         this.chart.setOption(option)
@@ -464,31 +489,48 @@ export default {
         }
       }
 
-      return '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最大重量：' + maxWeight + ' mg</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">平均重量：' + fact + ' mg</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最小重量：' + minWeight + ' mg</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">设定管理上限：' + limitMax + ' mg</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">设定管理下限：' + limitMin + ' mg</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">批号：' + lotNo + '</span>'
+      return (
+        '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最大重量：' +
+        maxWeight +
+        ' mg</span><br>' +
+        '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">平均重量：' +
+        fact +
+        ' mg</span><br>' +
+        '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">最小重量：' +
+        minWeight +
+        ' mg</span><br>' +
+        '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">设定管理上限：' +
+        limitMax +
+        ' mg</span><br>' +
+        '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">设定管理下限：' +
+        limitMin +
+        ' mg</span><br>' +
+        '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">批号：' +
+        lotNo +
+        '</span>'
+      )
     },
     updateEqp() {
       var _this = this
       if (_this.chartParam.productionNo.indexOf('5GI-2860') > -1) {
         _this.imgUrl = 'GI5_2860'
-        _this.imgUrlWidth = '200px'// 400
-        _this.imgUrlHeight = '320px'// 640
-      } else if (_this.chartParam.productionNo.indexOf('5GI-2864') > -1 || _this.chartParam.productionNo.indexOf('5GI-2865') > -1) {
+        _this.imgUrlWidth = '200px' // 400
+        _this.imgUrlHeight = '320px' // 640
+      } else if (
+        _this.chartParam.productionNo.indexOf('5GI-2864') > -1 ||
+        _this.chartParam.productionNo.indexOf('5GI-2865') > -1
+      ) {
         _this.imgUrl = 'GI5_28645'
-        _this.imgUrlWidth = '200px'// 400
-        _this.imgUrlHeight = '320px'// 640
+        _this.imgUrlWidth = '200px' // 400
+        _this.imgUrlHeight = '320px' // 640
       } else if (_this.chartParam.productionNo.indexOf('5GI-2866') > -1) {
         _this.imgUrl = 'GI5_2866'
-        _this.imgUrlWidth = '200px'// 400
-        _this.imgUrlHeight = '320px'// 640
+        _this.imgUrlWidth = '200px' // 400
+        _this.imgUrlHeight = '320px' // 640
       } else if (_this.chartParam.productionNo.indexOf('6GI') > -1) {
         _this.imgUrl = 'GI6'
-        _this.imgUrlWidth = '237.5px'// 475
-        _this.imgUrlHeight = '365px'// 730
+        _this.imgUrlWidth = '237.5px' // 475
+        _this.imgUrlHeight = '365px' // 730
       } else if (_this.chartParam.productionNo.indexOf('SX680') > -1) {
         _this.imgUrl = 'SX680'
         _this.imgUrlWidth = '35%'
@@ -519,48 +561,58 @@ export default {
 </script>
 
 <style scoped>
-	.condition{
-		width:90px;height:35px;
-		border-radius: 4px;
-		box-sizing: border-box;
-		display: inline-block;
-		font-family: sans-serif;
-		margin: 0;
-	}
-	.el-input__inner {
-		-webkit-appearance: none;
-		background-color: #fff;
-		background-image: none;
-		border-radius: 4px;
-		border: 1px solid #dcdfe6;
-		-webkit-box-sizing: border-box;
-		box-sizing: border-box;
-		color: #606266;
-		display: inline-block;
-		font-size: inherit;
-		height: 35px;
-		line-height: 40px;
-		outline: 0;
-		padding: 0 15px;
-		-webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-		transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-		width: 100%;
-	}
-	.el-col-6 div{
-		padding-bottom: 20px;
-	}
-	.el-date-editor .el-range-input, .el-date-editor .el-range-separator{
-		height:20% !important;
-	}
-	#echApp{
-		margin-top:50px;
-	}
-	.wid90{width:90px;}
-	.echAppPanel{
-		width:100%;
-		height:400px;
-		float:left;
-	}
-	.picPanel{position: relative;float:left;border: 1px solid #b7b2b2;}
-	.wider{width:260px;}
+.condition {
+  width: 90px;
+  height: 35px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: inline-block;
+  font-family: sans-serif;
+  margin: 0;
+}
+.el-input__inner {
+  -webkit-appearance: none;
+  background-color: #fff;
+  background-image: none;
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #606266;
+  display: inline-block;
+  font-size: inherit;
+  height: 35px;
+  line-height: 40px;
+  outline: 0;
+  padding: 0 15px;
+  -webkit-transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  width: 100%;
+}
+.el-col-6 div {
+  padding-bottom: 20px;
+}
+.el-date-editor .el-range-input,
+.el-date-editor .el-range-separator {
+  height: 20% !important;
+}
+#echApp {
+  margin-top: 50px;
+}
+.wid90 {
+  width: 90px;
+}
+.echAppPanel {
+  width: 100%;
+  height: 400px;
+  float: left;
+}
+.picPanel {
+  position: relative;
+  float: left;
+  border: 1px solid #b7b2b2;
+}
+.wider {
+  width: 260px;
+}
 </style>

@@ -1,73 +1,92 @@
 <template>
-	<div class="app-container calendar-list-container">
-		<div class="condition-panel">
-			<el-form class="form" label-width="90px" size="small">
-				<el-col :span="10">
-					<el-form-item label="机种名:">
-						<div class="condition">
-							<el-select v-model="chartParam.lineNo" class="wid90" @change="lineNoChange">
-								<el-option
-									v-for="item in lineNoOptions"
-									:key="item.lineNo"
-									:label="item.lineNo"
-									:value="item.lineNo" />
-							</el-select>
-							<el-select v-model="chartParam.productionName" class="wider" @change="productionNameChange">
-								<el-option v-for="item in proNameOptions" :key="item" :label="item" :value="item" />
-							</el-select>
-							<el-select v-model="chartParam.lineType" class="wid90" @change="lineTypeChange">
-								<el-option v-for="item in positionOptions" :key="item" :label="item" :value="item" />
-							</el-select>
-						</div>
-					</el-form-item>
-				</el-col>
-				<el-col :span="9">
-					<el-form-item label="日期:">
-            <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
-					</el-form-item>
-				</el-col>
-			</el-form>
-			<button type="button" class="el-button el-button--primary el-button--medium filter-item" style="margin-left: 10px;" @click="searchClick">
-				<i class="el-icon-search"/>
-				<span>搜索</span>
-			</button>
-			<button type="button" class="el-button el-button--primary el-button--medium filter-item" style="margin-left: 10px;" @click="refreshClick">
-				<i class="el-icon-refresh"/>
-				<span>清空</span>
-			</button>
-      <button type="button" class="el-button el-button--primary el-button--medium filter-item" style="margin-left: 10px;" @click="finddetail">
-        <i class="el-icon-refresh"/>
+  <div class="app-container calendar-list-container">
+    <div class="condition-panel">
+      <el-form class="form" label-width="90px" size="small">
+        <el-col :span="10">
+          <el-form-item label="机种名:">
+            <div class="condition">
+              <el-select v-model="chartParam.lineNo" class="wid90" @change="lineNoChange">
+                <el-option v-for="item in lineNoOptions" :key="item.lineNo" :label="item.lineNo" :value="item.lineNo" />
+              </el-select>
+              <el-select v-model="chartParam.productionName" class="wider" @change="productionNameChange">
+                <el-option v-for="item in proNameOptions" :key="item" :label="item" :value="item" />
+              </el-select>
+              <el-select v-model="chartParam.lineType" class="wid90" @change="lineTypeChange">
+                <el-option v-for="item in positionOptions" :key="item" :label="item" :value="item" />
+              </el-select>
+            </div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="9">
+          <el-form-item label="日期:">
+            <el-date-picker
+              v-model="dateTime"
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="-"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              class="dateTimeClass"
+            />
+          </el-form-item>
+        </el-col>
+      </el-form>
+      <button
+        type="button"
+        class="el-button el-button--primary el-button--medium filter-item"
+        style="margin-left: 10px"
+        @click="searchClick"
+      >
+        <i class="el-icon-search" />
+        <span>搜索</span>
+      </button>
+      <button
+        type="button"
+        class="el-button el-button--primary el-button--medium filter-item"
+        style="margin-left: 10px"
+        @click="refreshClick"
+      >
+        <i class="el-icon-refresh" />
+        <span>清空</span>
+      </button>
+      <button
+        type="button"
+        class="el-button el-button--primary el-button--medium filter-item"
+        style="margin-left: 10px"
+        @click="finddetail"
+      >
+        <i class="el-icon-refresh" />
         <span>导出</span>
       </button>
-		</div>
-		<div class="echartPanel">
-			<div id="echAppLine" :style="{width: '60%', height: '300px',float:'left', marginLeft:'-4%'}"/>
-			<div :style="{width: imgUrlWidth, height: imgUrlHeight, marginTop:'30px',float:'left'}" class="picPanel">
-				<chipImg :img-url="imgUrl" :img-option="imgOption" :click-able="clickAble" @positionName="positionChange"/>
-			</div>
-		</div>
-		<el-form id="subEchart" class="form" label-width="90px" size="small">
-			<el-col :span="6">
-				<el-form-item label="批号:">
-					<div class="condition">
-						<input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner">
-					</div>
-				</el-form-item>
-			</el-col>
-		</el-form>
-		<div id="brD">
-			<div id="chartPanelLeft">
-				<div id="echApp" :style="{width: '90%', height: '350px'}"/>
-			</div>
-			<div id="chartPanelRight">
-				<div id="echAppRight" :style="{width: '90%', height: '350px'}"/>
-			</div>
-		</div>
-	</div>
+    </div>
+    <div class="echartPanel">
+      <div id="echAppLine" :style="{ width: '60%', height: '300px', float: 'left', marginLeft: '-4%' }" />
+      <div :style="{ width: imgUrlWidth, height: imgUrlHeight, marginTop: '30px', float: 'left' }" class="picPanel">
+        <chipImg :img-url="imgUrl" :img-option="imgOption" :click-able="clickAble" @positionName="positionChange" />
+      </div>
+    </div>
+    <el-form id="subEchart" class="form" label-width="90px" size="small">
+      <el-col :span="6">
+        <el-form-item label="批号:">
+          <div class="condition">
+            <input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner" >
+          </div>
+        </el-form-item>
+      </el-col>
+    </el-form>
+    <div id="brD">
+      <div id="chartPanelLeft">
+        <div id="echApp" :style="{ width: '90%', height: '350px' }" />
+      </div>
+      <div id="chartPanelRight">
+        <div id="echAppRight" :style="{ width: '90%', height: '350px' }" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import api from '../../oven/ports/fetch'
 import { kongdongChart, kongdongBar, proNameSelect, positionSelect } from '@/api/ms/monitor'
 import chipImg from '@/views/tool/chipimg/chipimg'
@@ -99,7 +118,7 @@ export default {
       clickAble: true,
       positionOptions: [],
       proNameOptions: [],
-      lineNoOptions: [{ 'lineNo': 'SMA' }, { 'lineNo': 'SX' }, { 'lineNo': 'SIM' }, { 'lineNo': '5GI' }, { 'lineNo': '6GI' }],
+      lineNoOptions: [{ lineNo: 'SMA' }, { lineNo: 'SX' }, { lineNo: 'SIM' }, { lineNo: '5GI' }, { lineNo: '6GI' }],
       // list:[{name:"T100",left:"40%",top:"30%",width:"50px",height:"60px",rotate:180,"checked":true,backgroundColor:"red",position:"relative"}],
       // picUrl:"11"
       imgUrlWidth: '35%',
@@ -128,7 +147,7 @@ export default {
         return
       }
       this.toolbarStatus.exportsLoading = true
-      const q = (this.chartParam)
+      const q = this.chartParam
       this.api
         .export(q)
         .then((response) => {
@@ -155,7 +174,7 @@ export default {
         var _this = this
         var paramObj = {}
         paramObj.productionNo = this.chartParam.lineNo
-        proNameSelect(paramObj).then(res => {
+        proNameSelect(paramObj).then((res) => {
           if (res.data.code === 0 || res.data.code === '0') {
             _this.proNameOptions = res.data.allProName
           } else {
@@ -165,7 +184,11 @@ export default {
       }
     },
     positionChange(pname) {
-      if (this.positionOptions.length > 0 && this.chartParam.productionName.indexOf('5GI') < 0 && this.chartParam.productionName.indexOf('6GI') < 0) {
+      if (
+        this.positionOptions.length > 0 &&
+        this.chartParam.productionName.indexOf('5GI') < 0 &&
+        this.chartParam.productionName.indexOf('6GI') < 0
+      ) {
         this.chartParam.lineType = pname
         this.imgOption = this.imgUrl + pname
         this.searchClick()
@@ -174,7 +197,7 @@ export default {
     productionNameChange() {
       var param = {}
       param.productionName = this.chartParam.productionName.replace('J.', '')
-      positionSelect(param).then(res => {
+      positionSelect(param).then((res) => {
         this.positionOptions = res.data.positionList
         this.positionOptions.splice(0, 0, '全部')
       })
@@ -201,7 +224,10 @@ export default {
         this.chartParam.lineType = ''
         this.imgUrlWidth = '200px'
         this.imgUrlHeight = '320px'
-      } else if (this.chartParam.productionName.indexOf('5GI-2864') > -1 || this.chartParam.productionName.indexOf('5GI-2865') > -1) {
+      } else if (
+        this.chartParam.productionName.indexOf('5GI-2864') > -1 ||
+        this.chartParam.productionName.indexOf('5GI-2865') > -1
+      ) {
         this.imgUrl = 'GI5_28645_opacity'
         this.chartParam.lineType = ''
         this.imgUrlWidth = '200px'
@@ -251,7 +277,7 @@ export default {
       var _this = this
       _this.echarClear('echAppLine')
       this.chartParam.lineType = this.chartParam.lineType.replace('全部', '')
-      kongdongChart(this.chartParam).then(res => {
+      kongdongChart(this.chartParam).then((res) => {
         if (res.data.code === 0 || res.data.code === '0') {
           if (res.data.data !== undefined && res.data.data !== null) {
             _this.initLineChart(res.data.data)
@@ -266,7 +292,7 @@ export default {
         this.chartParam.lotNo = this.chartParam.lotNo.toUpperCase()
         _this.echarClear('echApp')
         _this.echarClear('echAppRight')
-        kongdongBar(this.chartParam).then(res => {
+        kongdongBar(this.chartParam).then((res) => {
           if (res.data.code === 0 || res.data.code === '0') {
             _this.initChart(res.data.kongdong.barData, res.data.kongdong.configData)
           } else {
@@ -291,7 +317,7 @@ export default {
           trigger: 'item',
           triggerOn: 'mousemove',
           enterable: true, // 鼠标是 否可进入提示框浮层中
-          formatter: this.formatterHover// 修改鼠标悬停显示的内容
+          formatter: this.formatterHover // 修改鼠标悬停显示的内容
         },
         toolbox: {
           feature: {
@@ -312,16 +338,18 @@ export default {
           boundaryGap: false,
           data: kongdongData.xAxis
         },
-        yAxis: [{
-          type: 'value',
-          name: '空洞率',
-          min: 0,
-          // max: 150,
-          // interval: 5,
-          axisLabel: {
-            formatter: '{value} %'
+        yAxis: [
+          {
+            type: 'value',
+            name: '空洞率',
+            min: 0,
+            // max: 150,
+            // interval: 5,
+            axisLabel: {
+              formatter: '{value} %'
+            }
           }
-        }],
+        ],
         series: kongdongData.series
       }
       this.chart.setOption(option)
@@ -395,7 +423,7 @@ export default {
           trigger: 'item',
           triggerOn: 'mousemove',
           enterable: true, // 鼠标是否可进入提示框浮层中
-          formatter: this.formatterBarHover// 修改鼠标悬停显示的内容
+          formatter: this.formatterBarHover // 修改鼠标悬停显示的内容
         },
         legend: {
           data: leftLends
@@ -421,7 +449,7 @@ export default {
           trigger: 'item',
           triggerOn: 'mousemove',
           enterable: true, // 鼠标是否可进入提示框浮层中
-          formatter: this.formatterBarHover// 修改鼠标悬停显示的内容
+          formatter: this.formatterBarHover // 修改鼠标悬停显示的内容
         },
         legend: {
           data: rightLends
@@ -442,64 +470,91 @@ export default {
       this.chartRight.setOption(optionRight)
     },
     formatterHover(param) {
-      return '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">批号：' + param.name + '</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">value：' + param.data + '%</span><br>'
+      return (
+        '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">批号：' +
+        param.name +
+        '</span><br>' +
+        '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">value：' +
+        param.data +
+        '%</span><br>'
+      )
     },
     formatterBarHover(param) {
-      return '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">file：' + param.name + '</span><br>' +
-							'<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">value：' + param.data + '%</span><br>'
+      return (
+        '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">file：' +
+        param.name +
+        '</span><br>' +
+        '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">value：' +
+        param.data +
+        '%</span><br>'
+      )
     }
   }
 }
 </script>
 
 <style scoped>
-	.condition{
-		box-sizing: border-box;
-		display: inline-block;
-		font-family: sans-serif;
-		margin: 0;
-	}
-	.el-input__inner {
-		-webkit-appearance: none;
-		background-color: #fff;
-		background-image: none;
-		border-radius: 4px;
-		border: 1px solid #dcdfe6;
-		-webkit-box-sizing: border-box;
-		box-sizing: border-box;
-		color: #606266;
-		display: inline-block;
-		font-size: inherit;
-		height: 35px;
-		line-height: 40px;
-		outline: 0;
-		padding: 0 15px;
-		-webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-		transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-		width: 100%;
-		overflow: hidden;
-	}
-	.el-col-9 div{
-		height:39px !important;
-	}
-	#chartPanelLeft{
-		float:left;
-		width:40%;
-		height:100%;
-		margin-left:0px;
-	}
-	#chartPanelRight{
-		float:left;
-		width:40%;
-		height:100%;
-	}
-	#brD{width:100%;height:350px;float:left;}
-	.picPanel{border:1px solid #b7b2b2;position:relative;}
-	#subEchart{top:-300px;}
-	.echartPanel{
-		width:100%;height:300px;float:left;
-	}
-	.wid90{width:100px;}
-	.wider{width:240px;}
+.condition {
+  box-sizing: border-box;
+  display: inline-block;
+  font-family: sans-serif;
+  margin: 0;
+}
+.el-input__inner {
+  -webkit-appearance: none;
+  background-color: #fff;
+  background-image: none;
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #606266;
+  display: inline-block;
+  font-size: inherit;
+  height: 35px;
+  line-height: 40px;
+  outline: 0;
+  padding: 0 15px;
+  -webkit-transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  width: 100%;
+  overflow: hidden;
+}
+.el-col-9 div {
+  height: 39px !important;
+}
+#chartPanelLeft {
+  float: left;
+  width: 40%;
+  height: 100%;
+  margin-left: 0px;
+}
+#chartPanelRight {
+  float: left;
+  width: 40%;
+  height: 100%;
+}
+#brD {
+  width: 100%;
+  height: 350px;
+  float: left;
+}
+.picPanel {
+  border: 1px solid #b7b2b2;
+  position: relative;
+}
+#subEchart {
+  top: -300px;
+}
+.echartPanel {
+  width: 100%;
+  height: 300px;
+  float: left;
+}
+.wid90 {
+  width: 100px;
+}
+.wider {
+  width: 240px;
+}
 </style>

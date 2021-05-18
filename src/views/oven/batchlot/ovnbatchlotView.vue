@@ -3,43 +3,44 @@
     <el-form ref="modelForm" :inline="true" :rules="rules" :model="modelList" class="modelForm" label-width="150px">
       <el-form-item label="批次号" prop="lotId">
         <!--:autosize="{ minRows: 2, maxRows: 4}"-->
-        <el-input v-model="modelList.lotId" style="width:530px" type="textarea"/>
+        <el-input v-model="modelList.lotId" style="width: 530px" type="textarea" />
       </el-form-item>
       <el-form-item label="站别" prop="officeName">
-        <el-input v-model="modelList.officeName"/>
+        <el-input v-model="modelList.officeName" />
       </el-form-item>
       <el-form-item label="设备号" prop="eqpId">
-        <el-input v-model="modelList.eqpId"/>
+        <el-input v-model="modelList.eqpId" />
       </el-form-item>
       <el-form-item label="程序名" prop="recipeCode">
-        <el-input v-model="modelList.recipeCode"/>
+        <el-input v-model="modelList.recipeCode" />
       </el-form-item>
       <el-form-item label="作业开始时间" prop="startTime">
-        <el-input v-model="modelList.startTime"/>
+        <el-input v-model="modelList.startTime" />
       </el-form-item>
       <el-form-item label="作业结束时间" prop="endTime">
-        <el-input v-model="modelList.endTime"/>
+        <el-input v-model="modelList.endTime" />
       </el-form-item>
     </el-form>
-    <div class="filter-container"/>
+    <div class="filter-container" />
     <el-button
       v-for="tempName in otherTempsTitles"
       v-if="tempName.indexOf('PV') != -1"
       :key="tempName"
       type="primary"
       icon="el-icon-arrow-right"
-      style="margin:5px;"
-      @click="loadTempDataPart(tempName)"> {{ tempName.replace("PV","") }}
+      style="margin: 5px"
+      @click="loadTempDataPart(tempName)"
+    >
+      {{ tempName.replace('PV', '') }}
     </el-button>
     <el-button type="primary" round icon="el-icon-arrow-right" @click="loadTempDataPV">加载测量数据</el-button>
     <el-button type="primary" round icon="el-icon-d-arrow-right" @click="loadTempDataAll">加载所有数据</el-button>
-    <div id="tempChart" :style="{width: '100%', height: '500px'}"/>
+    <div id="tempChart" :style="{ width: '100%', height: '500px' }" />
   </div>
-
 </template>
 
 <script>
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 
 require('echarts/theme/macarons') // echarts theme
 import { fetchEcharts } from '@/api/oven/temperature'
@@ -189,9 +190,7 @@ export default {
             animationDuration: 2000,
             animationEasing: 'quadraticOut',
             markLine: {
-              data: [
-                { type: 'max', name: '最大数据' }
-              ]
+              data: [{ type: 'max', name: '最大数据' }]
             }
           },
           {
@@ -215,9 +214,7 @@ export default {
             animationDuration: 2000,
             animationEasing: 'quadraticOut',
             markLine: {
-              data: [
-                { type: 'max', name: '最大数据' }
-              ]
+              data: [{ type: 'max', name: '最大数据' }]
             }
           }
         ]
@@ -388,8 +385,8 @@ export default {
 }
 </script>
 <style scoped>
-  .modelForm {
-    margin-top: 20px;
-  }
+.modelForm {
+  margin-top: 20px;
+}
 </style>
 

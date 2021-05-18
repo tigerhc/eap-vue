@@ -4,59 +4,65 @@
     <div class="condition-panel">
       <el-form class="form" label-width="90px" size="small">
         <el-row>
-          <el-col :span="4" >
+          <el-col :span="4">
             <el-form-item label="类型:">
               <el-select v-model="form1.type" class="wid90" @change="findProduction">
                 <el-option v-for="item in TypeResult" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </el-form-item>
           </el-col>
-        <el-col :span="4" >
-          <el-form-item label="机种名:">
-            <div class="condition">
-              <el-select v-model="form.productionName" class="wid90" @change="search">
-                <el-option
-                  v-for="item in productionResult"
-                  :key="item.label"
-                  :label="item.label"
-                  :value="item.label" />
-              </el-select>
-            </div>
-          </el-form-item>
-        </el-col>
           <el-col :span="4">
-            <el-form-item label="位置:">
-            <el-select v-model="form.local" class="wid90" @change="search">
-              <el-option
-                v-for="item in localResult"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value" />
-            </el-select>
+            <el-form-item label="机种名:">
+              <div class="condition">
+                <el-select v-model="form.productionName" class="wid90" @change="search">
+                  <el-option
+                    v-for="item in productionResult"
+                    :key="item.label"
+                    :label="item.label"
+                    :value="item.label"
+                  />
+                </el-select>
+              </div>
             </el-form-item>
           </el-col>
-        <el-col :span="4" >
-          <el-form-item label="日期:">
-            <el-date-picker v-model="dateTime" style="width: 250%" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass"/>
-          </el-form-item>
-        </el-col>
-          <el-col :span="1">
-            <el-button type="primary" style="margin-left: 295px ;height: 32px" @click="search">查询</el-button>
+          <el-col :span="4">
+            <el-form-item label="位置:">
+              <el-select v-model="form.local" class="wid90" @change="search">
+                <el-option v-for="item in localResult" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item label="日期:">
+              <el-date-picker
+                v-model="dateTime"
+                style="width: 250%"
+                type="daterange"
+                value-format="yyyy-MM-dd"
+                range-separator="-"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                class="dateTimeClass"
+              />
+            </el-form-item>
           </el-col>
           <el-col :span="1">
-            <el-button type="primary" style="margin-left: 300px ;height: 32px" @click="finddetail">导出</el-button>
+            <el-button type="primary" style="margin-left: 295px; height: 32px" @click="search">查询</el-button>
+          </el-col>
+          <el-col :span="1">
+            <el-button type="primary" style="margin-left: 300px; height: 32px" @click="finddetail">导出</el-button>
           </el-col>
         </el-row>
       </el-form>
     </div>
-      <div class="frame">
-        <div id="main" style="width: 65%;height: 300px;overflow: hidden;"/>
-        <img id="mainImg" :src="picUrl" class="arrow_box">
-      </div>
+    <div class="frame">
+      <div id="main" style="width: 65%; height: 300px; overflow: hidden" />
+      <img id="mainImg" :src="picUrl" class="arrow_box" >
     </div>
+  </div>
 </template>
 <script>
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import api from '../ports/fetch'
 import { productionName } from '@/api/oven/temperature'
 import { findSxNumber } from '@/api/ms/monitor'
@@ -92,33 +98,44 @@ export default {
       picUrlB: require('../../../assets/img/sxB.png'),
       picUrlC: require('../../../assets/img/sxC.png'),
       picUrlD: require('../../../assets/img/sxD.png'),
-      lineTypeResult: [{
-        value: '0001',
-        label: '1'
-      }, {
-        value: '0002',
-        label: '2'
-      }],
-      TypeResult: [{
-        value: 'LF',
-        label: 'LF'
-      }, {
-        value: 'check',
-        label: '检查'
-      }],
-      localResult: [{
-        value: 'a',
-        label: 'A'
-      }, {
-        value: 'b',
-        label: 'B'
-      }, {
-        value: 'c',
-        label: 'C'
-      }, {
-        value: 'd',
-        label: 'D'
-      }]
+      lineTypeResult: [
+        {
+          value: '0001',
+          label: '1'
+        },
+        {
+          value: '0002',
+          label: '2'
+        }
+      ],
+      TypeResult: [
+        {
+          value: 'LF',
+          label: 'LF'
+        },
+        {
+          value: 'check',
+          label: '检查'
+        }
+      ],
+      localResult: [
+        {
+          value: 'a',
+          label: 'A'
+        },
+        {
+          value: 'b',
+          label: 'B'
+        },
+        {
+          value: 'c',
+          label: 'C'
+        },
+        {
+          value: 'd',
+          label: 'D'
+        }
+      ]
     }
   },
   methods: {
@@ -135,7 +152,7 @@ export default {
       }
       this.toolbarStatus.exportsLoading = true
       // const q = (this.query)
-      const q = (this.form)
+      const q = this.form
       // alert(q)
       this.api
         .export(q)
@@ -182,7 +199,7 @@ export default {
       this.form.type = this.form1.type
       this.form.startDate = this.dateTime[0]
       this.form.endDate = this.dateTime[1]
-      findSxNumber(this.form).then(res => {
+      findSxNumber(this.form).then((res) => {
         this.data = res.data[0]
         this.series = res.data[1]
         this.min = res.data[2].min
@@ -215,7 +232,28 @@ export default {
           trigger: 'axis'
         },
         legend: {
-          data: ['1-1:A', '1-2:A', '2-1:A', '2-2:A', '1-1:B', '1-2:B', '2-1:B', '2-2:B', '上限', '下限', '1-1:C', '1-2:C', '2-1:C', '2-2:C', '1-1:D', '1-2:D', '2-1:D', '2-2:D', '上限', '下限']
+          data: [
+            '1-1:A',
+            '1-2:A',
+            '2-1:A',
+            '2-2:A',
+            '1-1:B',
+            '1-2:B',
+            '2-1:B',
+            '2-2:B',
+            '上限',
+            '下限',
+            '1-1:C',
+            '1-2:C',
+            '2-1:C',
+            '2-2:C',
+            '1-1:D',
+            '1-2:D',
+            '2-1:D',
+            '2-2:D',
+            '上限',
+            '下限'
+          ]
         },
         grid: {
           left: '3%',
@@ -247,20 +285,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "src/styles/proindex";
-  .Rtplotyieldday {
-    width: auto;
-    height: auto;
-    margin: 0 auto;
+@import 'src/styles/proindex';
+.Rtplotyieldday {
+  width: auto;
+  height: auto;
+  margin: 0 auto;
 
-    .form {
-      margin-top: 20px;
-    }
-    .condition{
-      box-sizing: border-box;
-      display: inline-block;
-      font-family: sans-serif;
-      margin: 0;
-    }
+  .form {
+    margin-top: 20px;
   }
+  .condition {
+    box-sizing: border-box;
+    display: inline-block;
+    font-family: sans-serif;
+    margin: 0;
+  }
+}
 </style>

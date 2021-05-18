@@ -10,37 +10,46 @@
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
-                :disabled="item.disabled" />
+                :disabled="item.disabled"
+              />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="5">
           <el-form-item label="工程" prop="station_code">
-            <el-select v-model="form.stationCode" filterable placeholder="请选择" >
+            <el-select v-model="form.stationCode" filterable placeholder="请选择">
               <el-option
                 v-for="item in noList"
                 :key="item.station_code"
                 :label="item.station_code"
-                :value="item.station_code"/>
+                :value="item.station_code"
+              />
             </el-select>
             <!--            <w-select :str="form.productionNo" :multiple="true" :disabled="false" @input="onNoChange($event)"/>-->
           </el-form-item>
         </el-col>
         <el-col :span="9">
           <el-form-item label="日期" prop="dateTime">
-            <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
+            <el-date-picker
+              v-model="form.dateTime"
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            />
           </el-form-item>
         </el-col>
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>
     </el-form>
-    <div id="yieldDayChart" style="width: 100%;height: 300px;overflow: hidden;"/>
-    <div id="eqpAlarm" style="width: 100%;height: 250px;overflow: hidden;"/>
+    <div id="yieldDayChart" style="width: 100%; height: 300px; overflow: hidden" />
+    <div id="eqpAlarm" style="width: 100%; height: 250px; overflow: hidden" />
   </div>
 </template>
 <script>
 import { selectAlarmCountByLine, selectAlarmCountByEqp } from '@/api/public'
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import request from '@/utils/request'
 
 export default {
@@ -62,26 +71,32 @@ export default {
       source: [],
       source2: [],
       // 先写死
-      lineNoOptions: [{
-        value: 'SIM',
-        label: 'SIM'
-      }, {
-        value: 'SMA',
-        label: 'SMA',
-        disabled: true
-      }, {
-        value: 'SX',
-        label: 'SX',
-        disabled: true
-      }, {
-        value: '5GI',
-        label: '5GI',
-        disabled: true
-      }, {
-        value: '6GI',
-        label: '6GI',
-        disabled: true
-      }]
+      lineNoOptions: [
+        {
+          value: 'SIM',
+          label: 'SIM'
+        },
+        {
+          value: 'SMA',
+          label: 'SMA',
+          disabled: true
+        },
+        {
+          value: 'SX',
+          label: 'SX',
+          disabled: true
+        },
+        {
+          value: '5GI',
+          label: '5GI',
+          disabled: true
+        },
+        {
+          value: '6GI',
+          label: '6GI',
+          disabled: true
+        }
+      ]
     }
   },
   mounted() {
@@ -92,10 +107,12 @@ export default {
   },
   created() {
     if (window.location.hostname === '10.160.144.9') {
-      this.lineNoOptions = [{
-        value: 'APJ',
-        label: 'APJ'
-      }]
+      this.lineNoOptions = [
+        {
+          value: 'APJ',
+          label: 'APJ'
+        }
+      ]
     }
   },
   methods: {
@@ -249,8 +266,15 @@ export default {
           trigger: 'axis',
           formatter(params) {
             console.log(params)
-            return params[0].data.alarm_name + ': ' + params[0].data.alarm_count +
-                '<br />' + params[1].data.alarm_name + ': ' + params[1].data.alarm_count
+            return (
+              params[0].data.alarm_name +
+              ': ' +
+              params[0].data.alarm_count +
+              '<br />' +
+              params[1].data.alarm_name +
+              ': ' +
+              params[1].data.alarm_count
+            )
           },
           axisPointer: {
             type: 'cross',
@@ -318,15 +342,15 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .Rtplotyieldday {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
+.Rtplotyieldday {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
 
-    .form {
-      margin-top: 20px;
-    }
+  .form {
+    margin-top: 20px;
   }
+}
 </style>
 <style>
 </style>

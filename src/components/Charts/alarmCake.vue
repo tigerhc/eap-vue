@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 
 export default {
   props: {
@@ -160,7 +160,6 @@ export default {
               var colorList = ['#43ca17', '#FFFF00', '#FF0000', '#808080']
               return colorList[params.dataIndex]
             }
-
           },
           data: [
             { name: 'RUN', value: item[1] },

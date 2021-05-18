@@ -4,24 +4,33 @@
       <el-row>
         <el-col :span="6">
           <el-form-item label="设备号" prop="eqpId">
-            <w-select-eqp :str="form.eqpId" :multiple="false" :disabled="false" param="MS" @input="onValueChange($event)"/>
+            <w-select-eqp
+              :str="form.eqpId"
+              :multiple="false"
+              :disabled="false"
+              param="MS"
+              @input="onValueChange($event)"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="类型" prop="productionNo">
             <el-select v-model="form.productionNo" multiple filterable placeholder="请选择">
-              <el-option
-                v-for="item in noList"
-                :key="item.id"
-                :label="item.productionNo"
-                :value="item.productionNo"/>
+              <el-option v-for="item in noList" :key="item.id" :label="item.productionNo" :value="item.productionNo" />
             </el-select>
-<!--            <w-select :str="form.productionNo" :multiple="true" :disabled="false" @input="onNoChange($event)"/>-->
+            <!--            <w-select :str="form.productionNo" :multiple="true" :disabled="false" @input="onNoChange($event)"/>-->
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="日期" prop="dateTime">
-            <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
+            <el-date-picker
+              v-model="form.dateTime"
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            />
           </el-form-item>
         </el-col>
         <el-button type="primary" @click="serch">查询</el-button>
@@ -29,21 +38,17 @@
     </el-form>
     <div class="model">
       <el-tabs v-model="editableTabsValue" type="card" @tab-click="handleClick">
-        <el-tab-pane
-          v-for="item in editableTabs"
-          :key="item.title"
-          :label="item.title"
-          :name="item.title">
+        <el-tab-pane v-for="item in editableTabs" :key="item.title" :label="item.title" :name="item.title">
           <!--        {{ item.content }}-->
         </el-tab-pane>
       </el-tabs>
-      <div id="yieldDayChart" style="width: 100%;height: 500px;overflow: hidden;"/>
+      <div id="yieldDayChart" style="width: 100%; height: 500px; overflow: hidden" />
     </div>
   </div>
 </template>
 <script>
 import request from '@/utils/request'
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 
 export default {
   name: 'Rtpmschar',
@@ -73,8 +78,7 @@ export default {
     var startDate = endDate.slice(0, 8) + '01'
     this.form.dateTime = [startDate, endDate]
   },
-  created() {
-  },
+  created() {},
   methods: {
     handleClick(tab, event) {
       this.initChart(tab.index)
@@ -137,7 +141,7 @@ export default {
     },
     groupData(date, head, rs, min, max, flag) {
       for (let i = 0; i < head.length; i++) {
-        const g = this.list.filter(h => h.name === head[i])
+        const g = this.list.filter((h) => h.name === head[i])
         if (g.length <= 0) {
           const t = {}
           t.title = head[i]
@@ -266,15 +270,15 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .rtpmschar {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
+.rtpmschar {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
 
-    .form {
-      margin-top: 20px;
-    }
+  .form {
+    margin-top: 20px;
   }
+}
 </style>
 <style>
 </style>

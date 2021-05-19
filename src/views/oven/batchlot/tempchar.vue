@@ -6,7 +6,7 @@
           <el-form-item label="设备号:">
             <div class="condition">
               <el-select v-model="form.eqpId">
-                <el-option v-for="item in tempEqpId" :key="item.eqpId" :label="item.eqpId" :value="item.eqpId" />
+                <el-option v-for="item in tempEqpId" :key="item.eqpId" :label="item.eqpName" :value="item.eqpId" />
               </el-select>
             </div>
           </el-form-item>

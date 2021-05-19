@@ -1,11 +1,16 @@
 <template>
-  <el-select v-bind="$attrs" :value="asyncValue" :multiple="multiple" collapse-tags filterable placeholder="品名" @change="onValueChange">
-    <el-option
-      v-for="item in data"
-      :key="item.id"
-      :label="item[valuekey]"
-      :value="item[valuekey]">
-      <span style="float: left;">{{ item[valuekey] }}</span>&nbsp;&nbsp;
+  <el-select
+    v-bind="$attrs"
+    :value="asyncValue"
+    :multiple="multiple"
+    collapse-tags
+    filterable
+    placeholder="品名"
+    @change="onValueChange"
+  >
+    <el-option v-for="item in data" :key="item.id" :label="item[valuekey]" :value="item[valuekey]">
+      <span style="float: left">{{ item[valuekey] }}</span
+      >&nbsp;&nbsp;
     </el-option>
   </el-select>
 </template>
@@ -40,28 +45,36 @@ export default {
   },
   data: function() {
     return {
-      data: [{
-        name: 'SMA',
-        id: 'SMA'
-      }, {
-        name: 'SX',
-        id: 'SX'
-      }, {
-        name: 'SIM',
-        id: 'SIM'
-      }, {
-        name: '5GI',
-        id: '5GI'
-      }, {
-        name: '6GI',
-        id: '6GI'
-      }, {
-        name: 'APJ',
-        id: 'APJ'
-      }, {
-        name: 'BSG',
-        id: 'BSG'
-      }],
+      data: [
+        {
+          name: 'SMA',
+          id: 'SMA'
+        },
+        {
+          name: 'SX',
+          id: 'SX'
+        },
+        {
+          name: 'SIM',
+          id: 'SIM'
+        },
+        {
+          name: '5GI',
+          id: '5GI'
+        },
+        {
+          name: '6GI',
+          id: '6GI'
+        },
+        {
+          name: 'APJ',
+          id: 'APJ'
+        },
+        {
+          name: 'BSG',
+          id: 'BSG'
+        }
+      ],
       list: this.ary,
       str1: this.str
     }
@@ -92,5 +105,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

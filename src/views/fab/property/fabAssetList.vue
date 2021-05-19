@@ -17,11 +17,11 @@
         condition="in"
       />
       <w-table-col
-        name="parent_type"
+        name="parentType"
         label="设备大类"
         align="left"
         query
-        namekey="parent_type"
+        namekey="parentType"
         querymode="select"
         dict
         condition="eq"

@@ -93,7 +93,7 @@ export default {
         border: true,
         'element-loading-text': '给我一点时间',
         fit: true,
-        'class': 'jk-table-container',
+        class: 'jk-table-container',
         'cell-class-name': 'jk-table-column',
         'header-cell-class-name': 'jk-table-column',
         ...this.tableConf
@@ -125,7 +125,7 @@ export default {
     limit: function() {
       this.query.limit = this.limit
     },
-    '$route'() {
+    $route() {
       this.getDatas()
     }
   },
@@ -151,9 +151,9 @@ export default {
       const handler = col['formatter.handler'] || col['handler']
 
       if (
-      // !this.opHide &&
+        // !this.opHide &&
         handler &&
-          (typeof this.$vnode.context[handler] === 'function' || typeof this[handler] === 'function')
+        (typeof this.$vnode.context[handler] === 'function' || typeof this[handler] === 'function')
       ) {
         const h = this[handler] || this.$vnode.context[handler]
         const fn = () => {
@@ -181,10 +181,20 @@ export default {
         const v = dictList.find((i) => i.value === val)
         if (foldcolor) {
           if (val === 'Y' || val === '1') {
-            return <el-button type = 'success' plain> {(v && v.label) || val}</el-button>
+            return (
+              <el-button type='success' plain>
+                {' '}
+                {(v && v.label) || val}
+              </el-button>
+            )
           }
           if (val === 'N' || val === '0') {
-            return <el-button type = 'danger' plain> {(v && v.label) || val}</el-button>
+            return (
+              <el-button type='danger' plain>
+                {' '}
+                {(v && v.label) || val}
+              </el-button>
+            )
           }
         }
         return (v && v.label) || val
@@ -452,6 +462,9 @@ export default {
     queryModeCreator(mode = 'input', conf) {
       const re = { ...conf }
       const r = mode
+      if ('dept' in conf) {
+        mode = 'w-select-dept'
+      }
       if ('dict' in conf) {
         mode = 'w-select'
       }
@@ -496,11 +509,17 @@ export default {
         const key = `query.${field.name}||${field.condition}`
         // 处理其他控件
         const { mode, ...newConf } = this.queryModeCreator(field.querymode, field)
-        console.info(newConf)
+        // console.info(newConf)
         return h(mode, {
           attrs: { placeholder: newConf.label, ...newConf },
           props: { value: this.query[key], ...newConf },
-          style: this.hiddenQuery ? { width: newConf.condition === 'between' ? '250px' : '200px', display: newConf.hiddenquery ? 'none' : '', marginRight: '5px' } : { width: newConf.condition === 'between' ? '250px' : '200px', marginRight: '5px' },
+          style: this.hiddenQuery
+            ? {
+              width: newConf.condition === 'between' ? '250px' : '200px',
+              display: newConf.hiddenquery ? 'none' : '',
+              marginRight: '5px'
+            }
+            : { width: newConf.condition === 'between' ? '250px' : '200px', marginRight: '5px' },
           class: { 'filter-item': true },
           on: {
             input: (e) => {
@@ -516,6 +535,10 @@ export default {
                 //   this.query[key] = e.join(',')
                 // }
               } else if (mode === 'w-select-line') {
+                console.info('ss->' + e)
+                this.$set(this.query, key, e)
+                this.query[key] = e
+              } else if (mode === 'w-select-dept') {
                 console.info('ss->' + e)
                 this.$set(this.query, key, e)
                 this.query[key] = e
@@ -649,7 +672,14 @@ export default {
           }
         }
       }
-      return <el-table-column {...opConf} width='200' label={this.$t('table.actions')} class-name='small-padding fixed-width' />
+      return (
+        <el-table-column
+          {...opConf}
+          width='200'
+          label={this.$t('table.actions')}
+          class-name='small-padding fixed-width'
+        />
+      )
     },
     renderToobar() {
       const add = {
@@ -690,20 +720,22 @@ export default {
         label: '更多'
       }
 
-      const deft = this.hiddenquery ? {
-        search,
-        more,
-        clean,
-        batchDelete,
-        add,
-        exports
-      } : {
-        search,
-        clean,
-        batchDelete,
-        add,
-        exports
-      }
+      const deft = this.hiddenquery
+        ? {
+          search,
+          more,
+          clean,
+          batchDelete,
+          add,
+          exports
+        }
+        : {
+          search,
+          clean,
+          batchDelete,
+          add,
+          exports
+        }
 
       const creator = (conf) => {
         // console.info(conf.name)
@@ -767,7 +799,9 @@ export default {
       props: { data: this.list, ...this.conf },
       style: {
         width: '100%',
-        minHeight: this.hiddenQuery ? 'calc(100vh - 84px - 96px - 42px - 1px )' : 'calc(100vh - 84px - 96px - 42px - 46px - 1px )'
+        minHeight: this.hiddenQuery
+          ? 'calc(100vh - 84px - 96px - 42px - 1px )'
+          : 'calc(100vh - 84px - 96px - 42px - 46px - 1px )'
       },
       key: this.tableKey,
       ref: 'table',
@@ -900,18 +934,19 @@ function isHidden(conf) {
 </script>
 
 <style lang="scss">
-  .unfold-pop {
-    min-width: unset;
-    background-color: #ffe;
-  }
-  .el-table--medium td.jk-table-column, .el-table--medium th.jk-table-column{
-    padding: 5px 0px;
-  }
-  .jk-table-container {
-    min-height: calc(100vh - 84px) ;
-  }
-  /*96.4px 所以后面又减了1*/
-  /*.el-table{*/
-  /*  min-height: calc(100vh - 84px - 96px - 42px - 1px ) ;*/
-  /*}*/
+.unfold-pop {
+  min-width: unset;
+  background-color: #ffe;
+}
+.el-table--medium td.jk-table-column,
+.el-table--medium th.jk-table-column {
+  padding: 5px 0px;
+}
+.jk-table-container {
+  min-height: calc(100vh - 84px);
+}
+/*96.4px 所以后面又减了1*/
+/*.el-table{*/
+/*  min-height: calc(100vh - 84px - 96px - 42px - 1px ) ;*/
+/*}*/
 </style>

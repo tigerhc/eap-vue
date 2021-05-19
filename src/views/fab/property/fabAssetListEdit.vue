@@ -32,8 +32,8 @@
     <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
     <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
     <el-row col="24" />
-    <el-input v-model="model.location_x" :disabled="true" label="纬度坐标" />
-    <el-input v-model="model.location_y" :disabled="true" label="经度坐标" />
+    <el-input v-model="model.locationX" :disabled="true" label="纬度坐标" />
+    <el-input v-model="model.locationY" :disabled="true" label="经度坐标" />
   </w-form>
 </template>
 <script>

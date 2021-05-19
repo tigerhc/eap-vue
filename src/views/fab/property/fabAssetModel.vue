@@ -4,7 +4,7 @@
       <!--tip="确认查看"-->
       <w-table-col name="manufacturerName" label="设备厂家" query condition="like" fixed handler="view" />
       <w-table-col name="classCode" label="设备类型" query condition="like" />
-      <w-table-col name="parent_type" label="设备大类" condition="like" />
+      <w-table-col name="parentType" label="设备大类" condition="like" />
       <w-table-col name="type" label="设备小类" condition="like" />
 
       <w-table-col name="activeFlag" label="有效标志" width="200" dict="ACTIVE_FLAG" />

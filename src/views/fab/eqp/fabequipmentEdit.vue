@@ -23,7 +23,7 @@
     <el-input v-model="model.location" label="位置号" />
     <w-select-dic v-model="model.clientFlag" label="客户端标志" dict="ACTIVE_FLAG" />
     <el-input v-model="model.takeTime" label="节拍" />
-    <w-select-dic v-model="model.activeFlag" style="width:100%" label="有效标志" dict="ACTIVE_FLAG" />
+    <w-select-dic v-model="model.activeFlag" style="width: 100%" label="有效标志" dict="ACTIVE_FLAG" />
     <el-input v-model="model.sortNo" label="排序号" />
     <el-row col="24" />
     <el-input v-model="model.createByName" :disabled="true" label="创建人" />
@@ -69,18 +69,19 @@ export default {
         },
         onLoadData: (m, type) => {
           console.info(m)
-          m.officeIds = m.officeIds.split(',')
+          // m.officeIds = m.officeIds.split(',')
           return m
         },
         beforeSubmit: (params, type) => {
           const re = { ...params }
-          re.officeId = re.officeIds[re.officeIds.length - 1]
-          re.officeIds = undefined
+          // re.officeId = re.officeIds[re.officeIds.length - 1]
+          // re.officeIds = undefined
           return re
         }
       }
     }
   },
+
   methods: {
     onDisplayChange(e) {
       this.model.modelName = e

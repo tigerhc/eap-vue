@@ -3,19 +3,20 @@
     <el-row>
       <el-card>
         <h2>设备概况</h2>
-        <div id="survey"/>
+        <div id="survey" />
       </el-card>
       <el-card>
         <h2>今日报警</h2>
-        <div id="alarm"/>
+        <w-select-dept class="selection" @input="change"/>
+        <div id="alarm" />
       </el-card>
       <el-card>
         <h2>产品进度</h2>
-        <div id="progress"/>
+        <div id="progress" />
       </el-card>
       <el-card>
         <h2>合格率</h2>
-        <div id="qualified"/>
+        <div id="qualified" />
       </el-card>
     </el-row>
   </div>
@@ -23,10 +24,15 @@
 
 <script>
 import * as echarts from 'echarts'
+import WSelectDept from '../../../components/eap-select-dept/index'
 export default {
   name: '',
+  components: {
+    WSelectDept
+  },
   data() {
     return {
+      optionsList: [],
       surveyCharts: '',
       surveyOpinion: ['运行', '离线', '待机'],
       surveyOpinionData: [
@@ -70,6 +76,9 @@ export default {
     })
   },
   methods: {
+    change(v) {
+      console.log(v)
+    },
     // 设备概况饼状图
     surveyPie(id) {
       this.surveyCharts = echarts.init(document.getElementById(id))
@@ -90,7 +99,7 @@ export default {
             type: 'pie',
             radius: ['40%', '60%'],
             avoidLabelOverlap: false,
-            center: ['30%', '40%'],
+            center: ['30%', '55%'],
             color: ['greenyellow', 'red', '#58D9F9'],
             label: {
               normal: {
@@ -135,7 +144,7 @@ export default {
             type: 'pie',
             radius: ['40%', '60%'],
             avoidLabelOverlap: false,
-            center: ['30%', '40%'],
+            center: ['30%', '55%'],
             color: ['greenyellow', 'red'],
             label: {
               normal: {
@@ -167,7 +176,7 @@ export default {
           {
             type: 'gauge',
             radius: '60%',
-            center: ['50%', '40%'],
+            center: ['50%', '55%'],
             itemStyle: {
               color: '#58D9F9',
               shadowColor: 'rgba(0,138,255,0.45)',
@@ -228,7 +237,7 @@ export default {
             type: 'gauge',
             radius: '60%',
             startAngle: 90,
-            center: ['50%', '40%'],
+            center: ['50%', '55%'],
             endAngle: -270,
             itemStyle: {
               color: '#58D9F9',
@@ -304,12 +313,17 @@ h2 {
 }
 .eqpInfo .el-row {
   width: 100%;
-  height: 35%;
+  height: 40%;
   display: flex;
   align-content: center;
   justify-content: space-around;
 }
 .eqpInfo .el-row .el-card {
   width: 23%;
+}
+.selection {
+  float: left;
+  margin-top: 10px;
+  z-index: 10;
 }
 </style>

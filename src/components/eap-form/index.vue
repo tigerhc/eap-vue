@@ -5,6 +5,10 @@ export default {
   name: 'WForm',
   mixins: [mixins],
   props: {
+    fromDatas: {
+      type: Object,
+      default: null
+    },
     title: {
       type: Object,
       default: function() {
@@ -60,6 +64,7 @@ export default {
       return { ...this.initModel, ...this.model }
     }
   },
+
   mounted() {
     if (this.type === 'VIEW' || this.type === 'EDIT') {
       this.getDeteils()
@@ -209,10 +214,7 @@ export default {
         const { label } = { ...attrs, ...propsData }
         if (tag && label && expression) {
           let [path = ''] = expression.match(/(?![^\.]).*/g)
-          path = path
-            .split('.')
-            .filter(Boolean)
-            .join('.')
+          path = path.split('.').filter(Boolean).join('.')
           return (
             <el-form-item label={label} prop={path}>
               {v}
@@ -294,7 +296,6 @@ export default {
     )
   }
 }
-
 </script>
 
 <style lang="scss">

@@ -8,10 +8,11 @@ export function fetchDictList(query) {
   })
 }
 
-export function fetchDict() {
+export function fetchDict(query) {
   return request({
-    url: '/sys/dict/detail',
-    method: 'get'
+    url: `/sys/dict/${query}/finddict`,
+    method: 'get',
+    paramas: query
   })
 }
 
@@ -47,4 +48,3 @@ export function fetchDicts() {
     method: 'get'
   })
 }
-

@@ -74,13 +74,13 @@ export default {
         },
         onLoadData: (m, type) => {
           console.info(m)
-          m.officeIds = m.officeIds.split(',')
+          // m.officeIds = m.officeIds.split(',')
           return m
         },
         beforeSubmit: (params, type) => {
           const re = { ...params }
-          re.officeId = re.officeIds[re.officeIds.length - 1]
-          re.officeIds = undefined
+          // re.officeId = re.officeIds[re.officeIds.length - 1]
+          // re.officeIds = undefined
           return re
         }
       }

@@ -9,7 +9,7 @@
       <w-table-col name="assignedTime" label="指派时间" align="left" query querymode="date" condition="between" />
       <w-table-col name="dealTime" label="处理时间" align="left" query querymode="date" condition="between" />
       <w-table-col name="planStatus" label="工单状态" align="left" query querymode="select" />
-      <w-table-col name="planType" label="工单类型" align="left" query querymode="select" />
+      <w-table-col name="planType" label="工单类型" align="left" query querymode="select" dict="PLAN_TYPE" />
       <w-table-col name="dealAdvice" label="处理意见" align="left" />
       <w-table-col name="dealDesc" label="处理描述" align="left" />
       <w-table-col name="endDate" label="归档时间" align="left" />

@@ -5,19 +5,19 @@
         <div class="search-item">
           <label for="">设备：</label>
           <el-select v-model="eqpV" placeholder="请选择设备">
-            <el-option v-for="item in eqpO" :key="item.value" :label="item.label" :value="item.value"/>
+            <el-option v-for="item in eqpO" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </div>
         <div class="search-item">
           <label for="">传感器：</label>
           <el-select v-model="sensorV" placeholder="请选择传感器">
-            <el-option v-for="item in sensorO" :key="item.value" :label="item.label" :value="item.value"/>
+            <el-option v-for="item in sensorO" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </div>
         <div class="search-item">
           <label for="">示数类型：</label>
-          <el-select v-model="indicationV" placeholder="请选择示数类型">
-            <el-option v-for="item in indicationO" :key="item.value" :label="item.label" :value="item.value"/>
+          <el-select v-model="indicationV" placeholder="请选择示数类型" multiple>
+            <el-option v-for="item in indicationO" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </div>
         <div class="search-item">
@@ -36,24 +36,24 @@
           <el-button type="primary">查询</el-button>
         </div>
       </div>
-      <div id="myChart"/>
+      <div id="myChart" />
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="总数据" name="first">
           <el-table :data="totalDatas" style="width: 100%">
-            <el-table-column prop="eqp_id" label="设备编号"/>
-            <el-table-column prop="collect_date" label="采集时间"/>
-            <el-table-column prop="this_num" label="本次示数"/>
-            <el-table-column prop="num_multiple" label="计数比"/>
-            <el-table-column prop="num_type" label="示数类型"/>
+            <el-table-column prop="eqp_id" label="设备编号" />
+            <el-table-column prop="collect_date" label="采集时间" />
+            <el-table-column prop="this_num" label="本次示数" />
+            <el-table-column prop="num_multiple" label="计数比" />
+            <el-table-column prop="num_type" label="示数类型" />
           </el-table>
         </el-tab-pane>
         <el-tab-pane label="异常数据" name="second">
           <el-table :data="abnormalDatas" style="width: 100%">
-            <el-table-column prop="eqp_id" label="设备编号"/>
-            <el-table-column prop="collect_date" label="采集时间"/>
-            <el-table-column prop="this_num" label="本次示数"/>
-            <el-table-column prop="num_multiple" label="计数比"/>
-            <el-table-column prop="num_type" label="示数类型"/>
+            <el-table-column prop="eqp_id" label="设备编号" />
+            <el-table-column prop="collect_date" label="采集时间" />
+            <el-table-column prop="this_num" label="本次示数" />
+            <el-table-column prop="num_multiple" label="计数比" />
+            <el-table-column prop="num_type" label="示数类型" />
           </el-table>
         </el-tab-pane>
       </el-tabs>
@@ -95,30 +95,31 @@ export default {
           name: '温度',
           type: 'line',
 
-          data: [120, 132, 101, 134, 90, 230, 210]
+          data: [36, 35, 40, 42, 50, 30, 35]
         },
         {
           name: '湿度',
           type: 'line',
 
-          data: [220, 182, 191, 234, 290, 330, 310]
+          data: [30, 35, 40, 50, 46, 55, 60]
         },
         {
           name: '风速',
           type: 'line',
-          data: [150, 232, 201, 154, 190, 330, 410]
+          data: [20, 30, 25, 36, 40, 37, 37]
         },
         {
           name: '电表（正向有功）',
           type: 'line',
-          data: [320, 332, 301, 334, 390, 330, 320]
+          data: [50, 40, 55, 30, 35, 27, 39]
         },
         {
           name: '电表（正向无功）',
           type: 'line',
-          data: [130, 244, 156, 563, 312, 145, 134]
+          data: [30, 45, 37, 50, 47, 29, 40]
         }
-      ]
+      ],
+      color: ['#5470C6', '#91CC75', '#FCD887', '#EE6666', '#73C0DE']
     }
   },
   mounted() {
@@ -131,6 +132,7 @@ export default {
       })
       this.chart()
     })
+    console.log(this.datas[0])
   },
   methods: {
     handleClick(tab, event) {
@@ -145,35 +147,193 @@ export default {
       var option
 
       option = {
-        title: {
-          text: '折线图堆叠'
+        yAxis: [
+          {
+            name: '温度',
+            type: 'value',
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: this.color[0],
+                width: 2
+              }
+            },
+            axisLabel: {
+              formatter: '{value}℃'
+            },
+            splitLine: {
+              show: true, // 想要不显示网格线，改为false
+              lineStyle: {
+                // 设置网格为虚线
+                type: 'dashed'
+              }
+            }
+          },
+          {
+            name: '湿度',
+            axisTick: {
+              inside: true
+            },
+            axisLabel: {
+              inside: true,
+              formatter: '{value}%'
+            },
+            type: 'value',
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: this.color[1],
+                width: 2
+              }
+            },
+            splitLine: {
+              show: false
+            },
+            // 设置坐标轴偏移位置
+            offset: -1100
+          },
+          {
+            name: '风速',
+            axisTick: {
+              inside: true
+            },
+            axisLabel: {
+              inside: true,
+              formatter: '{value}km/h'
+            },
+            type: 'value',
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: this.color[2],
+                width: 2
+              }
+            },
+            offset: -1170,
+            splitLine: {
+              show: false // 想要不显示网格线，改为false
+            }
+          },
+          {
+            name: '电表（正向有功）',
+            type: 'value',
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: this.color[3],
+                width: 2
+              }
+            },
+            axisLabel: {
+              formatter: '{value}KW'
+            },
+            splitLine: {
+              show: false // 想要不显示网格线，改为false
+            }
+          },
+          {
+            name: '电表（正向无功）',
+            type: 'value',
+            offset: 100,
+            axisLabel: {
+              formatter: '{value}KW'
+            },
+
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: this.color[4],
+                width: 2
+              }
+            },
+            splitLine: {
+              show: false // 想要不显示网格线，改为false
+            }
+          }
+        ],
+        // 调整表格两边空白的区域
+        grid: {
+          y: '20%',
+          // 左侧
+          x: '20%',
+          // 右侧
+          x2: '20%'
         },
+        xAxis: {
+          // name: '时间',
+          boundaryGap: false,
+          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+          splitLine: {
+            show: true,
+            lineStyle: {
+              type: 'dashed'
+            }
+          },
+          splitArea: { show: true }
+        },
+        series: [
+          {
+            // 曲线数据配置
+            data: this.datas[0].data,
+            // 曲线名
+            name: '温度',
+            // 设置参数对应的y坐标轴的索引
+            type: 'line',
+            // 曲线平滑设置
+            smooth: true
+          },
+          {
+            data: this.datas[1].data,
+            // 曲线名
+            name: '湿度',
+            // 设置所在曲线对应的y坐标轴的索引
+            yAxisIndex: 1,
+            type: 'line',
+            // 曲线平滑设置
+            smooth: true
+          },
+          {
+            data: this.datas[2].data,
+            name: '风速',
+            // 设置参数对应的y坐标轴的索引
+            yAxisIndex: 2,
+            type: 'line',
+            // 曲线平滑设置
+            smooth: true
+          },
+          {
+            data: this.datas[3].data,
+            name: '电表（正向有功）',
+            // 设置参数对应的y坐标轴的索引
+            yAxisIndex: 3,
+            type: 'line',
+            // 曲线平滑设置
+            smooth: true
+          },
+          {
+            data: this.datas[4].data,
+            name: '电表（正向无功）',
+            // 设置参数对应的y坐标轴的索引
+            yAxisIndex: 4,
+            type: 'line',
+            // 曲线平滑设置
+            smooth: true
+          }
+        ],
         tooltip: {
           trigger: 'axis'
         },
         legend: {
           data: this.chartO
         },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
         toolbox: {
           feature: {
+            dataView: { readOnly: false },
+            magicType: { type: ['line', 'bar'] },
+            restore: {},
             saveAsImage: {}
           }
-        },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: this.datas
+        }
       }
 
       myChart.setOption(option)

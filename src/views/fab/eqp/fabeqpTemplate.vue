@@ -6,7 +6,7 @@
       </div>
       <el-row :gutter="15">
         <el-col :span="3">
-          <el-input type=" text" placeholder="模板名称" />
+          <el-input v-model="modelName" type=" text" placeholder="模板名称" />
         </el-col>
         <el-col :span="3">
           <el-select v-model="sensorValue" multiple filterable allow-create default-first-option placeholder="传感器">
@@ -25,6 +25,18 @@
             <el-option v-for="item in numTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </el-col>
+        <el-col :span="3">
+          <el-select
+            v-model="parentTypeValue"
+            multiple
+            filterable
+            allow-create
+            default-first-option
+            placeholder="主设备类型"
+          >
+            <el-option v-for="item in parentTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+        </el-col>
         <el-col :span="2">
           <el-button type="primary" icon="el-icon-search">搜索</el-button>
         </el-col>
@@ -33,7 +45,9 @@
         </el-col>
       </el-row>
       <el-table
-        :data="templateData"
+        :data="
+          templateData.slice((pageInfo1.pagenum1 - 1) * pageInfo1.pagesize1, pageInfo1.pagenum1 * pageInfo1.pagesize1)
+        "
         :header-cell-style="{ 'text-align': 'center' }"
         :cell-style="{ 'text-align': 'center' }"
         border
@@ -53,14 +67,17 @@
         :current-page="pageInfo1.pagenum1"
         :page-sizes="[10, 15, 30, 50]"
         :page-size="pageInfo1.pagesize1"
-        :total="0"
-        layout="total, sizes, prev, pager, next, jumper"
+        :total="templateData.length"
+        layout="total, sizes,prev, pager, next, jumper"
         @size-change="handleSizeChange1"
         @current-change="handleCurrentChange1"
       />
       <!----- 弹窗 ------->
       <div class="dialog">
         <el-dialog :visible.sync="addDialogVisible" title="添加模板" width="80%">
+          <el-select v-model="eqpModelValue" placeholder="设备类型" style="margin-bottom: 15px">
+            <el-option v-for="item in eqpModelOptions" :key="item.value" :label="item.label" :value="item.value"/>
+          </el-select>
           <div class="container">
             <div class="menu-one">
               <div
@@ -87,14 +104,20 @@
             <div class="menu-three">
               <el-table
                 ref="multipleTable"
-                :data="obj2"
+                :data="
+                  obj2.slice((pageInfo2.pagenum2 - 1) * pageInfo2.pagesize2, pageInfo2.pagenum2 * pageInfo2.pagesize2)
+                "
                 tooltip-effect="dark"
                 style="width: 100%"
-                @row-click="rowClick"
               >
                 <el-table-column label width="50">
                   <template slot-scope="scope">
-                    <el-radio :label="scope.row.eqpmodel" v-model="radioId">&nbsp;</el-radio>
+                    <el-radio
+:label="scope.$index"
+v-model="radioId"
+@change.native="getCurrentRow(scope.row)"
+                      >&nbsp;</el-radio
+                    >
                   </template>
                 </el-table-column>
                 <el-table-column prop="eqpmodel" label="名称/型号" />
@@ -102,19 +125,19 @@
                 <el-table-column prop="acqmode" label="采集方式" />
               </el-table>
               <el-pagination
-                :current-page="pageInfo3.pagenum3"
+                :current-page="pageInfo2.pagenum2"
                 :page-sizes="[5, 10, 15, 20]"
-                :page-size="pageInfo3.pagesize3"
+                :page-size="pageInfo2.pagesize2"
                 :total="obj2.length"
                 layout="total, sizes, prev, pager, next, jumper"
-                @size-change="handleSizeChange3"
-                @current-change="handleCurrentChange3"
+                @size-change="handleSizeChange2"
+                @current-change="handleCurrentChange2"
               />
             </div>
           </div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="addDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
+            <el-button type="primary" @click="add()">确 定</el-button>
           </span>
         </el-dialog>
         <!-- 修改 -->
@@ -144,8 +167,10 @@
             </div>
             <div class="menu-three">
               <el-table
-                ref="multipleTable"
-                :data="obj2"
+                ref="multipleTable1"
+                :data="
+                  obj2.slice((pageInfo3.pagenum3 - 1) * pageInfo3.pagesize3, pageInfo3.pagenum3 * pageInfo3.pagesize3)
+                "
                 tooltip-effect="dark"
                 style="width: 100%"
                 @row-click="rowClick"
@@ -187,17 +212,22 @@ export default {
   components: {},
   data() {
     return {
+      parentTypeOptions: [],
+      parentTypeValue: '',
+      modelName: '',
+      eqpModelValue: '',
+      eqpModelOptions: [],
       pageInfo1: {
-        pagesize1: 0,
-        pagenum1: 0
+        pagesize1: 5,
+        pagenum1: 1
       },
       pageInfo2: {
-        pagesize2: 0,
-        pagenum2: 0
+        pagesize2: 5,
+        pagenum2: 1
       },
       pageInfo3: {
-        pagesize3: 0,
-        pagenum3: 0
+        pagesize3: 5,
+        pagenum3: 1
       },
       // 设备模板表格数据源
       templateData: [
@@ -448,12 +478,21 @@ export default {
   mounted() {
     this.getMenuOne()
     this.getMenuTwo()
-    this.radioId = this.obj2[0].eqpmodel
+    // this.radioId = this.obj2[0].eqpmodel
     fetchDict('NUM_TYPE').then((response) => {
       this.numTypeOptions = response.data
     })
   },
   methods: {
+    getCurrentRow(row) {
+      console.log(row)
+    },
+    // 确认添加
+    add() {
+      console.log(this.num1, this.num2, this.radioId)
+
+      this.addDialogVisible = false
+    },
     editTemplate() {
       this.editDialogVisible = true
     },
@@ -472,9 +511,7 @@ export default {
     handleCurrentChange3(pagenum) {
       this.pageInfo3.pagenum3 = pagenum
     },
-    rowClick(row) {
-      this.radioId = row.eqpmodel
-    },
+    rowClick() {},
     // 获取一级菜单数据
     getMenuOne() {
       this.options.forEach((item, index) => {
@@ -503,7 +540,8 @@ export default {
     getIndex2(idx) {
       this.num2 = idx
       this.getMenuTwo()
-      this.radioId = this.obj2[0].eqpmodel
+
+      // this.radioId = this.obj2[0].eqpmodel
     },
     handleSizeChange1(pagesize) {
       this.pageInfo1.pagesize1 = pagesize

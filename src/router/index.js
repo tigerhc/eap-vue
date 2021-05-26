@@ -52,6 +52,13 @@ export const constantRouterMap = [
     meta: { title: '首页', icon: '', noCache: true }
   },
   {
+    path: '/product',
+    component: () => import('@/views/screen/product'),
+    name: 'product',
+    hidden: true,
+    meta: { title: '首页', icon: '', noCache: true }
+  },
+  {
     path: '/auth-redirect',
     component: () => import('@/views/login/authredirect'),
     hidden: true
@@ -73,7 +80,7 @@ export const constantRouterMap = [
     children: [
       {
         path: 'dashboard',
-        component: () => import('@/views/fab/status/eqpstatusList'),
+        component: () => import('@/views/rpt/showDatas/eqpInfo'),
         name: 'Dashboard',
         meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
       },

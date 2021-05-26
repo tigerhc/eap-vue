@@ -7,7 +7,7 @@
       </el-card>
       <el-card>
         <h2>今日报警</h2>
-        <w-select-dept class="selection" @input="change"/>
+        <w-select-dept class="selection" @input="change" />
         <div id="alarm" />
       </el-card>
       <el-card>

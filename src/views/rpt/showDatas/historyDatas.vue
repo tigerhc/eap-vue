@@ -39,7 +39,7 @@
       <div id="myChart" />
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="总数据" name="first">
-          <el-table :data="totalDatas" style="width: 100%">
+          <el-table v-loading="isLoading" :data="totalDatas" style="width: 100%">
             <el-table-column prop="eqp_id" label="设备编号" />
             <el-table-column prop="collect_date" label="采集时间" />
             <el-table-column prop="this_num" label="本次示数" />
@@ -48,7 +48,7 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane label="异常数据" name="second">
-          <el-table :data="abnormalDatas" style="width: 100%">
+          <el-table v-loading="abnormaLoading" :data="abnormalDatas" style="width: 100%">
             <el-table-column prop="eqp_id" label="设备编号" />
             <el-table-column prop="collect_date" label="采集时间" />
             <el-table-column prop="this_num" label="本次示数" />
@@ -68,6 +68,8 @@ export default {
   components: {},
   data() {
     return {
+      isLoading: false,
+      abnormaLoading: false,
       timeV: '', // 时间
       eqpV: '', // 设备
       sensorV: '', // 传感器
@@ -143,7 +145,7 @@ export default {
     },
     chart() {
       var chartDom = document.getElementById('myChart')
-      var myChart = echarts.init(chartDom)
+      var mycharts = echarts.init(chartDom)
       var option
 
       option = {
@@ -336,7 +338,18 @@ export default {
         }
       }
 
-      myChart.setOption(option)
+      mycharts.showLoading({
+        text: 'loading',
+        color: '#c23531',
+        textColor: '#000',
+        maskColor: 'rgba(255, 255, 255, 0.2)',
+        zlevel: 0
+      })
+      setTimeout(() => {
+        // setOption前隐藏loading事件
+        mycharts.hideLoading()
+        mycharts.setOption(option)
+      }, 1000)
     }
   }
 }

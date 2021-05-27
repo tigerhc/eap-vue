@@ -12,6 +12,7 @@
       </el-row>
       <el-row>
         <el-table
+          v-loading="isLoading"
           :data="
             eqpTemplateDatas.slice(
               (pageInfo1.pagenum1 - 1) * pageInfo1.pagesize1,
@@ -48,6 +49,7 @@
 
       <el-row>
         <el-table
+          v-loading="listLoading"
           :data="
             eqpTemplateBindDatas.slice(
               (pageInfo2.pagenum2 - 1) * pageInfo2.pagesize2,
@@ -100,6 +102,8 @@ export default {
   components: {},
   data() {
     return {
+      isLoading: false,
+      listLoading: false,
       dialogVisible: false,
       classCodeValue: '',
       classCodeOptions: [

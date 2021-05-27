@@ -4,55 +4,55 @@
       <div slot="header" class="clearfix">
         <el-popover placement="bottom" width="300" trigger="click">
           <el-input v-model="projectName" placeholder="请输入项目名称" class="input-with-select">
-            <el-button slot="append" icon="el-icon-search"/>
+            <el-button slot="append" icon="el-icon-search" />
           </el-input>
           <el-radio-group v-model="radioValue" @change="getRadioValue">
             <el-radio v-for="(item, index) in radioDatas" :label="item.label" :key="index">{{ item.value }}</el-radio>
           </el-radio-group>
-          <h3 slot="reference">{{ title }}<i class="el-icon-caret-bottom"/></h3>
+          <h3 slot="reference">{{ title }}<i class="el-icon-caret-bottom" /></h3>
         </el-popover>
       </div>
 
       <div class="content">
         <el-card>
           <div class="icon" style="background-color: #01e0ee">
-            <i class="el-icon-setting"/>
+            <i class="el-icon-setting" />
           </div>
           <div class="num">
             <span>6</span>
             <p>设备数</p>
           </div>
-          <el-button>管理设备</el-button>
+          <el-button @click="manageEqp()">管理设备</el-button>
         </el-card>
         <el-card>
           <div class="icon" style="background-color: #5df220">
-            <i class="el-icon-news"/>
+            <i class="el-icon-news" />
           </div>
           <div class="num">
             <span>6</span>
             <p>设备模板数</p>
           </div>
-          <el-button>管理模板</el-button>
+          <el-button @click="manageModel()">管理模板</el-button>
         </el-card>
         <el-card>
           <div class="icon" style="background-color: #fa957d">
-            <i class="el-icon-bell"/>
+            <i class="el-icon-bell" />
           </div>
           <div class="num">
             <span>6</span>
-            <p>设备模板数</p>
+            <p>报警总数</p>
           </div>
-          <el-button>管理模板</el-button>
+          <el-button @click="viewAlarms()">查看警报</el-button>
         </el-card>
         <el-card>
           <div class="icon" style="background-color: #b67ceb">
-            <i class="el-icon-user-solid"/>
+            <i class="el-icon-user" />
           </div>
           <div class="num">
             <span>6</span>
-            <p>设备模板数</p>
+            <p>子用户数</p>
           </div>
-          <el-button>管理模板</el-button>
+          <el-button @click="manageUsers()">管理用户</el-button>
         </el-card>
       </div>
     </el-card>
@@ -87,6 +87,18 @@ export default {
   methods: {
     getRadioValue(v) {
       this.title = this.radioValue
+    },
+    manageEqp() {
+      this.$router.push({ name: 'views/rpt/showDatas/eqpInfo' })
+    },
+    manageModel() {
+      this.$router.push({ name: 'views/fab/eqp/fabeqpTemplate' })
+    },
+    viewAlarms() {
+      this.$router.push({ name: 'views/alarm/log/index' })
+    },
+    manageUsers() {
+      this.$router.push({ name: 'views/fab/iot/iotUsers' })
     }
   }
 }

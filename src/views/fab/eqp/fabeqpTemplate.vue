@@ -45,6 +45,7 @@
         </el-col>
       </el-row>
       <el-table
+        v-loading="isLoading"
         :data="
           templateData.slice((pageInfo1.pagenum1 - 1) * pageInfo1.pagesize1, pageInfo1.pagenum1 * pageInfo1.pagesize1)
         "
@@ -76,7 +77,7 @@
       <div class="dialog">
         <el-dialog :visible.sync="addDialogVisible" title="添加模板" width="80%">
           <el-select v-model="eqpModelValue" placeholder="设备类型" style="margin-bottom: 15px">
-            <el-option v-for="item in eqpModelOptions" :key="item.value" :label="item.label" :value="item.value"/>
+            <el-option v-for="item in eqpModelOptions" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
           <div class="container">
             <div class="menu-one">
@@ -103,6 +104,7 @@
             </div>
             <div class="menu-three">
               <el-table
+                v-loading="addLoading"
                 ref="multipleTable"
                 :data="
                   obj2.slice((pageInfo2.pagenum2 - 1) * pageInfo2.pagesize2, pageInfo2.pagenum2 * pageInfo2.pagesize2)
@@ -167,6 +169,7 @@ v-model="radioId"
             </div>
             <div class="menu-three">
               <el-table
+                v-loading="editLoading"
                 ref="multipleTable1"
                 :data="
                   obj2.slice((pageInfo3.pagenum3 - 1) * pageInfo3.pagesize3, pageInfo3.pagenum3 * pageInfo3.pagesize3)
@@ -212,6 +215,9 @@ export default {
   components: {},
   data() {
     return {
+      isLoading: false,
+      addLoading: false,
+      editLoading: false,
       parentTypeOptions: [],
       parentTypeValue: '',
       modelName: '',

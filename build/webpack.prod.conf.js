@@ -57,7 +57,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       favicon: resolve('favicon.ico'),
       title: 'jeeweb-vue-admin',
       templateParameters: {
-        BASE_URL: config.build.assetsPublicPath + config.build.assetsSubDirectory,
+        BASE_URL: config.build.assetsPublicPath + config.build.assetsSubDirectory
       },
       minify: {
         removeComments: true,
@@ -105,7 +105,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   optimization: {
     splitChunks: {
       chunks: 'all',
-      automaticNameDelimiter: "@",
+      automaticNameDelimiter: '@',
       minSize: 200 * 1024,
       maxSize: 600 * 1024,
       // maxInitialRequests:1,
@@ -157,9 +157,7 @@ if (config.build.productionGzip) {
     new CompressionWebpackPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',
-      test: new RegExp(
-        '\\.(' + config.build.productionGzipExtensions.join('|') + ')$'
-      ),
+      test: new RegExp('\\.(' + config.build.productionGzipExtensions.join('|') + ')$'),
       threshold: 10240,
       minRatio: 0.8
     })
@@ -167,8 +165,7 @@ if (config.build.productionGzip) {
 }
 
 if (config.build.generateAnalyzerReport || config.build.bundleAnalyzerReport) {
-  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-    .BundleAnalyzerPlugin
+  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
   if (config.build.bundleAnalyzerReport) {
     webpackConfig.plugins.push(

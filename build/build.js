@@ -11,12 +11,10 @@ const webpackConfig = require('./webpack.prod.conf')
 var connect = require('connect')
 var serveStatic = require('serve-static')
 
-const spinner = ora(
-  'building for ' + process.env.env_config + ' environment...'
-)
+const spinner = ora('building for ' + process.env.env_config + ' environment...')
 spinner.start()
 
-rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
+rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), (err) => {
   if (err) throw err
   webpack(webpackConfig, (err, stats) => {
     spinner.stop()
@@ -58,9 +56,7 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       )
 
       app.listen(port, function() {
-        console.log(
-          chalk.green(`> Listening at  http://localhost:${port}${basePath}`)
-        )
+        console.log(chalk.green(`> Listening at  http://localhost:${port}${basePath}`))
       })
     }
   })

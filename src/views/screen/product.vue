@@ -21,11 +21,11 @@
       <p>电表无功</p>
       <span>{{ unelectric }}km/h</span>
     </div>
-    <div class="box1"/>
-    <div class="box2"/>
-    <div class="box3"/>
-    <div class="box4"/>
-    <div class="box5"/>
+    <div class="box1" />
+    <div class="box2" />
+    <div class="box3" />
+    <div class="box4" />
+    <div class="box5" />
   </div>
 </template>
 

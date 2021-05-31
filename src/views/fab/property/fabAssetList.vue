@@ -1,8 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-slot="{}" v-bind="table" url="/fab/fabequipment" sort="sortNo.asc">
-      <!--todo fixed属性导致当前列变为第一列-->
-      <!--      <w-table-col name="eqpId" label="设备号" sort fixed align="left" handler="view" query condition="in"/>-->
+    <w-table v-bind="table1" url="/fab/fabequipment" sort="sortNo.asc">
       <w-table-col
         name="eqpId"
         label="设备号"
@@ -53,28 +51,32 @@
         dict="ACTIVE_FLAG"
         query
         condition="eq"
-      />//有效标志表中为0,1 数据字典为Y,N需要确定是改哪边
-      <!--todo date 点击查询后,时间控件值消失-->
-      <!--<w-table-col name="updateDate" label="更新时间" width="200" align="center" sort="1" query querymode="date" condition="between"/>-->
+      />
 
-      <!--hidden属性: 隐藏默认button url: 修改默认url 没有url,则默认调用属性name值的方法-->
       <w-table-toolbar name="add" url="views/fab/property/fabAssetListEdit" />
       <w-table-toolbar name="initStatus" label="初始化所有状态" type="warning" />
-      <!--hidden属性: 隐藏默认button url: 修改默认url-->
-      <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
-      <!--      <w-table-button v-if="row.activeFlag == 0" name="enable" label="启用" tip="确认启用设备？" icon="el-icon-check" />-->
-      <!--      <w-table-button v-if="row.activeFlag == 1" name="diable" label="停用" tip="确认停用设备？" icon="el-icon-circle-close" type="warning" />-->
     </w-table>
   </div>
 </template>
 
 <script>
 import request from '@/utils/request'
+// import { Loading } from 'element-ui'
 export default {
   name: 'Eqp',
   data() {
     return {
-      table: {}
+      isLoading: false,
+      detail: {
+        opHide: true,
+        model: {
+          alarmCode: ''
+        },
+        datas: []
+      },
+      table1: {},
+      showVisiable: false, // 控制显隐
+      editIndex: -1 // 当前编辑行index
     }
   },
   methods: {
@@ -153,7 +155,7 @@ export default {
           duration: 2000
         })
       }
-    }
+    },
 
     // initStatus2(data) {
     //   return request({
@@ -162,6 +164,24 @@ export default {
     //     data
     //   })
     // }
+
+    editCurrRow(rowId, str) {
+      this.editIndex = rowId // 不加editIndex,整个列都会一块变成可编辑
+      this.showVisiable = true
+      const id = rowId + str
+      // 也可以用this.$nextTick，个人感觉加个0.01秒的延时比下次渲染灵活一点
+      setTimeout(() => {
+        document.getElementById(id).focus()
+      }, 100)
+    },
+    addSensor() {
+      console.log(this.tableData)
+    }
   }
 }
 </script>
+<style scoped>
+.editCell:hover {
+  cursor: pointer;
+}
+</style>

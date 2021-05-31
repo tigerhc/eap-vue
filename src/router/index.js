@@ -74,7 +74,7 @@ export const constantRouterMap = [
     children: [
       {
         path: 'dashboard',
-        component: () => import('@/views/rpt/showDatas/quickOverview'),
+        component: () => import('@/views/fab/status/index'),
         name: 'Dashboard',
         meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
       },

@@ -1,5 +1,5 @@
 <template>
-  <w-form v-bind="formConf" :col="3" :model="model">
+  <div class="menu app-container calendar-list-container">
     <div class="menu-one">
       <div
         v-for="(item, index) in options"
@@ -43,7 +43,7 @@
         @current-change="handleCurrentChange"
       />
     </div>
-  </w-form>
+  </div>
 </template>
 <script>
 // import x from ''
@@ -272,43 +272,7 @@ export default {
       num1: 0,
       num2: 0,
       tableData: [],
-      multipleSelection: [],
-
-      // ////
-      model: {
-        manufacturerName: '',
-        classCode: '',
-        smlPath: '',
-        hostJavaClass: '',
-        iconPath: '',
-        activeFlag: '',
-        remarks: '',
-        delFlag: 0
-      },
-      formConf: {
-        url: '/fab/fabequipmentmodel/',
-        title: {
-          ADD: '新增模板类型',
-          EDIT: '修改模板类型',
-          VIEW: '查看设备类型'
-        },
-        rules: {
-          manufacturerName: [{ required: true, message: '设备厂家必填', trigger: 'blur' }],
-          classCode: [{ required: true, message: '设备类型必填', trigger: 'blur' }],
-          activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
-        },
-        onLoadData: (m, type) => {
-          console.info(m)
-          //        m.officeIds = m.officeIds.split(',')
-          return m
-        },
-        beforeSubmit: (params, type) => {
-          const re = { ...params }
-          //        re.officeId = re.officeIds[re.officeIds.length - 1]
-          //        re.officeIds = undefined
-          return re
-        }
-      }
+      multipleSelection: []
     }
   },
   mounted() {
@@ -372,6 +336,11 @@ export default {
   border-left: 3px solid #3c78ff;
 }
 
+.menu {
+  width: 100%;
+  height: 500px;
+  display: flex;
+}
 .menu-one,
 .menu-two {
   height: 500px;

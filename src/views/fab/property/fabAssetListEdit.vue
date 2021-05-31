@@ -1,40 +1,51 @@
 <template>
-  <w-form v-bind="formConf" :col="3" :model="model">
-    <el-input v-model="model.eqpId" label="设备号" />
-    <el-input v-model="model.eqpNo" label="设备序号" />
-    <el-input v-model="model.eqpName" label="设备说明" />
-    <el-input v-model="model.fab" label="厂别" />
-    <el-input v-model="model.lineNo" label="线别" />
-    <w-select-dept v-model="model.officeIds" label="部门" />
-    <el-input v-model="model.bcCode" label="BC号" />
-    <el-input v-model="model.ip" label="机台IP地址" />
+  <div>
+    <w-form v-bind="formConf" :col="3" :model="model">
+      <el-input v-model="model.eqpId" label="设备号" />
+      <el-input v-model="model.eqpNo" label="设备序号" />
+      <el-input v-model="model.eqpName" label="设备说明" />
+      <el-input v-model="model.fab" label="厂别" />
+      <el-input v-model="model.lineNo" label="线别" />
+      <w-select-dept v-model="model.officeIds" label="部门" />
+      <el-input v-model="model.bcCode" label="BC号" />
+      <el-input v-model="model.ip" label="机台IP地址" />
 
-    <!-- <w-select-device v-model="model.modelId" :display="model.modelName" label="设备型号名称" /> -->
-    <w-lookup
-      v-model="model.modelId"
-      :display.sync="model.modelName"
-      idkey="id"
-      displaykey="manufacturerName"
-      label="设备型号名称"
-      title="选择设备型号"
-      module="views/fab/eqpmodel/eqpmodelLook"
-    />
-    <el-input v-model="model.eqpParam" label="参数" />
-    <el-input v-model="model.location" label="位置号" />
-    <w-select-dic v-model="model.clientFlag" label="客户端标志" dict="ACTIVE_FLAG" />
-    <el-input v-model="model.takeTime" label="节拍" />
-    <w-select-dic v-model="model.activeFlag" style="width: 100%" label="有效标志" dict="ACTIVE_FLAG" />
-    <el-input v-model="model.sortNo" label="排序号" />
-    <el-row col="24" />
-    <el-input v-model="model.createByName" :disabled="true" label="创建人" />
-    <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
-    <el-row col="24" />
-    <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
-    <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
-    <el-row col="24" />
-    <el-input v-model="model.locationX" :disabled="true" label="纬度坐标" />
-    <el-input v-model="model.locationY" :disabled="true" label="经度坐标" />
-  </w-form>
+      <!-- <w-select-device v-model="model.modelId" :display="model.modelName" label="设备型号名称" /> -->
+      <w-lookup
+        v-model="model.modelId"
+        :display.sync="model.modelName"
+        idkey="id"
+        displaykey="manufacturerName"
+        label="设备型号名称"
+        title="选择设备型号"
+        module="views/fab/eqpmodel/eqpmodelLook"
+      />
+      <el-input v-model="model.eqpParam" label="参数" />
+      <el-input v-model="model.location" label="位置号" />
+      <w-select-dic v-model="model.clientFlag" label="客户端标志" dict="ACTIVE_FLAG" />
+      <el-input v-model="model.takeTime" label="节拍" />
+      <w-select-dic v-model="model.activeFlag" style="width: 100%" label="有效标志" dict="ACTIVE_FLAG" />
+      <el-input v-model="model.sortNo" label="排序号" />
+      <el-row col="24" />
+      <el-input v-model="model.createByName" :disabled="true" label="创建人" />
+      <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
+      <el-row col="24" />
+      <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
+      <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
+      <el-row col="24" />
+      <el-input v-model="model.locationX" :disabled="true" label="纬度坐标" />
+      <el-input v-model="model.locationY" :disabled="true" label="经度坐标" />
+    </w-form>
+    <div style="border-top: 1px solid #ddd; padding: 5px 0; margin: 10px 0" />
+    <w-edt-table v-slot="{ row }" ref="language" v-bind="table" url="111">
+      <w-table-col name="userName" label="用户" align="left">
+        <el-input v-model="table.model.userName" />
+      </w-table-col>
+      <w-table-col name="userEmail" label="邮箱" align="left">
+        <el-input v-model="table.model.userEmail" />
+      </w-table-col>
+    </w-edt-table>
+  </div>
 </template>
 <script>
 export default {
@@ -59,7 +70,17 @@ export default {
         officeId: '',
         projectId: '2'
       },
-
+      table: {
+        rules: {
+          eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
+          modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
+          activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
+        },
+        model: {
+          userEmail: ''
+        },
+        datas: []
+      },
       formConf: {
         url: '/fab/fabequipment/',
         title: {

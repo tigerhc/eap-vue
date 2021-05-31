@@ -1,51 +1,53 @@
 <template>
-  <w-form v-bind="formConf" :col="3" :model="model">
-    <!-- <div class="menu"> -->
-    <div class="menu-one">
-      <div
-        v-for="(item, index) in options"
-        :class="[num1 === index ? 'active' : '', 'menu-one-item']"
-        :key="index"
-        @click="getIndex1(index)"
-      >
-        {{ item.label }}
-        <i class="el-icon-caret-right" />
+  <div>
+    <w-form v-bind="formConf" :col="3" :model="model">
+      <!-- <div class="menu"> -->
+      <div class="menu-one">
+        <div
+          v-for="(item, index) in options"
+          :class="[num1 === index ? 'active' : '', 'menu-one-item']"
+          :key="index"
+          @click="getIndex1(index)"
+        >
+          {{ item.label }}
+          <i class="el-icon-caret-right" />
+        </div>
       </div>
-    </div>
-    <div class="menu-two">
-      <div
-        v-for="(item1, index1) in obj1"
-        :class="[num2 === index1 ? 'active' : '', 'menu-two-item']"
-        :key="index1"
-        @click="getIndex2(index1)"
-      >
-        {{ item1.label }}
-        <i class="el-icon-caret-right" />
+      <div class="menu-two">
+        <div
+          v-for="(item1, index1) in obj1"
+          :class="[num2 === index1 ? 'active' : '', 'menu-two-item']"
+          :key="index1"
+          @click="getIndex2(index1)"
+        >
+          {{ item1.label }}
+          <i class="el-icon-caret-right" />
+        </div>
       </div>
-    </div>
-    <div class="menu-three">
-      <el-table ref="multipleTable" :data="obj2" tooltip-effect="dark" style="width: 100%" @row-click="rowClick">
-        <el-table-column label width="50">
-          <template slot-scope="scope">
-            <el-radio :label="scope.row.eqpmodel" v-model="radioId">&nbsp;</el-radio>
-          </template>
-        </el-table-column>
-        <el-table-column prop="eqpmodel" label="名称/型号" />
-        <el-table-column prop="brand" label="品牌" width="120" />
-        <el-table-column prop="acqmode" label="采集方式" />
-      </el-table>
-      <el-pagination
-        :current-page="1"
-        :page-sizes="[5, 10, 15, 20]"
-        :page-size="100"
-        :total="10"
-        layout="total, sizes, prev, pager, next, jumper"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
-    </div>
-    <!-- </div> -->
-  </w-form>
+      <div class="menu-three">
+        <el-table ref="multipleTable" :data="obj2" tooltip-effect="dark" style="width: 100%" @row-click="rowClick">
+          <el-table-column label width="50">
+            <template slot-scope="scope">
+              <el-radio :label="scope.row.eqpmodel" v-model="radioId">&nbsp;</el-radio>
+            </template>
+          </el-table-column>
+          <el-table-column prop="eqpmodel" label="名称/型号" />
+          <el-table-column prop="brand" label="品牌" width="120" />
+          <el-table-column prop="acqmode" label="采集方式" />
+        </el-table>
+        <el-pagination
+          :current-page="1"
+          :page-sizes="[5, 10, 15, 20]"
+          :page-size="100"
+          :total="10"
+          layout="total, sizes, prev, pager, next, jumper"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
+      <!-- </div> -->
+    </w-form>
+  </div>
 </template>
 <script>
 // import x from ''

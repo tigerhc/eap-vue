@@ -800,8 +800,8 @@ export default {
       style: {
         width: '100%',
         minHeight: this.hiddenQuery
-          ? 'calc(100vh - 84px - 96px - 42px - 1px )'
-          : 'calc(100vh - 84px - 96px - 42px - 46px - 1px )'
+          ? 'calc(65vh - 84px - 96px - 42px - 1px )'
+          : 'calc(65vh - 84px - 96px - 42px - 46px - 1px )'
       },
       key: this.tableKey,
       ref: 'table',

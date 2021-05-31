@@ -9,7 +9,7 @@
       </el-col>
       <el-col :span="16">
         <div>
-          <strong><span id="FirstTitle" style="font-size: 20px">SIM工程生产情报</span> </strong><date />
+          <strong><span id="FirstTitle" style="font-size: 20px">APJ工程生产情报</span> </strong><date />
         </div>
 
         <el-row>

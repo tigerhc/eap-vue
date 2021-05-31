@@ -15,6 +15,18 @@
         condition="in"
       />
       <w-table-col
+        name="modelId"
+        label="设备型号"
+        hidden
+        query
+        dict
+        url="/fab/fabequipmentmodel/list"
+        namekey="modelName"
+        querymode="select"
+        condition="eq"
+        filterable
+      />
+      <w-table-col
         name="parentType"
         label="设备大类"
         align="left"
@@ -31,18 +43,7 @@
       <w-table-col name="ip" label="机台IP地址" align="center" />
       <!--<w-table-col name="sortNo" label="排序号" sort/>-->
       <!-- todo filterable 属性-->
-      <w-table-col
-        name="modelId"
-        label="设备型号"
-        hidden
-        query
-        dict
-        url="/fab/fabequipmentmodel/list"
-        namekey="modelName"
-        querymode="select"
-        condition="eq"
-        filterable
-      />
+
       <w-table-col
         name="activeFlag"
         label="有效标志"

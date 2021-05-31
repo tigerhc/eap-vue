@@ -26,32 +26,36 @@
       <el-input v-model="model.takeTime" label="节拍" />
       <w-select-dic v-model="model.activeFlag" style="width: 100%" label="有效标志" dict="ACTIVE_FLAG" />
       <el-input v-model="model.sortNo" label="排序号" />
-      <el-row col="24" />
+      <!-- <el-row col="24" /> -->
       <el-input v-model="model.createByName" :disabled="true" label="创建人" />
       <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
-      <el-row col="24" />
+      <el-input v-model="model.locationX" label="纬度坐标" />
+
+      <!-- <el-row col="24" /> -->
       <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
       <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
-      <el-row col="24" />
-      <el-input v-model="model.locationX" :disabled="true" label="纬度坐标" />
-      <el-input v-model="model.locationY" :disabled="true" label="经度坐标" />
+      <!-- <el-row col="24" /> -->
+      <el-input v-model="model.locationY" label="经度坐标" />
     </w-form>
     <div style="border-top: 1px solid #ddd; padding: 5px 0; margin: 10px 0" />
-    <w-edt-table v-slot="{ row }" ref="language" v-bind="table" url="111">
-      <w-table-col name="userName" label="用户" align="left">
-        <el-input v-model="table.model.userName" />
+    <w-edt-table v-slot="{}" ref="language" v-bind="table" url="111">
+      <w-table-col name="sensorType" label="传感器类型" align="left">
+        <el-input v-model="table.model.sensorType" />
       </w-table-col>
-      <w-table-col name="userEmail" label="邮箱" align="left">
-        <el-input v-model="table.model.userEmail" />
+      <w-table-col name="sensorName" label="传感器名称" align="left">
+        <el-input v-model="table.model.sensorName" />
       </w-table-col>
     </w-edt-table>
   </div>
 </template>
 <script>
+import request from '@/utils/request'
 export default {
   name: 'MachineModel',
   data() {
     return {
+      eqpName1: '',
+      eqpType1: '',
       model: {
         location_x: '',
         location_y: '',
@@ -71,13 +75,9 @@ export default {
         projectId: '2'
       },
       table: {
-        rules: {
-          eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
-          modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
-          activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
-        },
         model: {
-          userEmail: ''
+          sensorType: '',
+          sensorName: ''
         },
         datas: []
       },
@@ -95,21 +95,39 @@ export default {
         },
         onLoadData: (m, type) => {
           console.info(m)
-          // m.officeIds = m.officeIds.split(',')
+          if (m.officeIds) {
+            m.officeIds = m.officeIds.split(',')
+          }
+
           return m
         },
         beforeSubmit: (params, type) => {
           const re = { ...params }
-          // re.officeId = re.officeIds[re.officeIds.length - 1]
-          // re.officeIds = undefined
+          if (re.officeId) {
+            re.officeId = re.officeIds[re.officeIds.length - 1]
+            re.officeIds = undefined
+          }
+
           return re
         }
       }
     }
   },
+  mounted() {
+    this.getA()
+  },
   methods: {
     onDisplayChange(e) {
       this.model.modelName = e
+    },
+    getA() {
+      const id = this.$route.query.id
+      return request({
+        url: `/fab/fabequipment/${id}/find`,
+        method: `get`
+      }).then((res) => {
+        this.table.model.sensorName = `${res.data.results.eqpName}_传感器1`
+      })
     }
   }
 }

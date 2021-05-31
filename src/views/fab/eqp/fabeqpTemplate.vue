@@ -76,8 +76,8 @@
       <!----- 弹窗 ------->
       <div class="dialog">
         <el-dialog :visible.sync="addDialogVisible" title="添加模板" width="80%">
-          <el-select v-model="eqpModelValue" placeholder="设备类型" style="margin-bottom: 15px">
-            <el-option v-for="item in eqpModelOptions" :key="item.value" :label="item.label" :value="item.value" />
+          <el-select v-model="eqpModelValue" placeholder="设备类型">
+            <el-option v-for="item in eqpModelOptions" :key="item.value" :label="item.label" :value="item.value"/>
           </el-select>
           <div class="container">
             <div class="menu-one">
@@ -104,42 +104,49 @@
             </div>
             <div class="menu-three">
               <el-table
-                v-loading="addLoading"
-                ref="multipleTable"
+                v-loading="editLoading"
+                ref="multipleTable1"
                 :data="
                   obj2.slice((pageInfo2.pagenum2 - 1) * pageInfo2.pagesize2, pageInfo2.pagenum2 * pageInfo2.pagesize2)
                 "
                 tooltip-effect="dark"
                 style="width: 100%"
+                @row-click="rowClick"
               >
                 <el-table-column label width="50">
                   <template slot-scope="scope">
-                    <el-radio
-:label="scope.$index"
-v-model="radioId"
-@change.native="getCurrentRow(scope.row)"
-                      >&nbsp;</el-radio
-                    >
+                    <el-radio :label="scope.row.eqpmodel" v-model="radioId">&nbsp;</el-radio>
                   </template>
                 </el-table-column>
                 <el-table-column prop="eqpmodel" label="名称/型号" />
-                <el-table-column prop="brand" label="品牌" width="120" />
-                <el-table-column prop="acqmode" label="采集方式" />
+                <el-table-column prop="brand" label="厂商" width="120" />
+                <el-table-column prop="acqmode" label="数量">
+                  <!-- <template slot-scope="scope">
+                    <el-input
+                      size="small"
+                      :disabled="item.disabled || disabled"
+                      v-model="scope.row[item.name]"
+                      placeholder="请输入内容"
+                      @change="handleEdit(scope.$index, scope.row)"
+                    />
+                    <span>{{ scope.row[item.name] }}</span>
+                  </template> -->
+                </el-table-column>
               </el-table>
               <el-pagination
-                :current-page="pageInfo2.pagenum2"
+                :current-page="pageInfo3.pagenum3"
                 :page-sizes="[5, 10, 15, 20]"
-                :page-size="pageInfo2.pagesize2"
+                :page-size="pageInfo3.pagesize3"
                 :total="obj2.length"
                 layout="total, sizes, prev, pager, next, jumper"
-                @size-change="handleSizeChange2"
-                @current-change="handleCurrentChange2"
+                @size-change="handleSizeChange3"
+                @current-change="handleCurrentChange3"
               />
             </div>
           </div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="addDialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="add()">确 定</el-button>
+            <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
           </span>
         </el-dialog>
         <!-- 修改 -->
@@ -176,7 +183,6 @@ v-model="radioId"
                 "
                 tooltip-effect="dark"
                 style="width: 100%"
-                @row-click="rowClick"
               >
                 <el-table-column label width="50">
                   <template slot-scope="scope">
@@ -210,6 +216,7 @@ v-model="radioId"
 
 <script>
 import { fetchDict } from '@/api/sys/dict.js'
+import request from '@/utils/request'
 
 export default {
   components: {},
@@ -484,15 +491,25 @@ export default {
   mounted() {
     this.getMenuOne()
     this.getMenuTwo()
-    // this.radioId = this.obj2[0].eqpmodel
+    this.getDatas()
     fetchDict('NUM_TYPE').then((response) => {
       this.numTypeOptions = response.data
     })
   },
   methods: {
-    getCurrentRow(row) {
-      console.log(row)
+    getDatas() {
+      return request({
+        url: 'fab/fabequipmentmodel',
+        method: 'get'
+      }).then((res) => {
+        console.log(res)
+      })
     },
+
+    handleEdit(index, row) {
+      console.log(index, row)
+    },
+
     // 确认添加
     add() {
       console.log(this.num1, this.num2, this.radioId)
@@ -517,7 +534,11 @@ export default {
     handleCurrentChange3(pagenum) {
       this.pageInfo3.pagenum3 = pagenum
     },
-    rowClick() {},
+    rowClick(v) {
+      console.log(v)
+      this.radioId = v.eqpmodel
+      console.log(this.radioId)
+    },
     // 获取一级菜单数据
     getMenuOne() {
       this.options.forEach((item, index) => {
@@ -546,8 +567,7 @@ export default {
     getIndex2(idx) {
       this.num2 = idx
       this.getMenuTwo()
-
-      // this.radioId = this.obj2[0].eqpmodel
+      this.radioId = this.obj2[idx].eqpmodel
     },
     handleSizeChange1(pagesize) {
       this.pageInfo1.pagesize1 = pagesize
@@ -567,6 +587,7 @@ export default {
   width: 100%;
   height: 500px;
   display: flex;
+  margin-top: 15px;
 }
 .active {
   color: #3c78ff;

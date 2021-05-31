@@ -66,9 +66,7 @@ export default {
         rules: {
           manufacturerName: [{ required: true, message: '设备厂家必填', trigger: 'blur' }],
           classCode: [{ required: true, message: '设备类型必填', trigger: 'blur' }],
-          activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }],
-          parent_type: [{ required: true, message: '资产大类必填', trigger: 'blur' }],
-          type: [{ required: true, message: '资产小类必填', trigger: 'blur' }]
+          activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
         },
         onLoadData: (m, type) => {
           console.info(m)

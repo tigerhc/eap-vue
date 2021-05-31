@@ -224,7 +224,7 @@ export default {
             },
             itemStyle: {
               color: function(params) {
-                return '#FF0000'
+                return '#808080'// FF0000
               }
             },
             data: this.downlist
@@ -239,7 +239,7 @@ export default {
             },
             itemStyle: {
               color: function(params) {
-                return '#808080'
+                return '#000000'
               }
             },
             data: this.otherlist

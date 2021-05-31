@@ -273,6 +273,7 @@ export default {
         this.tabData2[5] = []
         this.tabData2[6] = []
         this.tabData.forEach((item) => {
+          // APJ
           if (item.eqpId === 'APJ-FRD-SMT1') {
             lineIndex = 1
           }
@@ -291,9 +292,15 @@ export default {
           if (item.eqpId === 'APJ-TRM1') {
             lineIndex = 6
           }
+          // SIM
+          if (item.eqpId === 'SIM-WB-1A') {
+            lineIndex = 1
+          }
+          if (item.eqpId === 'SIM-AOI1') {
+            lineIndex = 2
+          }
           this.tabData2[lineIndex].push(item)
         })
-
         // this.dataList.forEach(item => {
         //   const obj = {}
         //   obj.name = item.EQP_STATUS

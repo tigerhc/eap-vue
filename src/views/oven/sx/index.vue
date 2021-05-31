@@ -102,6 +102,11 @@ export default {
       picUrlB: require('../../../assets/img/sxB.png'),
       picUrlC: require('../../../assets/img/sxC.png'),
       picUrlD: require('../../../assets/img/sxD.png'),
+      picUrlE: require('../../../assets/img/sim_abc.png'),
+      picUrlF: require('../../../assets/img/c21.png'),
+      picUrlG: require('../../../assets/img/56GI.png'),
+      picUrlH: require('../../../assets/img/56GI2.png'),
+      picUrlI: require('../../../assets/img/56GI3.png'),
       localResultSim: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }, { value: 'c', label: 'C' }, { value: 'c21', label: 'c21' }],
       localResultSx: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }, { value: 'c', label: 'C' }, { value: 'd', label: 'D' }],
       localResultGi: [{ value: 'burr_f', label: 'burr_f' }, { value: 'pin_f1', label: 'pin_f1' }, { value: 'pin_f2', label: 'pin_f2' }, { value: 'pin_f3', label: 'pin_f3' }, { value: 'pin_f4', label: 'pin_f4' }, { value: 'pin_f5', label: 'pin_f5' }, { value: 'pin_f6', label: 'pin_f6' }, { value: 'pin_f1_f2', label: 'pin_f1_f2' }, { value: 'pin_f2_f3', label: 'pin_f2_f3' }, { value: 'pin_f3_f4', label: 'pin_f3_f4' }, { value: 'pin_f4_f5', label: 'pin_f4_f5' }, { value: 'pin_f5_f6', label: 'pin_f5_f6' }, { value: 'pin_s1', label: 'pin_s1' }, { value: 'pin_s2', label: 'pin_s2' }, { value: 'pin_s3', label: 'pin_s3' }, { value: 'pin_s4', label: 'pin_s4' }, { value: 'pin_s5', label: 'pin_s5' }, { value: 'pin_s6', label: 'pin_s6' }],
@@ -123,10 +128,6 @@ export default {
         {
           value: 'check',
           label: '检查'
-        },
-        {
-          value: 'IT',
-          label: 'IT'
         }
       ],
       lineNoResult: [
@@ -208,16 +209,31 @@ export default {
       } else {
         this.formatter = '{value} mm'
       }
-      if (this.form.local === 'a') {
-        this.picUrl = this.picUrlA
-      } else if (this.form.local === 'b') {
-        this.picUrl = this.picUrlB
-      } else if (this.form.local === 'c') {
-        this.picUrl = this.picUrlC
-      } else if (this.form.local === 'd') {
-        this.picUrl = this.picUrlD
-      } else {
-        this.picUrl = this.picUrlD
+      // 图片控制
+      if (this.form1.lineNo === 'SX') {
+        if (this.form.local === 'a') {
+          this.picUrl = this.picUrlA
+        } else if (this.form.local === 'b') {
+          this.picUrl = this.picUrlB
+        } else if (this.form.local === 'c') {
+          this.picUrl = this.picUrlC
+        } else if (this.form.local === 'd') {
+          this.picUrl = this.picUrlD
+        }
+      } else if (this.form1.lineNo === 'SIM') {
+        if (this.form.local === 'c21') {
+          this.picUrl = this.picUrlF
+        } else {
+          this.picUrl = this.picUrlE
+        }
+      } else if (this.form1.lineNo === '5GI' || this.form1.lineNo === '5GI') {
+        if (this.form.local === 'burr_f') {
+          this.picUrl = this.picUrlI
+        } else if (this.form.local === 'pin_s1' || this.form.local === 'pin_s2' || this.form.local === 'pin_s3' || this.form.local === 'pin_s4' || this.form.local === 'pin_s5' || this.form.local === 'pin_s6') {
+          this.picUrl = this.picUrlH
+        } else { // this.form.local === 'pin_f1' || this.form.local === 'pin_f2' || this.form.local === 'pin_f3'|| this.form.local === 'pin_f4'|| this.form.local === 'pin_f5'|| this.form.local === 'pin_f6'||pin_f1_f2,pin_f2_f3,pin_f3_f4,pin_f4_f5,pin_f5_f6
+          this.picUrl = this.picUrlG
+        }
       }
       this.form.number = '0001'
       this.form.type = this.form1.type

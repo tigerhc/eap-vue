@@ -6,8 +6,11 @@
         <el-row>
           <el-col :span="4">
             <el-form-item label="类型:">
-              <el-select v-model="form1.type" class="wid90" @change="findProduction">
+              <el-select v-model="form1.type" :style="{width:'90px'}" @change="findProduction">
                 <el-option v-for="item in TypeResult" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+              <el-select v-model="form1.lineNo" :style="{width:'90px'}" @change="findProduction">
+                <el-option v-for="item in lineNoResult" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -80,7 +83,8 @@ export default {
       },
       api: api('/ms/measuresx/findSxNumberExport'),
       form1: {
-        type: ''
+        type: '',
+        lineNo: ''
       },
       toolbarStatus: {
         exportsLoading: false
@@ -98,6 +102,9 @@ export default {
       picUrlB: require('../../../assets/img/sxB.png'),
       picUrlC: require('../../../assets/img/sxC.png'),
       picUrlD: require('../../../assets/img/sxD.png'),
+      localResultSim: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }, { value: 'c', label: 'C' }, { value: 'c21', label: 'c21' }],
+      localResultSx: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }, { value: 'c', label: 'C' }, { value: 'd', label: 'D' }],
+      localResultGi: [{ value: 'burr_f', label: 'burr_f' }, { value: 'pin_f1', label: 'pin_f1' }, { value: 'pin_f2', label: 'pin_f2' }, { value: 'pin_f3', label: 'pin_f3' }, { value: 'pin_f4', label: 'pin_f4' }, { value: 'pin_f5', label: 'pin_f5' }, { value: 'pin_f6', label: 'pin_f6' }, { value: 'pin_f1_f2', label: 'pin_f1_f2' }, { value: 'pin_f2_f3', label: 'pin_f2_f3' }, { value: 'pin_f3_f4', label: 'pin_f3_f4' }, { value: 'pin_f4_f5', label: 'pin_f4_f5' }, { value: 'pin_f5_f6', label: 'pin_f5_f6' }, { value: 'pin_s1', label: 'pin_s1' }, { value: 'pin_s2', label: 'pin_s2' }, { value: 'pin_s3', label: 'pin_s3' }, { value: 'pin_s4', label: 'pin_s4' }, { value: 'pin_s5', label: 'pin_s5' }, { value: 'pin_s6', label: 'pin_s6' }],
       lineTypeResult: [
         {
           value: '0001',
@@ -116,26 +123,31 @@ export default {
         {
           value: 'check',
           label: '检查'
+        },
+        {
+          value: 'IT',
+          label: 'IT'
         }
       ],
-      localResult: [
+      lineNoResult: [
         {
-          value: 'a',
-          label: 'A'
+          value: 'SX',
+          label: 'SX'
         },
         {
-          value: 'b',
-          label: 'B'
+          value: 'SIM',
+          label: 'SIM'
         },
         {
-          value: 'c',
-          label: 'C'
+          value: '5GI',
+          label: '5GI'
         },
         {
-          value: 'd',
-          label: 'D'
+          value: '6GI',
+          label: '6GI'
         }
-      ]
+      ],
+      localResult: []
     }
   },
   methods: {
@@ -147,6 +159,7 @@ export default {
       this.form.type = this.form1.type
       this.form.startDate = this.dateTime[0]
       this.form.endDate = this.dateTime[1]
+      this.form.lineNo = this.form1.lineNo
       if (this.toolbarStatus.exportsLoading) {
         return
       }
@@ -178,7 +191,16 @@ export default {
     findProduction() {
       productionName(this.form1).then((response) => {
         this.productionResult = response.data
+        if (this.form1.lineNo === 'SX') {
+          this.localResult = this.localResultSx
+        } else if (this.form1.lineNo === 'SIM') {
+          this.localResult = this.localResultSim
+        } else if (this.form1.lineNo === '6GI' || this.form1.lineNo === '5GI') {
+          this.localResult = this.localResultGi
+        }
       })
+      this.form.productionName = ''
+      this.form.local = ''
     },
     search() {
       if (this.form.local === 'd') {
@@ -194,11 +216,14 @@ export default {
         this.picUrl = this.picUrlC
       } else if (this.form.local === 'd') {
         this.picUrl = this.picUrlD
+      } else {
+        this.picUrl = this.picUrlD
       }
       this.form.number = '0001'
       this.form.type = this.form1.type
       this.form.startDate = this.dateTime[0]
       this.form.endDate = this.dateTime[1]
+      this.form.lineNo = this.form1.lineNo
       findSxNumber(this.form).then((res) => {
         this.data = res.data[0]
         this.series = res.data[1]
@@ -215,7 +240,7 @@ export default {
       // var app = {};
       var option
       option = {
-        color: ['#3CB371', '#00FFFF', '#FF0000', '#FF0000', '#1E90FF', '#FFA500', '#800000', '#1E90FF'],
+        color: ['#3CB371', '#00FFFF', '#ff0000', '#FF0000', '#1E90FF', '#FFA500', '#800000', '#1E90FF'],
         title: {
           text: '量测分离倾向管理图'
         },
@@ -251,8 +276,30 @@ export default {
             '1-2:D',
             '2-1:D',
             '2-2:D',
+            '1-1:C21',
+            '1-2:C21',
+            '2-1:C21',
+            '2-1:C21',
             '上限',
-            '下限'
+            '下限',
+            '1-毛刺', '2-毛刺', '3-毛刺', '4-毛刺', '5-毛刺',
+            '1-1:1PIN', '2-1:1PIN', '3-1:1PIN', '4-1:1PIN', '5-1:1PIN',
+            '1-1:2PIN', '2-1:2PIN', '3-1:2PIN', '4-1:2PIN', '5-1:2PIN',
+            '1-1:3PIN', '2-1:3PIN', '3-1:3PIN', '4-1:3PIN', '5-1:3PIN',
+            '1-1:4PIN', '2-1:4PIN', '3-1:4PIN', '4-1:4PIN', '5-1:4PIN',
+            '1-1:5PIN', '2-1:5PIN', '3-1:5PIN', '4-1:5PIN', '5-1:5PIN',
+            '1-1:6PIN', '2-1:6PIN', '3-1:6PIN', '4-1:6PIN', '5-1:6PIN',
+            '1-1:1PIN-2PIN', '2-1:1PIN-2PIN', '3-1:1PIN-2PIN', '4-1:1PIN-2PIN', '5-1:1PIN-2PIN',
+            '1-1:2PIN-3PIN', '2-1:2PIN-3PIN', '3-1:2PIN-3PIN', '4-1:2PIN-3PIN', '5-1:2PIN-3PIN',
+            '1-1:3PIN-4PIN', '2-1:3PIN-4PIN', '3-1:3PIN-4PIN', '4-1:3PIN-4PIN', '5-1:3PIN-4PIN',
+            '1-1:4PIN-5PIN', '2-1:4PIN-5PIN', '3-1:4PIN-5PIN', '4-1:4PIN-5PIN', '5-1:4PIN-5PIN',
+            '1-1:5PIN-6PIN', '2-1:5PIN-6PIN', '3-1:5PIN-6PIN', '4-1:5PIN-6PIN', '5-1:5PIN-6PIN',
+            '1-2:1PIN', '2-2:1PIN', '3-2:1PIN', '4-2:1PIN', '5-2:1PIN',
+            '1-2:2PIN', '2-2:2PIN', '3-2:2PIN', '4-2:2PIN', '5-2:2PIN',
+            '1-2:3PIN', '2-2:3PIN', '3-2:3PIN', '4-2:3PIN', '5-2:3PIN',
+            '1-2:4PIN', '2-2:4PIN', '3-2:4PIN', '4-2:4PIN', '5-2:4PIN',
+            '1-2:5PIN', '2-2:5PIN', '3-2:5PIN', '4-2:5PIN', '5-2:5PIN',
+            '1-2:6PIN', '2-2:6PIN', '3-2:6PIN', '4-2:6PIN', '5-2:6PIN'
           ]
         },
         grid: {

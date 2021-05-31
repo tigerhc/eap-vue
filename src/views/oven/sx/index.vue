@@ -128,10 +128,6 @@ export default {
         {
           value: 'check',
           label: '检查'
-        },
-        {
-          value: 'IT',
-          label: 'IT'
         }
       ],
       lineNoResult: [

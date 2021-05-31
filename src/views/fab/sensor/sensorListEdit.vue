@@ -58,8 +58,8 @@ export default {
       formConf: {
         url: '/fab/fabequipment/',
         title: {
-          ADD: '新增设备',
-          EDIT: '修改设备',
+          ADD: '新增传感器',
+          EDIT: '修改传感器',
           VIEW: '设备详情'
         },
         rules: {

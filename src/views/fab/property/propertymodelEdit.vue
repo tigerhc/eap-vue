@@ -2,7 +2,7 @@
   <w-form v-bind="formConf" :col="5" :model="model">
     <el-input v-model="model.manufacturerName" label="设备厂家" />
     <el-input v-model="model.classCode" label="设备类型" />
-    <el-input v-model="model.parent_type" label="资产大类" />
+    <el-input v-model="model.parentType" label="资产大类" />
     <el-input v-model="model.type" label="资产小类" />
     <w-select-dic v-model="model.activeFlag" style="width: 100%" label="有效标志" dict="ACTIVE_FLAG" />
     <!--todo 此属性需要占用两列该怎么没写-->
@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       model: {
-        parent_type: '',
+        parentType: '',
         type: '',
         manufacturerName: '',
         classCode: '',
@@ -70,13 +70,18 @@ export default {
         },
         onLoadData: (m, type) => {
           console.info(m)
-          //        m.officeIds = m.officeIds.split(',')
+          if (m.officeIds) {
+            m.officeIdsm.officeIds
+          }
           return m
         },
         beforeSubmit: (params, type) => {
           const re = { ...params }
-          //        re.officeId = re.officeIds[re.officeIds.length - 1]
-          //        re.officeIds = undefined
+          if (re.officeId) {
+            re.officeId = re.officeIds[re.officeIds.length - 1]
+            re.officeIds = undefined
+          }
+
           return re
         }
       }

@@ -47,7 +47,6 @@
       <!--<w-table-col name="updateDate" label="更新时间" width="200" align="center" sort="1" query querymode="date" condition="between"/>-->
 
       <!--hidden属性: 隐藏默认button url: 修改默认url 没有url,则默认调用属性name值的方法-->
-      <w-table-toolbar name="add" url="views/fab/eqp/fabequipmentEdit" />
       <w-table-toolbar name="initStatus" label="初始化所有状态" type="warning" />
       <!--hidden属性: 隐藏默认button url: 修改默认url-->
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
@@ -63,7 +62,13 @@ export default {
   name: 'Eqp',
   data() {
     return {
-      table: {}
+      table: {
+        handler: {
+          add: 'views/fab/sensor/sensorListEdit'
+          // edit: 'views/fab/property/propertymodelEdit'
+          // view: 'views/fab/eqpmodel/fabequipmentEdit'
+        }
+      }
     }
   },
   methods: {

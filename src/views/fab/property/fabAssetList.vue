@@ -26,16 +26,7 @@
         condition="eq"
         filterable
       />
-      <w-table-col
-        name="parentType"
-        label="设备大类"
-        align="left"
-        query
-        namekey="parentType"
-        querymode="select"
-        dict
-        condition="eq"
-      />
+
       <w-table-col name="eqpName" label="设备说明" align="left" />
       <w-table-col name="officeName" label="部门" width="100" align="left" />
       <w-table-col name="modelName" label="设备型号" align="left" />

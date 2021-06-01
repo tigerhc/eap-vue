@@ -6,7 +6,7 @@
 
     <el-row style="margin-bottom: 15px">
       <el-select v-model="model.eqpModelValue" placeholder="设备类型">
-        <el-option v-for="item in eqpModelOptions" :key="item.value" :label="item.label" :value="item.value" />
+        <el-option v-for="item in eqpModelOptions" :key="item.id" :label="item.id" :value="item.id" />
       </el-select>
       <el-input v-model="model.temNameValue" placeholder="模板名称" />
       <!-- <el-select v-model="model.temNameValue" placeholder="模板名称">
@@ -429,7 +429,7 @@ export default {
 
     getAb() {
       return request({
-        url: 'fab/fabModeltemplatebody/modelTemplateList',
+        url: 'fab/fabModeltemplatebody/modelTemplateList/',
         method: 'get'
       }).then((res) => {
         console.log('全')

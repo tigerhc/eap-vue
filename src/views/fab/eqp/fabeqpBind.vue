@@ -83,8 +83,8 @@
         />
       </el-row>
 
-      <el-dialog :visible.sync="dialogVisible" title="修改子设备类型" width="30%">
-        <el-select v-model="classCodeValue" placeholder="请选择子设备类型">
+      <el-dialog :visible.sync="dialogVisible" title="修改子设备号" width="30%">
+        <el-select v-model="classCodeValue" placeholder="请选择子设备号">
           <el-option v-for="item in classCodeOptions" :key="item.value" :label="item.label" :value="item.label" />
         </el-select>
         <span slot="footer" class="dialog-footer">

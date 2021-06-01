@@ -367,6 +367,9 @@ export default {
     })
     this.model.createBy = this.$store.getters.roles[0]
     this.model.createDate = dateFormat(new Date())
+
+    this.getAb()
+    // this.getBb()
   },
   methods: {
     getEqpModel() {
@@ -422,7 +425,26 @@ export default {
       this.num2 = idx
       this.getMenuTwo()
       this.radioId = this.obj2[0].eqpmodel
+    },
+
+    getAb() {
+      return request({
+        url: 'fab/fabModeltemplatebody/modelTemplateList',
+        method: 'get'
+      }).then((res) => {
+        console.log('全')
+        console.log(res)
+      })
     }
+    // getBb() {
+    //   return request({
+    //     url: 'fab/fabModeltemplatebody/oneTemplateList/{modelId}"',
+    //     method: 'get'
+    //   }).then((res) => {
+    //     console.log('单')
+    //     console.log(res)
+    //   })
+    // }
   }
 }
 </script>

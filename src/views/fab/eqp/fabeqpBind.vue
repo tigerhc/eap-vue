@@ -5,7 +5,7 @@
         <span>设备绑定</span>
       </div>
       <el-row>
-        <el-select v-model="eqpModeV" placeholder="请选择设备类型">
+        <el-select v-model="eqpModeV" placeholder="请选择设备号">
           <el-option v-for="item in eqpMode0ptions" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
         <el-button type="primary" style="margin-left: 15px">查询</el-button>
@@ -36,7 +36,7 @@
           </el-table-column>
           <!-- <el-table-column prop="create_by" label="创建人ID"> </el-table-column> -->
         </el-table>
-        <el-pagination
+        <!-- <el-pagination
           :current-page="pageInfo1.pagenum1"
           :page-sizes="[5, 10, 20, 50]"
           :page-size="pageInfo1.pagesize1"
@@ -44,7 +44,7 @@
           layout="total, sizes, prev, pager, next, jumper"
           @size-change="handleSizeChange1"
           @current-change="handleCurrentChange1"
-        />
+        /> -->
       </el-row>
 
       <el-row>
@@ -64,7 +64,7 @@
           <el-table-column prop="name" label="模板名称" />
           <el-table-column prop="office_id" label="部门ID" />
           <el-table-column prop="class_code" label="子设备类型" />
-          <el-table-column prop="record_id" label="记录ID" />
+          <el-table-column prop="record_id" label="子设备号" />
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button type="primary" icon="el-icon-edit" circle @click="editClassCode(scope.row)" />

@@ -8,7 +8,7 @@
       <el-select v-model="model.eqpModelValue" placeholder="设备类型">
         <el-option v-for="item in eqpModelOptions" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
-      <el-input v-model="model.temNameValue" placeholder="模板名称"/>
+      <el-input v-model="model.temNameValue" placeholder="模板名称" />
       <!-- <el-select v-model="model.temNameValue" placeholder="模板名称">
         <el-option v-for="item in temNameOptions" :key="item.value" :label="item.label" :value="item.value" />
       </el-select> -->
@@ -342,7 +342,7 @@ export default {
       tableData: [],
       multipleSelection: [],
       activeFlagO: [],
-      temNameOptions: [],
+
       eqpModelOptions: [], // ////
       model: {
         updateBy: '',
@@ -374,7 +374,8 @@ export default {
         url: 'fab/fabequipmentmodel/noTemClassCodeList',
         method: 'get'
       }).then((res) => {
-        console.log(res)
+        this.eqpModelOptions = res.data.results
+        console.log(res.data.results)
       })
     },
     editCurrRow(rowId, str) {

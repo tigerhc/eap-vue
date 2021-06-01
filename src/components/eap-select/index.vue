@@ -31,6 +31,7 @@ export default {
       this.loading = true
       this.api.anylist({ 'page.size': 99999, queryFields: [this.namekey, this.valuekey, ''].join() }).then(
         (resp) => {
+          console.log(resp)
           this.data = (resp && resp.results) || []
           this.loading = false
         },
@@ -42,7 +43,13 @@ export default {
   },
   render() {
     return (
-      <el-select filterable clearable value={this.value} {...{ props: this.$attrs }} onInput={(e) => this.$emit('input', e)}>
+      <el-select
+        filterable
+        clearable
+        value={this.value}
+        {...{ props: this.$attrs }}
+        onInput={(e) => this.$emit('input', e)}
+      >
         {this.data.map((op) => {
           return <el-option key={op.id} label={op[this.namekey]} value={op[this.valuekey]}></el-option>
         })}

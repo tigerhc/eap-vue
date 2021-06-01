@@ -1,7 +1,18 @@
 <template>
-  <div>
-    <w-form v-bind="formConf" :col="3" :model="model">
-      <!-- <div class="menu"> -->
+  <el-card>
+    <div slot="header" class="clearfix">
+      <span>修改设备模板</span>
+    </div>
+
+    <el-row style="margin-bottom: 15px">
+      <el-select v-model="model.eqpModelValue" placeholder="设备类型">
+        <el-option v-for="item in eqpModelOptions" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+      <el-select v-model="model.temNameValue" placeholder="模板名称">
+        <el-option v-for="item in temNameOptions" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+    </el-row>
+    <div class="menu">
       <div class="menu-one">
         <div
           v-for="(item, index) in options"
@@ -33,7 +44,25 @@
           </el-table-column>
           <el-table-column prop="eqpmodel" label="名称/型号" />
           <el-table-column prop="brand" label="品牌" width="120" />
-          <el-table-column prop="acqmode" label="采集方式" />
+          <el-table-column prop="acqmode" label="数量" @click="editRow(row)">
+            <template slot-scope="scope">
+              <span
+                v-show="!showVisiable || editIndex != scope.$index"
+                class="editCell"
+                style="width: 120px"
+                @click="editCurrRow(scope.$index, 'rowkeY')"
+                >{{ scope.row.acqmode }}</span
+              >
+              <el-input
+                v-show="showVisiable && editIndex == scope.$index"
+                :id="scope.$index + 'rowkeY'"
+                v-model="scope.row.acqmode"
+                size="mini"
+                style="width: 120px"
+                @blur="showVisiable = false"
+              />
+            </template>
+          </el-table-column>
         </el-table>
         <el-pagination
           :current-page="1"
@@ -45,16 +74,49 @@
           @current-change="handleCurrentChange"
         />
       </div>
-      <!-- </div> -->
-    </w-form>
-  </div>
+    </div>
+    <el-row style="margin-bottom: 15px">
+      <el-col :span="8">
+        <label>创建人：</label>
+        <el-input v-model="model.createBy" :disabled="true" />
+      </el-col>
+      <el-col :span="8">
+        <label>创建日期：</label>
+        <el-input v-model="model.createDate" :disabled="true" />
+      </el-col>
+      <el-col :span="8">
+        <label>有效标志：</label>
+        <el-select v-model="model.activeFlag" placeholder="请选择有效标志">
+          <el-option v-for="item in activeFlagO" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="8">
+        <label>修改人：</label>
+        <el-input v-model="model.updateBy" :disabled="true" />
+      </el-col>
+      <el-col :span="8">
+        <label>修改日期：</label>
+        <el-input v-model="model.updateDate" :disabled="true" />
+      </el-col>
+      <el-col :span="8">
+        <label>备注：</label>
+        <el-input v-model="model.remarks" />
+      </el-col>
+    </el-row>
+  </el-card>
 </template>
 <script>
-// import x from ''
+import { fetchDict } from '@/api/sys/dict.js'
+import dateFormat from '@/utils/dateformat'
+
 export default {
   components: {},
   data() {
     return {
+      showVisiable: false, // 控制显隐
+      editIndex: -1, // 当前编辑行index
       pageInfo: {
         total: 0
       },
@@ -277,50 +339,44 @@ export default {
       num2: 0,
       tableData: [],
       multipleSelection: [],
-
-      // ////
+      activeFlagO: [],
+      temNameOptions: [],
+      eqpModelOptions: [], // ////
       model: {
-        manufacturerName: '',
-        classCode: '',
-        smlPath: '',
-        hostJavaClass: '',
-        iconPath: '',
+        updateBy: '',
+        eqpModelValue: '',
+        temNameValue: '',
         activeFlag: '',
         remarks: '',
-        delFlag: 0
-      },
-      formConf: {
-        url: '/fab/fabequipmentmodel/',
-        title: {
-          ADD: '新增模板类型',
-          EDIT: '修改模板类型',
-          VIEW: '查看设备类型'
-        },
-        rules: {
-          manufacturerName: [{ required: true, message: '设备厂家必填', trigger: 'blur' }],
-          classCode: [{ required: true, message: '设备类型必填', trigger: 'blur' }],
-          activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
-        },
-        onLoadData: (m, type) => {
-          console.info(m)
-          //        m.officeIds = m.officeIds.split(',')
-          return m
-        },
-        beforeSubmit: (params, type) => {
-          const re = { ...params }
-          //        re.officeId = re.officeIds[re.officeIds.length - 1]
-          //        re.officeIds = undefined
-          return re
-        }
+        delFlag: 0,
+        updateDate: '',
+        createDate: '',
+        createBy: ''
       }
     }
   },
   mounted() {
     this.getMenuOne()
     this.getMenuTwo()
-    this.radioId = this.obj2[0].eqpmodel
+    // this.radioId = this.obj2[0].eqpmodel
+
+    fetchDict('ACTIVE_FLAG').then((res) => {
+      this.activeFlagO = res.data
+    })
+    this.model.updateBy = this.$store.getters.roles[0]
+    this.model.updateDate = dateFormat(new Date())
   },
   methods: {
+    editCurrRow(rowId, str) {
+      this.editIndex = rowId // 不加editIndex,整个列都会一块变成可编辑
+      this.showVisiable = true
+      const id = rowId + str
+      // 也可以用this.$nextTick，个人感觉加个0.01秒的延时比下次渲染灵活一点
+      setTimeout(() => {
+        document.getElementById(id).focus()
+      }, 100)
+    },
+
     handleSizeChange() {},
     handleCurrentChange() {},
     rowClick(row) {
@@ -364,7 +420,12 @@ export default {
 * {
   box-sizing: border-box;
 }
-
+.el-input {
+  width: 400px;
+}
+.editCell:hover {
+  cursor: pointer;
+}
 .el-table {
   height: 100%;
   overflow: hidden;
@@ -375,19 +436,24 @@ export default {
   background-color: #ebeef5;
   border-left: 3px solid #3c78ff;
 }
-
+.menu {
+  display: flex;
+}
 .menu-one,
 .menu-two {
   height: 500px;
   flex: 1;
   overflow: hidden;
   overflow-y: auto;
+  margin-bottom: 20px;
+  border: 1px solid #eee;
 }
 .menu-three {
   flex: 3;
   height: 500px;
   position: relative;
   border: 1px solid #eee;
+  margin-bottom: 20px;
 }
 .menu-one-item,
 .menu-two-item {
@@ -398,7 +464,7 @@ export default {
   border-top: 1px solid #eee;
   border-right: 1px solid #eee;
   border-bottom: 1px solid #eee;
-  /* background-color: #fff; */
+
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -16,7 +16,7 @@
         </div>
         <div class="search-item">
           <label for="">示数类型：</label>
-          <el-select v-model="indicationV" placeholder="请选择示数类型" multiple>
+          <el-select v-model="indicationV" placeholder="请选择示数类型">
             <el-option v-for="item in indicationO" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </div>

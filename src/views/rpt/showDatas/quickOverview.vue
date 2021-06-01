@@ -15,7 +15,7 @@
 
       <div class="content">
         <el-card>
-          <div class="icon" style="background-color: #01e0ee">
+          <div class="icon" style="background-color: #01e0ee; cursor: pointer" @click="eqpStatus()">
             <i class="el-icon-setting" />
           </div>
           <div class="num">
@@ -50,9 +50,9 @@
           </div>
           <div class="num">
             <span>6</span>
-            <p>子用户数</p>
+            <p>工单数</p>
           </div>
-          <el-button @click="manageUsers()">管理用户</el-button>
+          <el-button @click="manageOrders()">管理工单</el-button>
         </el-card>
       </div>
     </el-card>
@@ -88,8 +88,11 @@ export default {
     getRadioValue(v) {
       this.title = this.radioValue
     },
+    eqpStatus() {
+      this.$router.push({ name: 'views/fab/status/eqpstatusList' })
+    },
     manageEqp() {
-      this.$router.push({ name: 'views/rpt/showDatas/eqpInfo' })
+      this.$router.push({ name: 'views/fab/property/fabAssetList' })
     },
     manageModel() {
       this.$router.push({ name: 'views/fab/eqp/fabeqpTemplate' })
@@ -97,8 +100,8 @@ export default {
     viewAlarms() {
       this.$router.push({ name: 'views/alarm/log/index' })
     },
-    manageUsers() {
-      this.$router.push({ name: 'views/fab/iot/iotUsers' })
+    manageOrders() {
+      this.$router.push({ name: 'views/order/orderManage/overviewOrder' })
     }
   }
 }

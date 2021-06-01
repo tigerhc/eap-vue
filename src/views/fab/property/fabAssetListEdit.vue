@@ -42,6 +42,9 @@
       <w-table-col name="sensorType" label="传感器类型" align="left">
         <el-input v-model="table.model.sensorType" />
       </w-table-col>
+      <w-table-col name="sensorNum" label="传感器编号" align="left">
+        <el-input v-model="table.model.sensorNum" />
+      </w-table-col>
       <w-table-col name="sensorName" label="传感器名称" align="left">
         <el-input v-model="table.model.sensorName" />
       </w-table-col>
@@ -49,14 +52,13 @@
   </div>
 </template>
 <script>
-import request from '@/utils/request'
+// import request from '@/utils/request'
 export default {
   name: 'MachineModel',
   data() {
     return {
-      eqpName1: '',
-      eqpType1: '',
       model: {
+        eqpName: '',
         location_x: '',
         location_y: '',
         eqpId: '',
@@ -77,7 +79,8 @@ export default {
       table: {
         model: {
           sensorType: '',
-          sensorName: ''
+          sensorName: '',
+          sensorNum: ''
         },
         datas: []
       },
@@ -98,7 +101,6 @@ export default {
           if (m.officeIds) {
             m.officeIds = m.officeIds.split(',')
           }
-
           return m
         },
         beforeSubmit: (params, type) => {
@@ -114,21 +116,23 @@ export default {
     }
   },
   mounted() {
-    this.getA()
+    // this.getA()
+    // this.table.model.sensorName = `${this.model.eqpName}_传感器1`
+    console.log(this.model.eqpName)
   },
   methods: {
     onDisplayChange(e) {
       this.model.modelName = e
-    },
-    getA() {
-      const id = this.$route.query.id
-      return request({
-        url: `/fab/fabequipment/${id}/find`,
-        method: `get`
-      }).then((res) => {
-        this.table.model.sensorName = `${res.data.results.eqpName}_传感器1`
-      })
     }
+    // getA() {
+    //   const id = this.$route.query.id
+    //   return request({
+    //     url: `/fab/fabequipment/${id}/find`,
+    //     method: `get`
+    //   }).then((res) => {
+    //     this.table.model.sensorName = `${res.data.results.eqpName}_传感器1`
+    //   })
+    // }
   }
 }
 </script>

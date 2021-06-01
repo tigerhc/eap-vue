@@ -1,56 +1,122 @@
 <template>
-  <div class="menu app-container calendar-list-container">
-    <div class="menu-one">
-      <div
-        v-for="(item, index) in options"
-        :class="[num1 === index ? 'active' : '', 'menu-one-item']"
-        :key="index"
-        @click="getIndex1(index)"
-      >
-        {{ item.label }}
-        <i class="el-icon-caret-right" />
+  <el-card>
+    <div slot="header" class="clearfix">
+      <span>新增设备模板</span>
+    </div>
+
+    <el-row style="margin-bottom: 15px">
+      <el-select v-model="model.eqpModelValue" placeholder="设备类型">
+        <el-option v-for="item in eqpModelOptions" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+      <el-select v-model="model.temNameValue" placeholder="模板名称">
+        <el-option v-for="item in temNameOptions" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+    </el-row>
+    <div class="menu">
+      <div class="menu-one">
+        <div
+          v-for="(item, index) in options"
+          :class="[num1 === index ? 'active' : '', 'menu-one-item']"
+          :key="index"
+          @click="getIndex1(index)"
+        >
+          {{ item.label }}
+          <i class="el-icon-caret-right" />
+        </div>
+      </div>
+      <div class="menu-two">
+        <div
+          v-for="(item1, index1) in obj1"
+          :class="[num2 === index1 ? 'active' : '', 'menu-two-item']"
+          :key="index1"
+          @click="getIndex2(index1)"
+        >
+          {{ item1.label }}
+          <i class="el-icon-caret-right" />
+        </div>
+      </div>
+      <div class="menu-three">
+        <el-table ref="multipleTable" :data="obj2" tooltip-effect="dark" style="width: 100%" @row-click="rowClick">
+          <el-table-column label width="50">
+            <template slot-scope="scope">
+              <el-radio :label="scope.row.eqpmodel" v-model="radioId">&nbsp;</el-radio>
+            </template>
+          </el-table-column>
+          <el-table-column prop="eqpmodel" label="名称/型号" />
+          <el-table-column prop="brand" label="品牌" width="120" />
+          <el-table-column prop="acqmode" label="数量" @click="editRow(row)">
+            <template slot-scope="scope">
+              <span
+                v-show="!showVisiable || editIndex != scope.$index"
+                class="editCell"
+                style="width: 120px"
+                @click="editCurrRow(scope.$index, 'rowkeY')"
+                >{{ scope.row.acqmode }}</span
+              >
+              <el-input
+                v-show="showVisiable && editIndex == scope.$index"
+                :id="scope.$index + 'rowkeY'"
+                v-model="scope.row.acqmode"
+                size="mini"
+                style="width: 120px"
+                @blur="showVisiable = false"
+              />
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          :current-page="1"
+          :page-sizes="[5, 10, 15, 20]"
+          :page-size="100"
+          :total="10"
+          layout="total, sizes, prev, pager, next, jumper"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
       </div>
     </div>
-    <div class="menu-two">
-      <div
-        v-for="(item1, index1) in obj1"
-        :class="[num2 === index1 ? 'active' : '', 'menu-two-item']"
-        :key="index1"
-        @click="getIndex2(index1)"
-      >
-        {{ item1.label }}
-        <i class="el-icon-caret-right" />
-      </div>
-    </div>
-    <div class="menu-three">
-      <el-table ref="multipleTable" :data="obj2" tooltip-effect="dark" style="width: 100%" @row-click="rowClick">
-        <el-table-column label width="50">
-          <template slot-scope="scope">
-            <el-radio :label="scope.row.eqpmodel" v-model="radioId">&nbsp;</el-radio>
-          </template>
-        </el-table-column>
-        <el-table-column prop="eqpmodel" label="名称/型号" />
-        <el-table-column prop="brand" label="品牌" width="120" />
-        <el-table-column prop="acqmode" label="采集方式" />
-      </el-table>
-      <el-pagination
-        :current-page="1"
-        :page-sizes="[5, 10, 15, 20]"
-        :page-size="100"
-        :total="10"
-        layout="total, sizes, prev, pager, next, jumper"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
-    </div>
-  </div>
+    <el-row style="margin-bottom: 15px">
+      <el-col :span="8">
+        <label>创建人：</label>
+        <el-input v-model="model.createBy" :disabled="true" />
+      </el-col>
+      <el-col :span="8">
+        <label>创建日期：</label>
+        <el-input v-model="model.createDate" :disabled="true" />
+      </el-col>
+      <el-col :span="8">
+        <label>有效标志：</label>
+        <el-select v-model="model.activeFlag" placeholder="请选择有效标志">
+          <el-option v-for="item in activeFlagO" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="8">
+        <label>修改人：</label>
+        <el-input v-model="model.updateBy" :disabled="true" />
+      </el-col>
+      <el-col :span="8">
+        <label>修改日期：</label>
+        <el-input v-model="model.updateDate" :disabled="true" />
+      </el-col>
+      <el-col :span="8">
+        <label>备注：</label>
+        <el-input v-model="model.remarks" />
+      </el-col>
+    </el-row>
+  </el-card>
 </template>
 <script>
-// import x from ''
+import { fetchDict } from '@/api/sys/dict.js'
+import dateFormat from '@/utils/dateformat'
+
 export default {
   components: {},
   data() {
     return {
+      showVisiable: false, // 控制显隐
+      editIndex: -1, // 当前编辑行index
       pageInfo: {
         total: 0
       },
@@ -272,15 +338,45 @@ export default {
       num1: 0,
       num2: 0,
       tableData: [],
-      multipleSelection: []
+      multipleSelection: [],
+      activeFlagO: [],
+      temNameOptions: [],
+      eqpModelOptions: [], // ////
+      model: {
+        updateBy: '',
+        eqpModelValue: '',
+        temNameValue: '',
+        activeFlag: '',
+        remarks: '',
+        delFlag: 0,
+        updateDate: '',
+        createDate: '',
+        createBy: ''
+      }
     }
   },
   mounted() {
     this.getMenuOne()
     this.getMenuTwo()
-    this.radioId = this.obj2[0].eqpmodel
+    // this.radioId = this.obj2[0].eqpmodel
+
+    fetchDict('ACTIVE_FLAG').then((res) => {
+      this.activeFlagO = res.data
+    })
+    this.model.createBy = this.$store.getters.roles[0]
+    this.model.createDate = dateFormat(new Date())
   },
   methods: {
+    editCurrRow(rowId, str) {
+      this.editIndex = rowId // 不加editIndex,整个列都会一块变成可编辑
+      this.showVisiable = true
+      const id = rowId + str
+      // 也可以用this.$nextTick，个人感觉加个0.01秒的延时比下次渲染灵活一点
+      setTimeout(() => {
+        document.getElementById(id).focus()
+      }, 100)
+    },
+
     handleSizeChange() {},
     handleCurrentChange() {},
     rowClick(row) {
@@ -324,7 +420,12 @@ export default {
 * {
   box-sizing: border-box;
 }
-
+.el-input {
+  width: 400px;
+}
+.editCell:hover {
+  cursor: pointer;
+}
 .el-table {
   height: 100%;
   overflow: hidden;
@@ -335,10 +436,7 @@ export default {
   background-color: #ebeef5;
   border-left: 3px solid #3c78ff;
 }
-
 .menu {
-  width: 100%;
-  height: 500px;
   display: flex;
 }
 .menu-one,
@@ -347,12 +445,15 @@ export default {
   flex: 1;
   overflow: hidden;
   overflow-y: auto;
+  margin-bottom: 20px;
+  border: 1px solid #eee;
 }
 .menu-three {
   flex: 3;
   height: 500px;
   position: relative;
   border: 1px solid #eee;
+  margin-bottom: 20px;
 }
 .menu-one-item,
 .menu-two-item {
@@ -363,7 +464,7 @@ export default {
   border-top: 1px solid #eee;
   border-right: 1px solid #eee;
   border-bottom: 1px solid #eee;
-  /* background-color: #fff; */
+
   display: flex;
   justify-content: space-between;
   align-items: center;

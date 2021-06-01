@@ -1,8 +1,8 @@
 <template>
   <w-form v-bind="formConf" :col="3" :model="model">
-    <el-input v-model="model.eqpId" label="设备号" />
-    <el-input v-model="model.eqpNo" label="设备序号" />
-    <el-input v-model="model.eqpName" label="设备说明" />
+    <el-input v-model="model.sorId" label="传感器号" />
+    <el-input v-model="model.sorNo" label="传感器序号" />
+    <el-input v-model="model.sorName" label="传感器名称" />
     <el-input v-model="model.fab" label="厂别" />
     <el-input v-model="model.lineNo" label="线别" />
     <w-select-dept v-model="model.officeIds" label="部门" />
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       model: {
-        eqpId: '',
+        sorId: '',
         officeIds: [],
         bcCode: '',
         ip: '',
@@ -47,7 +47,7 @@ export default {
         modelId: '',
         eqpParam: '',
         location: '',
-        takeTime: '',
+        takeTime: 0,
         clientFlag: '',
         activeFlag: '',
         delFlag: 0,
@@ -56,15 +56,15 @@ export default {
       },
 
       formConf: {
-        url: '/fab/fabequipment/',
+        url: 'fab/fabSensor',
         title: {
           ADD: '新增传感器',
           EDIT: '修改传感器',
           VIEW: '设备详情'
         },
         rules: {
-          eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
-          modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
+          sorId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
+          sorName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
           activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
         },
         onLoadData: (m, type) => {

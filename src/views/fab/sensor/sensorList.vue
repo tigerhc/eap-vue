@@ -1,11 +1,11 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-slot="{}" v-bind="table" url="/fab/fabequipment" sort="sortNo.asc">
+    <w-table v-slot="{}" v-bind="table" url="fab/fabSensor" sort="sortNo.asc">
       <!--todo fixed属性导致当前列变为第一列-->
       <!--      <w-table-col name="eqpId" label="设备号" sort fixed align="left" handler="view" query condition="in"/>-->
       <w-table-col
-        name="eqpId"
-        label="设备号"
+        name="sorId"
+        label="传感器号"
         sort
         fixed
         align="left"
@@ -16,8 +16,8 @@
         namekey="id"
         condition="in"
       />
-      <w-table-col name="eqpName" label="设备说明" align="left" />
-      <w-table-col name="officeName" label="部门" width="100" align="left" />
+      <w-table-col name="sorName" label="传感器名称" align="left" />
+      <w-table-col name="officeId" label="部门" width="100" align="left" />
       <w-table-col name="modelName" label="设备型号" align="left" />
       <w-table-col name="bcCode" label="BC号" align="center" />
       <w-table-col name="ip" label="机台IP地址" align="center" />

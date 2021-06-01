@@ -53,6 +53,8 @@
 </template>
 <script>
 // import request from '@/utils/request'
+import dateFormat from '@/utils/dateformat'
+
 export default {
   name: 'MachineModel',
   data() {
@@ -100,6 +102,7 @@ export default {
           console.info(m)
           if (m.officeIds) {
             m.officeIds = m.officeIds.split(',')
+            console.log(m.officeIds)
           }
           return m
         },
@@ -116,6 +119,8 @@ export default {
     }
   },
   mounted() {
+    this.model.createBy = this.$store.getters.roles[0]
+    this.model.createDate = dateFormat(new Date())
     // this.getA()
     // this.table.model.sensorName = `${this.model.eqpName}_传感器1`
     console.log(this.model.eqpName)

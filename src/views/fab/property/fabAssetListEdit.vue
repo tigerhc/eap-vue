@@ -38,7 +38,7 @@
       <el-input v-model="model.locationY" label="经度坐标" />
     </w-form>
     <div style="border-top: 1px solid #ddd; padding: 5px 0; margin: 10px 0" />
-    <w-edt-table v-slot="{}" ref="language" v-bind="table" url="111">
+    <!-- <w-edt-table v-slot="{}" ref="language" v-bind="table" url="">
       <w-table-col name="sensorType" label="传感器类型" align="left">
         <el-input v-model="table.model.sensorType" />
       </w-table-col>
@@ -48,7 +48,7 @@
       <w-table-col name="sensorName" label="传感器名称" align="left">
         <el-input v-model="table.model.sensorName" />
       </w-table-col>
-    </w-edt-table>
+    </w-edt-table> -->
   </div>
 </template>
 <script>
@@ -60,6 +60,10 @@ export default {
   data() {
     return {
       model: {
+        updateDate: '',
+        updateByName: '',
+        createByName: '',
+        createDate: '',
         eqpName: '',
         location_x: '',
         location_y: '',
@@ -71,7 +75,7 @@ export default {
         modelId: '',
         eqpParam: '',
         location: '',
-        takeTime: '',
+        takeTime: 0,
         clientFlag: '',
         activeFlag: '',
         delFlag: 0,
@@ -119,8 +123,11 @@ export default {
     }
   },
   mounted() {
-    this.model.createBy = this.$store.getters.roles[0]
+    this.model.updateByName = this.$store.getters.roles[0]
+    this.model.createByName = this.$store.getters.roles[0]
     this.model.createDate = dateFormat(new Date())
+    this.model.updateDate = dateFormat(new Date())
+
     // this.getA()
     // this.table.model.sensorName = `${this.model.eqpName}_传感器1`
     console.log(this.model.eqpName)

@@ -47,7 +47,7 @@ export default {
         modelId: '',
         eqpParam: '',
         location: '',
-        takeTime: '',
+        takeTime: 0,
         clientFlag: '',
         activeFlag: '',
         delFlag: 0,

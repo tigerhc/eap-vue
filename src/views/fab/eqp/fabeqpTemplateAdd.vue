@@ -8,9 +8,10 @@
       <el-select v-model="model.eqpModelValue" placeholder="设备类型">
         <el-option v-for="item in eqpModelOptions" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
-      <el-select v-model="model.temNameValue" placeholder="模板名称">
+      <el-input v-model="model.temNameValue" placeholder="模板名称"/>
+      <!-- <el-select v-model="model.temNameValue" placeholder="模板名称">
         <el-option v-for="item in temNameOptions" :key="item.value" :label="item.label" :value="item.value" />
-      </el-select>
+      </el-select> -->
     </el-row>
     <div class="menu">
       <div class="menu-one">
@@ -110,6 +111,7 @@
 <script>
 import { fetchDict } from '@/api/sys/dict.js'
 import dateFormat from '@/utils/dateformat'
+import request from '@/utils/request'
 
 export default {
   components: {},
@@ -359,7 +361,7 @@ export default {
     this.getMenuOne()
     this.getMenuTwo()
     // this.radioId = this.obj2[0].eqpmodel
-
+    this.getEqpModel()
     fetchDict('ACTIVE_FLAG').then((res) => {
       this.activeFlagO = res.data
     })
@@ -367,6 +369,14 @@ export default {
     this.model.createDate = dateFormat(new Date())
   },
   methods: {
+    getEqpModel() {
+      return request({
+        url: 'fab/fabequipmentmodel/noTemClassCodeList',
+        method: 'get'
+      }).then((res) => {
+        console.log(res)
+      })
+    },
     editCurrRow(rowId, str) {
       this.editIndex = rowId // 不加editIndex,整个列都会一块变成可编辑
       this.showVisiable = true

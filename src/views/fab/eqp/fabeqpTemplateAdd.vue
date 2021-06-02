@@ -37,12 +37,14 @@
         </div>
       </div>
       <div class="menu-three">
-        <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @row-click="rowClick">
-          <el-table-column label width="50">
-            <template slot-scope="scope">
-              <el-radio :label="scope.row.treeValue" v-model="radioId">&nbsp;</el-radio>
-            </template>
-          </el-table-column>
+        <el-table
+          ref="multipleTable"
+          :data="tableData"
+          tooltip-effect="dark"
+          style="width: 100%"
+          @selection-change="change"
+        >
+          <el-table-column type="selection" width="55"/>
           <el-table-column prop="treeValue" label="名称/型号" />
           <el-table-column prop="num" label="数量" @click="editRow(row)">
             <template slot-scope="scope">
@@ -121,7 +123,6 @@ export default {
       pageInfo: {
         total: 0
       },
-      radioId: '',
       options1: [
         {
           value: '选项1',
@@ -195,7 +196,7 @@ export default {
         }
       ],
       obj1: [],
-
+      arr: [],
       num1: 0,
       num2: 0,
       tableData: [],
@@ -231,6 +232,13 @@ export default {
     // this.getBb()
   },
   methods: {
+    change(v) {
+      console.log(v)
+      this.obj.subClassCode = v.treeValue
+      this.arr.push(this.obj)
+      console.log(this.arr)
+    },
+
     getEqpModel() {
       return request({
         url: 'fab/fabequipmentmodel/noTemClassCodeList',
@@ -276,7 +284,6 @@ export default {
       this.num1 = idx
       this.num2 = 0
       this.obj.parentType = this.options[idx].treeValue
-      console.log(this.obj)
       this.getSubClassCode()
       this.getTableDatas()
     },
@@ -284,7 +291,6 @@ export default {
     getIndex2(idx) {
       this.num2 = idx
       this.obj.type = this.obj1[idx].treeValue
-      console.log(this.obj)
       this.getTableDatas()
       // this.radioId = this.obj2[0].eqpmodel
     },

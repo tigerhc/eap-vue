@@ -6,9 +6,9 @@
     <el-select v-model="model.subEqpId" placeholder="请选择" label="设备号">
       <el-option v-for="item in options1" :key="item.id" :label="item.id" :value="item.id" />
     </el-select>
-    <el-input v-model="model.paramsCode" label="参数CODE" />
-    <el-input v-model="model.paramsName" label="参数名称" />
-    <el-input v-model="model.paramsUnit" label="计量单位" />
+    <el-input v-model="model.paramCode" label="参数CODE" />
+    <el-input v-model="model.paramName" label="参数名称" />
+    <el-input v-model="model.paramUnit" label="计量单位" />
     <el-input v-model="model.setValue" label="设定值" />
     <el-input v-model="model.maxValue" label="最大值" />
     <el-input v-model="model.minValue" label="最小值" />

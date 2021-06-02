@@ -31,7 +31,6 @@ export default {
       this.loading = true
       this.api.anylist({ 'page.size': 99999, queryFields: [this.namekey, this.valuekey, ''].join() }).then(
         (resp) => {
-          console.log(resp)
           this.data = (resp && resp.results) || []
           this.loading = false
         },

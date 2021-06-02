@@ -50,7 +50,7 @@ export default {
       },
 
       formConf: {
-        url: '/fab/fabequipment/',
+        url: '/edc/edcparamdefinemodel',
         title: {
           ADD: '新增设备',
           EDIT: '修改设备',

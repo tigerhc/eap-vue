@@ -3,7 +3,7 @@
     <w-table v-slot="{ row }" v-bind="table" url="/edc/edcparamdefinemodel" sort="alarmCode.asc">
       <!--todo fixed属性导致当前列变为第一列-->
       <w-table-col
-        name="alarmCode"
+        name="paramsCode"
         label="编码"
         width="120"
         sort
@@ -13,27 +13,20 @@
         query
         condition="like"
       />
-      <w-table-col name="eqpModelName" label="设备类型" align="left" /><w-table-col
-        name="subEqpId"
-        label="设备号"
-        align="center"
-        dict
-        query
-        condition="eq"
-      />
-      <w-table-col name="alarmName" label="名称" align="left" />
+      <w-table-col name="subEqpId" label="设备号" align="center" dict query condition="eq" />
+      <w-table-col name="paramsName" label="名称" align="left" />
       <w-table-col name="maxValue" label="最大值" width="100" align="center" />
       <w-table-col name="minValue" label="最小值" width="100" align="center" />
-      <w-table-col name="defValue" label="设定值" width="100" align="center" />
+      <w-table-col name="setValue" label="设定值" width="100" align="center" />
 
       <w-table-col
-        name="eqpModelId"
+        name="modelId"
         label="设备型号"
         hidden
         query
         dict
         url="/fab/fabequipmentmodel/list"
-        namekey="modelName"
+        namekey="modelId"
         condition="eq"
         filterable
       />
@@ -44,14 +37,14 @@
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
       <!-- <w-table-button v-if="row.monitorFlag == 0" name="enable" label="启用" tip="确认启用报警？" icon="el-icon-bell" /> -->
       <!-- type='danger'  -->
-      <w-table-button
+      <!-- <w-table-button
         v-if="row.monitorFlag == 1"
         name="diable"
         label="停用"
         tip="确认停用报警？"
         icon="el-icon-circle-close"
         type="warning"
-      />
+      />-->
     </w-table>
   </div>
 </template>

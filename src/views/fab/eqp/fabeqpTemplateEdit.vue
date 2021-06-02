@@ -24,7 +24,7 @@
           <i class="el-icon-caret-right" />
         </div>
       </div>
-      <div class="menu-two">
+      <div v-if="isShow" class="menu-two">
         <div
           v-for="(item1, index1) in obj1"
           :class="[num2 === index1 ? 'active' : '', 'menu-two-item']"
@@ -105,6 +105,10 @@
         <el-input v-model="model.remarks" />
       </el-col>
     </el-row>
+    <div class="btn">
+      <el-button>取消</el-button>
+      <el-button type="primary">确认</el-button>
+    </div>
   </el-card>
 </template>
 <script>
@@ -115,6 +119,7 @@ export default {
   components: {},
   data() {
     return {
+      isShow: false,
       showVisiable: false, // 控制显隐
       editIndex: -1, // 当前编辑行index
       pageInfo: {
@@ -477,5 +482,11 @@ export default {
   bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
+}
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
 }
 </style>

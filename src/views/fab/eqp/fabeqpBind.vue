@@ -13,9 +13,9 @@
         url="fab/fabequipment/eqpIdlist"
       />
       <!--tip="确认查看"-->
-      <w-table-col name="name" label="模板名称" width="300" />
+      <w-table-col name="templateName" label="模板名称" width="300" />
       <w-table-col name="officeId" label="部门名称" width="300" />
-      <w-table-col name="classCode" label="子设备类型" width="200" />
+      <w-table-col name="subClassCode" label="子设备类型" width="200" />
       <w-table-col name="eqpId" label="传感器编号" width="200" />
       <w-table-toolbar name="batchDelete" hidden />
       <w-table-toolbar name="clean" hidden />
@@ -40,7 +40,7 @@ export default {
       },
       model: {
         manufacturerName: '',
-        classCode: '',
+        subClassCode: '',
         smlPath: '',
         hostJavaClass: '',
         iconPath: '',
@@ -76,7 +76,7 @@ export default {
       )
     },
     deal(row) {
-      return { ...row, addfield: row.manufacturerName + '-' + row.classCode }
+      return { ...row, addfield: row.manufacturerName + '-' + row.subClassCode }
     }
   }
 }

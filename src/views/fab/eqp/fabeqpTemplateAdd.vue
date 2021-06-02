@@ -25,7 +25,7 @@
           <i class="el-icon-caret-right" />
         </div>
       </div>
-      <div class="menu-two">
+      <div v-if="isShow" class="menu-two">
         <div
           v-for="(item1, index1) in obj1"
           :class="[num2 === index1 ? 'active' : '', 'menu-two-item']"
@@ -36,10 +36,11 @@
           <i class="el-icon-caret-right" />
         </div>
       </div>
-      <div class="menu-three">
+      <div v-if="show" class="menu-three">
         <el-table
           ref="multipleTable"
           :data="tableData"
+          :row-class-name="tableRowClassName"
           tooltip-effect="dark"
           style="width: 100%"
           @selection-change="change"
@@ -107,6 +108,10 @@
         <el-input v-model="model.remarks" />
       </el-col>
     </el-row>
+    <div class="btn">
+      <el-button>取消</el-button>
+      <el-button type="primary">确认</el-button>
+    </div>
   </el-card>
 </template>
 <script>
@@ -118,6 +123,8 @@ export default {
   components: {},
   data() {
     return {
+      isShow: false,
+      show: false,
       showVisiable: false, // 控制显隐
       editIndex: -1, // 当前编辑行index
       pageInfo: {
@@ -210,12 +217,16 @@ export default {
     // this.getBb()
   },
   methods: {
-    change(v) {
-      console.log(v)
-      this.obj.subClassCode = v.treeValue
-      this.arr.push(this.obj)
-      console.log(this.arr)
+    tableRowClassName(row, rowIndex) {
+      console.log(row, rowIndex)
     },
+
+    // change(v) {
+    //   console.log(v)
+    //   this.obj.subClassCode = v.treeValue
+    //   this.arr.push(this.obj)
+    //   console.log(this.arr)
+    // },
 
     getEqpModel() {
       return request({
@@ -257,6 +268,7 @@ export default {
     },
     // // 一级菜单点击时间
     getIndex1(idx) {
+      this.isShow = true
       this.num1 = idx
       this.num2 = 0
       this.obj.parentType = this.options[idx].treeValue
@@ -265,6 +277,7 @@ export default {
     },
     // 二级菜单点击时间
     getIndex2(idx) {
+      this.show = true
       this.num2 = idx
       this.obj.type = this.obj1[idx].treeValue
       this.getTableDatas()
@@ -296,6 +309,12 @@ export default {
 * {
   box-sizing: border-box;
 }
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+}
 .el-input {
   width: 400px;
 }
@@ -318,14 +337,14 @@ export default {
 .menu-one,
 .menu-two {
   height: 500px;
-  flex: 1;
+  width: 25%;
   overflow: hidden;
   overflow-y: auto;
   margin-bottom: 20px;
   border: 1px solid #eee;
 }
 .menu-three {
-  flex: 3;
+  width: 50%;
   height: 500px;
   position: relative;
   border: 1px solid #eee;

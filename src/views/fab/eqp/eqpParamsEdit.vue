@@ -9,7 +9,7 @@
     <el-input v-model="model.paramsCode" label="参数CODE" />
     <el-input v-model="model.paramsName" label="参数名称" />
     <el-input v-model="model.paramsUnit" label="计量单位" />
-    <el-input v-model="model.defValue" label="设定值" />
+    <el-input v-model="model.setValue" label="设定值" />
     <el-input v-model="model.maxValue" label="最大值" />
     <el-input v-model="model.minValue" label="最小值" />
     <el-input v-model="model.remarks" type="textarea" label="备注" />

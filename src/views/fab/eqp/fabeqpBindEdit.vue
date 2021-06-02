@@ -5,8 +5,8 @@
     <el-select v-model="model.eqpId" placeholder="请选择" label="传感器编号">
       <el-option v-for="item in options" :key="item.id" :label="item.id" :value="item.id" />
     </el-select>
-    <el-input v-model="model.classCode" label="子设备类型" />
-    <el-input v-model="model.name" label="模板名称" />
+    <el-input v-model="model.subClassCode" label="子设备类型" />
+    <el-input v-model="model.templateName" label="模板名称" />
     <el-input v-model="model.officeId" label="部门名称" />
     <el-input v-model="model.createBy" :disabled="true" label="创建人" />
     <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
@@ -42,7 +42,7 @@ export default {
         createBy: '',
         createDate: '',
         updateDate: '',
-        classCode: ''
+        subClassCode: ''
       },
 
       formConf: {
@@ -82,7 +82,7 @@ export default {
       this.model.modelName = e
     },
     getSorsenNum() {
-      const query = this.model.classCode
+      const query = this.model.subClassCode
       return request({
         url: `fab/fabSensor/sorIdlist/${query}`,
         methods: 'get'

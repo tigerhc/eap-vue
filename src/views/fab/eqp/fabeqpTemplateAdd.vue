@@ -21,7 +21,7 @@
           :key="index"
           @click="getIndex1(index)"
         >
-          {{ item.label }}
+          {{ item.treeValue }}
           <i class="el-icon-caret-right" />
         </div>
       </div>
@@ -32,32 +32,31 @@
           :key="index1"
           @click="getIndex2(index1)"
         >
-          {{ item1.label }}
+          {{ item1.treeValue }}
           <i class="el-icon-caret-right" />
         </div>
       </div>
       <div class="menu-three">
-        <el-table ref="multipleTable" :data="obj2" tooltip-effect="dark" style="width: 100%" @row-click="rowClick">
+        <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @row-click="rowClick">
           <el-table-column label width="50">
             <template slot-scope="scope">
-              <el-radio :label="scope.row.eqpmodel" v-model="radioId">&nbsp;</el-radio>
+              <el-radio :label="scope.row.type" v-model="radioId">&nbsp;</el-radio>
             </template>
           </el-table-column>
-          <el-table-column prop="eqpmodel" label="名称/型号" />
-          <el-table-column prop="brand" label="品牌" width="120" />
-          <el-table-column prop="acqmode" label="数量" @click="editRow(row)">
+          <el-table-column prop="treeValue" label="名称/型号" />
+          <el-table-column prop="num" label="数量" @click="editRow(row)">
             <template slot-scope="scope">
               <span
                 v-show="!showVisiable || editIndex != scope.$index"
                 class="editCell"
                 style="width: 120px"
                 @click="editCurrRow(scope.$index, 'rowkeY')"
-                >{{ scope.row.acqmode }}</span
+                >{{ scope.row.num }}</span
               >
               <el-input
                 v-show="showVisiable && editIndex == scope.$index"
                 :id="scope.$index + 'rowkeY'"
-                v-model="scope.row.acqmode"
+                v-model="scope.row.num"
                 size="mini"
                 style="width: 120px"
                 @blur="showVisiable = false"
@@ -149,194 +148,54 @@ export default {
       value1: '',
       options: [
         {
-          label: '传感器',
-          children: [
+          delFlag: '0',
+          treeModelList: [
             {
-              label: '振动传感器',
-              children: [
+              delFlag: '0',
+              treeModelList: [
                 {
-                  eqpmodel: '振动传感器RS-485',
-                  brand: '智泽',
-                  acqmode: '云端'
+                  delFlag: '0',
+                  treeNode: 'subClassCode',
+                  treeValue: '800ONM',
+                  num: '0'
                 },
                 {
-                  eqpmodel: '振动传感器LoRa',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器 NB',
-                  brand: '智泽',
-                  acqmode: '云端'
+                  delFlag: '0',
+                  treeNode: 'subClassCode',
+                  treeValue: '111',
+                  num: '0'
                 }
-              ]
-            },
-            {
-              label: '土壤传感器',
-              children: [
-                {
-                  eqpmodel: '土壤PH传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '土壤温湿度传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '土壤温湿度电导率',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '土壤水分传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                }
-              ]
-            },
-            {
-              label: '水质传感器',
-              children: [
-                {
-                  eqpmodel: '电导率传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: 'PH传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '氨氮传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '氨氮传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: 'ORP传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '溶解氧传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                }
-              ]
+              ],
+              treeNode: 'type',
+              treeValue: '11'
             }
-          ]
+          ],
+          treeNode: 'parentType',
+          treeValue: '11'
         },
         {
-          value: 'zujian',
-          label: 'IO控制器',
-          children: [
+          delFlag: '0',
+          treeModelList: [
             {
-              value: 'basic',
-              label: 'Basic',
-              children: [
+              delFlag: '0',
+              treeModelList: [
                 {
-                  eqpmodel: '振动传感器RS-485',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器LoRa',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器 NB',
-                  brand: '智泽',
-                  acqmode: '云端'
+                  delFlag: '0',
+                  treeNode: 'subClassCode',
+                  treeValue: 'wdj',
+                  num: '0'
                 }
-              ]
-            },
-            {
-              value: 'form',
-              label: 'Form',
-              children: [
-                {
-                  eqpmodel: '振动传感器RS-485',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器LoRa',
-                  brand: '智泽',
-                  acqmode: '云端'
-                }
-              ]
+              ],
+              treeNode: 'type',
+              treeValue: 'wdj2'
             }
-          ]
-        },
-        {
-          value: 'ziyuan',
-          label: '仪器仪表',
-          children: [
-            {
-              value: 'axure',
-              label: 'Axure Components',
-              children: [
-                {
-                  eqpmodel: '振动传感器RS-485',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器LoRa',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器 NB',
-                  brand: '智泽',
-                  acqmode: '云端'
-                }
-              ]
-            },
-            {
-              value: 'sketch',
-              label: 'Sketch Templates',
-              children: [
-                {
-                  eqpmodel: '振动传感器RS-485',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器LoRa',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器 NB',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器 NB',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器 NB',
-                  brand: '智泽',
-                  acqmode: '云端'
-                }
-              ]
-            }
-          ]
+          ],
+          treeNode: 'parentType',
+          treeValue: 'wdj1'
         }
       ],
       obj1: [],
-      obj2: [],
+
       num1: 0,
       num2: 0,
       tableData: [],
@@ -358,17 +217,17 @@ export default {
     }
   },
   mounted() {
-    this.getMenuOne()
-    this.getMenuTwo()
+    this.getSubClassCode()
+    this.getTableDatas()
     // this.radioId = this.obj2[0].eqpmodel
-    this.getEqpModel()
+    // this.getEqpModel()
     fetchDict('ACTIVE_FLAG').then((res) => {
       this.activeFlagO = res.data
     })
     this.model.createBy = this.$store.getters.roles[0]
     this.model.createDate = dateFormat(new Date())
 
-    this.getAb()
+    // this.getAb()
     // this.getBb()
   },
   methods: {
@@ -397,33 +256,35 @@ export default {
       this.radioId = row.eqpmodel
     },
     // 获取一级菜单数据
-    getMenuOne() {
+    getSubClassCode() {
       this.options.forEach((item, index) => {
         if (this.num1 === index) {
-          this.obj1 = item.children
+          this.obj1 = item.treeModelList
+          console.log(this.obj1)
         }
       })
     },
-    // 获取二级菜单数据
-    getMenuTwo() {
+    // 获取三级菜单数据
+    getTableDatas() {
       this.obj1.forEach((item, index) => {
         if (this.num2 === index) {
-          this.obj2 = item.children
+          this.tableData = item.treeModelList
+          console.log(this.tableData)
         }
       })
     },
-    // 一级菜单点击时间
+    // // 一级菜单点击时间
     getIndex1(idx) {
       this.num1 = idx
       this.num2 = 0
       // this.radioId = this.obj2[0].eqpmodel
-      this.getMenuOne()
-      this.getMenuTwo()
+      this.getSubClassCode()
+      this.getTableDatas()
     },
     // 二级菜单点击时间
     getIndex2(idx) {
       this.num2 = idx
-      this.getMenuTwo()
+      this.getTableDatas()
       this.radioId = this.obj2[0].eqpmodel
     },
 

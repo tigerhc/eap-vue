@@ -3,18 +3,17 @@
     <w-table v-bind="table" :onloadsuccess="deal" url="/fab/fabequipmentmodel">
       <!--tip="确认查看"-->
       <w-table-col name="manufacturerName" label="设备厂家" query condition="like" fixed handler="view" />
-      <w-table-col name="classCode" label="设备类型" query condition="like" />
       <w-table-col
-        name="parentType"
-        label="设备大类"
-        align="left"
+        name="classCode"
+        label="设备类型"
         query
-        namekey="parentType"
+        condition="like"
         querymode="select"
         dict
-        condition="eq"
+        url="fab/fabequipmentmodel/classCodeList"
       />
-      <w-table-col name="type" label="设备小类" query namekey="type" querymode="select" dict condition="eq" />
+      <w-table-col name="parentType" label="设备大类" align="left" namekey="parentType" condition="eq" />
+      <w-table-col name="type" label="设备小类" namekey="type" condition="eq" />
 
       <w-table-col name="activeFlag" label="有效标志" width="200" dict="ACTIVE_FLAG" />
       <w-table-col name="updateDate" label="更新时间" width="200" sort query querymode="date" condition="between" />

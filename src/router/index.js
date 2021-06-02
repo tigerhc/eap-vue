@@ -44,6 +44,13 @@ export const constantRouterMap = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
+
+  {
+    path: '/product',
+    component: () => import('@/views/screen/product'),
+    hidden: true
+  },
+
   {
     path: '/oven/statusFull',
     component: () => import('@/views/map/tray/traychipmoveList'),

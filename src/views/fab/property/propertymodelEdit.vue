@@ -39,6 +39,8 @@
   </w-form>
 </template>
 <script>
+import dateFormat from '@/utils/dateformat'
+
 export default {
   name: 'EditDevice',
   data() {
@@ -86,6 +88,12 @@ export default {
         }
       }
     }
+  },
+  mounted() {
+    this.model.updateByName = this.$store.getters.roles[0]
+    this.model.createByName = this.$store.getters.roles[0]
+    this.model.createDate = dateFormat(new Date())
+    this.model.updateDate = dateFormat(new Date())
   },
   methods: {
     onDisplayChange(e) {

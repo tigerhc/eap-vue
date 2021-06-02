@@ -123,7 +123,6 @@ export default {
     },
     add(params) {
       this.api.create(params).then((res) => {
-        console.log(res.code)
         if (res.code === 0) {
           this.cancel()
           this.$notify({

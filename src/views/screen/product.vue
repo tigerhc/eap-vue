@@ -36,7 +36,7 @@
     <div class="box1">
       <p>设备号</p>
       <el-select v-model="eqpNum" placeholder="请选择设备号" @change="changeData">
-        <el-option v-for="item in eqpOptions" :key="item.value" :value="item.value"/>
+        <el-option v-for="item in eqpOptions" :key="item.value" :value="item.value" />
       </el-select>
     </div>
     <div class="box4">
@@ -52,7 +52,7 @@ export default {
   components: {},
   data() {
     return {
-      eqpOptions: [{ value: '11111' }, { value: '22222' }],
+      eqpOptions: [{ value: 'ICOONPLUS' }, { value: 'UTC5000' }],
       temperature: '',
       humidity: '',
       windspeed: '',

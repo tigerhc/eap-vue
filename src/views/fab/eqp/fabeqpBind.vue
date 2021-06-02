@@ -5,7 +5,7 @@
         <span>设备绑定</span>
       </div>
       <el-row>
-        <el-select v-model="parentEqpId" placeholder="请选择设备号">
+        <el-select v-model="parentEqpId.parentEqpId" placeholder="请选择设备号">
           <el-option v-for="item in eqpMode0ptions" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
         <el-button type="primary" style="margin-left: 15px" @click="search()">查询</el-button>
@@ -133,7 +133,7 @@ export default {
         pagesize2: 5
       },
       remarksValue: '',
-      parentEqpId: '',
+      parentEqpId: { parentEqpId: '' },
       eqpMode0ptions: [],
       // eqpTemplateDatas: [],
       eqpTemplateBindDatas: [
@@ -204,6 +204,7 @@ export default {
       })
     },
     search() {
+      console.log(this.parentEqpId)
       return request({
         url: `fab/iotequipmentbind/page`,
         methods: 'get',

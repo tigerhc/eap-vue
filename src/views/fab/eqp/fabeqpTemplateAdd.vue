@@ -40,7 +40,7 @@
         <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @row-click="rowClick">
           <el-table-column label width="50">
             <template slot-scope="scope">
-              <el-radio :label="scope.row.type" v-model="radioId">&nbsp;</el-radio>
+              <el-radio :label="scope.row.treeValue" v-model="radioId">&nbsp;</el-radio>
             </template>
           </el-table-column>
           <el-table-column prop="treeValue" label="名称/型号" />
@@ -201,7 +201,6 @@ export default {
       tableData: [],
       multipleSelection: [],
       activeFlagO: [],
-
       eqpModelOptions: [], // ////
       model: {
         updateBy: '',
@@ -213,7 +212,8 @@ export default {
         updateDate: '',
         createDate: '',
         createBy: ''
-      }
+      },
+      obj: { parentType: '', type: '', subClassCode: '' }
     }
   },
   mounted() {
@@ -253,14 +253,13 @@ export default {
     handleSizeChange() {},
     handleCurrentChange() {},
     rowClick(row) {
-      this.radioId = row.eqpmodel
+      this.radioId = row.treeValue
     },
     // 获取一级菜单数据
     getSubClassCode() {
       this.options.forEach((item, index) => {
         if (this.num1 === index) {
           this.obj1 = item.treeModelList
-          console.log(this.obj1)
         }
       })
     },
@@ -269,7 +268,6 @@ export default {
       this.obj1.forEach((item, index) => {
         if (this.num2 === index) {
           this.tableData = item.treeModelList
-          console.log(this.tableData)
         }
       })
     },
@@ -277,15 +275,18 @@ export default {
     getIndex1(idx) {
       this.num1 = idx
       this.num2 = 0
-      // this.radioId = this.obj2[0].eqpmodel
+      this.obj.parentType = this.options[idx].treeValue
+      console.log(this.obj)
       this.getSubClassCode()
       this.getTableDatas()
     },
     // 二级菜单点击时间
     getIndex2(idx) {
       this.num2 = idx
+      this.obj.type = this.obj1[idx].treeValue
+      console.log(this.obj)
       this.getTableDatas()
-      this.radioId = this.obj2[0].eqpmodel
+      // this.radioId = this.obj2[0].eqpmodel
     },
 
     getAb() {

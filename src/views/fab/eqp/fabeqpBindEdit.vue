@@ -46,7 +46,7 @@ export default {
       },
 
       formConf: {
-        url: '/fab/fabequipment/',
+        url: 'fab/iotequipmentbind',
         title: {
           ADD: '新增设备',
           EDIT: '修改设备',

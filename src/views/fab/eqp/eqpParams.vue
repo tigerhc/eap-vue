@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-slot="{ row }" v-bind="table" url="/edc/edcparamdefinemodel" sort="alarmCode.asc">
+    <w-table v-slot="{}" v-bind="table" url="/edc/edcparamdefinemodel" sort="alarmCode.asc">
       <!--todo fixed属性导致当前列变为第一列-->
       <w-table-col
         name="paramsCode"
@@ -18,7 +18,6 @@
       <w-table-col name="maxValue" label="最大值" width="100" align="center" />
       <w-table-col name="minValue" label="最小值" width="100" align="center" />
       <w-table-col name="setValue" label="设定值" width="100" align="center" />
-
       <w-table-col
         name="modelId"
         label="设备型号"

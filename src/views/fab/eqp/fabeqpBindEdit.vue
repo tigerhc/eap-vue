@@ -22,7 +22,7 @@ export default {
   name: 'MachineModel',
   data() {
     return {
-      options: '',
+      options: [],
       model: {
         eqpId: '',
         officeIds: [],

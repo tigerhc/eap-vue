@@ -44,7 +44,7 @@
           style="width: 100%"
           @selection-change="change"
         >
-          <el-table-column type="selection" width="55"/>
+          <el-table-column type="selection" width="55" />
           <el-table-column prop="treeValue" label="名称/型号" />
           <el-table-column prop="num" label="数量" @click="editRow(row)">
             <template slot-scope="scope">
@@ -123,30 +123,7 @@ export default {
       pageInfo: {
         total: 0
       },
-      options1: [
-        {
-          value: '选项1',
-          label: '黄金糕'
-        },
-        {
-          value: '选项2',
-          label: '双皮奶'
-        },
-        {
-          value: '选项3',
-          label: '蚵仔煎'
-        },
-        {
-          value: '选项4',
-          label: '龙须面'
-        },
-        {
-          value: '选项5',
-          label: '北京烤鸭'
-        }
-      ],
       value: '',
-      value1: '',
       options: [
         {
           delFlag: '0',
@@ -227,7 +204,8 @@ export default {
     })
     this.model.createBy = this.$store.getters.roles[0]
     this.model.createDate = dateFormat(new Date())
-
+    this.model.updateBy = this.$store.getters.roles[0]
+    this.model.updateDate = dateFormat(new Date())
     // this.getAb()
     // this.getBb()
   },
@@ -260,9 +238,7 @@ export default {
 
     handleSizeChange() {},
     handleCurrentChange() {},
-    rowClick(row) {
-      this.radioId = row.treeValue
-    },
+
     // 获取一级菜单数据
     getSubClassCode() {
       this.options.forEach((item, index) => {
@@ -292,7 +268,6 @@ export default {
       this.num2 = idx
       this.obj.type = this.obj1[idx].treeValue
       this.getTableDatas()
-      // this.radioId = this.obj2[0].eqpmodel
     },
 
     getAb() {

@@ -363,6 +363,8 @@ export default {
     fetchDict('ACTIVE_FLAG').then((res) => {
       this.activeFlagO = res.data
     })
+    this.model.createBy = this.$store.getters.roles[0]
+    this.model.createDate = dateFormat(new Date())
     this.model.updateBy = this.$store.getters.roles[0]
     this.model.updateDate = dateFormat(new Date())
   },

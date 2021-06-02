@@ -55,7 +55,11 @@ export default {
         iconPath: '',
         activeFlag: '',
         remarks: '',
-        delFlag: 0
+        delFlag: 0,
+        createByName: '',
+        createDate: '',
+        updateByName: '',
+        updateDate: ''
       },
 
       formConf: {

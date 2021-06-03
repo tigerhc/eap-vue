@@ -5,10 +5,13 @@
     </div>
 
     <el-row style="margin-bottom: 15px">
-      <el-select v-model="model.classCode" placeholder="设备类型">
+      <el-select v-model="model.eqpModelValue" placeholder="设备类型">
         <el-option v-for="item in eqpModelOptions" :key="item.id" :label="item.id" :value="item.id" />
       </el-select>
-      <el-input v-model="model.name" placeholder="模板名称" />
+      <el-input v-model="model.temNameValue" placeholder="模板名称" />
+      <!-- <el-select v-model="model.temNameValue" placeholder="模板名称">
+        <el-option v-for="item in temNameOptions" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select> -->
     </el-row>
     <div class="menu">
       <div class="menu-one">
@@ -106,6 +109,8 @@
 </template>
 <script>
 import { fetchDict } from '@/api/sys/dict.js'
+import { create } from '@/api/sys/data.js'
+
 import dateFormat from '@/utils/dateformat'
 import request from '@/utils/request'
 
@@ -212,36 +217,51 @@ export default {
     // this.getBb()
   },
   methods: {
+    submit() {
+      create(this.model).then((res) => {
+        console.log(res)
+      })
+    },
+
     change(rows, row) {
       const selected = rows.length && rows.indexOf(row) !== -1
       if (selected) {
         this.obj.subClassCode = row.treeValue
         this.obj.id = `${this.obj.parentType}${this.obj.type}${this.obj.subClassCode}`
         const sss = { ...this.obj }
-        this.model.fabModelTemplateBodyList.push(sss)
+        this.fabModelTemplateBodyList.push(sss)
       } else {
-        const id = `${this.obj.parentType}${this.obj.type}${this.obj.subClassCode}`
-        this.model.fabModelTemplateBodyList.forEach((item, index) => {
-          if (id === item.id) {
-            this.model.fabModelTemplateBodyList.splice(index)
+        const id = row.treeValue
+        this.fabModelTemplateBodyList.forEach((item, index) => {
+          if (id === item.subClassCode) {
+            this.fabModelTemplateBodyList.splice(index, 1)
           }
         })
       }
     },
-
+    toggleSelection(rows) {
+      if (rows && rows.length) {
+        rows.forEach((row) => {
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
+      } else {
+        this.$refs.multipleTable.clearSelection()
+      }
+    },
     getEqpModel() {
       return request({
         url: 'fab/fabequipmentmodel/noTemClassCodeList',
         method: 'get'
       }).then((res) => {
         this.eqpModelOptions = res.data.results
-        // console.log(res.data.results)
+        console.log(res.data.results)
       })
     },
     editCurrRow(rowId, str) {
-      this.editIndex = rowId
+      this.editIndex = rowId // 不加editIndex,整个列都会一块变成可编辑
       this.showVisiable = true
       const id = rowId + str
+      // 也可以用this.$nextTick，个人感觉加个0.01秒的延时比下次渲染灵活一点
       setTimeout(() => {
         document.getElementById(id).focus()
       }, 100)
@@ -268,14 +288,30 @@ export default {
     },
     // // 一级菜单点击时间
     getIndex1(idx) {
-      // this.isShow != this.isShow
       this.isShow = true
-      this.show = false
       this.num1 = idx
       this.num2 = 0
       this.obj.parentType = this.options[idx].treeValue
       this.getSubClassCode()
       this.getTableDatas()
+      const isCheckList = (() => {
+        const res = []
+        this.tableData.forEach((item) => {
+          if (this.fabModelTemplateBodyList.length) {
+            this.fabModelTemplateBodyList.forEach((it) => {
+              if (item.treeValue === it.subClassCode) {
+                res.push(item)
+              }
+            })
+          }
+        })
+        return res
+      })()
+      if (isCheckList.length) {
+        this.$nextTick(() => {
+          this.toggleSelection(isCheckList)
+        })
+      }
     },
     // 二级菜单点击时间
     getIndex2(idx) {
@@ -292,7 +328,7 @@ export default {
       }).then((res) => {
         this.options = res.data.results
       })
-    },
+    }
     // getBb() {
     //   return request({
     //     url: 'fab/fabModeltemplatebody/oneTemplateList/{modelId}"',
@@ -302,16 +338,6 @@ export default {
     //     console.log(res)
     //   })
     // }
-
-    submit() {
-      return request({
-        url: 'fab/fabModeltemplate/createNew',
-        methods: 'post',
-        params: this.model
-      }).then((res) => {
-        console.log(res)
-      })
-    }
   }
 }
 </script>

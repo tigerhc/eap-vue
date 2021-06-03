@@ -54,6 +54,7 @@ export default {
         },
         rules: {},
         onLoadData: (m, type) => {
+          console.log('11111111111111111111111111111111')
           console.info(m)
           if (m.officeIds) {
             m.officeIdsm.officeIds
@@ -76,6 +77,7 @@ export default {
     this.model.createBy = this.$store.getters.roles[0]
     this.model.createDate = dateFormat(new Date())
     this.model.updateDate = dateFormat(new Date())
+    this.getSorsenNum()
   },
   methods: {
     onDisplayChange(e) {

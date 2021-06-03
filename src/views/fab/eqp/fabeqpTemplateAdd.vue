@@ -5,13 +5,10 @@
     </div>
 
     <el-row style="margin-bottom: 15px">
-      <el-select v-model="model.eqpModelValue" placeholder="设备类型">
+      <el-select v-model="model.classCode" placeholder="设备类型">
         <el-option v-for="item in eqpModelOptions" :key="item.id" :label="item.id" :value="item.id" />
       </el-select>
-      <el-input v-model="model.temNameValue" placeholder="模板名称" />
-      <!-- <el-select v-model="model.temNameValue" placeholder="模板名称">
-        <el-option v-for="item in temNameOptions" :key="item.value" :label="item.label" :value="item.value" />
-      </el-select> -->
+      <el-input v-model="model.name" placeholder="模板名称" />
     </el-row>
     <div class="menu">
       <div class="menu-one">
@@ -103,7 +100,7 @@
     </el-row>
     <div class="btn">
       <el-button>取消</el-button>
-      <el-button type="primary">确认</el-button>
+      <el-button type="primary" @click="submit()">确认</el-button>
     </div>
   </el-card>
 </template>
@@ -127,55 +124,55 @@ export default {
       },
       value: '',
       options: [
-        {
-          delFlag: '0',
-          treeModelList: [
-            {
-              delFlag: '0',
-              treeModelList: [
-                {
-                  delFlag: '0',
-                  treeNode: 'subClassCode',
-                  treeValue: '800ONM',
-                  num: '0'
-                },
-                {
-                  delFlag: '0',
-                  treeNode: 'subClassCode',
-                  treeValue: '111',
-                  num: '0'
-                }
-              ],
-              treeNode: 'type',
-              treeValue: '11'
-            }
-          ],
-          treeNode: 'parentType',
-          treeValue: '11'
-        },
-        {
-          delFlag: '0',
-          treeModelList: [
-            {
-              delFlag: '0',
-              treeModelList: [
-                {
-                  delFlag: '0',
-                  treeNode: 'subClassCode',
-                  treeValue: 'wdj',
-                  num: '0'
-                }
-              ],
-              treeNode: 'type',
-              treeValue: 'wdj2'
-            }
-          ],
-          treeNode: 'parentType',
-          treeValue: 'wdj1'
-        }
+        // {
+        //   delFlag: '0',
+        //   treeModelList: [
+        //     {
+        //       delFlag: '0',
+        //       treeModelList: [
+        //         {
+        //           delFlag: '0',
+        //           treeNode: 'subClassCode',
+        //           treeValue: '800ONM',
+        //           num: '0'
+        //         },
+        //         {
+        //           delFlag: '0',
+        //           treeNode: 'subClassCode',
+        //           treeValue: '111',
+        //           num: '0'
+        //         }
+        //       ],
+        //       treeNode: 'type',
+        //       treeValue: '11'
+        //     }
+        //   ],
+        //   treeNode: 'parentType',
+        //   treeValue: '11'
+        // },
+        // {
+        //   delFlag: '0',
+        //   treeModelList: [
+        //     {
+        //       delFlag: '0',
+        //       treeModelList: [
+        //         {
+        //           delFlag: '0',
+        //           treeNode: 'subClassCode',
+        //           treeValue: 'wdj',
+        //           num: '0'
+        //         }
+        //       ],
+        //       treeNode: 'type',
+        //       treeValue: 'wdj2'
+        //     }
+        //   ],
+        //   treeNode: 'parentType',
+        //   treeValue: 'wdj1'
+        // }
       ],
       obj1: [],
-      arr: [],
+
       num1: 0,
       num2: 0,
       tableData: [],
@@ -183,24 +180,27 @@ export default {
       activeFlagO: [],
       eqpModelOptions: [], // ////
       model: {
+        id: '',
+        manufacturerName: '',
         updateBy: '',
-        eqpModelValue: '',
-        temNameValue: '',
-        activeFlag: '',
+        classCode: '',
+        name: '',
+        activeFlag: 'Y',
         remarks: '',
-        delFlag: 0,
+        delFlag: '',
         updateDate: '',
         createDate: '',
-        createBy: ''
+        createBy: '',
+        officeId: '',
+        fabModelTemplateBodyList: []
       },
-      obj: { parentType: '', type: '', subClassCode: '', id: '' },
-      arr2: []
+      obj: { parentType: '', type: '', subClassCode: '', id: '' }
     }
   },
   mounted() {
     this.getSubClassCode()
     this.getTableDatas()
-    // this.getEqpModel()
+    this.getEqpModel()
     fetchDict('ACTIVE_FLAG').then((res) => {
       this.activeFlagO = res.data
     })
@@ -208,33 +208,25 @@ export default {
     this.model.createDate = dateFormat(new Date())
     this.model.updateBy = this.$store.getters.roles[0]
     this.model.updateDate = dateFormat(new Date())
-    // this.getAb()
+    this.getAb()
     // this.getBb()
   },
   methods: {
     change(rows, row) {
-      this.arr2 = rows
       const selected = rows.length && rows.indexOf(row) !== -1
       if (selected) {
         this.obj.subClassCode = row.treeValue
         this.obj.id = `${this.obj.parentType}${this.obj.type}${this.obj.subClassCode}`
         const sss = { ...this.obj }
-        this.arr.push(sss)
-        console.log(this.arr)
+        this.model.fabModelTemplateBodyList.push(sss)
       } else {
-        const id = row.treeValue
-        this.arr.forEach((item, index) => {
-          if (id === item.subClassCode) {
-            this.arr.splice(index, 1)
+        const id = `${this.obj.parentType}${this.obj.type}${this.obj.subClassCode}`
+        this.model.fabModelTemplateBodyList.forEach((item, index) => {
+          if (id === item.id) {
+            this.model.fabModelTemplateBodyList.splice(index)
           }
-          console.log(this.arr)
         })
       }
-      // if (rows) {
-      //   rows.forEach((row) => {
-      //     this.$refs.multipleTable.toggleRowSelection(row)
-      //   })
-      // }
     },
 
     getEqpModel() {
@@ -243,14 +235,13 @@ export default {
         method: 'get'
       }).then((res) => {
         this.eqpModelOptions = res.data.results
-        console.log(res.data.results)
+        // console.log(res.data.results)
       })
     },
     editCurrRow(rowId, str) {
-      this.editIndex = rowId // 不加editIndex,整个列都会一块变成可编辑
+      this.editIndex = rowId
       this.showVisiable = true
       const id = rowId + str
-      // 也可以用this.$nextTick，个人感觉加个0.01秒的延时比下次渲染灵活一点
       setTimeout(() => {
         document.getElementById(id).focus()
       }, 100)
@@ -277,7 +268,9 @@ export default {
     },
     // // 一级菜单点击时间
     getIndex1(idx) {
+      // this.isShow != this.isShow
       this.isShow = true
+      this.show = false
       this.num1 = idx
       this.num2 = 0
       this.obj.parentType = this.options[idx].treeValue
@@ -297,10 +290,9 @@ export default {
         url: 'fab/fabModeltemplatebody/modelTemplateList/',
         method: 'get'
       }).then((res) => {
-        console.log('全')
-        console.log(res)
+        this.options = res.data.results
       })
-    }
+    },
     // getBb() {
     //   return request({
     //     url: 'fab/fabModeltemplatebody/oneTemplateList/{modelId}"',
@@ -310,6 +302,16 @@ export default {
     //     console.log(res)
     //   })
     // }
+
+    submit() {
+      return request({
+        url: 'fab/fabModeltemplate/createNew',
+        methods: 'post',
+        params: this.model
+      }).then((res) => {
+        console.log(res)
+      })
+    }
   }
 }
 </script>

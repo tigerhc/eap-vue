@@ -37,14 +37,7 @@
         </div>
       </div>
       <div v-if="show" class="menu-three">
-        <el-table
-          ref="multipleTable"
-          :data="tableData"
-          :row-class-name="tableRowClassName"
-          tooltip-effect="dark"
-          style="width: 100%"
-          @selection-change="change"
-        >
+        <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @select="change">
           <el-table-column type="selection" width="55" />
           <el-table-column prop="treeValue" label="名称/型号" />
           <el-table-column prop="num" label="数量" @click="editRow(row)">
@@ -123,6 +116,8 @@ export default {
   components: {},
   data() {
     return {
+      table: [],
+      rows: {},
       isShow: false,
       show: false,
       showVisiable: false, // 控制显隐
@@ -198,13 +193,13 @@ export default {
         createDate: '',
         createBy: ''
       },
-      obj: { parentType: '', type: '', subClassCode: '' }
+      obj: { parentType: '', type: '', subClassCode: '', id: '' },
+      arr2: []
     }
   },
   mounted() {
     this.getSubClassCode()
     this.getTableDatas()
-    // this.radioId = this.obj2[0].eqpmodel
     // this.getEqpModel()
     fetchDict('ACTIVE_FLAG').then((res) => {
       this.activeFlagO = res.data
@@ -217,16 +212,30 @@ export default {
     // this.getBb()
   },
   methods: {
-    tableRowClassName(row, rowIndex) {
-      console.log(row, rowIndex)
+    change(rows, row) {
+      this.arr2 = rows
+      const selected = rows.length && rows.indexOf(row) !== -1
+      if (selected) {
+        this.obj.subClassCode = row.treeValue
+        this.obj.id = `${this.obj.parentType}${this.obj.type}${this.obj.subClassCode}`
+        const sss = { ...this.obj }
+        this.arr.push(sss)
+        console.log(this.arr)
+      } else {
+        const id = row.treeValue
+        this.arr.forEach((item, index) => {
+          if (id === item.subClassCode) {
+            this.arr.splice(index, 1)
+          }
+          console.log(this.arr)
+        })
+      }
+      // if (rows) {
+      //   rows.forEach((row) => {
+      //     this.$refs.multipleTable.toggleRowSelection(row)
+      //   })
+      // }
     },
-
-    // change(v) {
-    //   console.log(v)
-    //   this.obj.subClassCode = v.treeValue
-    //   this.arr.push(this.obj)
-    //   console.log(this.arr)
-    // },
 
     getEqpModel() {
       return request({
@@ -305,10 +314,15 @@ export default {
 }
 </script>
 
-<style  scoped>
+<style  scoped lang="scss">
 * {
   box-sizing: border-box;
 }
+
+/deep/ .el-table__header-wrapper .el-checkbox {
+  display: none;
+}
+
 .btn {
   display: flex;
   align-items: center;

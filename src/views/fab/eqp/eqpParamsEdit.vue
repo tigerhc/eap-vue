@@ -1,6 +1,6 @@
 <template>
   <w-form v-bind="formConf" :col="3" :model="model">
-    <el-select v-model="model.classCode" placeholder="请选择" label="设备型号">
+    <el-select v-model="model.modelId" placeholder="请选择" label="设备型号">
       <el-option v-for="item in options" :key="item.id" :label="item.id" :value="item.id" />
     </el-select>
     <el-select v-model="model.subEqpId" placeholder="请选择" label="设备号">
@@ -42,7 +42,7 @@ export default {
         bcCode: '',
         ip: '',
         modelName: '',
-        classCode: '',
+        modelId: '',
         eqpParam: '',
         location: '',
         takeTime: 0,
@@ -90,6 +90,7 @@ export default {
     this.model.updateDate = dateFormat(new Date())
     this.getmodelId()
     this.getsubEqpId()
+    this.getNumType()
   },
   methods: {
     onDisplayChange(e) {
@@ -105,7 +106,7 @@ export default {
     },
     getsubEqpId() {
       return request({
-        url: 'fab/fabequipment/eqpIdlist',
+        url: `fab/fabequipment/eqpIdlistByCode/${this.modelId}`,
         methods: 'get'
       }).then((res) => {
         this.options1 = res.data.results
@@ -113,7 +114,7 @@ export default {
     },
     getNumType() {
       return request({
-        url: `fab/sensornumtype/numTypeList/${this.classCode}`,
+        url: `fab/sensornumtype/numTypeList/${this.modelId}`,
         methods: 'get'
       }).then((res) => {
         this.options2 = res.data.results

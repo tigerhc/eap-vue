@@ -223,7 +223,7 @@ export default {
           this.getInitializationData()
           this.getSelectedData()
           if (m.officeIds) {
-            m.officeIdsm.officeIds
+            m.officeIds = m.officeIds
           }
           return m
         },

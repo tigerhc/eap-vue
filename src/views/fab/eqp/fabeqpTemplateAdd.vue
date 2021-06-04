@@ -3,9 +3,9 @@
     <!-- <el-input v-model="model.fabModelTemplateBodyList" style="display: none"/> -->
     <el-row :col="24" style="margin-bottom: 15px">
       <el-select v-model="model.classCode" placeholder="设备类型">
-        <el-option v-for="item in eqpModelOptions" :key="item.id" :label="item.id" :value="item.id" />
+        <el-option v-for="item in classCodelOptions" :key="item.id" :label="item.id" :value="item.id" />
       </el-select>
-      <el-input v-model="model.name" placeholder="模板名称" />
+      <el-input v-model="model.name" placeholder="模板名称" style="width: 230px; margin-left: 15px" />
     </el-row>
     <div class="menu-one">
       <div
@@ -20,7 +20,7 @@
     </div>
     <div v-if="isShow" class="menu-two">
       <div
-        v-for="(item1, index1) in obj1"
+        v-for="(item1, index1) in sonType"
         :class="[num2 === index1 ? 'active' : '', 'menu-two-item']"
         :key="index1"
         @click="getIndex2(index1)"
@@ -54,10 +54,10 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        :current-page="1"
+        :current-page="pageInfo.pagenum"
         :page-sizes="[5, 10, 15, 20]"
-        :page-size="100"
-        :total="10"
+        :page-size="pageInfo.pagesize"
+        :total="tableData.length"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -90,14 +90,13 @@
       </el-col>
       <el-col :span="8">
         <label>备注：</label>
-        <el-input v-model="model.remarks" />
+        <el-input v-model="model.remarks" type="textarea" style="width: 400px" />
       </el-col>
     </el-row>
   </w-form>
 </template>
 <script>
 import { fetchDict } from '@/api/sys/dict.js'
-import { create } from '@/api/sys/data.js'
 import dateFormat from '@/utils/dateformat'
 import request from '@/utils/request'
 // import { Loading } from 'element-ui'
@@ -111,82 +110,87 @@ export default {
       showVisiable: false, // 控制显隐
       editIndex: -1, // 当前编辑行index
       pageInfo: {
-        total: 0
+        pagesize: 5,
+        pagenum: 1
       },
-      value: '',
+      // 三级联动菜单初始数据源
       options: [
-        {
-          delFlag: '0',
-          treeModelList: [
-            {
-              delFlag: '0',
-              treeModelList: [
-                {
-                  delFlag: '0',
-                  treeNode: 'subClassCode',
-                  treeValue: '800ONM',
-                  num: '0'
-                },
-                {
-                  delFlag: '0',
-                  treeNode: 'subClassCode',
-                  treeValue: '111',
-                  num: '0'
-                }
-              ],
-              treeNode: 'type',
-              treeValue: '11'
-            },
-            {
-              delFlag: '0',
-              treeModelList: [
-                {
-                  delFlag: '0',
-                  treeNode: 'subClassCode',
-                  treeValue: '1311432',
-                  num: '0'
-                },
-                {
-                  delFlag: '0',
-                  treeNode: 'subClassCode',
-                  treeValue: '1sdff11',
-                  num: '0'
-                }
-              ],
-              treeNode: 'type',
-              treeValue: 'asd'
-            }
-          ],
-          treeNode: 'parentType',
-          treeValue: '11'
-        },
-        {
-          delFlag: '0',
-          treeModelList: [
-            {
-              delFlag: '0',
-              treeModelList: [
-                {
-                  delFlag: '0',
-                  treeNode: 'subClassCode',
-                  treeValue: 'wdj',
-                  num: '0'
-                }
-              ],
-              treeNode: 'type',
-              treeValue: 'wdj2'
-            }
-          ],
-          treeNode: 'parentType',
-          treeValue: 'wdj1'
-        }
+        // {
+        //   delFlag: '0',
+        //   treeModelList: [
+        //     {
+        //       delFlag: '0',
+        //       treeModelList: [
+        //         {
+        //           delFlag: '0',
+        //           treeNode: 'subClassCode',
+        //           treeValue: '800ONM',
+        //           num: '0'
+        //         },
+        //         {
+        //           delFlag: '0',
+        //           treeNode: 'subClassCode',
+        //           treeValue: '111',
+        //           num: '0'
+        //         }
+        //       ],
+        //       treeNode: 'type',
+        //       treeValue: '11'
+        //     },
+        //     {
+        //       delFlag: '0',
+        //       treeModelList: [
+        //         {
+        //           delFlag: '0',
+        //           treeNode: 'subClassCode',
+        //           treeValue: '1311432',
+        //           num: '0'
+        //         },
+        //         {
+        //           delFlag: '0',
+        //           treeNode: 'subClassCode',
+        //           treeValue: '1sdff11',
+        //           num: '0'
+        //         }
+        //       ],
+        //       treeNode: 'type',
+        //       treeValue: 'asd'
+        //     }
+        //   ],
+        //   treeNode: 'parentType',
+        //   treeValue: '11'
+        // },
+        // {
+        //   delFlag: '0',
+        //   treeModelList: [
+        //     {
+        //       delFlag: '0',
+        //       treeModelList: [
+        //         {
+        //           delFlag: '0',
+        //           treeNode: 'subClassCode',
+        //           treeValue: 'wdj',
+        //           num: '0'
+        //         }
+        //       ],
+        //       treeNode: 'type',
+        //       treeValue: 'wdj2'
+        //     }
+        //   ],
+        //   treeNode: 'parentType',
+        //   treeValue: 'wdj1'
+        // }
       ],
-      obj1: [],
+      // 二级菜单数据源
+      sonType: [],
       num1: 0,
       num2: 0,
+      // 表格数据源
       tableData: [],
+      // 有效标志数据源
       activeFlagO: [],
-      eqpModelOptions: [], // ////
+      // 设备类型下拉框数据源
+      classCodelOptions: [], // ////
       model: {
         id: '',
         manufacturerName: '',
@@ -202,7 +206,8 @@ export default {
         officeId: '',
         fabModelTemplateBodyList: []
       },
-      obj: { parentType: '', type: '', subClassCode: '', id: '', num: '' },
+      // 存储级联菜单选择的数据的对象
+      selections: { parentType: '', type: '', subClassCode: '', id: '', num: '' },
 
       formConf: {
         url: 'fab/fabModeltemplate',
@@ -246,30 +251,22 @@ export default {
     this.model.createDate = dateFormat(new Date())
     this.model.updateBy = this.$store.getters.roles[0]
     this.model.updateDate = dateFormat(new Date())
-    this.getAb()
-    // this.getBb()
+    this.getInitializationData()
   },
   methods: {
-    submit() {
-      create(this.model).then((res) => {
-        console.log(res)
-      })
-    },
-
+    // 表格数据选中事件，如果选中将选中的数据添加到数组fabModelTemplateBodyList中，反之则删除改天数据
     change(rows, row) {
+      // 判断选中状态 true 选中
       const selected = rows.length && rows.indexOf(row) !== -1
       if (selected) {
-        // console.log(row.num === '0')
-        if (row.num === '0') {
+        if (parseInt(row.num) === 0) {
           row.num++
         }
-
-        this.obj.subClassCode = row.treeValue
-        this.obj.num = row.num
-        this.obj.id = `${this.obj.parentType}${this.obj.type}${this.obj.subClassCode}`
-        const sss = { ...this.obj }
+        this.selections.subClassCode = row.treeValue
+        this.selections.num = row.num
+        this.selections.id = `${this.selections.parentType}${this.selections.type}${this.selections.subClassCode}`
+        const sss = { ...this.selections }
         this.model.fabModelTemplateBodyList.push(sss)
-        console.log(this.model.fabModelTemplateBodyList)
       } else {
         row.num--
         const id = row.treeValue
@@ -280,26 +277,26 @@ export default {
         })
       }
     },
+    // 一二级菜单来回切换，实现已勾选的数据还是勾选状态
     toggleSelection(rows) {
-      const _this = this
       if (rows && rows.length) {
         rows.forEach((row) => {
-          setTimeout(function() {
-            _this.$refs.multipleTable.toggleRowSelection(row)
-          }, 500)
+          this.$refs.multipleTable.toggleRowSelection(row)
         })
       } else {
         this.$refs.multipleTable.clearSelection()
       }
     },
+    // 获取设备类型下拉框数据的函数
     getEqpModel() {
       return request({
         url: 'fab/fabequipmentmodel/noTemClassCodeList',
         method: 'get'
       }).then((res) => {
-        this.eqpModelOptions = res.data.results
+        this.classCodelOptions = res.data.results
       })
     },
+    // 实现表格数量列可编辑
     editCurrRow(rowId, str) {
       this.editIndex = rowId // 不加editIndex,整个列都会一块变成可编辑
       this.showVisiable = true
@@ -310,20 +307,24 @@ export default {
       }, 100)
     },
 
-    handleSizeChange() {},
-    handleCurrentChange() {},
+    handleSizeChange(pagesize) {
+      this.pageInfo.pagesize = pagesize
+    },
+    handleCurrentChange(pagenum) {
+      this.pageInfo.pagenum = pagenum
+    },
 
-    // 获取一级菜单数据
+    // 获取二级菜单数据
     getSubClassCode() {
       this.options.forEach((item, index) => {
         if (this.num1 === index) {
-          this.obj1 = item.treeModelList
+          this.sonType = item.treeModelList
         }
       })
     },
     // 获取三级菜单数据
     getTableDatas() {
-      this.obj1.forEach((item, index) => {
+      this.sonType.forEach((item, index) => {
         if (this.num2 === index) {
           this.tableData = item.treeModelList
         }
@@ -335,7 +336,7 @@ export default {
       this.show = false
       this.num1 = idx
       this.num2 = 0
-      this.obj.parentType = this.options[idx].treeValue
+      this.selections.parentType = this.options[idx].treeValue
       this.getSubClassCode()
       this.getTableDatas()
       const isCheckList = (() => {
@@ -361,7 +362,7 @@ export default {
     getIndex2(idx) {
       this.show = true
       this.num2 = idx
-      this.obj.type = this.obj1[idx].treeValue
+      this.selections.type = this.sonType[idx].treeValue
       this.getTableDatas()
 
       const isCheckList = (() => {
@@ -383,8 +384,8 @@ export default {
         })
       }
     },
-
-    getAb() {
+    // 获取初始化数据
+    getInitializationData() {
       return request({
         url: 'fab/fabModeltemplatebody/modelTemplateList/',
         method: 'get'
@@ -392,15 +393,6 @@ export default {
         this.options = res.data.results
       })
     }
-    // getBb() {
-    //   return request({
-    //     url: 'fab/fabModeltemplatebody/oneTemplateList/{modelId}"',
-    //     method: 'get'
-    //   }).then((res) => {
-    //     console.log('单')
-    //     console.log(res)
-    //   })
-    // }
   }
 }
 </script>

@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     changeData() {
-      if (this.eqpNum === '11111') {
+      if (this.eqpNum === 'ICOONPLUS') {
         this.temperature = '20'
         this.humidity = '70%'
         this.windspeed = '15'

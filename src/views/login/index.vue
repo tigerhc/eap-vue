@@ -25,7 +25,6 @@
         auto-complete="on"
         label-position="left"
       >
-        <h1>道达IOT系统</h1>
         <div class="title-container">
           <h3 class="title">{{ $t('login.title') }}</h3>
           <lang-select class="set-language" />
@@ -64,7 +63,7 @@
         <el-button
           :loading="loading"
           type="primary"
-          style="width: 80%; margin-top: 40px; padding: 15px 0; font-size: 20px; border-radius: 50px"
+          style="width: 100%; margin-bottom: 30px"
           @click.native.prevent="handleLogin"
           >{{ $t('login.logIn') }}</el-button
         >
@@ -202,18 +201,18 @@ $bg: #283443;
 $light_gray: #eee;
 $cursor: #fff;
 
-// @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-//   .login-container .el-input input {
-//     color: $cursor;
-//     &::first-line {
-//       color: $light_gray;
-//     }
-//   }
-// }
+@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
+  .login-container .el-input input {
+    color: $cursor;
+    &::first-line {
+      color: $light_gray;
+    }
+  }
+}
 
 /* reset element-ui css */
 .login-container {
-  background-image: url(../../assets/img/iotbg.jpg);
+  background-image: url(../../assets/img/bg2.jpg);
   background-repeat: no-repeat;
   background-size: 100% 100%;
   .el-input {
@@ -226,29 +225,21 @@ $cursor: #fff;
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
-      // color: $light_gray;
+      color: $light_gray;
       height: 47px;
-      // caret-color: $cursor;
-      // &:-webkit-autofill {
-      //   -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
-      //   -webkit-text-fill-color: $cursor !important;
-      // }
+      caret-color: $cursor;
+      &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
+        -webkit-text-fill-color: $cursor !important;
+      }
     }
   }
   .el-form-item {
-    // border: 1px solid #000;
-    // background: rgba(0, 0, 0, 0.3);
-    border-bottom: 2px solid #ccc;
+    border: 1px solid rgb(255, 255, 255);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 5px;
     color: #454545;
   }
-}
-h1,
-h3 {
-  margin: 0;
-}
-h1 {
-  margin-bottom: 30px;
 }
 </style>
 
@@ -258,30 +249,34 @@ $dark_gray: #889aa4;
 $light_gray: #eee;
 
 .login-container {
-  // background-attachment: fixed;
-  // position: fixed;
+  // filter:  opacity(50%);
+  // -webkit-filter: opacity(50%);
+  // background-color: #fff;
+  background-attachment: fixed;
+  position: fixed;
   height: 100%;
   width: 100%;
+  //overflow-y: scroll;
   background-color: #fff;
-  position: relative;
+  //  background:url(../../assets/img/beijing1.jpg) no-repeat;
+  //   background-size:100% 100%;
   .login-main {
-    width: 60%;
+    width: 70%;
     // background-color: red;
-    height: 70%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-40%, -50%);
+    height: 80%;
+    margin: 5% auto;
+    // display: flex;
+    position: relative;
     .login-introduce {
       float: left;
-      width: 50%;
-      height: 100%;
+      width: 100%;
       color: #fff;
+      // color: #000;
       // text-align: center;
       // text-indent: 2em;
       // height: 50%;
       // background-color: linear-gradient(0deg, #3a485a 0%, #607089 100%);
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.2);
       //background: linear-gradient(0deg, #3a485a 0%, #607089 100%);
       // filter:  opacity(50%);
       // -webkit-filter: opacity(50%);
@@ -289,41 +284,39 @@ $light_gray: #eee;
       background-size: 100% 100%;
       padding: 20px;
       position: relative;
-      // &::before {
-      //   content: '';
-      //   position: absolute;
-      //   top: 0;
-      //   left: 0;
-      //   bottom: 0;
-      //   right: 0;
-      //   // background: url(../../assets/img/left-1.png) no-repeat 0 0;
-      // }
-      // &::after {
-      //   content: '';
-      //   position: absolute;
-      //   top: 0;
-      //   left: 0;
-      //   bottom: 0;
-      //   right: 0;
-      // background: url(../../assets/img/left-2.png) no-repeat right bottom;
-      // }
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: url(../../assets/img/left-1.png) no-repeat 0 0;
+      }
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: url(../../assets/img/left-2.png) no-repeat right bottom;
+      }
     }
     .login-form {
-      border: 1px solid #fff;
-      width: 50%;
-      height: 100%;
+      float: left;
+      width: 100%;
+      // height: 50%;
+      left: 0;
+      right: 0;
+      // width: 300px;
       max-width: 100%;
       padding: 35px 35px 15px 35px;
       // margin: 120px auto;
-      // background-image: url(../../assets/img/bg.jpg);
+      background-image: url(../../assets/img/bg.jpg);
       background-repeat: no-repeat;
       background-size: 100% 100%;
       box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: #fff;
-      border-radius: 20px;
     }
     .tips {
       font-size: 14px;
@@ -341,23 +334,21 @@ $light_gray: #eee;
       vertical-align: middle;
       width: 30px;
       display: inline-block;
-      font-size: 20px;
     }
     .title-container {
-      width: 80%;
-      display: flex;
-      align-items: center;
-      margin-bottom: 50px;
+      position: relative;
       .title {
-        width: 80%;
         font-size: 26px;
-        // color: $light_gray;
-        color: #555;
+        color: $light_gray;
+        margin: 0px auto 40px auto;
         text-align: center;
         font-weight: bold;
       }
       .set-language {
-        color: #555;
+        color: #fff;
+        position: absolute;
+        top: 5px;
+        right: 0px;
       }
     }
     .show-pwd {
@@ -375,27 +366,23 @@ $light_gray: #eee;
       bottom: 28px;
     }
   }
-  .el-form-item {
-    width: 80%;
-    margin-bottom: 50px;
-  }
 }
 </style>
 <style scoped>
-/* @media (min-width: 768px) {
+@media (min-width: 768px) {
   .login-container .login-introduce {
-    width: 40% !important;
-    height: 80% !important;
+    width: 50% !important;
+    height: 100% !important;
     /* overflow-y: scroll; */
-/* }
+  }
   .login-container .login-introduce::-webkit-scrollbar {
     display: none;
   }
   .login-container .login-form {
-    width: 40% !important;
-    height: 80% !important;
+    width: 50% !important;
+    height: 100% !important;
   }
-}  */
+}
 @media (min-width: 770px) and (max-width: 850px) {
   .el-input {
     width: 150px;

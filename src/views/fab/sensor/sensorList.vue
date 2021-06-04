@@ -6,7 +6,6 @@
       <w-table-col
         name="sorId"
         label="传感器号"
-        sort
         fixed
         align="left"
         handler="view"

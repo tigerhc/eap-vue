@@ -1,81 +1,66 @@
 <template>
-  <el-card>
-    <div slot="header" class="clearfix">
-      <span>修改设备模板</span>
-    </div>
-
-    <el-row style="margin-bottom: 15px">
-      <el-select v-model="model.eqpModelValue" placeholder="设备类型">
-        <el-option v-for="item in eqpModelOptions" :key="item.value" :label="item.label" :value="item.value" />
-      </el-select>
-      <el-select v-model="model.temNameValue" placeholder="模板名称">
-        <el-option v-for="item in temNameOptions" :key="item.value" :label="item.label" :value="item.value" />
-      </el-select>
+  <w-form v-bind="formConf" :col="3" :model="model">
+    <el-row :col="24" style="margin-bottom: 15px">
+      <el-input v-model="model.classCode" placeholder="设备类型" style="width: 230px" disabled />
+      <el-input v-model="model.name" placeholder="模板名称" style="width: 230px; margin-left: 15px" disabled />
     </el-row>
-    <div class="menu">
-      <div class="menu-one">
-        <div
-          v-for="(item, index) in options"
-          :class="[num1 === index ? 'active' : '', 'menu-one-item']"
-          :key="index"
-          @click="getIndex1(index)"
-        >
-          {{ item.label }}
-          <i class="el-icon-caret-right" />
-        </div>
-      </div>
-      <div v-if="isShow" class="menu-two">
-        <div
-          v-for="(item1, index1) in obj1"
-          :class="[num2 === index1 ? 'active' : '', 'menu-two-item']"
-          :key="index1"
-          @click="getIndex2(index1)"
-        >
-          {{ item1.label }}
-          <i class="el-icon-caret-right" />
-        </div>
-      </div>
-      <div class="menu-three">
-        <el-table ref="multipleTable" :data="obj2" tooltip-effect="dark" style="width: 100%" @row-click="rowClick">
-          <el-table-column label width="50">
-            <template slot-scope="scope">
-              <el-radio :label="scope.row.eqpmodel" v-model="radioId">&nbsp;</el-radio>
-            </template>
-          </el-table-column>
-          <el-table-column prop="eqpmodel" label="名称/型号" />
-          <el-table-column prop="brand" label="品牌" width="120" />
-          <el-table-column prop="acqmode" label="数量" @click="editRow(row)">
-            <template slot-scope="scope">
-              <span
-                v-show="!showVisiable || editIndex != scope.$index"
-                class="editCell"
-                style="width: 120px"
-                @click="editCurrRow(scope.$index, 'rowkeY')"
-                >{{ scope.row.acqmode }}</span
-              >
-              <el-input
-                v-show="showVisiable && editIndex == scope.$index"
-                :id="scope.$index + 'rowkeY'"
-                v-model="scope.row.acqmode"
-                size="mini"
-                style="width: 120px"
-                @blur="showVisiable = false"
-              />
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-pagination
-          :current-page="1"
-          :page-sizes="[5, 10, 15, 20]"
-          :page-size="100"
-          :total="10"
-          layout="total, sizes, prev, pager, next, jumper"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
+    <div class="menu-one">
+      <div
+        v-for="(item, index) in options"
+        :class="[num1 === index ? 'active' : '', 'menu-one-item']"
+        :key="index"
+        @click="getIndex1(index)"
+      >
+        {{ item.treeValue }}
+        <i class="el-icon-caret-right" />
       </div>
     </div>
-    <el-row style="margin-bottom: 15px">
+    <div v-show="isShow" class="menu-two">
+      <div
+        v-for="(item1, index1) in sonType"
+        :class="[num2 === index1 ? 'active' : '', 'menu-two-item']"
+        :key="index1"
+        @click="getIndex2(index1)"
+      >
+        {{ item1.treeValue }}
+        <i class="el-icon-caret-right" />
+      </div>
+    </div>
+    <div v-show="show" class="menu-three">
+      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @select="change">
+        <el-table-column type="selection" width="55" />
+        <el-table-column prop="treeValue" label="名称/型号" />
+        <el-table-column prop="num" label="数量" @click="editRow(row)">
+          <template slot-scope="scope">
+            <span
+              v-show="!showVisiable || editIndex != scope.$index"
+              class="editCell"
+              style="width: 120px"
+              @click="editCurrRow(scope.$index, 'rowkeY')"
+              >{{ scope.row.num }}</span
+            >
+            <el-input
+              v-show="showVisiable && editIndex == scope.$index"
+              :id="scope.$index + 'rowkeY'"
+              v-model="scope.row.num"
+              size="mini"
+              style="width: 120px"
+              @blur="showVisiable = false"
+            />
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        :current-page="pageInfo.pagenum"
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="pageInfo.pagesize"
+        :total="tableData.length"
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+    </div>
+    <el-row :col="24" style="margin-bottom: 15px">
       <el-col :span="8">
         <label>创建人：</label>
         <el-input v-model="model.createBy" :disabled="true" />
@@ -91,7 +76,7 @@
         </el-select>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row :col="24">
       <el-col :span="8">
         <label>修改人：</label>
         <el-input v-model="model.updateBy" :disabled="true" />
@@ -102,269 +87,165 @@
       </el-col>
       <el-col :span="8">
         <label>备注：</label>
-        <el-input v-model="model.remarks" />
+        <el-input v-model="model.remarks" type="textarea" style="width: 400px" />
       </el-col>
     </el-row>
-    <div class="btn">
-      <el-button>取消</el-button>
-      <el-button type="primary">确认</el-button>
-    </div>
-  </el-card>
+  </w-form>
 </template>
 <script>
 import { fetchDict } from '@/api/sys/dict.js'
 import dateFormat from '@/utils/dateformat'
+import request from '@/utils/request'
+// import { Loading } from 'element-ui'
 
 export default {
   components: {},
   data() {
     return {
       isShow: false,
+      show: false,
       showVisiable: false, // 控制显隐
       editIndex: -1, // 当前编辑行index
       pageInfo: {
-        total: 0
+        pagesize: 5,
+        pagenum: 1
       },
-      radioId: '',
-      options1: [
-        {
-          value: '选项1',
-          label: '黄金糕'
-        },
-        {
-          value: '选项2',
-          label: '双皮奶'
-        },
-        {
-          value: '选项3',
-          label: '蚵仔煎'
-        },
-        {
-          value: '选项4',
-          label: '龙须面'
-        },
-        {
-          value: '选项5',
-          label: '北京烤鸭'
-        }
-      ],
-      value: '',
-      value1: '',
+      // 三级联动菜单初始数据源
       options: [
-        {
-          label: '传感器',
-          children: [
-            {
-              label: '振动传感器',
-              children: [
-                {
-                  eqpmodel: '振动传感器RS-485',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器LoRa',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器 NB',
-                  brand: '智泽',
-                  acqmode: '云端'
-                }
-              ]
-            },
-            {
-              label: '土壤传感器',
-              children: [
-                {
-                  eqpmodel: '土壤PH传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '土壤温湿度传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '土壤温湿度电导率',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '土壤水分传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                }
-              ]
-            },
-            {
-              label: '水质传感器',
-              children: [
-                {
-                  eqpmodel: '电导率传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: 'PH传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '氨氮传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '氨氮传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: 'ORP传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '溶解氧传感器',
-                  brand: '智泽',
-                  acqmode: '云端'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: 'zujian',
-          label: 'IO控制器',
-          children: [
-            {
-              value: 'basic',
-              label: 'Basic',
-              children: [
-                {
-                  eqpmodel: '振动传感器RS-485',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器LoRa',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器 NB',
-                  brand: '智泽',
-                  acqmode: '云端'
-                }
-              ]
-            },
-            {
-              value: 'form',
-              label: 'Form',
-              children: [
-                {
-                  eqpmodel: '振动传感器RS-485',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器LoRa',
-                  brand: '智泽',
-                  acqmode: '云端'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: 'ziyuan',
-          label: '仪器仪表',
-          children: [
-            {
-              value: 'axure',
-              label: 'Axure Components',
-              children: [
-                {
-                  eqpmodel: '振动传感器RS-485',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器LoRa',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器 NB',
-                  brand: '智泽',
-                  acqmode: '云端'
-                }
-              ]
-            },
-            {
-              value: 'sketch',
-              label: 'Sketch Templates',
-              children: [
-                {
-                  eqpmodel: '振动传感器RS-485',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器LoRa',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器 NB',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器 NB',
-                  brand: '智泽',
-                  acqmode: '云端'
-                },
-                {
-                  eqpmodel: '振动传感器 NB',
-                  brand: '智泽',
-                  acqmode: '云端'
-                }
-              ]
-            }
-          ]
-        }
+        // {
+        //   delFlag: '0',
+        //   treeModelList: [
+        //     {
+        //       delFlag: '0',
+        //       treeModelList: [
+        //         {
+        //           delFlag: '0',
+        //           treeNode: 'subClassCode',
+        //           treeValue: '800ONM',
+        //           num: '0'
+        //         },
+        //         {
+        //           delFlag: '0',
+        //           treeNode: 'subClassCode',
+        //           treeValue: '111',
+        //           num: '0'
+        //         }
+        //       ],
+        //       treeNode: 'type',
+        //       treeValue: '11'
+        //     },
+        //     {
+        //       delFlag: '0',
+        //       treeModelList: [
+        //         {
+        //           delFlag: '0',
+        //           treeNode: 'subClassCode',
+        //           treeValue: '1311432',
+        //           num: '0'
+        //         },
+        //         {
+        //           delFlag: '0',
+        //           treeNode: 'subClassCode',
+        //           treeValue: '1sdff11',
+        //           num: '0'
+        //         }
+        //       ],
+        //       treeNode: 'type',
+        //       treeValue: 'asd'
+        //     }
+        //   ],
+        //   treeNode: 'parentType',
+        //   treeValue: '11'
+        // },
+        // {
+        //   delFlag: '0',
+        //   treeModelList: [
+        //     {
+        //       delFlag: '0',
+        //       treeModelList: [
+        //         {
+        //           delFlag: '0',
+        //           treeNode: 'subClassCode',
+        //           treeValue: 'wdj',
+        //           num: '0'
+        //         }
+        //       ],
+        //       treeNode: 'type',
+        //       treeValue: 'wdj2'
+        //     }
+        //   ],
+        //   treeNode: 'parentType',
+        //   treeValue: 'wdj1'
+        // }
       ],
-      obj1: [],
-      obj2: [],
+      // 二级菜单数据源
+      sonType: [],
       num1: 0,
       num2: 0,
+      // 表格数据源
       tableData: [],
-      multipleSelection: [],
+      // 有效标志数据源
       activeFlagO: [],
-      temNameOptions: [],
-      eqpModelOptions: [], // ////
+      // 设备类型下拉框数据源
+      classCodelOptions: [], // ////
       model: {
+        id: '',
+        manufacturerName: '',
         updateBy: '',
-        eqpModelValue: '',
-        temNameValue: '',
-        activeFlag: '',
+        classCode: '',
+        name: '',
+        activeFlag: 'Y',
         remarks: '',
-        delFlag: 0,
+        delFlag: '',
         updateDate: '',
         createDate: '',
-        createBy: ''
+        createBy: '',
+        officeId: '',
+        fabModelTemplateBodyList: []
+      },
+      // 存储级联菜单选择的数据的对象
+      selections: { parentType: '', type: '', subClassCode: '', id: '', num: '' },
+
+      formConf: {
+        url: 'fab/fabModeltemplate',
+        title: {
+          ADD: '新增设备',
+          EDIT: '修改设备',
+          VIEW: '设备详情'
+        },
+        rules: {
+          eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
+          modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
+          activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
+        },
+        onLoadData: (m, type) => {
+          console.info(m)
+          if (m.officeIds) {
+            m.officeIdsm.officeIds
+          }
+          return m
+        },
+        beforeSubmit: (params, type) => {
+          const re = { ...params }
+          console.log(re)
+          if (re.officeId) {
+            re.officeId = re.officeIds[re.officeIds.length - 1]
+            re.officeIds = undefined
+          }
+          return re
+        }
       }
+
+      // arr: [
+      //   { parentType: '11', type: '11', subClassCode: '111', id: '', num: '1' },
+      //   { parentType: 'wdj1', type: 'wdj2', subClassCode: 'wdj', id: '', num: '1' }
+      // ]
     }
   },
   mounted() {
-    this.getMenuOne()
-    this.getMenuTwo()
-    // this.radioId = this.obj2[0].eqpmodel
-
+    this.getSubClassCode()
+    this.getTableDatas()
+    this.getEqpModel()
     fetchDict('ACTIVE_FLAG').then((res) => {
       this.activeFlagO = res.data
     })
@@ -372,8 +253,76 @@ export default {
     this.model.createDate = dateFormat(new Date())
     this.model.updateBy = this.$store.getters.roles[0]
     this.model.updateDate = dateFormat(new Date())
+    this.getInitializationData()
+    this.getSelectedData()
+    // this.model.fabModelTemplateBodyList = this.arr
   },
   methods: {
+    getA() {
+      const isCheck = (() => {
+        const res = []
+        this.tableData.forEach((item) => {
+          this.arr.forEach((it) => {
+            if (item.treeValue === it.subClassCode) {
+              item.num = it.num
+              res.push(item)
+            }
+          })
+        })
+        return res
+      })()
+      if (isCheck.length) {
+        this.$nextTick(() => {
+          this.toggleSelection(isCheck)
+        })
+      }
+    },
+
+    // 表格数据选中事件，如果选中将选中的数据添加到数组fabModelTemplateBodyList中，反之则删除改天数据
+    change(rows, row) {
+      // 判断选中状态 true 选中
+      const selected = rows.length && rows.indexOf(row) !== -1
+      if (selected) {
+        if (parseInt(row.num) === 0) {
+          row.num++
+        }
+        this.selections.subClassCode = row.treeValue
+        this.selections.num = row.num
+        this.selections.id = `${this.selections.parentType}${this.selections.type}${this.selections.subClassCode}`
+        const sss = { ...this.selections }
+        this.model.fabModelTemplateBodyList.push(sss)
+        console.log(this.model.fabModelTemplateBodyList)
+      } else {
+        row.num--
+        const id = row.treeValue
+        this.model.fabModelTemplateBodyList.forEach((item, index) => {
+          if (id === item.subClassCode) {
+            this.model.fabModelTemplateBodyList.splice(index, 1)
+          }
+          console.log(this.model.fabModelTemplateBodyList)
+        })
+      }
+    },
+    // 一二级菜单来回切换，实现已勾选的数据还是勾选状态
+    toggleSelection(rows) {
+      if (rows && rows.length) {
+        rows.forEach((row) => {
+          this.$refs.multipleTable.toggleRowSelection(row, true)
+        })
+      } else {
+        this.$refs.multipleTable.clearSelection()
+      }
+    },
+    // 获取设备类型下拉框数据的函数
+    getEqpModel() {
+      return request({
+        url: 'fab/fabequipmentmodel/noTemClassCodeList',
+        method: 'get'
+      }).then((res) => {
+        this.classCodelOptions = res.data.results
+      })
+    },
+    // 实现表格数量列可编辑
     editCurrRow(rowId, str) {
       this.editIndex = rowId // 不加editIndex,整个列都会一块变成可编辑
       this.showVisiable = true
@@ -384,49 +333,96 @@ export default {
       }, 100)
     },
 
-    handleSizeChange() {},
-    handleCurrentChange() {},
-    rowClick(row) {
-      this.radioId = row.eqpmodel
+    handleSizeChange(pagesize) {
+      this.pageInfo.pagesize = pagesize
     },
-    // 获取一级菜单数据
-    getMenuOne() {
+    handleCurrentChange(pagenum) {
+      this.pageInfo.pagenum = pagenum
+    },
+
+    // 获取二级菜单数据
+    getSubClassCode() {
       this.options.forEach((item, index) => {
         if (this.num1 === index) {
-          this.obj1 = item.children
+          this.sonType = item.treeModelList
         }
       })
     },
-    // 获取二级菜单数据
-    getMenuTwo() {
-      this.obj1.forEach((item, index) => {
+    // 获取三级菜单数据
+    getTableDatas() {
+      this.sonType.forEach((item, index) => {
         if (this.num2 === index) {
-          this.obj2 = item.children
+          this.tableData = item.treeModelList
         }
       })
     },
-    // 一级菜单点击时间
+    // // 一级菜单点击时间
     getIndex1(idx) {
+      this.isShow = true
+      this.show = false
       this.num1 = idx
       this.num2 = 0
-      // this.radioId = this.obj2[0].eqpmodel
-      this.getMenuOne()
-      this.getMenuTwo()
+      this.selections.parentType = this.options[idx].treeValue
+      this.getSubClassCode()
+      this.getTableDatas()
+      const isCheckList = (() => {
+        const res = []
+        this.tableData.forEach((item) => {
+          if (this.model.fabModelTemplateBodyList.length) {
+            this.model.fabModelTemplateBodyList.forEach((it) => {
+              if (item.treeValue === it.subClassCode) {
+                res.push(item)
+              }
+            })
+          }
+        })
+        return res
+      })()
+      if (isCheckList.length) {
+        this.$nextTick(() => {
+          this.toggleSelection(isCheckList)
+        })
+      }
     },
     // 二级菜单点击时间
     getIndex2(idx) {
       this.num2 = idx
-      this.getMenuTwo()
-      this.radioId = this.obj2[0].eqpmodel
+      this.selections.type = this.sonType[idx].treeValue
+      this.getTableDatas()
+      this.show = true
+      this.getA()
+    },
+    // 获取初始化数据
+    getInitializationData() {
+      return request({
+        url: 'fab/fabModeltemplatebody/modelTemplateList/',
+        method: 'get'
+      }).then((res) => {
+        this.options = res.data.results
+      })
+    },
+    // 获取点击修改传过来的数据
+    getSelectedData() {
+      return request({
+        url: `fab/fabModeltemplatebody/oneTemplateList/${this.model.name}`,
+        method: 'get'
+      }).then((res) => {
+        this.model.fabModelTemplateBodyList = res.data.results
+      })
     }
   }
 }
 </script>
 
-<style  scoped>
+<style  scoped lang="scss">
 * {
   box-sizing: border-box;
 }
+
+/deep/ .el-table__header-wrapper .el-checkbox {
+  display: none;
+}
+
 .el-input {
   width: 400px;
 }
@@ -449,14 +445,13 @@ export default {
 .menu-one,
 .menu-two {
   height: 500px;
-  flex: 1;
+
   overflow: hidden;
   overflow-y: auto;
   margin-bottom: 20px;
   border: 1px solid #eee;
 }
 .menu-three {
-  flex: 3;
   height: 500px;
   position: relative;
   border: 1px solid #eee;
@@ -482,11 +477,5 @@ export default {
   bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
-}
-.btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 15px;
 }
 </style>

@@ -2,10 +2,10 @@
   <div class="app-container calendar-list-container">
     <w-table v-bind="table" url="fab/fabModeltemplate">
       <w-table-col
-        name="eqpName"
+        name="name"
         label="模板名称"
         query
-        namekey="eqpName"
+        namekey="name"
         condition="eq"
         url="fab/fabModeltemplate/ajaxList"
       />

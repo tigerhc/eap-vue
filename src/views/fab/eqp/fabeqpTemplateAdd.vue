@@ -1,77 +1,68 @@
 <template>
-  <el-card>
-    <div slot="header" class="clearfix">
-      <span>新增设备模板</span>
-    </div>
-
-    <el-row style="margin-bottom: 15px">
-      <el-select v-model="model.eqpModelValue" placeholder="设备类型">
+  <w-form v-bind="formConf" :col="3" :model="model">
+    <el-row :col="24" style="margin-bottom: 15px">
+      <el-select v-model="model.classCode" placeholder="设备类型">
         <el-option v-for="item in eqpModelOptions" :key="item.id" :label="item.id" :value="item.id" />
       </el-select>
-      <el-input v-model="model.temNameValue" placeholder="模板名称" />
-      <!-- <el-select v-model="model.temNameValue" placeholder="模板名称">
-        <el-option v-for="item in temNameOptions" :key="item.value" :label="item.label" :value="item.value" />
-      </el-select> -->
+      <el-input v-model="model.name" placeholder="模板名称" />
     </el-row>
-    <div class="menu">
-      <div class="menu-one">
-        <div
-          v-for="(item, index) in options"
-          :class="[num1 === index ? 'active' : '', 'menu-one-item']"
-          :key="index"
-          @click="getIndex1(index)"
-        >
-          {{ item.treeValue }}
-          <i class="el-icon-caret-right" />
-        </div>
-      </div>
-      <div v-if="isShow" class="menu-two">
-        <div
-          v-for="(item1, index1) in obj1"
-          :class="[num2 === index1 ? 'active' : '', 'menu-two-item']"
-          :key="index1"
-          @click="getIndex2(index1)"
-        >
-          {{ item1.treeValue }}
-          <i class="el-icon-caret-right" />
-        </div>
-      </div>
-      <div v-if="show" class="menu-three">
-        <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @select="change">
-          <el-table-column type="selection" width="55" />
-          <el-table-column prop="treeValue" label="名称/型号" />
-          <el-table-column prop="num" label="数量" @click="editRow(row)">
-            <template slot-scope="scope">
-              <span
-                v-show="!showVisiable || editIndex != scope.$index"
-                class="editCell"
-                style="width: 120px"
-                @click="editCurrRow(scope.$index, 'rowkeY')"
-                >{{ scope.row.num }}</span
-              >
-              <el-input
-                v-show="showVisiable && editIndex == scope.$index"
-                :id="scope.$index + 'rowkeY'"
-                v-model="scope.row.num"
-                size="mini"
-                style="width: 120px"
-                @blur="showVisiable = false"
-              />
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-pagination
-          :current-page="1"
-          :page-sizes="[5, 10, 15, 20]"
-          :page-size="100"
-          :total="10"
-          layout="total, sizes, prev, pager, next, jumper"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
+    <div class="menu-one">
+      <div
+        v-for="(item, index) in options"
+        :class="[num1 === index ? 'active' : '', 'menu-one-item']"
+        :key="index"
+        @click="getIndex1(index)"
+      >
+        {{ item.treeValue }}
+        <i class="el-icon-caret-right" />
       </div>
     </div>
-    <el-row style="margin-bottom: 15px">
+    <div v-if="isShow" class="menu-two">
+      <div
+        v-for="(item1, index1) in obj1"
+        :class="[num2 === index1 ? 'active' : '', 'menu-two-item']"
+        :key="index1"
+        @click="getIndex2(index1)"
+      >
+        {{ item1.treeValue }}
+        <i class="el-icon-caret-right" />
+      </div>
+    </div>
+    <div v-if="show" class="menu-three">
+      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @select="change">
+        <el-table-column type="selection" width="55" />
+        <el-table-column prop="treeValue" label="名称/型号" />
+        <el-table-column prop="num" label="数量" @click="editRow(row)">
+          <template slot-scope="scope">
+            <span
+              v-show="!showVisiable || editIndex != scope.$index"
+              class="editCell"
+              style="width: 120px"
+              @click="editCurrRow(scope.$index, 'rowkeY')"
+              >{{ scope.row.num }}</span
+            >
+            <el-input
+              v-show="showVisiable && editIndex == scope.$index"
+              :id="scope.$index + 'rowkeY'"
+              v-model="scope.row.num"
+              size="mini"
+              style="width: 120px"
+              @blur="showVisiable = false"
+            />
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        :current-page="1"
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="100"
+        :total="10"
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+    </div>
+    <el-row :col="24" style="margin-bottom: 15px">
       <el-col :span="8">
         <label>创建人：</label>
         <el-input v-model="model.createBy" :disabled="true" />
@@ -87,7 +78,7 @@
         </el-select>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row :col="24">
       <el-col :span="8">
         <label>修改人：</label>
         <el-input v-model="model.updateBy" :disabled="true" />
@@ -101,25 +92,19 @@
         <el-input v-model="model.remarks" />
       </el-col>
     </el-row>
-    <div class="btn">
-      <el-button>取消</el-button>
-      <el-button type="primary" @click="submit()">确认</el-button>
-    </div>
-  </el-card>
+  </w-form>
 </template>
 <script>
 import { fetchDict } from '@/api/sys/dict.js'
 import { create } from '@/api/sys/data.js'
-
 import dateFormat from '@/utils/dateformat'
 import request from '@/utils/request'
+// import { Loading } from 'element-ui'
 
 export default {
   components: {},
   data() {
     return {
-      table: [],
-      rows: {},
       isShow: false,
       show: false,
       showVisiable: false, // 控制显隐
@@ -129,55 +114,54 @@ export default {
       },
       value: '',
       options: [
-        // {
-        //   delFlag: '0',
-        //   treeModelList: [
-        //     {
-        //       delFlag: '0',
-        //       treeModelList: [
-        //         {
-        //           delFlag: '0',
-        //           treeNode: 'subClassCode',
-        //           treeValue: '800ONM',
-        //           num: '0'
-        //         },
-        //         {
-        //           delFlag: '0',
-        //           treeNode: 'subClassCode',
-        //           treeValue: '111',
-        //           num: '0'
-        //         }
-        //       ],
-        //       treeNode: 'type',
-        //       treeValue: '11'
-        //     }
-        //   ],
-        //   treeNode: 'parentType',
-        //   treeValue: '11'
-        // },
-        // {
-        //   delFlag: '0',
-        //   treeModelList: [
-        //     {
-        //       delFlag: '0',
-        //       treeModelList: [
-        //         {
-        //           delFlag: '0',
-        //           treeNode: 'subClassCode',
-        //           treeValue: 'wdj',
-        //           num: '0'
-        //         }
-        //       ],
-        //       treeNode: 'type',
-        //       treeValue: 'wdj2'
-        //     }
-        //   ],
-        //   treeNode: 'parentType',
-        //   treeValue: 'wdj1'
-        // }
+        {
+          delFlag: '0',
+          treeModelList: [
+            {
+              delFlag: '0',
+              treeModelList: [
+                {
+                  delFlag: '0',
+                  treeNode: 'subClassCode',
+                  treeValue: '800ONM',
+                  num: '0'
+                },
+                {
+                  delFlag: '0',
+                  treeNode: 'subClassCode',
+                  treeValue: '111',
+                  num: '0'
+                }
+              ],
+              treeNode: 'type',
+              treeValue: '11'
+            }
+          ],
+          treeNode: 'parentType',
+          treeValue: '11'
+        },
+        {
+          delFlag: '0',
+          treeModelList: [
+            {
+              delFlag: '0',
+              treeModelList: [
+                {
+                  delFlag: '0',
+                  treeNode: 'subClassCode',
+                  treeValue: 'wdj',
+                  num: '0'
+                }
+              ],
+              treeNode: 'type',
+              treeValue: 'wdj2'
+            }
+          ],
+          treeNode: 'parentType',
+          treeValue: 'wdj1'
+        }
       ],
       obj1: [],
-
       num1: 0,
       num2: 0,
       tableData: [],
@@ -199,7 +183,36 @@ export default {
         officeId: '',
         fabModelTemplateBodyList: []
       },
-      obj: { parentType: '', type: '', subClassCode: '', id: '' }
+      obj: { parentType: '', type: '', subClassCode: '', id: '' },
+
+      formConf: {
+        url: 'fab/fabModeltemplate',
+        title: {
+          ADD: '新增设备',
+          EDIT: '修改设备',
+          VIEW: '设备详情'
+        },
+        rules: {
+          eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
+          modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
+          activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
+        },
+        onLoadData: (m, type) => {
+          console.info(m)
+          if (m.officeIds) {
+            m.officeIdsm.officeIds
+          }
+          return m
+        },
+        beforeSubmit: (params, type) => {
+          const re = { ...params }
+          if (re.officeId) {
+            re.officeId = re.officeIds[re.officeIds.length - 1]
+            re.officeIds = undefined
+          }
+          return re
+        }
+      }
     }
   },
   mounted() {
@@ -229,20 +242,23 @@ export default {
         this.obj.subClassCode = row.treeValue
         this.obj.id = `${this.obj.parentType}${this.obj.type}${this.obj.subClassCode}`
         const sss = { ...this.obj }
-        this.fabModelTemplateBodyList.push(sss)
+        this.model.fabModelTemplateBodyList.push(sss)
       } else {
         const id = row.treeValue
-        this.fabModelTemplateBodyList.forEach((item, index) => {
+        this.model.fabModelTemplateBodyList.forEach((item, index) => {
           if (id === item.subClassCode) {
-            this.fabModelTemplateBodyList.splice(index, 1)
+            this.model.fabModelTemplateBodyList.splice(index, 1)
           }
         })
       }
     },
     toggleSelection(rows) {
+      const _this = this
       if (rows && rows.length) {
         rows.forEach((row) => {
-          this.$refs.multipleTable.toggleRowSelection(row)
+          setTimeout(function() {
+            _this.$refs.multipleTable.toggleRowSelection(row)
+          }, 500)
         })
       } else {
         this.$refs.multipleTable.clearSelection()
@@ -254,7 +270,6 @@ export default {
         method: 'get'
       }).then((res) => {
         this.eqpModelOptions = res.data.results
-        console.log(res.data.results)
       })
     },
     editCurrRow(rowId, str) {
@@ -289,6 +304,7 @@ export default {
     // // 一级菜单点击时间
     getIndex1(idx) {
       this.isShow = true
+      this.show = false
       this.num1 = idx
       this.num2 = 0
       this.obj.parentType = this.options[idx].treeValue
@@ -297,8 +313,8 @@ export default {
       const isCheckList = (() => {
         const res = []
         this.tableData.forEach((item) => {
-          if (this.fabModelTemplateBodyList.length) {
-            this.fabModelTemplateBodyList.forEach((it) => {
+          if (this.model.fabModelTemplateBodyList.length) {
+            this.model.fabModelTemplateBodyList.forEach((it) => {
               if (item.treeValue === it.subClassCode) {
                 res.push(item)
               }
@@ -351,12 +367,6 @@ export default {
   display: none;
 }
 
-.btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 15px;
-}
 .el-input {
   width: 400px;
 }
@@ -379,14 +389,13 @@ export default {
 .menu-one,
 .menu-two {
   height: 500px;
-  width: 25%;
+
   overflow: hidden;
   overflow-y: auto;
   margin-bottom: 20px;
   border: 1px solid #eee;
 }
 .menu-three {
-  width: 50%;
   height: 500px;
   position: relative;
   border: 1px solid #eee;

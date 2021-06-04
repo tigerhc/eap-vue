@@ -94,16 +94,6 @@ export default {
     this.model.createDate = dateFormat(new Date())
     this.model.updateDate = dateFormat(new Date())
     this.getmodelId()
-
-    fetchDict('NUM_TYPE').then((res) => {
-      res.data.forEach((item) => {
-        this.options2.forEach((it) => {
-          if (item.value === it) {
-            this.options3.push(item)
-          }
-        })
-      })
-    })
   },
   methods: {
     onDisplayChange(e) {
@@ -129,9 +119,21 @@ export default {
       return request({
         url: `fab/sensornumtype/numTypeList/${this.model.modelId}`,
         methods: 'get'
-      }).then((res) => {
-        this.options2 = res.data.results
       })
+        .then((res) => {
+          this.options2 = res.data.results
+        })
+        .finally(() => {
+          fetchDict('NUM_TYPE').then((res) => {
+            res.data.forEach((item) => {
+              this.options2.forEach((it) => {
+                if (item.value === it) {
+                  this.options3.push(item)
+                }
+              })
+            })
+          })
+        })
     },
     change() {
       this.getsubEqpId()

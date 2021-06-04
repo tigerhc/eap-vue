@@ -104,9 +104,9 @@ export default {
         },
         onLoadData: (m, type) => {
           console.info(m)
+          console.log(m.officeIds)
           if (m.officeIds) {
             m.officeIds = m.officeIds.split(',')
-            console.log(m.officeIds)
           }
           return m
         },
@@ -130,7 +130,7 @@ export default {
 
     // this.getA()
     // this.table.model.sensorName = `${this.model.eqpName}_传感器1`
-    console.log(this.model.eqpName)
+    // console.log(this.model.eqpName)
   },
   methods: {
     onDisplayChange(e) {

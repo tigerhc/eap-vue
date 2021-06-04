@@ -1,6 +1,6 @@
 <template>
   <w-form v-bind="formConf" :col="3" :model="model">
-    <el-select v-model="model.modelId" placeholder="请选择" label="设备型号">
+    <el-select v-model="model.modelId" placeholder="请选择" label="设备型号" @change="change">
       <el-option v-for="item in options" :key="item.id" :label="item.id" :value="item.id" />
     </el-select>
     <el-select v-model="model.subEqpId" placeholder="请选择" label="设备号">
@@ -68,7 +68,7 @@ export default {
         onLoadData: (m, type) => {
           console.info(m)
           if (m.officeIds) {
-            m.officeIdsm.officeIds
+            m.officeIds = m.officeIds
           }
           return m
         },
@@ -89,8 +89,6 @@ export default {
     this.model.createDate = dateFormat(new Date())
     this.model.updateDate = dateFormat(new Date())
     this.getmodelId()
-    this.getsubEqpId()
-    this.getNumType()
   },
   methods: {
     onDisplayChange(e) {
@@ -119,6 +117,10 @@ export default {
       }).then((res) => {
         this.options2 = res.data.results
       })
+    },
+    change() {
+      this.getsubEqpId()
+      this.getNumType()
     }
   }
 }

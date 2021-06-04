@@ -57,7 +57,7 @@ export default {
           console.info(m)
           this.getSorsenNum(m.subClassCode)
           if (m.officeIds) {
-            m.officeIdsm.officeIds
+            m.officeIds = m.officeIds.split(',')
           }
           return m
         },

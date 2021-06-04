@@ -31,6 +31,7 @@ export default {
     return {
       options: [],
       options1: [],
+      options2: [],
       model: {
         numType: '',
         createBy: '',

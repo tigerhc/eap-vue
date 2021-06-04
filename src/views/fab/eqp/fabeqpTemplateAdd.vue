@@ -1,5 +1,6 @@
 <template>
   <w-form v-bind="formConf" :col="3" :model="model">
+    <el-input v-model="model.fabModelTemplateBodyList" style="display: none"/>
     <el-row :col="24" style="margin-bottom: 15px">
       <el-select v-model="model.classCode" placeholder="设备类型">
         <el-option v-for="item in eqpModelOptions" :key="item.id" :label="item.id" :value="item.id" />
@@ -135,6 +136,25 @@ export default {
               ],
               treeNode: 'type',
               treeValue: '11'
+            },
+            {
+              delFlag: '0',
+              treeModelList: [
+                {
+                  delFlag: '0',
+                  treeNode: 'subClassCode',
+                  treeValue: '1311432',
+                  num: '0'
+                },
+                {
+                  delFlag: '0',
+                  treeNode: 'subClassCode',
+                  treeValue: '1sdff11',
+                  num: '0'
+                }
+              ],
+              treeNode: 'type',
+              treeValue: 'asd'
             }
           ],
           treeNode: 'parentType',
@@ -165,7 +185,6 @@ export default {
       num1: 0,
       num2: 0,
       tableData: [],
-      multipleSelection: [],
       activeFlagO: [],
       eqpModelOptions: [], // ////
       model: {
@@ -335,6 +354,25 @@ export default {
       this.num2 = idx
       this.obj.type = this.obj1[idx].treeValue
       this.getTableDatas()
+
+      const isCheckList = (() => {
+        const res = []
+        this.tableData.forEach((item) => {
+          if (this.model.fabModelTemplateBodyList.length) {
+            this.model.fabModelTemplateBodyList.forEach((it) => {
+              if (item.treeValue === it.subClassCode) {
+                res.push(item)
+              }
+            })
+          }
+        })
+        return res
+      })()
+      if (isCheckList.length) {
+        this.$nextTick(() => {
+          this.toggleSelection(isCheckList)
+        })
+      }
     },
 
     getAb() {

@@ -126,8 +126,10 @@ export default {
     beforeSubmit(model) {
       // model 将被保存的表单模型
       model.actionCode = model.actionCodes.join(',')
+
       delete model['edcAmsRptDefineActEmailList'] // 删除原数据模型里的多语言数组
       const lang = this.$refs.language.tranformData('edcAmsRptDefineActEmailList') // 获取被转换格式的所有细表数据
+      console.log(lang)
       const re = { ...model, ...lang } // 合并细表数据
       return re // 返回新的数据模型
     }

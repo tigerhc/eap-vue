@@ -16,7 +16,7 @@
     <el-input v-model="model.createBy" :disabled="true" label="创建人" />
     <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
     <el-select v-model="model.numType" placeholder="请选择" label="示数类型">
-      <el-option v-for="item in options2" :key="item.id" :label="item.id" :value="item.id" />
+      <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value" />
     </el-select>
     <el-input v-model="model.updateBy" :disabled="true" label="更新人" />
     <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
@@ -25,10 +25,14 @@
 <script>
 import dateFormat from '@/utils/dateformat'
 import request from '@/utils/request'
+import { fetchDict } from '@/api/sys/dict.js'
+
 export default {
   name: 'MachineModel',
   data() {
     return {
+      options3: [],
+
       options: [],
       options1: [],
       options2: [],
@@ -90,6 +94,16 @@ export default {
     this.model.createDate = dateFormat(new Date())
     this.model.updateDate = dateFormat(new Date())
     this.getmodelId()
+
+    fetchDict('NUM_TYPE').then((res) => {
+      res.data.forEach((item) => {
+        this.options2.forEach((it) => {
+          if (item.value === it) {
+            this.options3.push(item)
+          }
+        })
+      })
+    })
   },
   methods: {
     onDisplayChange(e) {

@@ -1,6 +1,6 @@
 <template>
   <w-form v-bind="formConf" :col="3" :model="model">
-    <el-input v-model="model.fabModelTemplateBodyList" style="display: none"/>
+    <!-- <el-input v-model="model.fabModelTemplateBodyList" style="display: none"/> -->
     <el-row :col="24" style="margin-bottom: 15px">
       <el-select v-model="model.classCode" placeholder="设备类型">
         <el-option v-for="item in eqpModelOptions" :key="item.id" :label="item.id" :value="item.id" />
@@ -202,7 +202,7 @@ export default {
         officeId: '',
         fabModelTemplateBodyList: []
       },
-      obj: { parentType: '', type: '', subClassCode: '', id: '' },
+      obj: { parentType: '', type: '', subClassCode: '', id: '', num: '' },
 
       formConf: {
         url: 'fab/fabModeltemplate',
@@ -225,6 +225,7 @@ export default {
         },
         beforeSubmit: (params, type) => {
           const re = { ...params }
+          console.log(re)
           if (re.officeId) {
             re.officeId = re.officeIds[re.officeIds.length - 1]
             re.officeIds = undefined
@@ -258,11 +259,19 @@ export default {
     change(rows, row) {
       const selected = rows.length && rows.indexOf(row) !== -1
       if (selected) {
+        // console.log(row.num === '0')
+        if (row.num === '0') {
+          row.num++
+        }
+
         this.obj.subClassCode = row.treeValue
+        this.obj.num = row.num
         this.obj.id = `${this.obj.parentType}${this.obj.type}${this.obj.subClassCode}`
         const sss = { ...this.obj }
         this.model.fabModelTemplateBodyList.push(sss)
+        console.log(this.model.fabModelTemplateBodyList)
       } else {
+        row.num--
         const id = row.treeValue
         this.model.fabModelTemplateBodyList.forEach((item, index) => {
           if (id === item.subClassCode) {

@@ -336,25 +336,43 @@ export default {
           // 标题
           _this.prodTitleArr = paramObj.title
 
-          if (paramObj.paramValue !== undefined && paramObj.paramValue !== null) {
-            var pvs = paramObj.paramValue.split(',')
-            if (pvs.length > paramObj.title.length) {
-              for (var j = 0; j < paramObj.title.length; j++) {
-                // 告警的变量记录下标
-                if (_this._chkParamValue(pvs[j], paramObj.title[j])) {
-                  _this.prodAlarmValue = _this.prodAlarmValue + j + ','
+          // 拆分实测值
+          if (row.eqpId === 'APJ-VI1' || row.eqpId === 'APJ-AT1') {
+            var params = paramObj.paramValue.split(',')
+            for (var i = 0; i < params.length; i++) {
+              var arrIndex = parseInt(i / 3)
+              if (i % 3 === 0) { // 最大
+                paramObj.title[arrIndex].limitMax = params[i]
+              } else if (i % 3 === 1) { // 最小
+                paramObj.title[arrIndex].limitMin = params[i]
+              } else { // 实测
+                _this.prodValueArr.push(params[i])
+                if (_this._chkParamValue(params[i], paramObj.title[arrIndex])) {
+                  _this.prodAlarmValue = _this.prodAlarmValue + i + ','
                 }
-                // 添加到生产条件的list中
-                _this.prodValueArr.push(pvs[j])
               }
-            } else {
-              for (var m = 0; m < pvs.length; m++) {
-                // 告警的变量记录下标
-                if (_this._chkParamValue(pvs[m], paramObj.title[m])) {
-                  _this.prodAlarmValue = _this.prodAlarmValue + m + ','
+            }
+          } else {
+            if (paramObj.paramValue !== undefined && paramObj.paramValue !== null) {
+              var pvs = paramObj.paramValue.split(',')
+              if (pvs.length > paramObj.title.length) {
+                for (var j = 0; j < paramObj.title.length; j++) {
+                  // 告警的变量记录下标
+                  if (_this._chkParamValue(pvs[j], paramObj.title[j])) {
+                    _this.prodAlarmValue = _this.prodAlarmValue + j + ','
+                  }
+                  // 添加到生产条件的list中
+                  _this.prodValueArr.push(pvs[j])
                 }
-                // 添加到生产条件的list中
-                _this.prodValueArr.push(pvs[m])
+              } else {
+                for (var m = 0; m < pvs.length; m++) {
+                  // 告警的变量记录下标
+                  if (_this._chkParamValue(pvs[m], paramObj.title[m])) {
+                    _this.prodAlarmValue = _this.prodAlarmValue + m + ','
+                  }
+                  // 添加到生产条件的list中
+                  _this.prodValueArr.push(pvs[m])
+                }
               }
             }
           }

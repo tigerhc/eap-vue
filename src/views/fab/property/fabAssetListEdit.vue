@@ -15,7 +15,7 @@
         v-model="model.modelId"
         :display.sync="model.modelName"
         idkey="id"
-        displaykey="manufacturerName"
+        displaykey="classCode"
         label="设备型号名称"
         title="选择设备型号"
         module="views/fab/eqpmodel/eqpmodelLook"
@@ -38,7 +38,7 @@
       <el-input v-model="model.locationY" label="经度坐标" />
     </w-form>
     <div style="border-top: 1px solid #ddd; padding: 5px 0; margin: 10px 0" />
-    <!-- <w-edt-table v-slot="{}" ref="language" v-bind="table" url="">
+    <w-edt-table v-slot="{}" ref="language" v-bind="table" url="">
       <w-table-col name="sensorType" label="传感器类型" align="left">
         <el-input v-model="table.model.sensorType" />
       </w-table-col>
@@ -48,7 +48,7 @@
       <w-table-col name="sensorName" label="传感器名称" align="left">
         <el-input v-model="table.model.sensorName" />
       </w-table-col>
-    </w-edt-table> -->
+    </w-edt-table>
   </div>
 </template>
 <script>

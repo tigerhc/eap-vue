@@ -217,9 +217,8 @@ export default {
           VIEW: '设备详情'
         },
         rules: {
-          eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
-          modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
-          activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
+          classCode: [{ required: true, message: '设备类型必填', trigger: 'blur' }],
+          name: [{ required: true, message: '模板名称必填', trigger: 'blur' }]
         },
         onLoadData: (m, type) => {
           console.info(m)

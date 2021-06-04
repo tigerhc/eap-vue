@@ -1,8 +1,7 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-bind="table" url="">
-      condition="eq"
-      <w-table-col label="传感器型号" name="modelId" query querymode="select" dict condition="eq" />
+    <w-table v-bind="table" url="fab/sensornumtype">
+      <w-table-col label="传感器型号" name="classCode" query querymode="select" dict condition="eq" />
       <w-table-col label="示数类型" name="numType" query querymode="select" dict="NUM_TYPE" condition="eq" />
       <w-table-col label="数据类型" name="dataType" />
       <w-table-col label="采集公式" name="collectionFormula" />

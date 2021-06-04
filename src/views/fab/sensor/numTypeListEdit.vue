@@ -7,7 +7,7 @@
     <el-input v-model="model.dataType" label="数据类型" />
     <el-input v-model="model.collectionFormula" label="采集方式" />
     <el-input v-model="model.paramUnit" label="计算单位" />
-    <el-input v-model="model.delFlag" label="记录删除标志" />
+    <!-- <el-input v-model="model.delFlag" label="记录删除标志" /> -->
     <el-input v-model="model.createBy" :disabled="true" label="创建人" />
     <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
     <el-input v-model="model.remarks" label="备注" type="textarea" />
@@ -39,7 +39,7 @@ export default {
       },
 
       formConf: {
-        url: 'fab/fabSensor',
+        url: 'fab/sensornumtype',
         title: {
           ADD: '新增示数类型',
           EDIT: '修改示数类型',
@@ -81,7 +81,7 @@ export default {
     },
     getEqpModel() {
       return request({
-        url: 'fab/fabequipmentmodel/noTemClassCodeList',
+        url: 'fab/fabequipmentmodel/classCodeList',
         method: 'get'
       }).then((res) => {
         this.options = res.data.results

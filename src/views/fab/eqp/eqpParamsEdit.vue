@@ -1,6 +1,6 @@
 <template>
   <w-form v-bind="formConf" :col="3" :model="model">
-    <el-select v-model="model.modelId" placeholder="请选择" label="设备型号">
+    <el-select v-model="model.classCode" placeholder="请选择" label="设备型号">
       <el-option v-for="item in options" :key="item.id" :label="item.id" :value="item.id" />
     </el-select>
     <el-select v-model="model.subEqpId" placeholder="请选择" label="设备号">
@@ -15,6 +15,9 @@
     <el-input v-model="model.remarks" type="textarea" label="备注" />
     <el-input v-model="model.createBy" :disabled="true" label="创建人" />
     <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
+    <el-select v-model="model.numType" placeholder="请选择" label="示数类型">
+      <el-option v-for="item in options2" :key="item.id" :label="item.id" :value="item.id" />
+    </el-select>
     <el-input v-model="model.updateBy" :disabled="true" label="更新人" />
     <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
   </w-form>
@@ -29,6 +32,7 @@ export default {
       options: [],
       options1: [],
       model: {
+        numType: '',
         createBy: '',
         createDate: '',
         updateBy: '',
@@ -38,7 +42,7 @@ export default {
         bcCode: '',
         ip: '',
         modelName: '',
-        modelId: '',
+        classCode: '',
         eqpParam: '',
         location: '',
         takeTime: 0,
@@ -57,9 +61,9 @@ export default {
           VIEW: '设备详情'
         },
         rules: {
-          eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
-          modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
-          activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
+          // modelId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
+          // modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
+          // activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
         },
         onLoadData: (m, type) => {
           console.info(m)
@@ -105,6 +109,14 @@ export default {
         methods: 'get'
       }).then((res) => {
         this.options1 = res.data.results
+      })
+    },
+    getNumType() {
+      return request({
+        url: `fab/sensornumtype/numTypeList/${this.classCode}`,
+        methods: 'get'
+      }).then((res) => {
+        this.options2 = res.data.results
       })
     }
   }

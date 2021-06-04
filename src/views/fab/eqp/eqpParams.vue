@@ -19,13 +19,13 @@
       <w-table-col name="minValue" label="最小值" width="100" align="center" />
       <w-table-col name="setValue" label="设定值" width="100" align="center" />
       <w-table-col
-        name="modelId"
+        name="classCode"
         label="设备型号"
         hidden
         query
         dict
         url="/fab/fabequipmentmodel/list"
-        namekey="modelId"
+        namekey="classCode"
         condition="eq"
         filterable
       />

@@ -70,7 +70,7 @@ export default {
         onLoadData: (m, type) => {
           console.info(m)
           if (m.officeIds) {
-            m.officeIdsm.officeIds
+            m.officeIds = m.officeIds
           }
           return m
         },

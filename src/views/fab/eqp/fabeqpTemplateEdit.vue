@@ -220,6 +220,8 @@ export default {
         },
         onLoadData: (m, type) => {
           console.info(m)
+          this.getInitializationData()
+          this.getSelectedData()
           if (m.officeIds) {
             m.officeIdsm.officeIds
           }
@@ -253,8 +255,7 @@ export default {
     this.model.createDate = dateFormat(new Date())
     this.model.updateBy = this.$store.getters.roles[0]
     this.model.updateDate = dateFormat(new Date())
-    this.getInitializationData()
-    this.getSelectedData()
+
     // this.model.fabModelTemplateBodyList = this.arr
   },
   methods: {
@@ -262,7 +263,7 @@ export default {
       const isCheck = (() => {
         const res = []
         this.tableData.forEach((item) => {
-          this.arr.forEach((it) => {
+          this.model.fabModelTemplateBodyList.forEach((it) => {
             if (item.treeValue === it.subClassCode) {
               item.num = it.num
               res.push(item)
@@ -404,7 +405,7 @@ export default {
     // 获取点击修改传过来的数据
     getSelectedData() {
       return request({
-        url: `fab/fabModeltemplatebody/oneTemplateList/${this.model.name}`,
+        url: `fab/fabModeltemplatebody/oneTemplateList/${this.model.id}`,
         method: 'get'
       }).then((res) => {
         this.model.fabModelTemplateBodyList = res.data.results

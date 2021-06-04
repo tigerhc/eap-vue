@@ -105,7 +105,7 @@ export default {
     },
     getsubEqpId() {
       return request({
-        url: `fab/fabequipment/eqpIdlistByCode/${this.modelId}`,
+        url: `fab/fabequipment/eqpIdlistByCode/${this.model.modelId}`,
         methods: 'get'
       }).then((res) => {
         this.options1 = res.data.results
@@ -113,7 +113,7 @@ export default {
     },
     getNumType() {
       return request({
-        url: `fab/sensornumtype/numTypeList/${this.modelId}`,
+        url: `fab/sensornumtype/numTypeList/${this.model.modelId}`,
         methods: 'get'
       }).then((res) => {
         this.options2 = res.data.results

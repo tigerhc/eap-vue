@@ -6,8 +6,8 @@
         <chipTray :eqp-id="item.eqpId" :start-time="item.startTimeStr" :tray-id="item.toTrayId" :x="item.toX" :y="item.toY"/>
       </div>
       <div :style="{left:'950px',height:'2800px'}" class="smt_panel">
-        <div class="incloud"/>
-        <div :style="{left:'50px', top:'1200px'}" class="eqp_single">
+        <div v-if="smt1.eqpId!==undefined" class="incloud"/>
+        <div v-if="smt1.eqpId!==undefined" :style="{left:'50px', top:'1200px'}" class="eqp_single">
           <chipTray :eqp-id="smt1.eqpId" :start-time="smt1.startTimeStr" :tray-id="smt1.toTrayId"/>
         </div>
       </div>
@@ -109,7 +109,7 @@
       </div>
     </div>
     <!--缺上基板数据,不向上偏移-->
-    <div v-if="dbctLine.length ===0" :style="{height:'250px',width:250+3060+250*(otherData.length-1)+'px'}" class="other_panel">
+    <div v-if="dbctLine.length ===0 && otherData.length>0" :style="{height:'250px',width:250+3060+250*(otherData.length-1)+'px'}" class="other_panel">
       <div v-for="(item, index) in otherData.length-1" :style="{left:250+(250*index)+'px'}" :key="'other_'+index" class="arraw" />
       <div :style="{left:'50px',width:200+250*(otherData.length-1)+'px'}" class="line_panel">
         <div v-for="(item, index) in otherData" :key="'db1_'+index" :style="{left:250*index+'px'}" class="eqp">
@@ -177,7 +177,6 @@ export default {
         method: 'post',
         data: { chipId: this.$route.query.id }
       }).then((resp) => {
-        console.log(resp)
         var dataList = resp.data.results
         if (dataList === null || dataList.length === 0) {
           alert('数据错误')

@@ -23,3 +23,11 @@ export function getPuctionParam(id) {
     params: {}
   })
 }
+
+export function getPuctionGoods(startTime, eqpId) {
+  return request({
+    url: '/map/maptraychipmove/getPuctionGoods?startTime=' + startTime + '&eqpId=' + eqpId,
+    method: 'get',
+    params: {}
+  })
+}

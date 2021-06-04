@@ -10,7 +10,7 @@
         </el-col>
         <el-col :span="5" class="tray-chip-eqp-selet">
           <!--<w-select-eqp v-model="searchObj.eqpIds"/>-->
-							<el-select v-model="searchObj.eqpIds">
+							<el-select v-model="searchObj.eqpIds" clearable>
 								<el-option
 									v-for="item in eqps"
 									:key="item.eqpId"
@@ -72,6 +72,15 @@
             size="small"
             @click="handleParamClick(scope.row)"
           >生产条件明细</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column prop="lotNo" label="物料信息" width="100">
+        <template slot-scope="scope">
+          <el-button
+            type="text"
+            size="small"
+            @click="handleGoodsClick(scope.row)"
+          >查询物料</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -142,7 +151,7 @@
 <script>
 import request from '@/utils/request'
 import dateFormat from '@/utils/dateformat'
-import { getTrayEqpList, getPuctionParam } from '@/api/map/monitor'
+import { getTrayEqpList, getPuctionParam, getPuctionGoods } from '@/api/map/monitor'
 
 export default {
   name: 'TrayChipMoveList',
@@ -353,6 +362,12 @@ export default {
         _this.dialogTableVisible = true
       })
     },
+    handleGoodsClick(row) {
+      // var _this = this
+      getPuctionGoods(row.startTime, row.eqpId).then((response) => {
+        alert('等待入账信息完善才能查')
+      })
+    },
     toHistory() {
       this.$router.push({
         name: 'views/map/tray/trayjobhistoryList'
@@ -370,7 +385,7 @@ export default {
         if (numRe.test(titleObj.limitMin) && numRe.test(titleObj.limitMax)) {
           var min = parseFloat(titleObj.limitMin)
           var max = parseFloat(titleObj.limitMax)
-          var rs = paramV >= min && paramV <= max
+          var rs = paramV > min && paramV < max
           return !rs
         } else {
           return false

@@ -196,10 +196,10 @@
 
 <script>
 import { fetchProList } from '@/api/sys/project'
-import { getList, addRoleEqp, deleteRole, updateRoleEqp, fetchRoleMenu, setEqp } from '@/api/sys/role'
+import { getList, addRoleEqp, deleteRole, updateRoleEqp, fetchRoleMenu, setEqp, getIotList } from '@/api/sys/role'
 import waves from '@/directive/waves' // 水波纹指令
 import { fetchOrganizationList } from '@/api/sys/organization'
-import request from '@/utils/request'
+// import request from '@/utils/request'
 
 export default {
   name: 'SysRoleList',
@@ -352,21 +352,24 @@ export default {
         this.$refs.multipleTable.clearSelection()
       }
     },
-    getTableData(query) {
-      return request({
-        url: `fab/iotroleeqp/list`,
-        methods: 'get',
-        query
-      }).then((res) => {
-        console.log('初始化')
-        console.log(res)
-      })
-    },
+    // getTableData(query) {
+    //   return request({
+    //     url: `fab/iotroleeqp/list`,
+    //     methods: 'get',
+    //     query
+    //   }).then((res) => {
+    //     console.log('初始化')
+    //     console.log(res)
+    //   })
+    // },
 
     handleNodeClick(val) {
       this.orgid = val.id
       const obj = { roleId: this.selectCurentRoleId, orgid: this.orgid }
-      this.getTableData(obj)
+      getIotList(obj).then((res) => {
+        console.log('初始化')
+        console.log(res)
+      })
     },
     getOrginData() {
       const parmas = {

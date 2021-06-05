@@ -16,6 +16,14 @@ export function getList(query) {
   })
 }
 
+export function getIotList(query) {
+  return request({
+    url: '/fab/iotroleeqp/list',
+    method: 'get',
+    params: query
+  })
+}
+
 export function fetchUsableRoleList() {
   return request({
     url: '/sys/role/usable/list',
@@ -25,7 +33,7 @@ export function fetchUsableRoleList() {
 
 export function fetchRoleList() {
   return request({
-    url: 'fab/role/usable/list',
+    url: '/fab/role/usable/list',
     method: 'get'
   })
 }

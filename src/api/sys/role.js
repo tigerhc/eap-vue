@@ -15,6 +15,13 @@ export function fetchUsableRoleList() {
   })
 }
 
+export function fetchRoleList() {
+  return request({
+    url: '/sys/user/role',
+    method: 'get'
+  })
+}
+
 export function addRole(data) {
   return request({
     url: '/sys/role/add',
@@ -72,4 +79,3 @@ export function deleteByUserId(userid, roleIds) {
     data: { roleIds }
   })
 }
-

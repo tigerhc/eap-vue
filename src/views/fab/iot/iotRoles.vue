@@ -42,9 +42,9 @@
         <el-button v-waves size="mini" type="primary" icon="el-icon-search" @click="handleFilter">{{
           $t('table.search')
         }}</el-button>
-        <el-button size="mini" type="primary" icon="el-icon-edit" @click="handleCreate">{{
+        <!-- <el-button size="mini" type="primary" icon="el-icon-edit" @click="handleCreate">{{
           $t('table.add')
-        }}</el-button>
+        }}</el-button> -->
         <el-button
           v-waves
           :loading="downloadLoading"
@@ -184,7 +184,7 @@
 <script>
 import { fetchOrganizationList } from '@/api/sys/organization'
 import { fetchList, createUser, deleteUser, updateUser, modifyPassword, exportUser } from '@/api/sys/user'
-import { fetchUsableRoleList } from '@/api/sys/role'
+import { fetchRoleList } from '@/api/sys/role'
 import { fetchUserRoleIds, insertByUserId, deleteByUserId } from '@/api/sys/userRole'
 import waves from '@/directive/waves' // 水波纹指令
 import { getDictList } from '@/utils/dict'
@@ -281,7 +281,7 @@ export default {
       })
     },
     getUsableRoleList() {
-      fetchUsableRoleList().then((response) => {
+      fetchRoleList().then((response) => {
         this.roleList = response.data
       })
     },

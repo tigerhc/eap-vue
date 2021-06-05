@@ -64,8 +64,8 @@
       <el-table-column :label="$t('table.actions')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" style="width: 100px" @click="toSetMenu(scope.row)">关联设备</el-button>
-          <!-- <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">{{ $t('table.delete') }} </el-button> -->
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">{{ $t('table.delete') }} </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -136,29 +136,42 @@
       </div>
     </el-dialog>
     <!--设置权限-->
-    <el-dialog :visible.sync="dialogFormMenuVisible" :fullscreen="true" title="设置权限">
-      <el-form
-        ref="dataForm"
-        :model="menuTemp"
-        label-position="left"
-        label-width="120px"
-        style="width: 400px; margin-left: 50px"
-      >
-        <el-form-item label="操作权限">
+    <el-dialog :visible.sync="dialogFormMenuVisible" :fullscreen="true" title="设置关联设备">
+      <div class="box">
+        <el-card class="searchModule" style="width: 500px; height: 600px">
+          <div class="MenuTreeTitle">
+            <div class="left">组织架构</div>
+            <div class="right">
+              <i class="el-icon-refresh" @click="getOrginData" />
+            </div>
+          </div>
           <el-tree
-            ref="menuTree"
-            :data="menuData"
-            :props="menuTreeProps"
-            :default-checked-keys="selectMenuIds"
-            default-expand-all="true"
-            show-checkbox
-            node-key="id"
+            :data="treeData"
+            :default-expand-all="true"
+            :highlight-current="true"
+            :props="Props"
+            style="height: 520px; overflow: auto"
+            @node-click="handleNodeClick"
           />
-        </el-form-item>
-      </el-form>
+        </el-card>
+
+        <el-table
+          :data="tableData"
+          :header-cell-style="{ 'text-align': 'center' }"
+          :cell-style="{ 'text-align': 'center' }"
+          style="width: 500px; margin-left: 100px"
+        >
+          <el-table-column type="selection" label="序号"/>
+          <el-table-column type="index" label="序号"/>
+          <el-table-column prop="" label="设备型号"/>
+          <el-table-column prop="" label="设备名称"/>
+          <el-table-column prop="" label="设备号"/>
+        </el-table>
+      </div>
+
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormMenuVisible = false">{{ $t('table.cancel') }}</el-button>
-        <el-button type="primary" @click="handleChangeMenus">设置权限</el-button>
+        <el-button type="primary" @click="handleChangeMenus">关联设备</el-button>
       </div>
     </el-dialog>
   </div>
@@ -168,6 +181,7 @@
 import { fetchProList } from '@/api/sys/project'
 import { fetchList, addRole, deleteRole, updateRole, fetchRoleMenu, setMenu } from '@/api/sys/role'
 import waves from '@/directive/waves' // 水波纹指令
+import { fetchOrganizationList } from '@/api/sys/organization'
 
 export default {
   name: 'SysRoleList',
@@ -176,6 +190,12 @@ export default {
   },
   data() {
     return {
+      tableData: [],
+      Props: {
+        value: 'id',
+        label: 'name'
+      },
+      treeData: [],
       tableKey: 0,
       list: null,
       total: null,
@@ -224,13 +244,31 @@ export default {
       menuTreeProps: {
         children: 'children',
         label: 'name'
-      }
+      },
+      orgid: ''
     }
   },
   created() {
     this.getProList()
+    this.getOrginData()
   },
   methods: {
+    handleNodeClick(val) {
+      this.orgid = val.id
+      console.log(this.orgid)
+    },
+    getOrginData() {
+      const parmas = {
+        importance: undefined,
+        title: undefined,
+        type: undefined,
+        sort: '+id'
+      }
+      this.orgid = ''
+      fetchOrganizationList(parmas).then((response) => {
+        this.treeData = response.data
+      })
+    },
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then((response) => {
@@ -402,3 +440,20 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+.MenuTreeTitle {
+  height: 30px;
+}
+.box {
+  width: 100%;
+  height: 650px;
+  display: flex;
+}
+</style>

@@ -92,8 +92,8 @@
         label-width="120px"
         style="width: 400px; margin-left: 50px"
       >
-        <el-form-item label="项目" prop="project">
-          <!-- <el-select
+        <!-- <el-form-item label="项目" prop="project"> -->
+        <!-- <el-select
             :disabled="dialogStatus == 'update'"
             v-model="temp.projectId"
             class="filter-item"
@@ -101,7 +101,7 @@
           >
             <el-option v-for="item in projectList" :key="item.id" :label="item.projectName" :value="item.id" />
           </el-select> -->
-        </el-form-item>
+        <!-- </el-form-item> -->
         <el-form-item label="角色名称" prop="name">
           <el-input v-model="temp.name" />
         </el-form-item>
@@ -357,8 +357,9 @@ export default {
     },
     getTableData(query) {
       return request({
-        url: `fab/iotroleeqp/list/${query}`,
-        methods: 'get'
+        url: `fab/iotroleeqp/list`,
+        methods: 'get',
+        query
       }).then((res) => {
         console.log('初始化')
         console.log(res)

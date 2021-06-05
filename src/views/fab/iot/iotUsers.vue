@@ -213,7 +213,7 @@ export default {
         pageNum: 1
       },
       tableData: [
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', activeFlag: 'true' },
         // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
         // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'false' },
         // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
@@ -302,18 +302,18 @@ export default {
   methods: {
     selectAll(v) {
       v.forEach((item) => {
-        item.flag = 'true'
+        item.isFlag = 'true'
       })
     },
     select(rows, row) {
       const selected = rows.length && rows.indexOf(row) !== -1
       if (selected) {
         rows.forEach((item) => {
-          item.flag = 'true'
+          item.isFlag = 'true'
         })
       } else {
         rows.forEach((item) => {
-          item.flag = 'false'
+          item.isFlag = 'false'
         })
       }
     },
@@ -326,7 +326,7 @@ export default {
     getA() {
       const arr = []
       this.tableData.forEach((item) => {
-        if (item.flag === 'true') {
+        if (item.isFlag === 'true') {
           arr.push(item)
         }
       })
@@ -367,8 +367,9 @@ export default {
       this.orgid = val.id
       const obj = { roleId: this.selectCurentRoleId, orgid: this.orgid }
       getIotList(obj).then((res) => {
-        console.log('初始化')
-        console.log(res)
+        this.tableData = res.data
+        // console.log('初始化')
+        // console.log(res)
       })
     },
     getOrginData() {

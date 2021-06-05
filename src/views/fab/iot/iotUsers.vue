@@ -319,12 +319,9 @@ export default {
     },
 
     change(v) {
-      // console.log(v)
-
       v.forEach((item) => {
         this.eqpIds += item.eqpId + ','
       })
-      // console.log(eqpId)
     },
     getA() {
       const arr = []
@@ -368,7 +365,8 @@ export default {
 
     handleNodeClick(val) {
       this.orgid = val.id
-      this.getTableData(this.orgid)
+      const obj = { roleId: this.selectCurentRoleId, orgid: this.orgid }
+      this.getTableData(obj)
     },
     getOrginData() {
       const parmas = {

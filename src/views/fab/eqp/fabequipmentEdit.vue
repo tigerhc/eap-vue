@@ -76,10 +76,11 @@ export default {
         },
         beforeSubmit: (params, type) => {
           const re = { ...params }
-          if (re.officeId) {
-            re.officeId = re.officeIds[re.officeIds.length - 1]
-            // re.officeIds = undefined
-          }
+          console.log(re.officeId)
+          // if (re.officeId) {
+          //   re.officeId = re.officeIds[re.officeIds.length - 1]
+          //   // re.officeIds = undefined
+          // }
           return re
         }
       }

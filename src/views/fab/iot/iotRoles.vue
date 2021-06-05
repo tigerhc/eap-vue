@@ -185,7 +185,7 @@
 import { fetchOrganizationList } from '@/api/sys/organization'
 import { fetchList, createUser, deleteUser, updateUser, modifyPassword, exportUser } from '@/api/sys/user'
 import { fetchRoleList } from '@/api/sys/role'
-import { fetchRoleIds, insertByUserId, deleteByUserId } from '@/api/sys/userRole'
+import { fetchRoleIds, insertUserId, deleteUserId } from '@/api/sys/userRole'
 import waves from '@/directive/waves' // 水波纹指令
 import { getDictList } from '@/utils/dict'
 
@@ -436,7 +436,7 @@ export default {
     },
     handleInsertByUserId(selectCurentUserId, roleIds) {
       var idsStr = roleIds.join(',')
-      insertByUserId(selectCurentUserId, idsStr).then((response) => {
+      insertUserId(selectCurentUserId, idsStr).then((response) => {
         if (response.data.code === 0) {
           this.$notify({
             title: '成功',
@@ -455,7 +455,7 @@ export default {
     },
     handleDeleteByUserId(selectCurentUserId, roleIds) {
       var idsStr = roleIds.join(',')
-      deleteByUserId(selectCurentUserId, idsStr).then((response) => {
+      deleteUserId(selectCurentUserId, idsStr).then((response) => {
         if (response.data.code === 0) {
           this.$notify({
             title: '成功',

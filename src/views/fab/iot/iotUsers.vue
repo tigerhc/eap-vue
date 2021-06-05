@@ -93,14 +93,14 @@
         style="width: 400px; margin-left: 50px"
       >
         <el-form-item label="项目" prop="project">
-          <el-select
+          <!-- <el-select
             :disabled="dialogStatus == 'update'"
             v-model="temp.projectId"
             class="filter-item"
             placeholder="请选择项目"
           >
             <el-option v-for="item in projectList" :key="item.id" :label="item.projectName" :value="item.id" />
-          </el-select>
+          </el-select> -->
         </el-form-item>
         <el-form-item label="角色名称" prop="name">
           <el-input v-model="temp.name" />
@@ -196,7 +196,7 @@
 
 <script>
 import { fetchProList } from '@/api/sys/project'
-import { fetchList, addRole, deleteRole, updateRole, fetchRoleMenu, setEqp } from '@/api/sys/role'
+import { getList, addRole, deleteRole, updateRole, fetchRoleMenu, setEqp } from '@/api/sys/role'
 import waves from '@/directive/waves' // 水波纹指令
 import { fetchOrganizationList } from '@/api/sys/organization'
 import request from '@/utils/request'
@@ -383,7 +383,7 @@ export default {
     },
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then((response) => {
+      getList(this.listQuery).then((response) => {
         this.list = response.data.records
         this.total = response.data.total
         this.listLoading = false

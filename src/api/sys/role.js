@@ -8,6 +8,14 @@ export function fetchList(query) {
   })
 }
 
+export function getList(query) {
+  return request({
+    url: '/fab/role/list',
+    method: 'get',
+    params: query
+  })
+}
+
 export function fetchUsableRoleList() {
   return request({
     url: '/sys/role/usable/list',

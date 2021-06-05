@@ -17,7 +17,7 @@ export function fetchUsableRoleList() {
 
 export function fetchRoleList() {
   return request({
-    url: '/sys/user/role',
+    url: '/fab/iotUserRole',
     method: 'get'
   })
 }

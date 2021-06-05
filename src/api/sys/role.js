@@ -38,6 +38,22 @@ export function addRole(data) {
   })
 }
 
+export function addRoleEqp(data) {
+  return request({
+    url: '/fab/role/add',
+    method: 'post',
+    data
+  })
+}
+
+export function updateRoleEqp(data) {
+  return request({
+    url: '/fab/role/' + data.id + '/update',
+    method: 'post',
+    data
+  })
+}
+
 export function updateRole(data) {
   return request({
     url: '/sys/role/' + data.id + '/update',

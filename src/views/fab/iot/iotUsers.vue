@@ -196,7 +196,7 @@
 
 <script>
 import { fetchProList } from '@/api/sys/project'
-import { getList, addRole, deleteRole, updateRole, fetchRoleMenu, setEqp } from '@/api/sys/role'
+import { getList, addRoleEqp, deleteRole, updateRoleEqp, fetchRoleMenu, setEqp } from '@/api/sys/role'
 import waves from '@/directive/waves' // 水波纹指令
 import { fetchOrganizationList } from '@/api/sys/organization'
 import request from '@/utils/request'
@@ -449,7 +449,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          addRole(this.temp).then(() => {
+          addRoleEqp(this.temp).then(() => {
             this.getList()
             this.dialogFormVisible = false
             this.$notify({
@@ -474,7 +474,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          updateRole(tempData).then(() => {
+          updateRoleEqp(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)

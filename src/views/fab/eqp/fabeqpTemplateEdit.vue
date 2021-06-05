@@ -222,18 +222,18 @@ export default {
           console.info(m)
           this.getInitializationData()
           this.getSelectedData()
-          if (m.officeIds) {
-            m.officeIds = m.officeIds
-          }
+          // if (m.officeIds) {
+          //   m.officeIds = m.officeIds
+          // }
           return m
         },
         beforeSubmit: (params, type) => {
           const re = { ...params }
-          console.log(re)
-          if (re.officeId) {
-            re.officeId = re.officeIds[re.officeIds.length - 1]
-            re.officeIds = undefined
-          }
+          // console.log(re)
+          // if (re.officeId) {
+          //   re.officeId = re.officeIds[re.officeIds.length - 1]
+          //   re.officeIds = undefined
+          // }
           return re
         }
       }

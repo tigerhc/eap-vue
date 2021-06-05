@@ -160,13 +160,17 @@
             :data="tableData.slice((pageInfo.pageNum - 1) * pageInfo.pageSize, pageInfo.pageNum * pageInfo.pageSize)"
             :header-cell-style="{ 'text-align': 'center' }"
             :cell-style="{ 'text-align': 'center' }"
+            :row-key="
+              (row) => {
+                return row.eqpId
+              }
+            "
             style="width: 100%; margin-left: 100px"
             height="250"
             @selection-change="change"
             @select="select"
-            @select-all="selectAll"
           >
-            <el-table-column type="selection" label="序号" />
+            <el-table-column :reserve-selection="true" type="selection" label="序号" />
             <el-table-column type="index" label="序号" />
             <el-table-column prop="modelName" label="设备型号" />
             <el-table-column prop="eqpName" label="设备名称" />
@@ -213,28 +217,17 @@ export default {
         pageNum: 1
       },
       tableData: [
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', activeFlag: 'true' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'false' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'false' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'false' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'false' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'false' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'false' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
-        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' }
+        // { modelName: 'Liu1', eqpName: '222', eqpId: '333q', isFlag: 'true' },
+        // { modelName: 'Liu2', eqpName: '222', eqpId: '3w33', isFlag: 'false' },
+        // { modelName: 'Liu3', eqpName: '222', eqpId: '3d33', isFlag: 'true' },
+        // { modelName: 'Liu5', eqpName: '222', eqpId: '33dd3', isFlag: 'false' },
+        // { modelName: 'Liu6', eqpName: '222', eqpId: '33d3', isFlag: 'true' },
+        // { modelName: 'Liu7', eqpName: '222', eqpId: '3d33', isFlag: 'true' },
+        // { modelName: 'Liu8', eqpName: '222', eqpId: '33s3', isFlag: 'false' },
+        // { modelName: 'Liu9', eqpName: '222', eqpId: '33f3', isFlag: 'true' },
+        // { modelName: 'Liu10', eqpName: '222', eqpId: '3sd33', isFlag: 'true' },
+        // { modelName: 'Liu11', eqpName: '222', eqpId: '333', isFlag: 'true' },
+        // { modelName: 'Liu12', eqpName: '222', eqpId: '33s3', isFlag: 'true' }
       ],
       Props: {
         value: 'id',
@@ -295,33 +288,32 @@ export default {
     }
   },
   created() {
-    this.getProList()
+    // this.getProList()
     this.getOrginData()
   },
   mounted() {},
   methods: {
-    selectAll(v) {
-      v.forEach((item) => {
-        item.isFlag = 'true'
-      })
-    },
     select(rows, row) {
       const selected = rows.length && rows.indexOf(row) !== -1
       if (selected) {
-        rows.forEach((item) => {
-          item.isFlag = 'true'
-        })
+        row.isFlag = 'true'
       } else {
-        rows.forEach((item) => {
-          item.isFlag = 'false'
-        })
+        row.isFlag = 'false'
       }
+      rows.forEach((item) => {
+        this.eqpIds += item.eqpId + ','
+      })
+      console.log(this.eqpIds)
+      this.$nextTick(() => {
+        this.eqpIds = ''
+      })
     },
 
     change(v) {
-      v.forEach((item) => {
-        this.eqpIds += item.eqpId + ','
-      })
+      // v.forEach((item) => {
+      //   this.eqpIds += item.eqpId + ','
+      // })
+      // console.log(this.eqpIds)
     },
     getA() {
       const arr = []
@@ -339,7 +331,7 @@ export default {
     },
     handleCurrentChange1(pagenum) {
       this.pageInfo.pageNum = pagenum
-      this.getA()
+      // this.getA()
     },
     toggleSelection(rows) {
       if (rows && rows.length) {
@@ -348,28 +340,17 @@ export default {
             this.$refs.multipleTable.toggleRowSelection(row)
           }, 500)
         })
-      } else {
-        this.$refs.multipleTable.clearSelection()
       }
+      // else {
+      //   this.$refs.multipleTable.clearSelection()
+      // }
     },
-    // getTableData(query) {
-    //   return request({
-    //     url: `fab/iotroleeqp/list`,
-    //     methods: 'get',
-    //     query
-    //   }).then((res) => {
-    //     console.log('初始化')
-    //     console.log(res)
-    //   })
-    // },
 
     handleNodeClick(val) {
       this.orgid = val.id
       const obj = { roleId: this.selectCurentRoleId, orgid: this.orgid }
       getIotList(obj).then((res) => {
         this.tableData = res.data
-        // console.log('初始化')
-        // console.log(res)
       })
     },
     getOrginData() {
@@ -531,31 +512,30 @@ export default {
       }
       setEqp(postData).then((response) => {
         const data = response.data
-        if (data.code === 0) {
-          this.dialogFormMenuVisible = false
-          this.$notify({
-            title: '成功',
-            message: '设置成功',
-            type: 'success',
-            duration: 2000
-          })
-        } else {
-          this.$notify({
-            title: '失败',
-            message: data.msg,
-            type: 'error',
-            duration: 2000
-          })
-        }
+
+        this.dialogFormMenuVisible = false
+        this.$notify({
+          title: '成功',
+          message: `${data}`,
+          type: 'success',
+          duration: 2000
+        })
       })
     }
   }
 }
 </script>
 
-<style scoped>
+<style scoped  lang="scss">
 .left {
   float: left;
+}
+* {
+  box-sizing: border-box;
+}
+
+/deep/ .el-table__header-wrapper .el-checkbox {
+  display: none;
 }
 .right {
   float: right;

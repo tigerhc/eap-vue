@@ -94,9 +94,15 @@ export default {
     this.model.createDate = dateFormat(new Date())
     this.model.updateDate = dateFormat(new Date())
     this.getmodelId()
-
     fetchDict('NUM_TYPE').then((res) => {
       this.numtyeps = res.data
+      // this.numtyeps.forEach((item) => {
+      //   this.options2.forEach((it) => {
+      //     if (item.value === it) {
+      //       this.options3.push(item)
+      //     }
+      //   })
+      // })
     })
   },
   methods: {
@@ -125,7 +131,6 @@ export default {
         methods: 'get'
       }).then((res) => {
         this.options2 = res.data.results
-
         this.numtyeps.forEach((item) => {
           this.options2.forEach((it) => {
             if (item.value === it) {

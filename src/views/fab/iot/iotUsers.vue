@@ -154,19 +154,36 @@
             @node-click="handleNodeClick"
           />
         </el-card>
+        <div class="box1">
+          <el-table
+            ref="multipleTable"
+            :data="tableData.slice((pageInfo.pageNum - 1) * pageInfo.pageSize, pageInfo.pageNum * pageInfo.pageSize)"
+            :header-cell-style="{ 'text-align': 'center' }"
+            :cell-style="{ 'text-align': 'center' }"
+            style="width: 100%; margin-left: 100px"
+            height="250"
+            @selection-change="change"
+            @select="select"
+            @select-all="selectAll"
+          >
+            <el-table-column type="selection" label="序号" />
+            <el-table-column type="index" label="序号" />
+            <el-table-column prop="modelName" label="设备型号" />
+            <el-table-column prop="eqpName" label="设备名称" />
+            <el-table-column prop="eqpId" label="设备号" />
+          </el-table>
 
-        <el-table
-          :data="tableData"
-          :header-cell-style="{ 'text-align': 'center' }"
-          :cell-style="{ 'text-align': 'center' }"
-          style="width: 500px; margin-left: 100px"
-        >
-          <el-table-column type="selection" label="序号"/>
-          <el-table-column type="index" label="序号"/>
-          <el-table-column prop="" label="设备型号"/>
-          <el-table-column prop="" label="设备名称"/>
-          <el-table-column prop="" label="设备号"/>
-        </el-table>
+          <el-pagination
+            :current-page="pageInfo.pageNum"
+            :page-sizes="[5, 10, 20, 30, 50]"
+            :page-size="pageInfo.pageSize"
+            :total="tableData.length"
+            layout="total, sizes,prev, pager, next, jumper"
+            style="margin-top: 20px"
+            @size-change="handleSizeChange1"
+            @current-change="handleCurrentChange1"
+          />
+        </div>
       </div>
 
       <div slot="footer" class="dialog-footer">
@@ -179,9 +196,10 @@
 
 <script>
 import { fetchProList } from '@/api/sys/project'
-import { fetchList, addRole, deleteRole, updateRole, fetchRoleMenu, setMenu } from '@/api/sys/role'
+import { fetchList, addRole, deleteRole, updateRole, fetchRoleMenu, setEqp } from '@/api/sys/role'
 import waves from '@/directive/waves' // 水波纹指令
 import { fetchOrganizationList } from '@/api/sys/organization'
+import request from '@/utils/request'
 
 export default {
   name: 'SysRoleList',
@@ -190,7 +208,34 @@ export default {
   },
   data() {
     return {
-      tableData: [],
+      pageInfo: {
+        pageSize: 10,
+        pageNum: 1
+      },
+      tableData: [
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'false' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'false' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'false' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'false' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'false' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'false' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' },
+        // { modelName: 'Liu', eqpName: '222', eqpId: '333', flag: 'true' }
+      ],
       Props: {
         value: 'id',
         label: 'name'
@@ -236,7 +281,7 @@ export default {
       },
       dialogFormMenuVisible: false,
       menuData: null,
-      selectCurentRoleId: '',
+      selectCurentRoleId: '', // 角色id
       selectMenuIds: [],
       menuTemp: {
         menuIds: ''
@@ -245,17 +290,84 @@ export default {
         children: 'children',
         label: 'name'
       },
-      orgid: ''
+      orgid: '',
+      eqpIds: ''
     }
   },
   created() {
     this.getProList()
     this.getOrginData()
   },
+  mounted() {},
   methods: {
+    selectAll(v) {
+      v.forEach((item) => {
+        item.flag = 'true'
+      })
+    },
+    select(rows, row) {
+      const selected = rows.length && rows.indexOf(row) !== -1
+      if (selected) {
+        rows.forEach((item) => {
+          item.flag = 'true'
+        })
+      } else {
+        rows.forEach((item) => {
+          item.flag = 'false'
+        })
+      }
+    },
+
+    change(v) {
+      // console.log(v)
+
+      v.forEach((item) => {
+        this.eqpIds += item.eqpId + ','
+      })
+      // console.log(eqpId)
+    },
+    getA() {
+      const arr = []
+      this.tableData.forEach((item) => {
+        if (item.flag === 'true') {
+          arr.push(item)
+        }
+      })
+      if (arr) {
+        this.toggleSelection(arr)
+      }
+    },
+    handleSizeChange1(pagesize) {
+      this.pageInfo.pageSize = pagesize
+    },
+    handleCurrentChange1(pagenum) {
+      this.pageInfo.pageNum = pagenum
+      this.getA()
+    },
+    toggleSelection(rows) {
+      if (rows && rows.length) {
+        rows.forEach((row) => {
+          setTimeout(() => {
+            this.$refs.multipleTable.toggleRowSelection(row)
+          }, 500)
+        })
+      } else {
+        this.$refs.multipleTable.clearSelection()
+      }
+    },
+    getTableData(query) {
+      return request({
+        url: `fab/iotroleeqp/list/${query}`,
+        methods: 'get'
+      }).then((res) => {
+        console.log('初始化')
+        console.log(res)
+      })
+    },
+
     handleNodeClick(val) {
       this.orgid = val.id
-      console.log(this.orgid)
+      this.getTableData(this.orgid)
     },
     getOrginData() {
       const parmas = {
@@ -403,21 +515,18 @@ export default {
       this.selectCurentRoleId = row.id
       this.dialogFormMenuVisible = true
       this.getRoleMenus(this.selectCurentRoleId, this.menuTemp.module)
+      this.getA()
     },
     changeMenu() {
       this.getRoleMenus(this.selectCurentRoleId, this.menuTemp.module)
     },
     handleChangeMenus() {
-      // const checkedKeys = this.$refs.menuTree.getCheckedKeys()
-
-      const checkedKeys = this.$refs.menuTree.getCheckedKeys().concat(this.$refs.menuTree.getHalfCheckedKeys())
-      const menuIds = checkedKeys.join(',')
       const postData = {
         roleId: this.selectCurentRoleId,
-        menuIds: menuIds,
-        module: this.menuTemp.module
+        orgid: this.orgid,
+        eqpid: this.eqpIds
       }
-      setMenu(postData).then((response) => {
+      setEqp(postData).then((response) => {
         const data = response.data
         if (data.code === 0) {
           this.dialogFormMenuVisible = false
@@ -455,5 +564,16 @@ export default {
   width: 100%;
   height: 650px;
   display: flex;
+}
+.box1 {
+  width: 50%;
+  height: 537px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.el-table {
+  overflow: auto;
 }
 </style>

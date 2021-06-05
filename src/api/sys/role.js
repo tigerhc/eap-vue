@@ -52,6 +52,14 @@ export function fetchRoleMenu(roleId) {
   })
 }
 
+export function setEqp(data) {
+  return request({
+    url: '/fab/iotroleeqp/create',
+    method: 'post',
+    data
+  })
+}
+
 /**
  * 设置权限
  * @param roleId

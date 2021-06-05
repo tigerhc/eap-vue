@@ -497,6 +497,7 @@ export default {
       this.getUserRoleIds(this.selectCurentUserId)
     },
     handleChangeRoles(value, direction, movedKeys) {
+      console.log(direction, movedKeys)
       if (direction === 'left') {
         this.handleDeleteByUserId(this.selectCurentUserId, movedKeys)
       } else {

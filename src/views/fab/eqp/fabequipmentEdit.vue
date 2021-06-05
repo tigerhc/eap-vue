@@ -69,16 +69,16 @@ export default {
         },
         onLoadData: (m, type) => {
           console.info(m)
-          if (m.officeIds) {
-            m.officeIds = m.officeIds
-          }
+          // if (m.officeIds) {
+          //   m.officeIds = m.officeIds
+          // }
           return m
         },
         beforeSubmit: (params, type) => {
           const re = { ...params }
           if (re.officeId) {
             re.officeId = re.officeIds[re.officeIds.length - 1]
-            re.officeIds = undefined
+            // re.officeIds = undefined
           }
           return re
         }

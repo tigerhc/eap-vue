@@ -7,6 +7,13 @@ export function fetchUserRoleIds(userid) {
   })
 }
 
+export function fetchRoleIds(userid) {
+  return request({
+    url: `fab/iotUserRole/${userid}/roleIds`,
+    method: 'get'
+  })
+}
+
 export function insertByUserId(userid, roleIds) {
   return request({
     url: '/sys/user/role/' + userid + '/insertByUserId',
@@ -22,4 +29,3 @@ export function deleteByUserId(userid, roleIds) {
     data: { roleIds }
   })
 }
-

@@ -185,7 +185,7 @@
 import { fetchOrganizationList } from '@/api/sys/organization'
 import { fetchList, createUser, deleteUser, updateUser, modifyPassword, exportUser } from '@/api/sys/user'
 import { fetchRoleList } from '@/api/sys/role'
-import { fetchUserRoleIds, insertByUserId, deleteByUserId } from '@/api/sys/userRole'
+import { fetchRoleIds, insertByUserId, deleteByUserId } from '@/api/sys/userRole'
 import waves from '@/directive/waves' // 水波纹指令
 import { getDictList } from '@/utils/dict'
 
@@ -286,7 +286,7 @@ export default {
       })
     },
     getUserRoleIds(userId) {
-      fetchUserRoleIds(userId).then((response) => {
+      fetchRoleIds(userId).then((response) => {
         this.userRoleIds = response.data
       })
     },

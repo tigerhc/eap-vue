@@ -267,7 +267,7 @@ export default {
   },
   created() {
     this.getList()
-    this.getUsableRoleList()
+
     this.getOrginData()
   },
   methods: {
@@ -493,6 +493,7 @@ export default {
     toAssignRoles(row) {
       this.selectCurentUserId = row.id
       this.dialogFormRolesVisible = true
+      this.getUsableRoleList()
       this.getUserRoleIds(this.selectCurentUserId)
     },
     handleChangeRoles(value, direction, movedKeys) {

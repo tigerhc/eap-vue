@@ -294,27 +294,22 @@ export default {
   mounted() {},
   methods: {
     select(rows, row) {
+      let sss = ''
       const selected = rows.length && rows.indexOf(row) !== -1
       if (selected) {
         row.isFlag = 'true'
       } else {
         row.isFlag = 'false'
       }
+
       rows.forEach((item) => {
-        this.eqpIds += item.eqpId + ','
+        sss += item.eqpId + ','
+        this.eqpIds = sss
       })
       console.log(this.eqpIds)
-      this.$nextTick(() => {
-        this.eqpIds = ''
-      })
     },
 
-    change(v) {
-      // v.forEach((item) => {
-      //   this.eqpIds += item.eqpId + ','
-      // })
-      // console.log(this.eqpIds)
-    },
+    change(v) {},
     getA() {
       const arr = []
       this.tableData.forEach((item) => {
@@ -338,7 +333,7 @@ export default {
         rows.forEach((row) => {
           setTimeout(() => {
             this.$refs.multipleTable.toggleRowSelection(row)
-          }, 500)
+          }, 1000)
         })
       }
       // else {

@@ -366,14 +366,18 @@ export default {
       setTimeout(() => {
         // setOption前隐藏loading事件
         this.chart.hideLoading()
-        this.chart.setOption(Cureoption)
+        if (index === 0 || index === '0') {
+          this.chart.setOption(this.loadTempDataFirst(Cureoption), true)
+        } else {
+          this.chart.setOption(this.loadTempData(Cureoption, index), true)
+        }
       }, 1000)
 
-      if (index === 0 || index === '0') {
-        this.chart.setOption(this.loadTempDataFirst(Cureoption), true)
-      } else {
-        this.chart.setOption(this.loadTempData(Cureoption, index), true)
-      }
+      // if (index === 0 || index === '0') {
+      //   this.chart.setOption(this.loadTempDataFirst(Cureoption), true)
+      // } else {
+      //   this.chart.setOption(this.loadTempData(Cureoption, index), true)
+      // }
     },
     loadTempDataFirst(option) {
       option.xAxis.data = this.produce(this.tempsValue, 'create_date')

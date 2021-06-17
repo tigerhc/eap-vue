@@ -1,12 +1,7 @@
 <template>
   <div class="app-container calendar-list-container">
-    <!--    <div class="add-footer">-->
-    <!--      <el-button @click="cancel">返回</el-button>-->
-    <!--      <el-button type="primary" @click="submit">保存</el-button>-->
-    <!--    </div>-->
     <w-form v-bind="formConf" :col="3" :model="model">
       <!--<el-input v-model="model.eqpModelName" label="设备型号" />-->
-
       <w-lookup
         v-model="model.eqpModelId"
         :display.sync="model.eqpModelName"
@@ -16,9 +11,9 @@
         title="选择设备型号"
         module="views/fab/eqpmodel/eqpmodelLook"
       />
-
       <el-input v-model="model.productionNo" label="产品" />
-      <el-input v-model="model.timing" label="时机" />
+      <!-- <el-input v-model="model.timing" label="时机" /> -->
+      <w-select-dic v-model="model.timing" style="width: 100%" label="时机" dict="TIMING" />
       <el-input v-model="model.status" label="状态" />
       <el-input v-model="model.sampleCount" label="采样数" />
       <el-input v-model="model.fileFlag" label="采样文件" />
@@ -86,7 +81,6 @@
       <!--        </el-table>-->
       <!--      </el-row>-->
     </w-form>
-
     <div style="border-top: 1px solid #ddd; padding: 5px 0; margin: 10px 0" />
     <w-edt-table v-slot="{ row }" ref="language" v-bind="table" url="/ms/msmeasureconfig/">
       <w-table-col name="paraName" required label="paraName">

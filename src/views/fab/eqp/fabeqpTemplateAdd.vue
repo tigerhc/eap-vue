@@ -1,99 +1,101 @@
 <template>
-  <w-form v-bind="formConf" :col="3" :model="model">
-    <!-- <el-input v-model="model.fabModelTemplateBodyList" style="display: none"/> -->
-    <el-row :col="24" style="margin-bottom: 15px">
-      <el-select v-model="model.classCode" placeholder="设备类型">
-        <el-option v-for="item in classCodelOptions" :key="item.id" :label="item.id" :value="item.id" />
-      </el-select>
-      <el-input v-model="model.name" placeholder="模板名称" style="width: 230px; margin-left: 15px" />
-    </el-row>
-    <div class="menu-one">
-      <div
-        v-for="(item, index) in options"
-        :class="[num1 === index ? 'active' : '', 'menu-one-item']"
-        :key="index"
-        @click="getIndex1(index)"
-      >
-        {{ item.treeValue }}
-        <i class="el-icon-caret-right" />
-      </div>
-    </div>
-    <div v-if="isShow" class="menu-two">
-      <div
-        v-for="(item1, index1) in sonType"
-        :class="[num2 === index1 ? 'active' : '', 'menu-two-item']"
-        :key="index1"
-        @click="getIndex2(index1)"
-      >
-        {{ item1.treeValue }}
-        <i class="el-icon-caret-right" />
-      </div>
-    </div>
-    <div v-if="show" class="menu-three">
-      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @select="change">
-        <el-table-column type="selection" width="55" />
-        <el-table-column prop="treeValue" label="名称/型号" />
-        <el-table-column prop="num" label="数量" @click="editRow(row)">
-          <template slot-scope="scope">
-            <span
-              v-show="!showVisiable || editIndex != scope.$index"
-              class="editCell"
-              style="width: 120px"
-              @click="editCurrRow(scope.$index, 'rowkeY')"
-              >{{ scope.row.num }}</span
-            >
-            <el-input
-              v-show="showVisiable && editIndex == scope.$index"
-              :id="scope.$index + 'rowkeY'"
-              v-model="scope.row.num"
-              size="mini"
-              style="width: 120px"
-              @blur="showVisiable = false"
-            />
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        :current-page="pageInfo.pagenum"
-        :page-sizes="[5, 10, 15, 20]"
-        :page-size="pageInfo.pagesize"
-        :total="tableData.length"
-        layout="total, sizes, prev, pager, next, jumper"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
-    </div>
-    <el-row :col="24" style="margin-bottom: 15px">
-      <el-col :span="8">
-        <label>创建人：</label>
-        <el-input v-model="model.createBy" :disabled="true" />
-      </el-col>
-      <el-col :span="8">
-        <label>创建日期：</label>
-        <el-input v-model="model.createDate" :disabled="true" />
-      </el-col>
-      <el-col :span="8">
-        <label>有效标志：</label>
-        <el-select v-model="model.activeFlag" placeholder="请选择有效标志">
-          <el-option v-for="item in activeFlagO" :key="item.value" :label="item.label" :value="item.value" />
+  <div class="app-container calendar-list-container">
+    <w-form v-bind="formConf" :col="3" :model="model">
+      <!-- <el-input v-model="model.fabModelTemplateBodyList" style="display: none"/> -->
+      <el-row :col="24" style="margin-bottom: 15px">
+        <el-select v-model="model.classCode" placeholder="设备类型">
+          <el-option v-for="item in classCodelOptions" :key="item.id" :label="item.id" :value="item.id" />
         </el-select>
-      </el-col>
-    </el-row>
-    <el-row :col="24">
-      <el-col :span="8">
-        <label>修改人：</label>
-        <el-input v-model="model.updateBy" :disabled="true" />
-      </el-col>
-      <el-col :span="8">
-        <label>修改日期：</label>
-        <el-input v-model="model.updateDate" :disabled="true" />
-      </el-col>
-      <el-col :span="8">
-        <label>备注：</label>
-        <el-input v-model="model.remarks" type="textarea" style="width: 400px" />
-      </el-col>
-    </el-row>
-  </w-form>
+        <el-input v-model="model.name" placeholder="模板名称" style="width: 230px; margin-left: 15px" />
+      </el-row>
+      <div class="menu-one">
+        <div
+          v-for="(item, index) in options"
+          :class="[num1 === index ? 'active' : '', 'menu-one-item']"
+          :key="index"
+          @click="getIndex1(index)"
+        >
+          {{ item.treeValue }}
+          <i class="el-icon-caret-right" />
+        </div>
+      </div>
+      <div v-if="isShow" class="menu-two">
+        <div
+          v-for="(item1, index1) in sonType"
+          :class="[num2 === index1 ? 'active' : '', 'menu-two-item']"
+          :key="index1"
+          @click="getIndex2(index1)"
+        >
+          {{ item1.treeValue }}
+          <i class="el-icon-caret-right" />
+        </div>
+      </div>
+      <div v-if="show" class="menu-three">
+        <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @select="change">
+          <el-table-column type="selection" width="55" />
+          <el-table-column prop="treeValue" label="名称/型号" />
+          <el-table-column prop="num" label="数量" @click="editRow(row)">
+            <template slot-scope="scope">
+              <span
+                v-show="!showVisiable || editIndex != scope.$index"
+                class="editCell"
+                style="width: 120px"
+                @click="editCurrRow(scope.$index, 'rowkeY')"
+                >{{ scope.row.num }}</span
+              >
+              <el-input
+                v-show="showVisiable && editIndex == scope.$index"
+                :id="scope.$index + 'rowkeY'"
+                v-model="scope.row.num"
+                size="mini"
+                style="width: 120px"
+                @blur="showVisiable = false"
+              />
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          :current-page="pageInfo.pagenum"
+          :page-sizes="[5, 10, 15, 20]"
+          :page-size="pageInfo.pagesize"
+          :total="tableData.length"
+          layout="total, sizes, prev, pager, next, jumper"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
+      <el-row :col="24" style="margin-bottom: 15px">
+        <el-col :span="8">
+          <label>创建人：</label>
+          <el-input v-model="model.createBy" :disabled="true" />
+        </el-col>
+        <el-col :span="8">
+          <label>创建日期：</label>
+          <el-input v-model="model.createDate" :disabled="true" />
+        </el-col>
+        <el-col :span="8">
+          <label>有效标志：</label>
+          <el-select v-model="model.activeFlag" placeholder="请选择有效标志">
+            <el-option v-for="item in activeFlagO" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-row :col="24">
+        <el-col :span="8">
+          <label>修改人：</label>
+          <el-input v-model="model.updateBy" :disabled="true" />
+        </el-col>
+        <el-col :span="8">
+          <label>修改日期：</label>
+          <el-input v-model="model.updateDate" :disabled="true" />
+        </el-col>
+        <el-col :span="8">
+          <label>备注：</label>
+          <el-input v-model="model.remarks" type="textarea" style="width: 400px" />
+        </el-col>
+      </el-row>
+    </w-form>
+  </div>
 </template>
 <script>
 import { fetchDict } from '@/api/sys/dict.js'
@@ -426,7 +428,7 @@ export default {
 }
 .menu-one,
 .menu-two {
-  height: 500px;
+  height: 450px;
 
   overflow: hidden;
   overflow-y: auto;
@@ -434,7 +436,7 @@ export default {
   border: 1px solid #eee;
 }
 .menu-three {
-  height: 500px;
+  height: 450px;
   position: relative;
   border: 1px solid #eee;
   margin-bottom: 20px;

@@ -5,7 +5,6 @@
         name="parentEqpId"
         label="父级设备号"
         querymode="select"
-        width="300"
         query
         condition="like"
         hidden
@@ -13,10 +12,10 @@
         url="fab/fabequipment/eqpIdlist"
       />
       <!--tip="确认查看"-->
-      <w-table-col name="templateName" label="模板名称" width="300" />
-      <w-table-col name="officeId" label="部门名称" width="300" />
-      <w-table-col name="subClassCode" label="子设备类型" width="200" />
-      <w-table-col name="eqpId" label="传感器编号" width="200" />
+      <w-table-col name="templateName" label="模板名称" />
+      <w-table-col name="officeId" label="部门名称" />
+      <w-table-col name="subClassCode" label="子设备类型" />
+      <w-table-col name="eqpId" label="传感器编号" />
       <w-table-toolbar name="batchDelete" hidden />
       <w-table-toolbar name="clean" hidden />
       <w-table-toolbar name="add" hidden />

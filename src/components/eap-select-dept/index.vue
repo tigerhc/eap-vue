@@ -55,6 +55,7 @@ export default {
   },
   methods: {
     onChange(v) {
+      console.log(v)
       this.$emit('input', v)
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-slot="{}" v-bind="table" url="/edc/edcparamdefinemodel" sort="">
+    <w-table v-slot="{}" v-bind="table" url="/edc/edcparamdefinemodel">
       <!--todo fixed属性导致当前列变为第一列-->
       <w-table-col
         name="paramCode"

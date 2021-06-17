@@ -50,6 +50,11 @@ export const constantRouterMap = [
     component: () => import('@/views/screen/product'),
     hidden: true
   },
+  {
+    path: '/eqpMap',
+    component: () => import('@/views/rpt/showDatas/eqpMap'),
+    hidden: true
+  },
 
   {
     path: '/oven/statusFull',

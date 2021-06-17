@@ -1,5 +1,5 @@
 <template>
-  <div class="tempchar">
+  <div id="tempchar" class="tempchar">
     <el-form ref="form" :model="form" :rules="formRules" :inline="true" class="form" label-width="90px" size="small">
       <el-row>
         <el-col :span="4">
@@ -65,9 +65,9 @@ export default {
   data() {
     return {
       form: {
-        eqpId: undefined,
+        eqpId: '',
         dateTime: [],
-        position: undefined,
+        position: '',
         lotNo: ''
       },
       fistPic: true,
@@ -229,12 +229,20 @@ export default {
       this.search()
     },
     search() {
+      this.fistPic = false
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        target: document.querySelector('#tempchar')
+      })
+
       this.$refs['form'].validate((valid) => {
         if (valid) {
           tempbytimeOther({
             lotNo: this.form.lotNo
           }).then((res) => {
             const data = res.data
+            console.log(data)
             this.editableTabs.splice(0, this.editableTabs.length)
             this.tempsTitles = data.title.split(',')
             // if (this.tempsTitles[0].indexOf('第2温区') !== -1) {
@@ -274,11 +282,9 @@ export default {
             this.editableTabsValue = this.editableTabs[0].title
             this.tempsValue = data.results
             this.flag = this.tempsValue[0]['temp_min']
-            // eslint-disable-next-line no-unused-vars
-            this.fistPic = false
+
+            loading.close()
             this.initChart(parseInt(this.form.position.substring(2)))
-            // console.log(this.tempsValue)
-            // console.log('this.tempsTitles', this.tempsTitles)
           })
         }
       })
@@ -432,6 +438,7 @@ export default {
           }
         ]
       }
+
       // if (index === 0 || index === '0') {
       if (index === 1 || index === '1') {
         this.chart.setOption(this.loadTempDataFirst(Cureoption), true)

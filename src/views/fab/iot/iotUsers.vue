@@ -347,6 +347,9 @@ export default {
       getIotList(obj).then((res) => {
         this.tableData = res.data
       })
+      setTimeout(() => {
+        this.getA()
+      }, 500)
     },
     getOrginData() {
       const parmas = {
@@ -494,7 +497,6 @@ export default {
       this.selectCurentRoleId = row.id
       this.dialogFormMenuVisible = true
       this.getRoleMenus(this.selectCurentRoleId, this.menuTemp.module)
-      this.getA()
     },
     changeMenu() {
       this.getRoleMenus(this.selectCurentRoleId, this.menuTemp.module)

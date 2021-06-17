@@ -63,7 +63,7 @@ export default {
       },
 
       formConf: {
-        url: '/fab/fabequipmentmodel/',
+        url: '/fab/fabsensormodel/',
         title: {
           ADD: '新增资产类型',
           EDIT: '修改资产类型',

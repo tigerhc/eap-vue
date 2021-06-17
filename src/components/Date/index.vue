@@ -1,5 +1,5 @@
-<template><span>{{ date | formaDate }}</span>
-
+<template>
+  <span>{{ date | formaDate }}</span>
 </template>
 <script>
 // 创建一个函数来增加月日时小于10在前面加0
@@ -16,7 +16,7 @@ export default {
       var hours = padaDate(date.getHours()) // 存储时
       var minutes = padaDate(date.getMinutes()) // 存储分
       var seconds = padaDate(date.getSeconds()) // 存储秒
-      return year + '年' + month + '月' + day + '日' + hours + '时' + minutes + '分' + seconds + '秒'
+      return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds
     }
   },
   data() {
@@ -26,9 +26,7 @@ export default {
   },
   computed: {},
   watch: {},
-  created() {
-
-  },
+  created() {},
   mounted() {
     // 创建定时器更新最新的时间
     var _this = this
@@ -46,5 +44,4 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
 </style>

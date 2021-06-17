@@ -1,9 +1,9 @@
 <template>
   <div class="app-container calendar-list-container">
-<!--    <div class="add-footer">-->
-<!--      <el-button @click="cancel">返回</el-button>-->
-<!--      <el-button type="primary" @click="submit">保存</el-button>-->
-<!--    </div>-->
+    <!--    <div class="add-footer">-->
+    <!--      <el-button @click="cancel">返回</el-button>-->
+    <!--      <el-button type="primary" @click="submit">保存</el-button>-->
+    <!--    </div>-->
     <w-form v-bind="formConf" :col="3" :model="model">
       <!--<el-input v-model="model.eqpModelName" label="设备型号" />-->
 
@@ -29,89 +29,89 @@
       <el-row col="24" />
       <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
       <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
-<!--      <el-row col="24">-->
-<!--        <div class="filter-container">-->
-<!--          <el-button type="danger" mini>批量删除</el-button>-->
-<!--          <el-button type="primary" mini @click="newGrid">添加</el-button>-->
-<!--        </div>-->
-<!--        <el-table :data="model.detail" :row-class-name="tableRowClassName" style="width: 100%" highlight-current-row>-->
-<!--          <el-table-column fixed type="index" label="序号"/>-->
-<!--          <el-table-column label="paraName" prop="paraName">-->
-<!--            <template slot-scope="scope">-->
-<!--              <el-input v-model="scope.row.paraName"/>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="paraCode" prop="paraCode">-->
-<!--            <template slot-scope="scope">-->
-<!--              <el-input v-model="scope.row.paraCode"/>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="itemCode" prop="itemCode">-->
-<!--            <template slot-scope="scope">-->
-<!--              <el-input v-model="scope.row.itemCode"/>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="itemName" prop="itemName">-->
-<!--            <template slot-scope="scope">-->
-<!--              <el-input v-model="scope.row.itemName"/>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="limitMin" prop="limitMin">-->
-<!--            <template slot-scope="scope">-->
-<!--              <el-input v-model="scope.row.limitMin"/>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="limitMax" prop="limitMax">-->
-<!--            <template slot-scope="scope">-->
-<!--              <el-input v-model="scope.row.limitMax"/>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="sampleCount" prop="sampleCount">-->
-<!--            <template slot-scope="scope">-->
-<!--              <el-input v-model="scope.row.sampleCount"/>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="showType" prop="showType">-->
-<!--            <template slot-scope="scope">-->
-<!--              &lt;!&ndash;            <el-input v-model="scope.row.showType"/>&ndash;&gt;-->
-<!--              <el-select v-model="scope.row.showType" placeholder="请选择">-->
-<!--                <el-option-->
-<!--                  v-for="item in options"-->
-<!--                  :key="item.value"-->
-<!--                  :label="item.label"-->
-<!--                  :value="item.value"/>-->
-<!--              </el-select>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--        </el-table>-->
-<!--      </el-row>-->
+      <!--      <el-row col="24">-->
+      <!--        <div class="filter-container">-->
+      <!--          <el-button type="danger" mini>批量删除</el-button>-->
+      <!--          <el-button type="primary" mini @click="newGrid">添加</el-button>-->
+      <!--        </div>-->
+      <!--        <el-table :data="model.detail" :row-class-name="tableRowClassName" style="width: 100%" highlight-current-row>-->
+      <!--          <el-table-column fixed type="index" label="序号"/>-->
+      <!--          <el-table-column label="paraName" prop="paraName">-->
+      <!--            <template slot-scope="scope">-->
+      <!--              <el-input v-model="scope.row.paraName"/>-->
+      <!--            </template>-->
+      <!--          </el-table-column>-->
+      <!--          <el-table-column label="paraCode" prop="paraCode">-->
+      <!--            <template slot-scope="scope">-->
+      <!--              <el-input v-model="scope.row.paraCode"/>-->
+      <!--            </template>-->
+      <!--          </el-table-column>-->
+      <!--          <el-table-column label="itemCode" prop="itemCode">-->
+      <!--            <template slot-scope="scope">-->
+      <!--              <el-input v-model="scope.row.itemCode"/>-->
+      <!--            </template>-->
+      <!--          </el-table-column>-->
+      <!--          <el-table-column label="itemName" prop="itemName">-->
+      <!--            <template slot-scope="scope">-->
+      <!--              <el-input v-model="scope.row.itemName"/>-->
+      <!--            </template>-->
+      <!--          </el-table-column>-->
+      <!--          <el-table-column label="limitMin" prop="limitMin">-->
+      <!--            <template slot-scope="scope">-->
+      <!--              <el-input v-model="scope.row.limitMin"/>-->
+      <!--            </template>-->
+      <!--          </el-table-column>-->
+      <!--          <el-table-column label="limitMax" prop="limitMax">-->
+      <!--            <template slot-scope="scope">-->
+      <!--              <el-input v-model="scope.row.limitMax"/>-->
+      <!--            </template>-->
+      <!--          </el-table-column>-->
+      <!--          <el-table-column label="sampleCount" prop="sampleCount">-->
+      <!--            <template slot-scope="scope">-->
+      <!--              <el-input v-model="scope.row.sampleCount"/>-->
+      <!--            </template>-->
+      <!--          </el-table-column>-->
+      <!--          <el-table-column label="showType" prop="showType">-->
+      <!--            <template slot-scope="scope">-->
+      <!--              &lt;!&ndash;            <el-input v-model="scope.row.showType"/>&ndash;&gt;-->
+      <!--              <el-select v-model="scope.row.showType" placeholder="请选择">-->
+      <!--                <el-option-->
+      <!--                  v-for="item in options"-->
+      <!--                  :key="item.value"-->
+      <!--                  :label="item.label"-->
+      <!--                  :value="item.value"/>-->
+      <!--              </el-select>-->
+      <!--            </template>-->
+      <!--          </el-table-column>-->
+      <!--        </el-table>-->
+      <!--      </el-row>-->
     </w-form>
 
-    <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
-    <w-edt-table v-slot="{row}" ref="language" v-bind="table" url="/ms/msmeasureconfig/">
+    <div style="border-top: 1px solid #ddd; padding: 5px 0; margin: 10px 0" />
+    <w-edt-table v-slot="{ row }" ref="language" v-bind="table" url="/ms/msmeasureconfig/">
       <w-table-col name="paraName" required label="paraName">
         <el-input v-model="table.model.paraName" />
       </w-table-col>
-      <w-table-col name="paraCode" label="paraCode" align="left" >
+      <w-table-col name="paraCode" label="paraCode" align="left">
         <el-input v-model="table.model.paraCode" />
       </w-table-col>
-      <w-table-col name="itemCode" label="itemCode" align="left" >
+      <w-table-col name="itemCode" label="itemCode" align="left">
         <el-input v-model="table.model.itemCode" />
       </w-table-col>
-      <w-table-col name="itemName" label="itemName" align="left" >
+      <w-table-col name="itemName" label="itemName" align="left">
         <el-input v-model="table.model.itemName" />
       </w-table-col>
-      <w-table-col name="limitMin" label="limitMin" align="left" >
+      <w-table-col name="limitMin" label="limitMin" align="left">
         <el-input v-model="table.model.limitMin" />
       </w-table-col>
-      <w-table-col name="limitMax" label="limitMax" align="left" >
+      <w-table-col name="limitMax" label="limitMax" align="left">
         <el-input v-model="table.model.limitMax" />
       </w-table-col>
-      <w-table-col name="sampleCount" label="sampleCount" align="left" >
+      <w-table-col name="sampleCount" label="sampleCount" align="left">
         <el-input v-model="table.model.sampleCount" />
       </w-table-col>
-      <w-table-col name="showType" label="SHOW_TYPE" dict="SHOW_TYPE" align="left" >
-        <w-select-dic v-model="table.model.showType" style="width:100%" label="状态" dict="SHOW_TYPE" />
+      <w-table-col name="showType" label="SHOW_TYPE" dict="SHOW_TYPE" align="left">
+        <w-select-dic v-model="table.model.showType" style="width: 100%" label="状态" dict="SHOW_TYPE" />
       </w-table-col>
     </w-edt-table>
   </div>
@@ -154,8 +154,8 @@ export default {
         datas: []
       },
       options: [
-        { 'value': 'input', 'label': '单行' },
-        { 'value': 'grid', 'label': '表格' }
+        { value: 'input', label: '单行' },
+        { value: 'grid', label: '表格' }
       ],
       formConf: {
         url: '/ms/msmeasureconfig/',
@@ -190,7 +190,16 @@ export default {
       row.index = rowIndex
     },
     newGrid() {
-      const p = { paraName: '', paraCode: '', itemCode: '', itemName: '', limitMax: '', limitMin: '', limitType: '', sampleCount: '' }
+      const p = {
+        paraName: '',
+        paraCode: '',
+        itemCode: '',
+        itemName: '',
+        limitMax: '',
+        limitMin: '',
+        limitType: '',
+        sampleCount: ''
+      }
       this.model.detail.push(p)
     }
   }

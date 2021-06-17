@@ -92,7 +92,7 @@ export default {
       this.$router.push({ name: 'views/fab/status/eqpstatusList' })
     },
     manageEqp() {
-      this.$router.push({ name: 'views/fab/property/fabAssetList' })
+      this.$router.push({ name: 'views/fab/eqp/fabequipmentList' })
     },
     manageModel() {
       this.$router.push({ name: 'views/fab/eqp/fabeqpTemplate' })

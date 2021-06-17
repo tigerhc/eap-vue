@@ -1,96 +1,110 @@
 <template>
-  <w-form v-bind="formConf" :col="3" :model="model">
-    <el-row :col="24" style="margin-bottom: 15px">
-      <el-input v-model="model.classCode" placeholder="设备类型" style="width: 230px" disabled />
-      <el-input v-model="model.name" placeholder="模板名称" style="width: 230px; margin-left: 15px" disabled />
-    </el-row>
-    <div class="menu-one">
-      <div
-        v-for="(item, index) in options"
-        :class="[num1 === index ? 'active' : '', 'menu-one-item']"
-        :key="index"
-        @click="getIndex1(index)"
-      >
-        {{ item.treeValue }}
-        <i class="el-icon-caret-right" />
-      </div>
-    </div>
-    <div v-show="isShow" class="menu-two">
-      <div
-        v-for="(item1, index1) in sonType"
-        :class="[num2 === index1 ? 'active' : '', 'menu-two-item']"
-        :key="index1"
-        @click="getIndex2(index1)"
-      >
-        {{ item1.treeValue }}
-        <i class="el-icon-caret-right" />
-      </div>
-    </div>
-    <div v-show="show" class="menu-three">
-      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @select="change">
-        <el-table-column type="selection" width="55" />
-        <el-table-column prop="treeValue" label="名称/型号" />
-        <el-table-column prop="num" label="数量" @click="editRow(row)">
-          <template slot-scope="scope">
-            <span
-              v-show="!showVisiable || editIndex != scope.$index"
-              class="editCell"
-              style="width: 120px"
-              @click="editCurrRow(scope.$index, 'rowkeY')"
-              >{{ scope.row.num }}</span
+  <div class="app-container calendar-list-container">
+    <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
+      <el-tab-pane label="设备参数列表" name="all">
+        <w-table v-bind="table" url=""/>
+      </el-tab-pane>
+      <el-tab-pane label="传感器绑定" name="sorsen">
+        <w-form v-bind="formConf" :col="3" :model="model">
+          <el-row :col="24" style="margin-bottom: 15px">
+            <el-input v-model="model.classCode" placeholder="设备类型" style="width: 230px" disabled />
+            <el-input v-model="model.name" placeholder="模板名称" style="width: 230px; margin-left: 15px" disabled />
+          </el-row>
+
+          <div class="menu-one">
+            <div
+              v-for="(item, index) in options"
+              :class="[num1 === index ? 'active' : '', 'menu-one-item']"
+              :key="index"
+              @click="getIndex1(index)"
             >
-            <el-input
-              v-show="showVisiable && editIndex == scope.$index"
-              :id="scope.$index + 'rowkeY'"
-              v-model="scope.row.num"
-              size="mini"
-              style="width: 120px"
-              @blur="showVisiable = false"
+              {{ item.treeValue }}
+              <i class="el-icon-caret-right" />
+            </div>
+          </div>
+          <div v-show="isShow" class="menu-two">
+            <div
+              v-for="(item1, index1) in sonType"
+              :class="[num2 === index1 ? 'active' : '', 'menu-two-item']"
+              :key="index1"
+              @click="getIndex2(index1)"
+            >
+              {{ item1.treeValue }}
+              <i class="el-icon-caret-right" />
+            </div>
+          </div>
+          <div v-show="show" class="menu-three">
+            <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @select="change">
+              <el-table-column type="selection" width="55" />
+              <el-table-column prop="treeValue" label="名称/型号" />
+              <el-table-column prop="num" label="数量" @click="editRow(row)">
+                <template slot-scope="scope">
+                  <span
+                    v-show="!showVisiable || editIndex != scope.$index"
+                    class="editCell"
+                    style="width: 120px"
+                    @click="editCurrRow(scope.$index, 'rowkeY')"
+                    >{{ scope.row.num }}</span
+                  >
+                  <el-input
+                    v-show="showVisiable && editIndex == scope.$index"
+                    :id="scope.$index + 'rowkeY'"
+                    v-model="scope.row.num"
+                    size="mini"
+                    style="width: 120px"
+                    @blur="showVisiable = false"
+                  />
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-pagination
+              :current-page="pageInfo.pagenum"
+              :page-sizes="[5, 10, 15, 20]"
+              :page-size="pageInfo.pagesize"
+              :total="tableData.length"
+              layout="total, sizes, prev, pager, next, jumper"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
             />
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        :current-page="pageInfo.pagenum"
-        :page-sizes="[5, 10, 15, 20]"
-        :page-size="pageInfo.pagesize"
-        :total="tableData.length"
-        layout="total, sizes, prev, pager, next, jumper"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
-    </div>
-    <el-row :col="24" style="margin-bottom: 15px">
-      <el-col :span="8">
-        <label>创建人：</label>
-        <el-input v-model="model.createBy" :disabled="true" />
-      </el-col>
-      <el-col :span="8">
-        <label>创建日期：</label>
-        <el-input v-model="model.createDate" :disabled="true" />
-      </el-col>
-      <el-col :span="8">
-        <label>有效标志：</label>
-        <el-select v-model="model.activeFlag" placeholder="请选择有效标志">
-          <el-option v-for="item in activeFlagO" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
-      </el-col>
-    </el-row>
-    <el-row :col="24">
-      <el-col :span="8">
-        <label>修改人：</label>
-        <el-input v-model="model.updateBy" :disabled="true" />
-      </el-col>
-      <el-col :span="8">
-        <label>修改日期：</label>
-        <el-input v-model="model.updateDate" :disabled="true" />
-      </el-col>
-      <el-col :span="8">
-        <label>备注：</label>
-        <el-input v-model="model.remarks" type="textarea" style="width: 400px" />
-      </el-col>
-    </el-row>
-  </w-form>
+          </div>
+
+          <el-row :col="24" style="margin-bottom: 15px">
+            <el-col :span="8">
+              <label>创建人：</label>
+              <el-input v-model="model.createBy" :disabled="true" />
+            </el-col>
+            <el-col :span="8">
+              <label>创建日期：</label>
+              <el-input v-model="model.createDate" :disabled="true" />
+            </el-col>
+            <el-col :span="8">
+              <label>有效标志：</label>
+              <el-select v-model="model.activeFlag" placeholder="请选择有效标志">
+                <el-option v-for="item in activeFlagO" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+            </el-col>
+          </el-row>
+          <el-row :col="24">
+            <el-col :span="8">
+              <label>修改人：</label>
+              <el-input v-model="model.updateBy" :disabled="true" />
+            </el-col>
+            <el-col :span="8">
+              <label>修改日期：</label>
+              <el-input v-model="model.updateDate" :disabled="true" />
+            </el-col>
+            <el-col :span="8">
+              <label>备注：</label>
+              <el-input v-model="model.remarks" type="textarea" style="width: 400px" />
+            </el-col>
+          </el-row>
+        </w-form>
+      </el-tab-pane>
+      <el-tab-pane label="设备自带参数列表" name="self">
+        <w-edt-table v-bind="table1" url=""/>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
 </template>
 <script>
 import { fetchDict } from '@/api/sys/dict.js'
@@ -102,6 +116,9 @@ export default {
   components: {},
   data() {
     return {
+      table: {},
+      table1: {},
+      activeName: 'all',
       isShow: false,
       show: false,
       showVisiable: false, // 控制显隐
@@ -440,20 +457,26 @@ export default {
   background-color: #ebeef5;
   border-left: 3px solid #3c78ff;
 }
+.el-tabs {
+  width: 100%;
+}
+.el-tab-pane {
+  width: 100%;
+}
 .menu {
+  width: 100%;
   display: flex;
 }
 .menu-one,
 .menu-two {
-  height: 500px;
-
+  height: 440px;
   overflow: hidden;
   overflow-y: auto;
   margin-bottom: 20px;
   border: 1px solid #eee;
 }
 .menu-three {
-  height: 500px;
+  height: 440px;
   position: relative;
   border: 1px solid #eee;
   margin-bottom: 20px;

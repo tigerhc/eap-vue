@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-container calendar-list-container">
     <w-form v-bind="formConf" :col="3" :model="model">
       <el-input v-model="model.eqpId" label="设备号" />
       <el-input v-model="model.eqpNo" label="设备序号" />
@@ -25,16 +25,13 @@
       <el-input v-model="model.takeTime" label="节拍" />
       <w-select-dic v-model="model.activeFlag" style="width: 100%" label="有效标志" dict="ACTIVE_FLAG" />
       <el-input v-model="model.sortNo" label="排序号" />
-      <!-- <el-row col="24" /> -->
       <el-input v-model="model.createByName" :disabled="true" label="创建人" />
       <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
       <el-input v-model="model.locationX" label="纬度坐标" />
-
-      <!-- <el-row col="24" /> -->
       <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
       <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
-      <!-- <el-row col="24" /> -->
       <el-input v-model="model.locationY" label="经度坐标" />
+      <w-select-dic v-model="model.isBindCreated" label="是否生成绑定传感器" dict="SFYN" />
     </w-form>
     <!-- <div style="border-top: 1px solid #ddd; padding: 5px 0; margin: 10px 0" />
     <w-edt-table v-slot="{}" ref="language" v-bind="table" url="">
@@ -59,6 +56,7 @@ export default {
   data() {
     return {
       model: {
+        isBindCreated: '',
         updateDate: '',
         updateByName: '',
         createByName: '',

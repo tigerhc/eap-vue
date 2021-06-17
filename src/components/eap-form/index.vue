@@ -92,6 +92,7 @@ export default {
         return
       }
       this.api.detail(id).then((resp) => {
+        console.log(resp)
         let m = resp.results
         // const { detail } = this.$vnode.context
         // m = (detail && detail.call(this, m)) || m

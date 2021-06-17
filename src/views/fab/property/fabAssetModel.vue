@@ -1,65 +1,93 @@
 <template>
   <div class="app-container calendar-list-container">
-    <div class="search">
-      <el-input v-model="manufacturerName" placeholder="设备厂家" style="width: 200px" />
-      <el-select v-model="classCode" placeholder="设备类型">
-        <el-option v-for="item in classCodeOptions" :key="item.id" :label="item.id" :value="item.id"/>
-      </el-select>
-      <el-select v-model="parentType" placeholder="设备大类">
-        <el-option v-for="item in parentTypeOptions" :key="item.id" :label="item.id" :value="item.id"/>
-      </el-select>
-      <el-select v-model="type" placeholder="设备小类">
-        <el-option v-for="item in typeOptions" :key="item.id" :label="item.id" :value="item.id"/>
-      </el-select>
-      <el-button type="primary" icon="el-icon-search">搜索</el-button>
-      <el-button type="primary" icon="el-icon-circle-plus-outline">添加</el-button>
-    </div>
+    <w-table v-bind="table" :onloadsuccess="deal" url="/fab/fabsensormodel">
+      <!--tip="确认查看"-->
+      <w-table-col name="manufacturerName" label="设备厂家" query condition="like" fixed handler="view" />
+      <w-table-col
+        name="classCode"
+        label="设备类型"
+        query
+        condition="like"
+        querymode="select"
+        dict
+        url="fab/fabequipmentmodel/classCodeList"
+      />
+      <w-table-col name="parentType" label="设备大类" align="left" namekey="parentType" condition="eq" />
+      <w-table-col name="type" label="设备小类" namekey="type" condition="eq" />
 
-    <el-table :data="tableData">
-      <el-table-column type="selection" width="55"/>
-      <el-table-column type="index" label="序号" width="55"/>
-      <el-table-column prop="manufacturerName" label="厂家设备"/>
-      <el-table-column prop="classCode" label="设备类型"/>
-      <el-table-column prop="parentType" label="设备大类"/>
-      <el-table-column prop="type" label="设备小类"/>
-      <el-table-column prop="activeFlag" label="有效标志"/>
-      <el-table-column prop="updateDate" sortable label="更新时间"/>
-    </el-table>
+      <w-table-col name="activeFlag" label="有效标志" width="200" dict="ACTIVE_FLAG" />
+      <w-table-col name="updateDate" label="更新时间" width="200" sort query querymode="date" condition="between" />
+      <!--<w-table-col name="op" fixed width="200" />-->
+      <!--<w-table-toolbar name="add" url="views/fab/eqpmodel/eqpmodelAdd" />-->
+      <!--<w-table-toolbar hidden name="batchDelete" />-->
+      <w-table-toolbar name="dowhat" label="干啥" icon="el-icon-setting" type="warning" />
+      <w-table-button name="stop" icon="el-icon-setting" tip="确认终止？" label="终止" />
+      <w-table-button name="test" icon="el-icon-setting" fold label="终止(fold)" />
+    </w-table>
+    <w-msgbox>
+      <w-form-render :col="1" :model="model" label-width="5em">
+        <el-input v-model="model.manufacturerName" label="设备厂家" />
+        <el-input v-model="model.classCode" label="设备类型" />
+        <w-select-dic v-model="model.activeFlag" style="width: 100%" label="有效标志" dict="ACTIVE_FLAG" />
+      </w-form-render>
+    </w-msgbox>
   </div>
 </template>
 
 <script>
-import request from '@/utils/request'
-
 export default {
-  components: {},
+  name: 'Eqpmodel',
   data() {
-    return {}
-  },
-  mounted() {
-    this.getTableData()
+    return {
+      table: {
+        handler: {
+          add: 'views/fab/property/propertymodelEdit'
+          // edit: 'views/fab/property/propertymodelEdit'
+          // view: 'views/fab/eqpmodel/fabequipmentEdit'
+        }
+      },
+      model: {
+        manufacturerName: '',
+        classCode: '',
+        smlPath: '',
+        hostJavaClass: '',
+        iconPath: '',
+        activeFlag: '',
+        remarks: '',
+        delFlag: 0
+      }
+    }
   },
   methods: {
-    getTableData() {
-      return request({
-        url: '/fab/fabequipmentmodel',
-        methods: 'get'
-      }).then((res) => {
-        console.log(res)
-      })
+    stop(row, table, ctx) {
+      console.info(row, table)
+      ctx.refresh()
+      // console
+    },
+    dowhat(table) {
+      console.info(table)
+      this.$w_msg({
+        title: '定制标题',
+        onConfirm: (done) => {
+          // 点击确定按钮以后 要做的事情
+          setTimeout(() => {
+            done()
+          }, 2000)
+        }
+      }).then(
+        (a) => {
+          console.info(a)
+        },
+        (error) => {
+          console.info(error)
+        }
+      )
+    },
+    deal(row) {
+      return { ...row, addfield: row.manufacturerName + '-' + row.classCode }
     }
   }
 }
 </script>
-
-<style  scoped>
-.search {
-  display: flex;
-  margin-bottom: 20px;
-}
-.el-input,
-.el-select,
-.el-button {
-  margin-right: 20px;
-}
+<style>
 </style>

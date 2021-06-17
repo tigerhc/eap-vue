@@ -2,7 +2,7 @@
   <div class="tempchar">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="6">
+        <el-col :span="8">
           <el-form-item label="设备号:">
             <div class="condition">
               <el-select v-model="form.eqpId">
@@ -11,8 +11,8 @@
             </div>
           </el-form-item>
         </el-col>
-        <el-col :span="7">
-          <el-form-item label="日期" prop="dateTime">
+        <el-col :span="8">
+          <el-form-item label="日期:" prop="dateTime">
             <el-date-picker
               v-model="form.dateTime"
               type="daterange"
@@ -23,10 +23,16 @@
             />
           </el-form-item>
         </el-col>
-        <el-col :span="3">
-          <el-input v-model="limitY" type="primary" placeholder="下限-上限" @change="changTempY" />
+        <el-col :span="8">
+          <el-input
+            v-model="limitY"
+            type="primary"
+            placeholder="下限-上限"
+            style="margin-right: 15px; width: 200px"
+            @change="changTempY"
+          />
+          <el-button type="primary" @click="search">查询</el-button>
         </el-col>
-        <el-button type="primary" @click="search">查询</el-button>
       </el-row>
     </el-form>
     <el-tabs v-model="editableTabsValue" type="card" @tab-click="loadTempDataPart">
@@ -172,6 +178,9 @@ export default {
             }
             this.editableTabsValue = this.editableTabs[0].title
             this.tempsValue = data.results
+            if (this.tempsValue.length === 0) {
+              return this.$message.error('echarts表格数据为空！！！')
+            }
             var tp = 100000
             var maxTp = 0
             for (var i = 0; i < this.tempsValue.length; i++) {
@@ -347,6 +356,19 @@ export default {
           }
         ]
       }
+      this.chart.showLoading({
+        text: 'loading',
+        color: '#c23531',
+        textColor: '#000',
+        maskColor: 'rgba(255, 255, 255, 0.2)',
+        zlevel: 0
+      })
+      setTimeout(() => {
+        // setOption前隐藏loading事件
+        this.chart.hideLoading()
+        this.chart.setOption(Cureoption)
+      }, 1000)
+
       if (index === 0 || index === '0') {
         this.chart.setOption(this.loadTempDataFirst(Cureoption), true)
       } else {
@@ -377,6 +399,7 @@ export default {
       return option
     },
     produceOther(data, index, int) {
+      console.log(data)
       var key = 4 * (index - 1) + int
       var result = []
       for (var i = 0, len = data.length; i < len; i++) {

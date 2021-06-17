@@ -12,6 +12,7 @@
         :default-expand-all="true"
         :highlight-current="true"
         :props="Props"
+        :expand-on-click-node="false"
         style="height: 520px; overflow: auto"
         @node-click="handleNodeClick"
       />
@@ -267,7 +268,6 @@ export default {
   },
   created() {
     this.getList()
-
     this.getOrginData()
   },
   methods: {
@@ -282,7 +282,7 @@ export default {
     },
     getUsableRoleList() {
       fetchRoleList().then((response) => {
-        this.roleList = response.data
+        this.roleList = JSON.parse(JSON.stringify(response.data))
       })
     },
     getUserRoleIds(userId) {

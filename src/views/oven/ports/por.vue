@@ -2,11 +2,13 @@
   <div id="tempchar" class="tempchar">
     <el-form ref="form" :model="form" :rules="formRules" :inline="true" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="4">
-          <el-input v-model="form.lotNo" placeholder="请输入批量号" clearable />
+        <el-col :span="6">
+          <el-form-item label="批量号" prop="lotNo">
+            <el-input v-model="form.lotNo" placeholder="请输入批量号" clearable />
+          </el-form-item>
         </el-col>
 
-        <el-form-item label="位置" prop="form.position">
+        <el-form-item label="位置" prop="position">
           <el-select v-model="form.position" @change="ValueChange()">
             <el-option
               v-for="item in positionList"
@@ -73,7 +75,7 @@ export default {
       fistPic: true,
       twoPic: false,
       formRules: {
-        eqpId: [{ required: true, message: '请选择设备！', trigger: 'change' }],
+        lotNo: [{ required: true, message: '请选择批量号！', trigger: 'blur' }],
         position: [{ required: true, message: '请选择位置！', trigger: 'change' }]
       },
       positionList: [
@@ -229,15 +231,14 @@ export default {
       this.search()
     },
     search() {
-      this.fistPic = false
-      const loading = this.$loading({
-        lock: true,
-        text: 'Loading',
-        target: document.querySelector('#tempchar')
-      })
-
       this.$refs['form'].validate((valid) => {
         if (valid) {
+          this.fistPic = false
+          const loading = this.$loading({
+            lock: true,
+            text: 'Loading',
+            target: document.querySelector('#tempchar')
+          })
           tempbytimeOther({
             lotNo: this.form.lotNo
           }).then((res) => {

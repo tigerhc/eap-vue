@@ -150,6 +150,7 @@
             :default-expand-all="true"
             :highlight-current="true"
             :props="Props"
+            :expand-on-click-node="false"
             style="height: 520px; overflow: auto"
             @node-click="handleNodeClick"
           />

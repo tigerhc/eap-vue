@@ -1,9 +1,9 @@
 <template>
-  <div class="tempchar">
+  <div id="tempchar" class="tempchar">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
         <el-col :span="8">
-          <el-form-item label="设备号:">
+          <el-form-item label="设备号:" prop="eqpId">
             <div class="condition">
               <el-select v-model="form.eqpId">
                 <el-option v-for="item in tempEqpId" :key="item.eqpId" :label="item.eqpName" :value="item.eqpId" />
@@ -114,11 +114,17 @@ export default {
     search() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
+          const loading = this.$loading({
+            lock: true,
+            text: 'Loading',
+            target: document.querySelector('#tempchar')
+          })
           tempbytime(this.form.eqpId, {
             beginTime: this.form.dateTime[0],
             endTime: this.form.dateTime[1]
           }).then((res) => {
             const data = res.data
+            loading.close()
             this.editableTabs.splice(0, this.editableTabs.length)
             this.tempsTitles = data.title.split(',')
             if (this.tempsTitles[0].indexOf('第2温区') !== -1) {

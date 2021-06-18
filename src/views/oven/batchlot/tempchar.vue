@@ -5,7 +5,7 @@
         <el-col :span="8">
           <el-form-item label="设备号:">
             <div class="condition">
-              <el-select v-model="form.eqpId">
+              <el-select v-model="form.eqpId" clearable @change="changeImg">
                 <el-option v-for="item in tempEqpId" :key="item.eqpId" :label="item.eqpName" :value="item.eqpId" />
               </el-select>
             </div>
@@ -24,32 +24,44 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-input
+          <!--<el-input
             v-model="limitY"
             type="primary"
             placeholder="下限-上限"
             style="margin-right: 15px; width: 200px"
             @change="changTempY"
-          />
+          />-->
           <el-button type="primary" @click="search">查询</el-button>
+          <!-- <el-button type="primary" @click="searchLine">数据线查询</el-button>-->
         </el-col>
       </el-row>
     </el-form>
     <el-tabs v-model="editableTabsValue" type="card" @tab-click="loadTempDataPart">
       <el-tab-pane v-for="item in editableTabs" :key="item.title" :label="item.title" :name="item.title" />
     </el-tabs>
-
-    <div id="tempChart" style="width: 100%; height: 500px; overflow: hidden" />
+    <div v-show="tempEchart==='eqpTemp'" class="eqpTemp">
+      <div id="tempChart" style="width: 100%; height: 500px; overflow: hidden" />
+    </div>
+    <div v-show="tempEchart==='unEqpTemp'" class="unEqpTemp">
+      <div id="tempChart2" style="width: 60%; height: 500px; overflow: hidden" />
+      <div :style="{ width: '30%', height: '300px', marginTop: '-500px', float: 'left' ,marginLeft:'60%', position: 'absolute' }" class="picPanel">
+        <tempImg :img-url="picUrl" :img-option="imgPosition" :click-able="true" @positionName="positionChange" />
+      </div>
+      <div :style="{ width: '30%', height: '300px', marginTop: '-200px', float: 'left' ,marginLeft:'60%', position: 'absolute' }" class="picPanel">
+        <tempImg :img-url="picUrlDetail" :img-option="imgPosition" :click-able="true" @positionName="positionChange" />
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import { tempbytime } from '@/api/public'
 import * as echarts from 'echarts'
 import { eqpList } from '@/api/oven/temperature'
+import tempImg from '@/views/tool/temperature/tempImg'
 
 export default {
   name: 'Tempchar',
-  components: {},
+  components: { tempImg },
   data() {
     return {
       tempEqpId: [],
@@ -71,7 +83,53 @@ export default {
       chart: undefined,
       charLegend: ['运行温度', '设定温度', '低温报警', '高温报警'],
       limitY: '',
-      tpMaxY: 0
+      tpMaxY: 0,
+      picUrl: undefined,
+      picUrlDetail: undefined,
+      picUrlB: require('../../../assets/img/HTRT_G1.png'),
+      tempEchart: 'eqpTemp',
+      imgPosition: 0,
+      limitMax: { 'APJ-IGBT-REFLOW1': [80, 80, 90, 90, 102, 102, 116, 116, 116, 116],
+        'APJ-FRD-REFLOW1': [80, 80, 90, 90, 102, 102, 116, 116, 116, 116],
+        'APJ-DBCT-REFLOW1': [80, 80, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140],
+        'APJ-DBCB-REFLOW1': [80, 80, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140],
+        'APJ-AT1': [165, 165, 156, 156, 156, 156, 156, 156, 156, 156, 156, 156, 27],
+        'APJ-CLEAN-US1': [75, 75, 75, 125],
+        'APJ-TRM1': [190, 190, 190, 190, 190, 190, 192, 192, 190, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192],
+        'APJ-RT': [166, 164, 164, 166, 166, 175, 26],
+        'APJ-HT': [164, 164, 164, 164, 164, 164, 164, 164, 175, 164, 164, 166],
+        'APJ-HTRT1': [165, 165, 165, 165, 165, 165, 165, 165, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 160, 160, 168, 168, 160, 160, 168, 168, 32],
+        'APJ-OVEN1': [125],
+        'APJ-AT2': [154, 154, 154, 154, 154, 154, 154, 154, 154, 154],
+        'APJ-FREEZER3': [6, 6],
+        'APJ-OVEN2': [192],
+        'APJ-FREEZER2': [12], 'APJ-FREEZER1': [-16],
+        'SIM-TRM1': [156, 156, 156, 156, 156, 156, 192, 192, 192, 192, 192, 192],
+        'SIM-TRM2': [156, 156, 156, 156, 156, 156, 192, 192, 192, 192, 192, 192],
+        'SIM-PRINTER1': [36, 70],
+        'SIM-REFLOW1': [144, 150, 154, 160, 154, 160, 154, 160, 164, 164, 190, 190, 280, 280, 270, 270, null, null, null]
+      },
+      limitMin: { 'APJ-IGBT-REFLOW1': [-10, -20, 70, 70, 87, 87, 104, 104, 104, 104],
+        'APJ-FRD-REFLOW1': [-10, -20, 70, 70, 87, 87, 104, 104, 104, 104],
+        'APJ-DBCT-REFLOW1': [-10, -10, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+        'APJ-DBCB-REFLOW1': [-10, -10, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+        'APJ-AT1': [130, 130, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 12],
+        'APJ-CLEAN-US1': [45, 45, 45, 95],
+        'APJ-TRM1': [170, 170, 170, 170, 170, 170, 178, 178, 170],
+        'APJ-RT': [154, 152, 152, 154, 154, 155, 14],
+        'APJ-HT': [152, 152, 152, 152, 152, 152, 152, 152, 155, 152, 152, 154],
+        'APJ-HTRT1': [150, 150, 150, 150, 150, 150, 150, 150, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 150, 150, 152, 152, 150, 150, 152, 152, 18],
+        'APJ-OVEN1': [95],
+        'APJ-AT2': [146, 146, 146, 146, 146, 146, 146, 146, 146, 146],
+        'APJ-FREEZER3': [-6, -6],
+        'APJ-OVEN2': [172],
+        'APJ-FREEZER2': [-2], 'APJ-FREEZER1': [null],
+        'SIM-TRM1': [144, 144, 144, 144, 144, 144, 177, 177, 177, 177, 177, 177],
+        'SIM-TRM2': [144, 144, 144, 144, 144, 144, 177, 177, 177, 177, 177, 177],
+        'SIM-PRINTER1': [18, 10],
+        'SIM-REFLOW1': [136, 140, 146, 150, 146, 150, 146, 150, 156, 156, 180, 180, 270, 270, 260, 260, null, null, null]
+      },
+      searchLineFlag: false
     }
   },
   mounted() {
@@ -88,6 +146,11 @@ export default {
   methods: {
     onValueChange(name) {
       this.form.eqpId = name
+    },
+    positionChange(pName) {
+      // this.loadTempDataPart(this.editableTabs[pName])
+      // this.initChart(pName)
+      this.editableTabsValue = this.editableTabs[pName].title
     },
     check() {
       var start = this.form.dateTime[0].slice(8, 10)
@@ -111,6 +174,22 @@ export default {
         this.search()
       }
     },
+    changeImg() {
+      if (this.form.eqpId === 'APJ-RT' || this.form.eqpId === 'APJ-HT' || this.form.eqpId === 'APJ-AT2') {
+        this.picUrl = this.form.eqpId
+        // this.picUrlDetail = this.picUrlB
+      }
+      if (this.form.eqpId === 'APJ-RT' || this.form.eqpId === 'APJ-HT' || this.form.eqpId === 'APJ-AT2') {
+        this.tempEchart = 'unEqpTemp'
+      } else {
+        this.tempEchart = 'eqpTemp'
+      }
+      this.picUrlDetail = this.picUrl.replace('APJ-', 'DETAIL-')
+    },
+    searchLine() {
+      this.searchLineFlag = !this.searchLineFlag
+      this.search()
+    },
     search() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
@@ -129,7 +208,7 @@ export default {
               for (let index = 0; index < this.tempsTitles.length; index++) {
                 if (
                   this.tempsTitles[index].indexOf('当前值') !== -1 ||
-                  this.tempsTitles[index].indexOf('现在值') !== -1
+                    this.tempsTitles[index].indexOf('现在值') !== -1
                 ) {
                   this.editableTabs.push({
                     name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''),
@@ -145,7 +224,7 @@ export default {
               for (let index = 0; index < this.tempsTitles.length; index++) {
                 if (
                   this.tempsTitles[index].indexOf('当前值') !== -1 ||
-                  this.tempsTitles[index].indexOf('现在值') !== -1
+                    this.tempsTitles[index].indexOf('现在值') !== -1
                 ) {
                   this.editableTabs.push({
                     name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''),
@@ -161,7 +240,7 @@ export default {
               for (let index = 0; index < this.tempsTitles.length; index++) {
                 if (
                   this.tempsTitles[index].indexOf('当前值') !== -1 ||
-                  this.tempsTitles[index].indexOf('现在值') !== -1
+                    this.tempsTitles[index].indexOf('现在值') !== -1
                 ) {
                   this.editableTabs.push({
                     name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''),
@@ -193,14 +272,7 @@ export default {
               }
             }
             this.flag = parseInt(tp) < parseInt(this.tempsValue[0]['temp_min']) ? tp : this.tempsValue[0]['temp_min']
-            this.tpMaxY =
-              parseInt(maxTp) < parseInt(this.tempsValue[0]['temp_max'])
-                ? this.tempsValue[0]['temp_max']
-                : parseInt(maxTp)
-            if (this.form.eqpId === 'APJ-FREEZER3') {
-              this.flag = -30
-              this.tpMaxY = 30
-            }
+            this.tpMaxY = parseInt(maxTp) < parseInt(this.tempsValue[0]['temp_max']) ? this.tempsValue[0]['temp_max'] : parseInt(maxTp)
             this.initChart(0)
           })
         }
@@ -219,7 +291,62 @@ export default {
       return date
     },
     initChart(index) {
-      this.chart = echarts.init(document.getElementById('tempChart'))
+      // 设置y轴最大值
+      var dataMax
+      var dataMin
+      if (this.tempsValue.length > 0) {
+        for (var i = 0; i < this.tempsValue.length; i++) {
+          if (i === 0) {
+            dataMax = this.tempsValue[0]['temp_pv']
+            dataMin = this.tempsValue[0]['temp_pv']
+          } else {
+            if (dataMax < this.tempsValue[i]['temp_pv']) {
+              dataMax = this.tempsValue[i]['temp_pv']
+            }
+            if (dataMin > this.tempsValue[i]['temp_pv']) {
+              dataMin = this.tempsValue[i]['temp_pv']
+            }
+          }
+        }
+      }
+      var maxTp = this.limitMax[this.form.eqpId][index]
+      var minTp = this.limitMin[this.form.eqpId][index]
+      var myYAxis = {}
+      if (this.searchLineFlag) {
+        if (!isNaN(minTp)) {
+          if (dataMin > minTp) {
+            dataMin = minTp
+          }
+        }
+        if (!isNaN(maxTp)) {
+          if (dataMax < maxTp) {
+            dataMax = maxTp
+          }
+        }
+        myYAxis.type = 'value'
+      } else {
+        if (!isNaN(maxTp)) {
+          //   if (dataMax < maxTp) {
+          dataMax = maxTp
+          //   }
+        }
+        if (!isNaN(minTp)) {
+          //   if (dataMin > minTp) {
+          dataMin = minTp
+          //   }
+        }
+        myYAxis.type = 'value'
+        myYAxis.max = dataMax
+        myYAxis.min = dataMin
+      }
+      // 选择是否带有图示的echart
+      var chartDiv = 'tempChart'
+      if (this.form.eqpId === 'APJ-RT' || this.form.eqpId === 'APJ-HT' || this.form.eqpId === 'APJ-AT2') {
+        chartDiv = 'tempChart2'
+      } else {
+        chartDiv = 'tempChart'
+      }
+      this.chart = echarts.init(document.getElementById(chartDiv))
       const Cureoption = {
         tooltip: {
           trigger: 'axis',
@@ -266,13 +393,7 @@ export default {
           axisLine: { onZero: false },
           data: []
         },
-        yAxis: [
-          {
-            max: this.tpMaxY + 1,
-            type: 'value',
-            min: this.flag - 1
-          }
-        ],
+        yAxis: myYAxis,
         series: [
           {
             name: this.extraTitle[0],
@@ -397,13 +518,63 @@ export default {
     loadTempData(option, index) {
       option.xAxis.data = this.produce(this.tempsValue, 'create_date')
       option.series[0].data = this.produceOther(this.tempsValue, index, 0)
-      option.series[1].data = this.produceOther(this.tempsValue, index, 1)
-      option.series[2].data = this.produceOther(this.tempsValue, index, 2)
-      option.series[3].data = this.produceOther(this.tempsValue, index, 3)
+      // 更新Y轴
+      var maxTp
+      var minTp
+      var temps = option.series[0].data
+      if (temps.length > 0) {
+        for (var i = 0; i < temps.length; i++) {
+          if (i === 0) {
+            maxTp = parseFloat(temps[0])
+            minTp = parseFloat(temps[0])
+          } else {
+            var curNum = parseFloat(temps[i])
+            if (maxTp < curNum) {
+              maxTp = curNum
+            }
+            if (minTp > curNum) {
+              minTp = curNum
+            }
+          }
+        }
+      }
+      if ((this.form.eqpId === 'APJ-RT' && index === '5') || (this.form.eqpId === 'APJ-HT' && index === '8')) { // 高温的预热平台没有上下限和设定值
+        option.series[1].data = [] // 设定
+        option.series[2].data = [] // 下限
+        option.series[3].data = [] // 上限
+      } else {
+        option.series[1].data = this.produceOther(this.tempsValue, index, 1) // 设定
+        option.series[2].data = this.produceOther(this.tempsValue, index, 2) // 下限
+        option.series[3].data = this.produceOther(this.tempsValue, index, 3) // 上限
+        var lmtMaxTp = this.limitMax[this.form.eqpId][index]
+        if (!isNaN(lmtMaxTp)) {
+          // if (maxTp < lmtMaxTp) {
+          maxTp = lmtMaxTp
+          // }
+        }
+        var lmtMinTp = this.limitMin[this.form.eqpId][index]
+        if (!isNaN(lmtMinTp)) {
+          // if (minTp > lmtMinTp) {
+          minTp = lmtMinTp
+          // }
+        }
+      }
+      var myYAxis = {}
+      if (this.searchLineFlag) {
+        myYAxis.type = 'value'
+      } else {
+        myYAxis.type = 'value'
+        myYAxis.max = maxTp
+        myYAxis.min = minTp
+      }
+      option.yAxis = myYAxis
       return option
+      //      option.series[1].data = this.produceOther(this.tempsValue, index, 1)
+      //      option.series[2].data = this.produceOther(this.tempsValue, index, 2)
+      //      option.series[3].data = this.produceOther(this.tempsValue, index, 3)
+      //      return option
     },
     produceOther(data, index, int) {
-      console.log(data)
       var key = 4 * (index - 1) + int
       var result = []
       for (var i = 0, len = data.length; i < len; i++) {
@@ -420,6 +591,8 @@ export default {
       return result
     },
     loadTempDataPart(tab) {
+      // 更新图片
+      this.imgPosition = parseInt(tab.index)
       if (tab.index === 0 || tab.index === '0') {
         var tp = 100000
         var maxTpTab0 = 0
@@ -434,9 +607,9 @@ export default {
         }
         this.flag = parseInt(tp) < parseInt(this.tempsValue[0]['temp_min']) ? tp : this.tempsValue[0]['temp_min']
         this.tpMaxY =
-          parseInt(maxTpTab0) < parseInt(this.tempsValue[0]['temp_max'])
-            ? this.tempsValue[0]['temp_max']
-            : parseInt(maxTpTab0)
+            parseInt(maxTpTab0) < parseInt(this.tempsValue[0]['temp_max'])
+              ? this.tempsValue[0]['temp_max']
+              : parseInt(maxTpTab0)
       } else {
         var key = 4 * (tab.index - 1)
         var a = 100000
@@ -452,13 +625,13 @@ export default {
           }
         }
         this.flag =
-          parseInt(a) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 2])
-            ? a
-            : this.tempsValue[0].other_temps_value.split(',')[key + 2]
+            parseInt(a) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 2])
+              ? a
+              : this.tempsValue[0].other_temps_value.split(',')[key + 2]
         this.tpMaxY =
-          parseInt(maxTpTab) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3])
-            ? parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3])
-            : parseInt(maxTpTab)
+            parseInt(maxTpTab) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3])
+              ? parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3])
+              : parseInt(maxTpTab)
       }
       if (this.form.eqpId === 'APJ-FREEZER3') {
         this.flag = -30
@@ -486,15 +659,29 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.tempchar {
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
+  .tempchar {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
 
-  .form {
-    margin-top: 20px;
+    .form {
+      margin-top: 20px;
+    }
   }
-}
-</style>
-<style>
+  #chartPanelLeft {
+    float: left;
+    width: 40%;
+    height: 100%;
+    margin-left: 0px;
+  }
+  #chartPanelRight {
+    float: left;
+    width: 40%;
+    height: 100%;
+  }
+  img{
+    width:100%;
+    height:100%;
+    border: 1px solid red;
+  }
 </style>

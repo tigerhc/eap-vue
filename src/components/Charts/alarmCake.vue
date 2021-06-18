@@ -157,15 +157,15 @@ export default {
               shadowColor: 'rgba(0, 0, 0, 0.5)'
             },
             color: function(params) {
-              var colorList = ['#43ca17', '#FFFF00', '#808080', '#000000']
+              var colorList = ['#43ca17', '#FFFF00', '#FF0000']
               return colorList[params.dataIndex]
             }
           },
           data: [
             { name: 'RUN', value: item[1] },
             { name: 'IDLE', value: item[2] },
-            { name: 'DOWN', value: item[3] },
-            { name: 'OTHER', value: item[4] }
+            { name: 'DOWN', value: item[3] }
+            // { name: 'OTHER', value: item[4] }
           ]
         }
       })

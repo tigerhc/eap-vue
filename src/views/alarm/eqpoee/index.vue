@@ -165,7 +165,7 @@ export default {
           }
         },
         legend: {
-          data: ['RUN', 'IDLE', 'DOWN', 'OTHER']
+          data: ['RUN', 'IDLE', 'DOWN'] //, 'OTHER'
         },
         grid: {
           left: '3%',
@@ -224,26 +224,26 @@ export default {
             },
             itemStyle: {
               color: function(params) {
-                return '#808080'// FF0000
+                return '#FF0000'
               }
             },
             data: this.downlist
-          },
-          {
-            name: 'OTHER',
-            type: 'bar',
-            stack: '总量',
-            label: {
-              show: false,
-              position: 'insideleft'
-            },
-            itemStyle: {
-              color: function(params) {
-                return '#000000'
-              }
-            },
-            data: this.otherlist
           }
+          // {
+          //   name: 'OTHER',
+          //   type: 'bar',
+          //   stack: '总量',
+          //   label: {
+          //     show: false,
+          //     position: 'insideleft'
+          //   },
+          //   itemStyle: {
+          //     color: function(params) {
+          //       return '#000000'
+          //     }
+          //   },
+          //   data: this.otherlist
+          // }
         ]
       }
       myChart.setOption(option, true)

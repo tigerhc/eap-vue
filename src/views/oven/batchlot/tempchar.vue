@@ -2,7 +2,7 @@
   <div id="tempchar" class="tempchar">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="8">
+        <el-col :span="6">
           <el-form-item label="设备号:" prop="eqpId">
             <div class="condition">
               <el-select v-model="form.eqpId" clearable @change="changeImg">
@@ -11,7 +11,7 @@
             </div>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="10">
           <el-form-item label="日期:" prop="dateTime">
             <el-date-picker
               v-model="form.dateTime"
@@ -24,15 +24,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <!--<el-input
-            v-model="limitY"
-            type="primary"
-            placeholder="下限-上限"
-            style="margin-right: 15px; width: 200px"
-            @change="changTempY"
-          />-->
           <el-button type="primary" @click="search">查询</el-button>
-          <!-- <el-button type="primary" @click="searchLine">数据线查询</el-button>-->
+          <el-button type="primary" @click="searchLine"> {{ searchBtn }} </el-button>
         </el-col>
       </el-row>
     </el-form>
@@ -78,12 +71,9 @@ export default {
       tempsTitles: [],
       tempsValue: [],
       extraTitle: ['运行温度', '设定温度', '低温报警', '高温报警'],
-      flag: 10000,
       list: [],
       chart: undefined,
       charLegend: ['运行温度', '设定温度', '低温报警', '高温报警'],
-      limitY: '',
-      tpMaxY: 0,
       picUrl: undefined,
       picUrlDetail: undefined,
       picUrlB: require('../../../assets/img/HTRT_G1.png'),
@@ -107,7 +97,8 @@ export default {
         'SIM-TRM1': [156, 156, 156, 156, 156, 156, 192, 192, 192, 192, 192, 192],
         'SIM-TRM2': [156, 156, 156, 156, 156, 156, 192, 192, 192, 192, 192, 192],
         'SIM-PRINTER1': [36, 70],
-        'SIM-REFLOW1': [144, 150, 154, 160, 154, 160, 154, 160, 164, 164, 190, 190, 280, 280, 270, 270, null, null, null]
+        'SIM-REFLOW1': [144, 150, 154, 160, 154, 160, 154, 160, 164, 164, 190, 190, 280, 280, 270, 270, null, null, null],
+        'SIM-OVEN1': [190, 195, 195, 6, 6, 6, 6]
       },
       limitMin: { 'APJ-IGBT-REFLOW1': [-10, -20, 70, 70, 87, 87, 104, 104, 104, 104],
         'APJ-FRD-REFLOW1': [-10, -20, 70, 70, 87, 87, 104, 104, 104, 104],
@@ -127,9 +118,10 @@ export default {
         'SIM-TRM1': [144, 144, 144, 144, 144, 144, 177, 177, 177, 177, 177, 177],
         'SIM-TRM2': [144, 144, 144, 144, 144, 144, 177, 177, 177, 177, 177, 177],
         'SIM-PRINTER1': [18, 10],
-        'SIM-REFLOW1': [136, 140, 146, 150, 146, 150, 146, 150, 156, 156, 180, 180, 270, 270, 260, 260, null, null, null]
+        'SIM-REFLOW1': [136, 140, 146, 150, 146, 150, 146, 150, 156, 156, 180, 180, 270, 270, 260, 260, null, null, null],
+        'SIM-OVEN1': [160, 165, 165, -6, -6, -6, -6]
       },
-      searchLineFlag: false
+      searchBtn: '范围内查询'
     }
   },
   mounted() {
@@ -148,8 +140,8 @@ export default {
       this.form.eqpId = name
     },
     positionChange(pName) {
-      // this.loadTempDataPart(this.editableTabs[pName])
-      // this.initChart(pName)
+      this.initChart(pName)
+      this.imgPosition = pName
       this.editableTabsValue = this.editableTabs[pName].title
     },
     check() {
@@ -175,20 +167,34 @@ export default {
       }
     },
     changeImg() {
-      if (this.form.eqpId === 'APJ-RT' || this.form.eqpId === 'APJ-HT' || this.form.eqpId === 'APJ-AT2') {
+      if (
+        this.form.eqpId === 'APJ-RT' ||
+        this.form.eqpId === 'APJ-HT' ||
+        this.form.eqpId === 'APJ-AT2' ||
+        this.form.eqpId === 'APJ-OVEN1' ||
+        this.form.eqpId === 'APJ-OVEN2' ||
+        this.form.eqpId === 'APJ-FREEZER3' ||
+        this.form.eqpId === 'APJ-FREEZER1' ||
+        this.form.eqpId === 'APJ-FREEZER2' ||
+        this.form.eqpId === 'APJ-CLEAN-US1' ||
+        this.form.eqpId === 'SIM-OVEN1'
+      ) {
         this.picUrl = this.form.eqpId
-        // this.picUrlDetail = this.picUrlB
-      }
-      if (this.form.eqpId === 'APJ-RT' || this.form.eqpId === 'APJ-HT' || this.form.eqpId === 'APJ-AT2') {
+        this.picUrlDetail = this.picUrl.replace('APJ-', 'DETAIL-').replace('SIM-', 'DETAIL-')
         this.tempEchart = 'unEqpTemp'
       } else {
         this.tempEchart = 'eqpTemp'
       }
-      this.picUrlDetail = this.picUrl.replace('APJ-', 'DETAIL-')
+      this.imgPosition = 0
+      this.search()
     },
     searchLine() {
-      this.searchLineFlag = !this.searchLineFlag
-      this.search()
+      if (this.searchBtn === '数据线查询') {
+        this.searchBtn = '范围内查询'
+      } else {
+        this.searchBtn = '数据线查询'
+      }
+      this.initChart(this.imgPosition)
     },
     search() {
       this.$refs['form'].validate((valid) => {
@@ -214,7 +220,7 @@ export default {
               for (let index = 0; index < this.tempsTitles.length; index++) {
                 if (
                   this.tempsTitles[index].indexOf('当前值') !== -1 ||
-                    this.tempsTitles[index].indexOf('现在值') !== -1
+                  this.tempsTitles[index].indexOf('现在值') !== -1
                 ) {
                   this.editableTabs.push({
                     name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''),
@@ -230,7 +236,7 @@ export default {
               for (let index = 0; index < this.tempsTitles.length; index++) {
                 if (
                   this.tempsTitles[index].indexOf('当前值') !== -1 ||
-                    this.tempsTitles[index].indexOf('现在值') !== -1
+                  this.tempsTitles[index].indexOf('现在值') !== -1
                 ) {
                   this.editableTabs.push({
                     name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''),
@@ -246,7 +252,7 @@ export default {
               for (let index = 0; index < this.tempsTitles.length; index++) {
                 if (
                   this.tempsTitles[index].indexOf('当前值') !== -1 ||
-                    this.tempsTitles[index].indexOf('现在值') !== -1
+                  this.tempsTitles[index].indexOf('现在值') !== -1
                 ) {
                   this.editableTabs.push({
                     name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''),
@@ -266,19 +272,6 @@ export default {
             if (this.tempsValue.length === 0) {
               return this.$message.error('echarts表格数据为空！！！')
             }
-            var tp = 100000
-            var maxTp = 0
-            for (var i = 0; i < this.tempsValue.length; i++) {
-              var te = this.tempsValue[i]['temp_pv']
-              if (parseInt(te) < parseInt(tp)) {
-                tp = this.tempsValue[i]['temp_pv']
-              }
-              if (parseInt(te) > maxTp) {
-                maxTp = this.tempsValue[i]['temp_pv']
-              }
-            }
-            this.flag = parseInt(tp) < parseInt(this.tempsValue[0]['temp_min']) ? tp : this.tempsValue[0]['temp_min']
-            this.tpMaxY = parseInt(maxTp) < parseInt(this.tempsValue[0]['temp_max']) ? this.tempsValue[0]['temp_max'] : parseInt(maxTp)
             this.initChart(0)
           })
         }
@@ -297,57 +290,9 @@ export default {
       return date
     },
     initChart(index) {
-      // 设置y轴最大值
-      var dataMax
-      var dataMin
-      if (this.tempsValue.length > 0) {
-        for (var i = 0; i < this.tempsValue.length; i++) {
-          if (i === 0) {
-            dataMax = this.tempsValue[0]['temp_pv']
-            dataMin = this.tempsValue[0]['temp_pv']
-          } else {
-            if (dataMax < this.tempsValue[i]['temp_pv']) {
-              dataMax = this.tempsValue[i]['temp_pv']
-            }
-            if (dataMin > this.tempsValue[i]['temp_pv']) {
-              dataMin = this.tempsValue[i]['temp_pv']
-            }
-          }
-        }
-      }
-      var maxTp = this.limitMax[this.form.eqpId][index]
-      var minTp = this.limitMin[this.form.eqpId][index]
-      var myYAxis = {}
-      if (this.searchLineFlag) {
-        if (!isNaN(minTp)) {
-          if (dataMin > minTp) {
-            dataMin = minTp
-          }
-        }
-        if (!isNaN(maxTp)) {
-          if (dataMax < maxTp) {
-            dataMax = maxTp
-          }
-        }
-        myYAxis.type = 'value'
-      } else {
-        if (!isNaN(maxTp)) {
-          //   if (dataMax < maxTp) {
-          dataMax = maxTp
-          //   }
-        }
-        if (!isNaN(minTp)) {
-          //   if (dataMin > minTp) {
-          dataMin = minTp
-          //   }
-        }
-        myYAxis.type = 'value'
-        myYAxis.max = dataMax
-        myYAxis.min = dataMin
-      }
       // 选择是否带有图示的echart
       var chartDiv = 'tempChart'
-      if (this.form.eqpId === 'APJ-RT' || this.form.eqpId === 'APJ-HT' || this.form.eqpId === 'APJ-AT2') {
+      if (this.tempEchart === 'unEqpTemp') {
         chartDiv = 'tempChart2'
       } else {
         chartDiv = 'tempChart'
@@ -399,7 +344,7 @@ export default {
           axisLine: { onZero: false },
           data: []
         },
-        yAxis: myYAxis,
+        yAxis: { type: 'value' },
         series: [
           {
             name: this.extraTitle[0],
@@ -499,12 +444,6 @@ export default {
           this.chart.setOption(this.loadTempData(Cureoption, index), true)
         }
       }, 1000)
-
-      // if (index === 0 || index === '0') {
-      //   this.chart.setOption(this.loadTempDataFirst(Cureoption), true)
-      // } else {
-      //   this.chart.setOption(this.loadTempData(Cureoption, index), true)
-      // }
     },
     loadTempDataFirst(option) {
       option.xAxis.data = this.produce(this.tempsValue, 'create_date')
@@ -512,6 +451,11 @@ export default {
       option.series[1].data = this.produce(this.tempsValue, 'temp_sp')
       option.series[2].data = this.produce(this.tempsValue, 'temp_min')
       option.series[3].data = this.produce(this.tempsValue, 'temp_max')
+      // 重置Y轴
+      var limitMax = this.limitMax[this.form.eqpId][0]
+      var limitMin = this.limitMin[this.form.eqpId][0]
+      var myYAxis = this.getYAxis(option.series[0].data, limitMax, limitMin)
+      option.yAxis = myYAxis
       return option
     },
     produce(data, name) {
@@ -524,61 +468,23 @@ export default {
     loadTempData(option, index) {
       option.xAxis.data = this.produce(this.tempsValue, 'create_date')
       option.series[0].data = this.produceOther(this.tempsValue, index, 0)
-      // 更新Y轴
-      var maxTp
-      var minTp
-      var temps = option.series[0].data
-      if (temps.length > 0) {
-        for (var i = 0; i < temps.length; i++) {
-          if (i === 0) {
-            maxTp = parseFloat(temps[0])
-            minTp = parseFloat(temps[0])
-          } else {
-            var curNum = parseFloat(temps[i])
-            if (maxTp < curNum) {
-              maxTp = curNum
-            }
-            if (minTp > curNum) {
-              minTp = curNum
-            }
-          }
-        }
-      }
+      var limitMax = this.limitMax[this.form.eqpId][index]
+      var limitMin = this.limitMin[this.form.eqpId][index]
       if ((this.form.eqpId === 'APJ-RT' && index === '5') || (this.form.eqpId === 'APJ-HT' && index === '8')) { // 高温的预热平台没有上下限和设定值
         option.series[1].data = [] // 设定
         option.series[2].data = [] // 下限
         option.series[3].data = [] // 上限
+        limitMax = ''
+        limitMin = ''
       } else {
         option.series[1].data = this.produceOther(this.tempsValue, index, 1) // 设定
         option.series[2].data = this.produceOther(this.tempsValue, index, 2) // 下限
         option.series[3].data = this.produceOther(this.tempsValue, index, 3) // 上限
-        var lmtMaxTp = this.limitMax[this.form.eqpId][index]
-        if (!isNaN(lmtMaxTp)) {
-          // if (maxTp < lmtMaxTp) {
-          maxTp = lmtMaxTp
-          // }
-        }
-        var lmtMinTp = this.limitMin[this.form.eqpId][index]
-        if (!isNaN(lmtMinTp)) {
-          // if (minTp > lmtMinTp) {
-          minTp = lmtMinTp
-          // }
-        }
       }
-      var myYAxis = {}
-      if (this.searchLineFlag) {
-        myYAxis.type = 'value'
-      } else {
-        myYAxis.type = 'value'
-        myYAxis.max = maxTp
-        myYAxis.min = minTp
-      }
+      // 设置y轴的最大值和最小值
+      var myYAxis = this.getYAxis(option.series[0].data, limitMax, limitMin)
       option.yAxis = myYAxis
       return option
-      //      option.series[1].data = this.produceOther(this.tempsValue, index, 1)
-      //      option.series[2].data = this.produceOther(this.tempsValue, index, 2)
-      //      option.series[3].data = this.produceOther(this.tempsValue, index, 3)
-      //      return option
     },
     produceOther(data, index, int) {
       var key = 4 * (index - 1) + int
@@ -587,62 +493,11 @@ export default {
         var tempsValues = data[i].other_temps_value.split(',')
         result.push(tempsValues[key])
       }
-      // eslint-disable-next-line eqeqeq
-      // if (int == 2) {
-      //   var tem = data[0].other_temps_value.split(',')
-      //   this.flag = tem[key]
-      //   alert(this.flag)
-      // }
-
       return result
     },
     loadTempDataPart(tab) {
       // 更新图片
       this.imgPosition = parseInt(tab.index)
-      if (tab.index === 0 || tab.index === '0') {
-        var tp = 100000
-        var maxTpTab0 = 0
-        for (var i = 0; i < this.tempsValue.length; i++) {
-          var te = this.tempsValue[i]['temp_pv']
-          if (parseInt(te) < parseInt(tp)) {
-            tp = this.tempsValue[i]['temp_pv']
-          }
-          if (parseInt(te) > maxTpTab0) {
-            maxTpTab0 = parseInt(te)
-          }
-        }
-        this.flag = parseInt(tp) < parseInt(this.tempsValue[0]['temp_min']) ? tp : this.tempsValue[0]['temp_min']
-        this.tpMaxY =
-            parseInt(maxTpTab0) < parseInt(this.tempsValue[0]['temp_max'])
-              ? this.tempsValue[0]['temp_max']
-              : parseInt(maxTpTab0)
-      } else {
-        var key = 4 * (tab.index - 1)
-        var a = 100000
-        var maxTpTab = 0
-        this.tempsValue[0].other_temps_value.split(',')[key + 2]
-        for (var j = 0; j < this.tempsValue.length; j++) {
-          var tem = this.tempsValue[j].other_temps_value.split(',')
-          if (parseInt(a) > parseInt(tem[key])) {
-            a = tem[key]
-          }
-          if (parseInt(tem[key]) > maxTpTab) {
-            maxTpTab = parseInt(tem[key])
-          }
-        }
-        this.flag =
-            parseInt(a) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 2])
-              ? a
-              : this.tempsValue[0].other_temps_value.split(',')[key + 2]
-        this.tpMaxY =
-            parseInt(maxTpTab) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3])
-              ? parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3])
-              : parseInt(maxTpTab)
-      }
-      if (this.form.eqpId === 'APJ-FREEZER3') {
-        this.flag = -30
-        this.tpMaxY = 30
-      }
       // eslint-disable-next-line eqeqeq
       if (this.form.eqpId === 'SIM-PRINTER1' && tab.index == 1) {
         this.extraTitle = ['运行湿度', '设定湿度', '湿度下限报警', '湿度上限报警']
@@ -653,13 +508,40 @@ export default {
       }
       this.initChart(tab.index)
     },
-    changTempY() {
-      var lmt = this.limitY.split('-')
-      if (lmt.length === 2) {
-        this.tpMaxY = parseInt(lmt[1])
-        this.flag = lmt[0]
-        this.initChart(lmt[2])
+    getYAxis(tempsValue, limitMax, limitMin) {
+      // debugger
+      var dataMax = limitMax
+      var dataMin = limitMin
+      var myYAxis = {}
+      myYAxis.type = 'value'
+      if (this.searchBtn === '数据线查询') { // 展示所有的数据,当数据没有超过上下限时显示同 else
+        if (tempsValue.length > 0) {
+          for (var i = 0; i < tempsValue.length; i++) {
+            var tempv = parseFloat(tempsValue[i])
+            if (isNaN(dataMax)) {
+              dataMax = tempv
+            } else {
+              if (dataMax < tempv) {
+                dataMax = tempv
+              }
+            }
+            if (isNaN(dataMin)) {
+              dataMin = tempv
+            } else {
+              if (dataMin > tempv) {
+                dataMin = tempv
+              }
+            }
+          }
+        }
       }
+      if (!isNaN(dataMax)) {
+        myYAxis.max = dataMax
+      }
+      if (!isNaN(dataMin)) {
+        myYAxis.min = dataMin
+      }
+      return myYAxis
     }
   }
 }

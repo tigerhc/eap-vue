@@ -208,7 +208,7 @@ export default {
   .OVEN2{width:100%;height:100%;background:url(../../../assets/img/APJ_OVEN2.jpg);background-repeat:no-repeat;background-size: 190px 298px;}
   .FREEZER1{width:100%;height:100%;background:url(../../../assets/img/FREEZER1.jpg);background-repeat:no-repeat;background-size: 361px 260px;}
   .FREEZER2{width:100%;height:100%;background:url(../../../assets/img/FREEZER2.png);background-repeat:no-repeat;background-size: 431px 228px;}
-  .FREEZER3{width:100%;height:100%;background:url(../../../assets/img/FREEZER3.jpg);background-repeat:no-repeat;background-size: 276px 428px;}
+  .FREEZER3{width:100%;height:200%;background:url(../../../assets/img/FREEZER3.jpg);background-repeat:no-repeat;background-size: 276px 428px;}
   .CLEAN_US{width:100%;height:150%;background:url(../../../assets/img/APJ_CLEAN_US.jpg);background-repeat:no-repeat;background-size: 312px 395px;}
   .SMA-OVEN1{width:100%;height:200%;background:url(../../../assets/img/SMA_OVEN.png);background-repeat:no-repeat;background-size: 508px 396px;}
   .SIM-OVEN1{width:100%;height:200%;background:url(../../../assets/img/SIM_OVEN1.png);background-repeat:no-repeat;background-size: 288px 478px;}

@@ -37,10 +37,10 @@
     </div>
     <div v-show="tempEchart==='unEqpTemp'" class="unEqpTemp">
       <div id="tempChart2" style="width: 60%; height: 500px; overflow: hidden" />
-      <div :style="{ width: '30%', height: '300px', marginTop: '-500px', float: 'left' ,marginLeft:'60%', position: 'absolute' }" class="picPanel">
+      <div :style="{ width: '30%', height: '300px', marginTop: '-500px', float: 'left' ,marginLeft:'65%', position: 'absolute' }" class="picPanel">
         <tempImg :img-url="picUrl" :img-option="imgPosition" :click-able="true" @positionName="positionChange" />
       </div>
-      <div :style="{ width: '30%', height: '300px', marginTop: '-200px', float: 'left' ,marginLeft:'60%', position: 'absolute' }" class="picPanel">
+      <div :style="{ width: '30%', height: '300px', marginTop: '-200px', float: 'left' ,marginLeft:'65%', position: 'absolute' }" class="picPanel">
         <tempImg :img-url="picUrlDetail" :img-option="imgPosition" :click-able="true" @positionName="positionChange" />
       </div>
     </div>
@@ -85,10 +85,10 @@ export default {
         'APJ-DBCB-REFLOW1': [80, 80, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140],
         'APJ-AT1': [165, 165, 156, 156, 156, 156, 156, 156, 156, 156, 156, 156, 27],
         'APJ-CLEAN-US1': [75, 75, 75, 125],
-        'APJ-TRM1': [190, 190, 190, 190, 190, 190, 192, 192, 190, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192],
+        'APJ-TRM1': [186, 186, 186, 186, 186, 186, 192, 192, 186, 186, 186, 186, 186, 186, 192, 192, 186, 186, 186, 186, 186, 186, 192, 192],
         'APJ-RT': [166, 164, 164, 166, 166, 175, 26],
         'APJ-HT': [164, 164, 164, 164, 164, 164, 164, 164, 175, 164, 164, 166],
-        'APJ-HTRT1': [165, 165, 165, 165, 165, 165, 165, 165, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 160, 160, 168, 168, 160, 160, 168, 168, 32],
+        'APJ-HTRT1': [165, 165, 165, 165, 165, 165, 165, 165, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 164, 164, 168, 168, 164, 164, 168, 168, 32],
         'APJ-OVEN1': [125],
         'APJ-AT2': [154, 154, 154, 154, 154, 154, 154, 154, 154, 154],
         'APJ-FREEZER3': [6, 6],
@@ -106,10 +106,10 @@ export default {
         'APJ-DBCB-REFLOW1': [-10, -10, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
         'APJ-AT1': [130, 130, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 12],
         'APJ-CLEAN-US1': [45, 45, 45, 95],
-        'APJ-TRM1': [170, 170, 170, 170, 170, 170, 178, 178, 170],
+        'APJ-TRM1': [174, 174, 174, 174, 174, 174, 177, 177, 174, 174, 174, 174, 174, 174, 177, 177, 174, 174, 174, 174, 174, 174, 177, 177],
         'APJ-RT': [154, 152, 152, 154, 154, 155, 14],
         'APJ-HT': [152, 152, 152, 152, 152, 152, 152, 152, 155, 152, 152, 154],
-        'APJ-HTRT1': [150, 150, 150, 150, 150, 150, 150, 150, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 150, 150, 152, 152, 150, 150, 152, 152, 18],
+        'APJ-HTRT1': [150, 150, 150, 150, 150, 150, 150, 150, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 150, 150, 152, 152, 150, 150, 152, 152, 18],
         'APJ-OVEN1': [95],
         'APJ-AT2': [146, 146, 146, 146, 146, 146, 146, 146, 146, 146],
         'APJ-FREEZER3': [-6, -6],
@@ -509,23 +509,22 @@ export default {
       this.initChart(tab.index)
     },
     getYAxis(tempsValue, limitMax, limitMin) {
-      // debugger
       var dataMax = limitMax
       var dataMin = limitMin
       var myYAxis = {}
       myYAxis.type = 'value'
-      if (this.searchBtn === '数据线查询') { // 展示所有的数据,当数据没有超过上下限时显示同 else
+      if (this.searchBtn === '数据线查询' || limitMin === '') { // 展示所有的数据,当数据没有超过上下限时显示同 else
         if (tempsValue.length > 0) {
           for (var i = 0; i < tempsValue.length; i++) {
             var tempv = parseFloat(tempsValue[i])
-            if (isNaN(dataMax)) {
+            if (isNaN(dataMax) || dataMax === '') {
               dataMax = tempv
             } else {
               if (dataMax < tempv) {
                 dataMax = tempv
               }
             }
-            if (isNaN(dataMin)) {
+            if (isNaN(dataMin) || dataMin === '') {
               dataMin = tempv
             } else {
               if (dataMin > tempv) {
@@ -535,10 +534,10 @@ export default {
           }
         }
       }
-      if (!isNaN(dataMax)) {
+      if (!isNaN(dataMax) && dataMax !== '') {
         myYAxis.max = dataMax
       }
-      if (!isNaN(dataMin)) {
+      if (!isNaN(dataMin) && dataMin !== '') {
         myYAxis.min = dataMin
       }
       return myYAxis

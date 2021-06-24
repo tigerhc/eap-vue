@@ -16,7 +16,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="10">
           <el-form-item label="日期" prop="dateTime">
             <el-date-picker
               v-model="dateTime"
@@ -63,57 +63,24 @@ export default {
       api: api('/edc/edcparticle/export23'),
       areaStyle0: {
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          {
-            offset: 0,
-            color: 'rgb(255, 158, 68)'
-          },
-          {
-            offset: 1,
-            color: 'rgb(255, 70, 131)'
-          }
+          { offset: 0, color: 'rgb(255, 158, 68)' },
+          { offset: 1, color: 'rgb(255, 70, 131)' }
         ])
       },
       areaStyle1: {
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          {
-            offset: 0,
-            color: 'rgba(80,141,255,0.39)'
-          },
-          {
-            offset: 0.34,
-            color: 'rgba(56,155,255,0.25)'
-          },
-          {
-            offset: 1,
-            color: 'rgba(38,197,254,0.00)'
-          }
+          { offset: 0, color: 'rgba(80,141,255,0.39)' },
+          { offset: 0.34, color: 'rgba(56,155,255,0.25)' },
+          { offset: 1, color: 'rgba(38,197,254,0.00)' }
         ])
       },
       maxValue: undefined,
       minValue: undefined,
-      toolbarStatus: {
-        exportsLoading: false
-      },
-      list2: [
-        {
-          value: 'μm',
-          label: 'μm',
-          disabled: true
-        },
-        {
-          value: 'temp',
-          label: '温度'
-        },
-        {
-          value: 'wet',
-          label: '湿度',
-          disabled: true
-        },
-        {
-          value: 'flow',
-          label: '流量',
-          disabled: true
-        }
+      toolbarStatus: { exportsLoading: false },
+      list2: [{ value: 'μm', label: 'μm', disabled: true },
+        { value: 'temp', label: '温度' },
+        { value: 'wet', label: '湿度', disabled: true },
+        { value: 'flow', label: '流量', disabled: true }
       ],
       total: {
         date: Array,
@@ -130,7 +97,8 @@ export default {
         wet: Array,
         piont3μm: Array
       },
-      myChart: undefined
+      myChart: undefined,
+      tempMax: 26
     }
   },
   created() {
@@ -147,29 +115,24 @@ export default {
         return
       }
       this.toolbarStatus.exportsLoading = true
-      // const q = (this.query)
       const q = this.form
-      // alert(q)
-      this.api
-        .export(q)
-        .then((response) => {
-          if (response.code === 0) {
-            return import('./Export2Excel').then((excel) => {
-              excel.export_byte_to_excel(response.bytes, response.title)
-              this.toolbarStatus.exportsLoading = false
-            })
-          } else {
-            this.$notify.error({
-              title: '失败',
-              message: (response && response.errmsg) || '导出失败!',
-              duration: 2000
-            })
+      this.api.export(q).then((response) => {
+        if (response.code === 0) {
+          return import('./Export2Excel').then((excel) => {
+            excel.export_byte_to_excel(response.bytes, response.title)
             this.toolbarStatus.exportsLoading = false
-          }
-        })
-        .catch((e) => {
+          })
+        } else {
+          this.$notify.error({
+            title: '失败',
+            message: (response && response.errmsg) || '导出失败!',
+            duration: 2000
+          })
           this.toolbarStatus.exportsLoading = false
-        })
+        }
+      }).catch((e) => {
+        this.toolbarStatus.exportsLoading = false
+      })
     },
     search() {
       var a = this.type
@@ -199,11 +162,38 @@ export default {
             this.minValue = 20
             this.text = '尘埃粒子计数器(温度)'
             this.areaStyle = this.areaStyle0
+            // 设置y轴最大值
+            this.tempMax = 26
+            for (var i = 0; i < this.total['temp'].length; i++) {
+              if (this.total['temp'][i] > this.tempMax) {
+                this.tempMax = this.total['temp'][i]
+              }
+            }
+            this.tempMax = this.tempMax + 5 // 为与上边界留有空间
           } else if (a === 'wet') {
             this.maxValue = 60
             this.minValue = 40
             this.text = '尘埃粒子计数器(湿度)'
             this.areaStyle = this.areaStyle1
+            // 设置y轴最大值
+            this.tempMax = 60
+            for (var j = 0; j < this.total['wet'].length; j++) {
+              if (this.total['wet'][j] > this.tempMax) {
+                this.tempMax = this.total['wet'][j]
+              }
+            }
+            this.tempMax = this.tempMax + 2 // 为与上边界留有空间
+          } else {
+            this.tempMax = 4 // 为与上边界留有空间
+            this.text = '尘埃粒子计数器(流量)'
+            this.maxValue = 50
+            this.minValue = 20
+            this.areaStyle = this.areaStyle0
+            for (var n = 0; n < this.total['flow'].length; n++) {
+              if (this.total['flow'][n] > this.tempMax) {
+                this.tempMax = this.total['flow'][n]
+              }
+            }
           }
           this.tem(a)
         } else {
@@ -218,6 +208,11 @@ export default {
         this.myChart.dispose()
       }
       this.myChart = echarts.init(document.getElementById('main'))
+      var myYAxis = {}
+      myYAxis.type = 'value'
+      // if (a === 'temp' || a === 'wet') {
+      myYAxis.maxValue = this.tempMax
+      // }
       var option = {
         tooltip: {
           trigger: 'axis',
@@ -243,10 +238,7 @@ export default {
           boundaryGap: false,
           data: this.total['date']
         },
-        yAxis: {
-          type: 'value',
-          boundaryGap: [0, '100%']
-        },
+        yAxis: myYAxis,
         dataZoom: [
           {
             type: 'inside',

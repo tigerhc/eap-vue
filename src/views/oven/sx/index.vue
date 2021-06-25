@@ -1,4 +1,3 @@
-
 <template>
   <div class="app-container calendar-list-container">
     <div class="condition-panel">
@@ -6,10 +5,10 @@
         <el-row>
           <el-col :span="4">
             <el-form-item label="类型:">
-              <el-select v-model="form1.type" :style="{width:'90px'}" @change="findProduction">
+              <el-select v-model="form1.type" :style="{width:'60px'}" @change="findProduction">
                 <el-option v-for="item in TypeResult" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
-              <el-select v-model="form1.lineNo" :style="{width:'90px'}" @change="findProduction">
+              <el-select v-model="form1.lineNo" :style="{width:'70px'}" @change="findProduction">
                 <el-option v-for="item in lineNoResult" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </el-form-item>
@@ -17,36 +16,28 @@
           <el-col :span="4">
             <el-form-item label="机种名:">
               <div class="condition">
-                <el-select v-model="form.productionName" class="wid90" @change="search">
-                  <el-option
-                    v-for="item in productionResult"
-                    :key="item.label"
-                    :label="item.label"
-                    :value="item.label"
-                  />
+                <el-select v-model="form.productionName" class="wid90" clearable @change="search" >
+                  <el-option v-for="item in productionResult" :key="item.label" :label="item.label" :value="item.label" />
                 </el-select>
               </div>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="5">
             <el-form-item label="位置:">
-              <el-select v-model="form.local" class="wid90" @change="search">
+              <el-select v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" v-model="form.local56GI" :style="{width:'100px'}" clearable @change="positionClick('56GI')" >
+                <el-option v-for="item in localResult56GI" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+              <el-select v-model="form.local" :style="{width:'105px'}" clearable @change="search" >
                 <el-option v-for="item in localResult" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+              <el-select v-show="form1.lineNo==='SIM' && form.local==='c'" v-model="form.localSimC" :style="{width:'70px'}" @change="search">
+                <el-option v-for="item in localResultSIMC" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="3">
             <el-form-item label="日期:">
-              <el-date-picker
-                v-model="dateTime"
-                style="width: 250%"
-                type="daterange"
-                value-format="yyyy-MM-dd"
-                range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                class="dateTimeClass"
-              />
+              <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" class="dateTimeClass" clearable/>
             </el-form-item>
           </el-col>
           <el-col :span="1">
@@ -60,7 +51,23 @@
     </div>
     <div class="frame">
       <div id="main" style="width: 65%; height: 300px; overflow: hidden" />
-      <img id="mainImg" :src="picUrl" class="arrow_box" >
+      <img v-show="form1.lineNo!=='SIM' && form1.lineNo!=='5GI' && form1.lineNo!=='6GI'" id="mainImg" :src="picUrl" class="arrow_box">
+      <div v-show="form1.lineNo==='SIM'" :class="simClass" class="arrow_box">
+        <div class="simAPST" @click="positionClick('simA')"/>
+        <div class="simBPST" @click="positionClick('simB')"/>
+        <div class="simCPST" @click="positionClick('simC')"/>
+      </div>
+      <div v-show="form1.lineNo==='SIM' && form.local==='c'" class="arrow_box simCDtl">
+        <div :class="pstColor"/>
+        <div class="simdtlText">{{ form.localSimC }}</div>
+      </div>
+      <div v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" :class="simClass" class="arrow_box"/>
+      <div v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" class="arrow_box giDtl">
+        <div :class="form.local56GI==='burr_f'?'gi56Border':''" class="burrPST" @click="positionClick('burr_f')"/>
+        <div :class="form.local56GI==='pinf'?'gi56Border':''" class="pinPST" @click="positionClick('pinf')"/>
+        <div :class="form.local56GI==='pinf2f'?'gi56Border':''" class="pinf2fPST" @click="positionClick('pinf2f')"/>
+        <div :class="form.local56GI==='pins'?'gi56Border':''" class="pinsPST" @click="positionClick('pins')"/>
+      </div>
     </div>
   </div>
 </template>
@@ -74,12 +81,14 @@ export default {
   data() {
     return {
       form: {
-        number: '',
+        number: '0001',
         type: '',
         productionName: '',
         startDate: '',
         endDate: '',
-        local: ''
+        local: '',
+        localSimC: '',
+        local56GI: ''
       },
       api: api('/ms/measuresx/findSxNumberExport'),
       form1: {
@@ -95,68 +104,86 @@ export default {
       data: [],
       min: undefined,
       productionResult: [],
-      type: '',
       formatter: '',
       picUrl: undefined,
       picUrlA: require('../../../assets/img/sxA.png'),
       picUrlB: require('../../../assets/img/sxB.png'),
       picUrlC: require('../../../assets/img/sxC.png'),
       picUrlD: require('../../../assets/img/sxD.png'),
-      picUrlE: require('../../../assets/img/sim_abc.png'),
-      picUrlF: require('../../../assets/img/c21.png'),
       picUrlG: require('../../../assets/img/56GI.png'),
       picUrlH: require('../../../assets/img/56GI2.png'),
       picUrlI: require('../../../assets/img/56GI3.png'),
-      localResultSim: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }, { value: 'c', label: 'C' }, { value: 'c21', label: 'c21' }],
+      localResultSim: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }, { value: 'c', label: 'C' }],
       localResultSx: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }, { value: 'c', label: 'C' }, { value: 'd', label: 'D' }],
-      localResultGi: [{ value: 'burr_f', label: 'burr_f' }, { value: 'pin_f1', label: 'pin_f1' }, { value: 'pin_f2', label: 'pin_f2' }, { value: 'pin_f3', label: 'pin_f3' }, { value: 'pin_f4', label: 'pin_f4' }, { value: 'pin_f5', label: 'pin_f5' }, { value: 'pin_f6', label: 'pin_f6' }, { value: 'pin_f1_f2', label: 'pin_f1_f2' }, { value: 'pin_f2_f3', label: 'pin_f2_f3' }, { value: 'pin_f3_f4', label: 'pin_f3_f4' }, { value: 'pin_f4_f5', label: 'pin_f4_f5' }, { value: 'pin_f5_f6', label: 'pin_f5_f6' }, { value: 'pin_s1', label: 'pin_s1' }, { value: 'pin_s2', label: 'pin_s2' }, { value: 'pin_s3', label: 'pin_s3' }, { value: 'pin_s4', label: 'pin_s4' }, { value: 'pin_s5', label: 'pin_s5' }, { value: 'pin_s6', label: 'pin_s6' }],
-      lineTypeResult: [
-        {
-          value: '0001',
-          label: '1'
-        },
-        {
-          value: '0002',
-          label: '2'
-        }
-      ],
-      TypeResult: [
-        {
-          value: 'LF',
-          label: 'LF'
-        },
-        {
-          value: 'check',
-          label: '检查'
-        }
-      ],
-      lineNoResult: [
-        {
-          value: 'SX',
-          label: 'SX'
-        },
-        {
-          value: 'SIM',
-          label: 'SIM'
-        },
-        {
-          value: '5GI',
-          label: '5GI'
-        },
-        {
-          value: '6GI',
-          label: '6GI'
-        }
-      ],
-      localResult: []
+      lineTypeResult: [{ value: '0001', label: '1' }, { value: '0002', label: '2' }],
+      TypeResult: [{ value: 'LF', label: 'LF' }, { value: 'check', label: '检查' }],
+      lineNoResult: [{ value: 'SX', label: 'SX' }, { value: 'SIM', label: 'SIM' }, { value: '5GI', label: '5GI' }, { value: '6GI', label: '6GI' }],
+      localResult: [],
+      simClass: 'simABC',
+      pstColor: '',
+      localResultSIMC: [{ value: 'c1', label: 'c1' }, { value: 'c2', label: 'c2' }, { value: 'c3', label: 'c3' }, { value: 'c4', label: 'c4' }, { value: 'c5', label: 'c5' }, { value: 'c6', label: 'c6' }, { value: 'c7', label: 'c7' }, { value: 'c8', label: 'c8' }, { value: 'c9', label: 'c9' }, { value: 'c10', label: 'c10' }, { value: 'c11', label: 'c11' }, { value: 'c12', label: 'c12' }, { value: 'c13', label: 'c13' }, { value: 'c14', label: 'c14' }, { value: 'c15', label: 'c15' }, { value: 'c16', label: 'c16' }, { value: 'c17', label: 'c17' }, { value: 'c19', label: 'c19' }, { value: 'c20', label: 'c20' }, { value: 'c21', label: 'c21' }, { value: 'c23', label: 'c23' }, { value: 'c24', label: 'c24' }, { value: 'c26', label: 'c26' }, { value: 'c28', label: 'c28' }, { value: 'c30', label: 'c30' }, { value: 'c31', label: 'c31' }, { value: 'c35', label: 'c35' }, { value: 'c37', label: 'c37' }, { value: 'c40', label: 'c40' }],
+      localResult56GI: [{ value: 'burr_f', label: '毛刺' }, { value: 'pinf', label: '正面弯曲' }, { value: 'pinf2f', label: '横筋间距' }, { value: 'pins', label: '侧面弯曲' }],
+      localResultGiPinf: [{ value: 'pin_f1', label: '正面弯曲1' }, { value: 'pin_f2', label: '正面弯曲2' }, { value: 'pin_f3', label: '正面弯曲3' }, { value: 'pin_f4', label: '正面弯曲4' }, { value: 'pin_f5', label: '正面弯曲5' }, { value: 'pin_f6', label: '正面弯曲6' }],
+      localResultGiPinf2f: [{ value: 'pin_f1_f2', label: '横筋间距1_2' }, { value: 'pin_f2_f3', label: '横筋间距2_3' }, { value: 'pin_f3_f4', label: '横筋间距3_4' }, { value: 'pin_f4_f5', label: '横筋间距4_5' }, { value: 'pin_f5_f6', label: '横筋间距5_6' }],
+      localResultGiPins: [{ value: 'pin_s1', label: '侧面弯曲1' }, { value: 'pin_s2', label: '侧面弯曲2' }, { value: 'pin_s3', label: '侧面弯曲3' }, { value: 'pin_s4', label: '侧面弯曲4' }, { value: 'pin_s5', label: '侧面弯曲5' }, { value: 'pin_s6', label: '侧面弯曲6' }],
+      localResultGiBurr: [{ value: 'burr_f', label: '毛刺' }]
     }
   },
+  mounted() {
+    var now = new Date()
+    var endDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10)
+    var startDate = endDate.slice(0, 8) + '01'
+    this.form.startDate = startDate
+    this.form.endDate = endDate
+    this.dateTime = [startDate, endDate]
+  },
   methods: {
+    positionClick(pst) {
+      if (this.form1.lineNo === 'SIM') {
+        this.simClass = pst
+        if (pst === 'simA') {
+          this.form.local = 'a'
+        } else if (pst === 'simB') {
+          this.form.local = 'b'
+        } else if (pst === 'simC') {
+          this.form.local = 'c'
+        }
+      } else if (this.form1.lineNo === '5GI' || this.form1.lineNo === '6GI') {
+        if (pst === '56GI') {
+          if (this.form.local56GI === 'burr_f') {
+            this.localResult = this.localResultGiBurr
+          } else if (this.form.local56GI === 'pinf') {
+            this.localResult = this.localResultGiPinf
+          } else if (this.form.local56GI === 'pinf2f') {
+            this.localResult = this.localResultGiPinf2f
+          } else if (this.form.local56GI === 'pins') {
+            this.localResult = this.localResultGiPins
+          } else if (this.form.local56GI === '') {
+            this.localResult = []
+          }
+          this.form.local = ''
+        } else {
+          if (pst === 'burr_f') {
+            this.localResult = this.localResultGiBurr
+          } else if (pst === 'pinf') {
+            this.localResult = this.localResultGiPinf
+          } else if (pst === 'pinf2f') {
+            this.localResult = this.localResultGiPinf2f
+          } else if (pst === 'pins') {
+            this.localResult = this.localResultGiPins
+          } else if (this.form.local56GI === '') {
+            this.localResult = []
+          }
+          this.form.local56GI = pst
+          this.form.local = this.localResult[0].value
+        }
+      }
+      this.search()
+    },
     finddetail() {
       // var param = this.$refs.ref.fdis()
       // this.query.id = param
       // eslint-disable-next-line no-undef
-      this.form.number = '0001'
       this.form.type = this.form1.type
       this.form.startDate = this.dateTime[0]
       this.form.endDate = this.dateTime[1]
@@ -168,26 +195,23 @@ export default {
       // const q = (this.query)
       const q = this.form
       // alert(q)
-      this.api
-        .export(q)
-        .then((response) => {
-          if (response.code === 0) {
-            return import('../ports/Export2Excel').then((excel) => {
-              excel.export_byte_to_excel(response.bytes, response.title)
-              this.toolbarStatus.exportsLoading = false
-            })
-          } else {
-            this.$notify.error({
-              title: '失败',
-              message: (response && response.errmsg) || '导出失败!',
-              duration: 2000
-            })
+      this.api.export(q).then((response) => {
+        if (response.code === 0) {
+          return import('../ports/Export2Excel').then((excel) => {
+            excel.export_byte_to_excel(response.bytes, response.title)
             this.toolbarStatus.exportsLoading = false
-          }
-        })
-        .catch((e) => {
+          })
+        } else {
+          this.$notify.error({
+            title: '失败',
+            message: (response && response.errmsg) || '导出失败!',
+            duration: 2000
+          })
           this.toolbarStatus.exportsLoading = false
-        })
+        }
+      }).catch((e) => {
+        this.toolbarStatus.exportsLoading = false
+      })
     },
     findProduction() {
       productionName(this.form1).then((response) => {
@@ -197,7 +221,8 @@ export default {
         } else if (this.form1.lineNo === 'SIM') {
           this.localResult = this.localResultSim
         } else if (this.form1.lineNo === '6GI' || this.form1.lineNo === '5GI') {
-          this.localResult = this.localResultGi
+          this.localResult = []
+          this.simClass = 'giClass'
         }
       })
       this.form.productionName = ''
@@ -221,26 +246,42 @@ export default {
           this.picUrl = this.picUrlD
         }
       } else if (this.form1.lineNo === 'SIM') {
-        if (this.form.local === 'c21') {
-          this.picUrl = this.picUrlF
+        // 图片更新
+        if (this.form.local !== '' && this.form.local !== null) {
+          this.simClass = 'sim' + this.form.local.toUpperCase()
         } else {
-          this.picUrl = this.picUrlE
+          this.simClass = 'simABC'
         }
+        this.pstColor = 'pstColor' + this.form.localSimC.toUpperCase() // c的针对应的位置颜色
       } else if (this.form1.lineNo === '5GI' || this.form1.lineNo === '5GI') {
-        if (this.form.local === 'burr_f') {
-          this.picUrl = this.picUrlI
-        } else if (this.form.local === 'pin_s1' || this.form.local === 'pin_s2' || this.form.local === 'pin_s3' || this.form.local === 'pin_s4' || this.form.local === 'pin_s5' || this.form.local === 'pin_s6') {
-          this.picUrl = this.picUrlH
-        } else { // this.form.local === 'pin_f1' || this.form.local === 'pin_f2' || this.form.local === 'pin_f3'|| this.form.local === 'pin_f4'|| this.form.local === 'pin_f5'|| this.form.local === 'pin_f6'||pin_f1_f2,pin_f2_f3,pin_f3_f4,pin_f4_f5,pin_f5_f6
-          this.picUrl = this.picUrlG
+        if (this.local56GI === '') {
+          this.localResult = []
         }
       }
-      this.form.number = '0001'
-      this.form.type = this.form1.type
       this.form.startDate = this.dateTime[0]
       this.form.endDate = this.dateTime[1]
       this.form.lineNo = this.form1.lineNo
-      findSxNumber(this.form).then((res) => {
+      var params = {}
+      params.number = '0001'
+      params.type = this.form1.type
+      params.startDate = this.dateTime[0]
+      params.endDate = this.dateTime[1]
+      params.lineNo = this.form1.lineNo
+      params.productionName = this.form.productionName
+      if (this.form1.lineNo === 'SIM' && this.form.local === 'c') {
+        params.local = this.form.localSimC
+      } else {
+        params.local = this.form.local
+      }
+      if (params.endDate === undefined || params.startDate === undefined || params.productionName === '') {
+        return
+      }
+      if (this.form1.lineNo === '5GI' || this.form1.lineNo === '6GI') {
+        if (this.form.local56GI !== '' && this.form.local === '') {
+          return
+        }
+      }
+      findSxNumber(params).then((res) => {
         this.data = res.data[0]
         this.series = res.data[1]
         this.min = res.data[2].min
@@ -257,9 +298,7 @@ export default {
       var option
       option = {
         color: ['#3CB371', '#00FFFF', '#ff0000', '#FF0000', '#1E90FF', '#FFA500', '#800000', '#1E90FF'],
-        title: {
-          text: '量测分离倾向管理图'
-        },
+        title: { text: '量测分离倾向管理图' },
         toolbox: {
           show: true,
           feature: {
@@ -269,33 +308,40 @@ export default {
             saveAsImage: {}
           }
         },
-        tooltip: {
-          trigger: 'axis'
-        },
+        tooltip: { trigger: 'axis' },
         legend: {
           data: [
-            '1-1:A',
-            '1-2:A',
-            '2-1:A',
-            '2-2:A',
-            '1-1:B',
-            '1-2:B',
-            '2-1:B',
-            '2-2:B',
-            '上限',
-            '下限',
-            '1-1:C',
-            '1-2:C',
-            '2-1:C',
-            '2-2:C',
-            '1-1:D',
-            '1-2:D',
-            '2-1:D',
-            '2-2:D',
-            '1-1:C21',
-            '1-2:C21',
-            '2-1:C21',
-            '2-1:C21',
+            '1-1:A', '1-2:A', '2-1:A', '2-2:A', '1-1:B', '1-2:B', '2-1:B', '2-2:B', '1-1:C', '1-2:C', '2-1:C', '2-2:C', '1-1:D', '1-2:D', '2-1:D', '2-2:D',
+            '上限', '下限',
+            '1-1:C1', '1-2:C1', '2-1:C1', '2-2:C1',
+            '1-1:C2', '1-2:C2', '2-1:C2', '2-2:C2',
+            '1-1:C3', '1-2:C3', '2-1:C3', '2-2:C3',
+            '1-1:C4', '1-2:C4', '2-1:C4', '2-2:C4',
+            '1-1:C5', '1-2:C5', '2-1:C5', '2-2:C5',
+            '1-1:C6', '1-2:C6', '2-1:C6', '2-2:C6',
+            '1-1:C7', '1-2:C7', '2-1:C7', '2-2:C7',
+            '1-1:C8', '1-2:C8', '2-1:C8', '2-2:C8',
+            '1-1:C9', '1-2:C9', '2-1:C9', '2-2:C9',
+            '1-1:C10', '1-2:C10', '2-1:C10', '2-2:C10',
+            '1-1:C11', '1-2:C11', '2-1:C11', '2-2:C11',
+            '1-1:C12', '1-2:C12', '2-1:C12', '2-2:C12',
+            '1-1:C13', '1-2:C13', '2-1:C13', '2-2:C13',
+            '1-1:C14', '1-2:C14', '2-1:C14', '2-2:C14',
+            '1-1:C15', '1-2:C15', '2-1:C15', '2-2:C15',
+            '1-1:C16', '1-2:C16', '2-1:C16', '2-2:C16',
+            '1-1:C17', '1-2:C17', '2-1:C17', '2-2:C17',
+            '1-1:C19', '1-2:C19', '2-1:C19', '2-2:C19',
+            '1-1:C20', '1-2:C20', '2-1:C20', '2-2:C20',
+            '1-1:C21', '1-2:C21', '2-1:C21', '2-2:C21',
+            '1-1:C23', '1-2:C23', '2-1:C23', '2-2:C23',
+            '1-1:C24', '1-2:C24', '2-1:C24', '2-2:C24',
+            '1-1:C26', '1-2:C26', '2-1:C26', '2-2:C26',
+            '1-1:C28', '1-2:C28', '2-1:C28', '2-2:C28',
+            '1-1:C30', '1-2:C30', '2-1:C30', '2-2:C30',
+            '1-1:C31', '1-2:C31', '2-1:C31', '2-2:C31',
+            '1-1:C35', '1-2:C35', '2-1:C35', '2-2:C35',
+            '1-1:C37', '1-2:C37', '2-1:C37', '2-2:C37',
+            '1-1:C40', '1-2:C40', '2-1:C40', '2-2:C40',
             '上限',
             '下限',
             '1-毛刺', '2-毛刺', '3-毛刺', '4-毛刺', '5-毛刺',
@@ -364,4 +410,49 @@ export default {
     margin: 0;
   }
 }
+  .simABC{background:url(../../../assets/img/sim_abc.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
+  .simA{background:url(../../../assets/img/SIMA.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
+  .simB{background:url(../../../assets/img/SIMB.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
+  .simC{background:url(../../../assets/img/SIMC.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
+  .simCDtl{background:url(../../../assets/img/c21.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 380px;}
+  .giClass{background:url(../../../assets/img/56GIS.png);background-repeat:no-repeat;background-size: 116px 224px;height: 224px;width: 116px;}
+  .giDtl{background:url(../../../assets/img/56GI_PST.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 380px;}
+  .simAPST{width:7%;height:17%; position: absolute;}
+  .simBPST{width:7%;height:17%; position: absolute;margin-left: 8%;}
+  .simCPST{width:10%;height:15%; position: absolute;margin-top: 9%;margin-left: 2.5%;}
+  .burrPST{width:32%;height:45%; position: absolute;}
+  .pinPST{width:40%;height:40%; position: absolute;margin-left: 60%;}
+  .pinf2fPST{width:40%;height:40%; position: absolute;margin-top: 55%;}
+  .pinsPST{width:40%;height:46%; position: absolute;margin-left: 60%;margin-top: 58%;}
+  .gi56Border{border:5px solid #43ca17}
+  .simdtlText{top: 80%; width: 100%; height: 20%; position: absolute;text-align: center; line-height: 55px;color:#43ca17;font-size: xx-large;}
+  .pstColorC1{position:absolute;width: 3%;height: 9%;left: 12%;top: 73%;background-color: #43ca17}
+  .pstColorC2{position:absolute;width: 3%;height: 9%;left: 16%;top: 73%;background-color: #43ca17}
+  .pstColorC3{position:absolute;width: 3%;height: 9%;left: 20%;top: 73%;background-color: #43ca17}
+  .pstColorC4{position:absolute;width: 3%;height: 9%;left: 24%;top: 73%;background-color: #43ca17}
+  .pstColorC5{position:absolute;width: 3%;height: 9%;left: 28%;top: 73%;background-color: #43ca17}
+  .pstColorC6{position:absolute;width: 3%;height: 9%;left: 31%;top: 73%;background-color: #43ca17}
+  .pstColorC7{position:absolute;width: 3%;height: 9%;left: 35%;top: 73%;background-color: #43ca17}
+  .pstColorC8{position:absolute;width: 3%;height: 9%;left: 39%;top: 73%;background-color: #43ca17}
+  .pstColorC9{position:absolute;width: 3%;height: 9%;left: 43%;top: 73%;background-color: #43ca17}
+  .pstColorC10{position:absolute;width: 3%;height: 9%;left: 46%;top: 73%;background-color: #43ca17}
+  .pstColorC11{position:absolute;width: 3%;height: 9%;left: 50%;top: 73%;background-color: #43ca17}
+  .pstColorC12{position:absolute;width: 3%;height: 9%;left: 54%;top: 73%;background-color: #43ca17}
+  .pstColorC13{position:absolute;width: 3%;height: 9%;left: 58%;top: 73%;background-color: #43ca17}
+  .pstColorC14{position:absolute;width: 3%;height: 9%;left: 62%;top: 73%;background-color: #43ca17}
+  .pstColorC15{position:absolute;width: 3%;height: 9%;left: 65%;top: 73%;background-color: #43ca17}
+  .pstColorC16{position:absolute;width: 3%;height: 9%;left: 69%;top: 73%;background-color: #43ca17}
+  .pstColorC17{position:absolute;width: 3%;height: 9%;left: 73%;top: 73%;background-color: #43ca17}
+  .pstColorC19{position:absolute;width: 3%;height: 9%;left: 80%;top: 73%;background-color: #43ca17}
+  .pstColorC20{position:absolute;width: 3%;height: 9%;left: 84%;top: 73%;background-color: #43ca17}
+  .pstColorC21{position:absolute;width: 3%;height: 9%;left: 84%;top: 12%;background-color: #43ca17}
+  .pstColorC23{position:absolute;width: 3%;height: 9%;left: 77%;top: 12%;background-color: #43ca17}
+  .pstColorC24{position:absolute;width: 3%;height: 9%;left: 72%;top: 12%;background-color: #43ca17}
+  .pstColorC26{position:absolute;width: 3%;height: 9%;left: 65%;top: 12%;background-color: #43ca17}
+  .pstColorC28{position:absolute;width: 3%;height: 9%;left: 57%;top: 12%;background-color: #43ca17}
+  .pstColorC30{position:absolute;width: 3%;height: 9%;left: 50%;top: 12%;background-color: #43ca17}
+  .pstColorC31{position:absolute;width: 3%;height: 9%;left: 46%;top: 12%;background-color: #43ca17}
+  .pstColorC35{position:absolute;width: 3%;height: 9%;left: 31%;top: 12%;background-color: #43ca17}
+  .pstColorC37{position:absolute;width: 3%;height: 9%;left: 24%;top: 12%;background-color: #43ca17}
+  .pstColorC40{position:absolute;width: 3%;height: 9%;left: 12%;top: 12%;background-color: #43ca17}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-bind="table" url="">
+    <w-table v-bind="table" url="/rw/rwplanhis/rwplanhislist">
       <w-table-col name="id" label="工单号" align="left" query hidden />
       <w-table-col name="planId" label="（计划、报警）编号" align="left" />
       <w-table-col name="eqpId" label="设备编号" align="left" query querymode="select" />
@@ -26,7 +26,7 @@
         dict="PLAN_TYPE"
         condition="eq"
       />
-      <w-table-col name="flag" label="是否查询历史数据" align="left" query querymode="select" hidden />
+      <w-table-col name="flag" label="是否查询历史数据" align="left" query querymode="select" hidden dict="SFYN" />
       <w-table-col name="dealAdvice" label="处理意见" align="left" />
       <w-table-col name="dealDesc" label="处理描述" align="left" />
       <w-table-col name="endDate" label="归档时间" align="left" />
@@ -44,9 +44,7 @@ export default {
   components: {},
   data() {
     return {
-      table: {
-        opHide: true
-      }
+      table: {}
     }
   },
   methods: {}

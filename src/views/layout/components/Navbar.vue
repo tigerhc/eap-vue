@@ -1,14 +1,17 @@
 <template>
   <div class="navbar">
     <el-tooltip content="左侧导航隐藏开关" placement="bottom">
-    <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
+      <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container" />
     </el-tooltip>
 
     <!-- <breadcrumb class="breadcrumb-container"/> -->
     <div class="headerSur">
-      <el-tabs v-model="activeName" @tab-click="chooseFirstLeave" >
-        <el-tab-pane v-for="(item,index) in firstLeave" :key="index" :label="item.name" :name="item.id">
-          <span slot="label">&nbsp;<item :icon="item.icon" />&nbsp;<span class="menu-name">{{ item.name }}</span> </span>
+      <el-tabs v-model="activeName" @tab-click="chooseFirstLeave">
+        <el-tab-pane v-for="(item, index) in firstLeave" :key="index" :label="item.name" :name="item.id">
+          <span
+slot="label"
+            >&nbsp;<item :icon="item.icon" />&nbsp;<span class="menu-name">{{ item.name }}</span>
+          </span>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -16,43 +19,43 @@
       <el-dropdown trigger="click" @command="handleCommand">
         <span class="el-dropdown-link">
           <span class="sys-dw">系统</span>
-          <i class="el-icon-caret-bottom"/>
+          <i class="el-icon-caret-bottom" style="color: #fff" />
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-for="(item,index) in projectList" :command="item" :key="index">{{ item.projectName }}</el-dropdown-item>
+          <el-dropdown-item v-for="(item, index) in projectList" :command="item" :key="index">{{
+            item.projectName
+          }}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <template v-if="device!=='mobile'">
-        <error-log class="errLog-container right-menu-item"/>
+      <template v-if="device !== 'mobile'">
+        <error-log class="errLog-container right-menu-item" />
 
         <el-tooltip :content="$t('navbar.screenfull')" effect="dark" placement="bottom">
-          <screenfull class="screenfull right-menu-item"/>
+          <screenfull class="screenfull right-menu-item" />
         </el-tooltip>
 
         <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
-          <size-select class="international right-menu-item"/>
+          <size-select class="international right-menu-item" />
         </el-tooltip>
 
-        <lang-select class="international right-menu-item"/>
+        <lang-select class="international right-menu-item" />
 
         <el-tooltip :content="$t('navbar.theme')" effect="dark" placement="bottom">
-          <theme-picker class="theme-switch right-menu-item"/>
+          <theme-picker class="theme-switch right-menu-item" />
         </el-tooltip>
       </template>
 
       <el-dropdown class="avatar-container right-menu-item" trigger="click" @command="getHome">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom"/>
+          <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar" >
+          <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item :command="url" trigger="click" >
+          <el-dropdown-item :command="url" trigger="click">
             {{ $t('navbar.home') }}
           </el-dropdown-item>
           <router-link to="/info">
-            <el-dropdown-item divided>
-              用户信息
-            </el-dropdown-item>
+            <el-dropdown-item divided> 用户信息 </el-dropdown-item>
           </router-link>
           <!-- <router-link to="/change/password">
             <el-dropdown-item>
@@ -60,7 +63,7 @@
             </el-dropdown-item>
           </router-link> -->
           <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
+            <span style="display: block" @click="logout">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -188,11 +191,13 @@ export default {
   border-radius: 0px !important;
   display: flex;
   width: 100%;
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0, #1c5bc7), color-stop(1, #2780ec));
+
   .headerSur {
     display: inline-block;
     // width: 40%;
     line-height: 50px;
-
+    color: #fff;
     flex: 1;
     overflow: auto;
   }
@@ -201,6 +206,7 @@ export default {
     height: 50px;
     float: left;
     padding: 0 10px;
+    color: #fff;
   }
   .breadcrumb-container {
     float: left;
@@ -218,10 +224,12 @@ export default {
     .right-menu-item {
       display: inline-block;
       margin: 0 8px;
+      color: #fff;
     }
     .sys-dw {
       font-size: 16px;
       font-weight: bold;
+      color: #fff;
     }
     .avatar-container {
       // height: 50px;
@@ -257,12 +265,16 @@ export default {
   height: 0;
 }
 .headerSur .el-tabs__item {
+  color: #fff !important;
+  /* background-color: #409eff; */
+  padding: 0 10px;
   font-size: 17px;
   height: 50px;
   line-height: 50px;
 }
 .headerSur .el-tabs__item.is-active {
-  border-bottom: 2px solid #409eff;
+  /* border-bottom: 2px solid #fff; */
+  background: #174bad;
 }
 .headerSur .el-tabs__nav {
   /* margin-top:-3px; */
@@ -291,7 +303,8 @@ export default {
 }
 .headerSur .el-tabs__item:hover {
   /* color: white; */
-  border-bottom: 2px solid #409eff;
+  /* border-bottom: 2px solid #fff; */
+  background: #174bad;
 }
 .mar-top-20 {
   margin-top: 20px;

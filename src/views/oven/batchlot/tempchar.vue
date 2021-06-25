@@ -32,15 +32,35 @@
     <el-tabs v-model="editableTabsValue" type="card" @tab-click="loadTempDataPart">
       <el-tab-pane v-for="item in editableTabs" :key="item.title" :label="item.title" :name="item.title" />
     </el-tabs>
-    <div v-show="tempEchart==='eqpTemp'" class="eqpTemp">
+    <div v-show="tempEchart === 'eqpTemp'" class="eqpTemp">
       <div id="tempChart" style="width: 100%; height: 500px; overflow: hidden" />
     </div>
-    <div v-show="tempEchart==='unEqpTemp'" class="unEqpTemp">
+    <div v-show="tempEchart === 'unEqpTemp'" class="unEqpTemp">
       <div id="tempChart2" style="width: 60%; height: 500px; overflow: hidden" />
-      <div :style="{ width: '30%', height: '300px', marginTop: '-500px', float: 'left' ,marginLeft:'65%', position: 'absolute' }" class="picPanel">
+      <div
+        :style="{
+          width: '30%',
+          height: '300px',
+          marginTop: '-500px',
+          float: 'left',
+          marginLeft: '65%',
+          position: 'absolute'
+        }"
+        class="picPanel"
+      >
         <tempImg :img-url="picUrl" :img-option="imgPosition" :click-able="true" @positionName="positionChange" />
       </div>
-      <div :style="{ width: '30%', height: '300px', marginTop: '-200px', float: 'left' ,marginLeft:'65%', position: 'absolute' }" class="picPanel">
+      <div
+        :style="{
+          width: '30%',
+          height: '300px',
+          marginTop: '-200px',
+          float: 'left',
+          marginLeft: '65%',
+          position: 'absolute'
+        }"
+        class="picPanel"
+      >
         <tempImg :img-url="picUrlDetail" :img-option="imgPosition" :click-able="true" @positionName="positionChange" />
       </div>
     </div>
@@ -79,46 +99,162 @@ export default {
       picUrlB: require('../../../assets/img/HTRT_G1.png'),
       tempEchart: 'eqpTemp',
       imgPosition: 0,
-      limitMax: { 'APJ-IGBT-REFLOW1': [80, 80, 90, 90, 102, 102, 116, 116, 116, 116],
+      limitMax: {
+        'APJ-IGBT-REFLOW1': [80, 80, 90, 90, 102, 102, 116, 116, 116, 116],
         'APJ-FRD-REFLOW1': [80, 80, 90, 90, 102, 102, 116, 116, 116, 116],
         'APJ-DBCT-REFLOW1': [80, 80, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140],
         'APJ-DBCB-REFLOW1': [80, 80, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140],
         'APJ-AT1': [165, 165, 156, 156, 156, 156, 156, 156, 156, 156, 156, 156, 27],
         'APJ-CLEAN-US1': [75, 75, 75, 125],
-        'APJ-TRM1': [186, 186, 186, 186, 186, 186, 192, 192, 186, 186, 186, 186, 186, 186, 192, 192, 186, 186, 186, 186, 186, 186, 192, 192],
+        'APJ-TRM1': [
+          186, 186, 186, 186, 186, 186, 192, 192, 186, 186, 186, 186, 186, 186, 192, 192, 186, 186, 186, 186, 186, 186,
+          192, 192
+        ],
         'APJ-RT': [166, 164, 164, 166, 166, 175, 26],
         'APJ-HT': [164, 164, 164, 164, 164, 164, 164, 164, 175, 164, 164, 166],
-        'APJ-HTRT1': [165, 165, 165, 165, 165, 165, 165, 165, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 164, 164, 168, 168, 164, 164, 168, 168, 32],
+        'APJ-HTRT1': [
+          165,
+          165,
+          165,
+          165,
+          165,
+          165,
+          165,
+          165,
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          164,
+          164,
+          168,
+          168,
+          164,
+          164,
+          168,
+          168,
+          32
+        ],
         'APJ-OVEN1': [125],
         'APJ-AT2': [154, 154, 154, 154, 154, 154, 154, 154, 154, 154],
         'APJ-FREEZER3': [6, 6],
         'APJ-OVEN2': [192],
-        'APJ-FREEZER2': [12], 'APJ-FREEZER1': [-16],
+        'APJ-FREEZER2': [12],
+        'APJ-FREEZER1': [-16],
         'SIM-TRM1': [156, 156, 156, 156, 156, 156, 192, 192, 192, 192, 192, 192],
         'SIM-TRM2': [156, 156, 156, 156, 156, 156, 192, 192, 192, 192, 192, 192],
         'SIM-PRINTER1': [36, 70],
-        'SIM-REFLOW1': [144, 150, 154, 160, 154, 160, 154, 160, 164, 164, 190, 190, 280, 280, 270, 270, null, null, null],
+        'SIM-REFLOW1': [
+          144,
+          150,
+          154,
+          160,
+          154,
+          160,
+          154,
+          160,
+          164,
+          164,
+          190,
+          190,
+          280,
+          280,
+          270,
+          270,
+          null,
+          null,
+          null
+        ],
         'SIM-OVEN1': [190, 195, 195, 6, 6, 6, 6]
       },
-      limitMin: { 'APJ-IGBT-REFLOW1': [-10, -20, 70, 70, 87, 87, 104, 104, 104, 104],
+      limitMin: {
+        'APJ-IGBT-REFLOW1': [-10, -20, 70, 70, 87, 87, 104, 104, 104, 104],
         'APJ-FRD-REFLOW1': [-10, -20, 70, 70, 87, 87, 104, 104, 104, 104],
         'APJ-DBCT-REFLOW1': [-10, -10, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
         'APJ-DBCB-REFLOW1': [-10, -10, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
         'APJ-AT1': [130, 130, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 12],
         'APJ-CLEAN-US1': [45, 45, 45, 95],
-        'APJ-TRM1': [174, 174, 174, 174, 174, 174, 177, 177, 174, 174, 174, 174, 174, 174, 177, 177, 174, 174, 174, 174, 174, 174, 177, 177],
+        'APJ-TRM1': [
+          174, 174, 174, 174, 174, 174, 177, 177, 174, 174, 174, 174, 174, 174, 177, 177, 174, 174, 174, 174, 174, 174,
+          177, 177
+        ],
         'APJ-RT': [154, 152, 152, 154, 154, 155, 14],
         'APJ-HT': [152, 152, 152, 152, 152, 152, 152, 152, 155, 152, 152, 154],
-        'APJ-HTRT1': [150, 150, 150, 150, 150, 150, 150, 150, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 150, 150, 152, 152, 150, 150, 152, 152, 18],
+        'APJ-HTRT1': [
+          150,
+          150,
+          150,
+          150,
+          150,
+          150,
+          150,
+          150,
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          150,
+          150,
+          152,
+          152,
+          150,
+          150,
+          152,
+          152,
+          18
+        ],
         'APJ-OVEN1': [95],
         'APJ-AT2': [146, 146, 146, 146, 146, 146, 146, 146, 146, 146],
         'APJ-FREEZER3': [-6, -6],
         'APJ-OVEN2': [172],
-        'APJ-FREEZER2': [-2], 'APJ-FREEZER1': [null],
+        'APJ-FREEZER2': [-2],
+        'APJ-FREEZER1': [null],
         'SIM-TRM1': [144, 144, 144, 144, 144, 144, 177, 177, 177, 177, 177, 177],
         'SIM-TRM2': [144, 144, 144, 144, 144, 144, 177, 177, 177, 177, 177, 177],
         'SIM-PRINTER1': [18, 10],
-        'SIM-REFLOW1': [136, 140, 146, 150, 146, 150, 146, 150, 156, 156, 180, 180, 270, 270, 260, 260, null, null, null],
+        'SIM-REFLOW1': [
+          136,
+          140,
+          146,
+          150,
+          146,
+          150,
+          146,
+          150,
+          156,
+          156,
+          180,
+          180,
+          270,
+          270,
+          260,
+          260,
+          null,
+          null,
+          null
+        ],
         'SIM-OVEN1': [160, 165, 165, -6, -6, -6, -6]
       },
       searchBtn: '范围内查询'
@@ -470,7 +606,8 @@ export default {
       option.series[0].data = this.produceOther(this.tempsValue, index, 0)
       var limitMax = this.limitMax[this.form.eqpId][index]
       var limitMin = this.limitMin[this.form.eqpId][index]
-      if ((this.form.eqpId === 'APJ-RT' && index === '5') || (this.form.eqpId === 'APJ-HT' && index === '8')) { // 高温的预热平台没有上下限和设定值
+      if ((this.form.eqpId === 'APJ-RT' && index === '5') || (this.form.eqpId === 'APJ-HT' && index === '8')) {
+        // 高温的预热平台没有上下限和设定值
         option.series[1].data = [] // 设定
         option.series[2].data = [] // 下限
         option.series[3].data = [] // 上限
@@ -513,7 +650,8 @@ export default {
       var dataMin = limitMin
       var myYAxis = {}
       myYAxis.type = 'value'
-      if (this.searchBtn === '数据线查询' || limitMin === '') { // 展示所有的数据,当数据没有超过上下限时显示同 else
+      if (this.searchBtn === '数据线查询' || limitMin === '') {
+        // 展示所有的数据,当数据没有超过上下限时显示同 else
         if (tempsValue.length > 0) {
           for (var i = 0; i < tempsValue.length; i++) {
             var tempv = parseFloat(tempsValue[i])
@@ -546,29 +684,29 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .tempchar {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
+.tempchar {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
 
-    .form {
-      margin-top: 20px;
-    }
+  .form {
+    margin-top: 20px;
   }
-  #chartPanelLeft {
-    float: left;
-    width: 40%;
-    height: 100%;
-    margin-left: 0px;
-  }
-  #chartPanelRight {
-    float: left;
-    width: 40%;
-    height: 100%;
-  }
-  img{
-    width:100%;
-    height:100%;
-    border: 1px solid red;
-  }
+}
+#chartPanelLeft {
+  float: left;
+  width: 40%;
+  height: 100%;
+  margin-left: 0px;
+}
+#chartPanelRight {
+  float: left;
+  width: 40%;
+  height: 100%;
+}
+img {
+  width: 100%;
+  height: 100%;
+  border: 1px solid red;
+}
 </style>

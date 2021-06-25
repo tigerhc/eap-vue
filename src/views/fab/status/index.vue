@@ -9,7 +9,7 @@
       </el-col>
       <el-col :span="16">
         <div>
-          <strong><span id="FirstTitle" style="font-size: 20px">APJ工程生产情报</span> </strong><date />
+          <strong><span id="FirstTitle" style="font-size: 20px">{{ projectText }}工程生产情报</span> </strong><date />
         </div>
 
         <el-row>
@@ -185,7 +185,8 @@ export default {
         IDLE: '#43ca17',
         IDLE2: '#8B0000',
         READY: '#000000'
-      }
+      },
+      projectText: ''
     }
   },
   watch: {
@@ -276,6 +277,7 @@ export default {
           // APJ
           if (item.eqpId === 'APJ-FRD-SMT1') {
             lineIndex = 1
+            this.projectText = 'APJ'
           }
           if (item.eqpId === 'APJ-HB1-SORT1') {
             lineIndex = 2
@@ -295,9 +297,11 @@ export default {
           // SIM
           if (item.eqpId === 'SIM-WB-1A') {
             lineIndex = 1
+            this.projectText = 'SIM'
           }
           if (item.eqpId === 'SIM-AOI1') {
             lineIndex = 2
+            this.projectText = 'SIM'
           }
           this.tabData2[lineIndex].push(item)
         })

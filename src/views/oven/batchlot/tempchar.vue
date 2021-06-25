@@ -39,15 +39,35 @@
     <el-tabs v-model="editableTabsValue" type="card" @tab-click="loadTempDataPart">
       <el-tab-pane v-for="item in editableTabs" :key="item.title" :label="item.title" :name="item.title" />
     </el-tabs>
-    <div v-show="tempEchart==='eqpTemp'" class="eqpTemp">
+    <div v-show="tempEchart === 'eqpTemp'" class="eqpTemp">
       <div id="tempChart" style="width: 100%; height: 500px; overflow: hidden" />
     </div>
-    <div v-show="tempEchart==='unEqpTemp'" class="unEqpTemp">
+    <div v-show="tempEchart === 'unEqpTemp'" class="unEqpTemp">
       <div id="tempChart2" style="width: 60%; height: 500px; overflow: hidden" />
-      <div :style="{ width: '30%', height: '300px', marginTop: '-500px', float: 'left' ,marginLeft:'60%', position: 'absolute' }" class="picPanel">
+      <div
+        :style="{
+          width: '30%',
+          height: '300px',
+          marginTop: '-500px',
+          float: 'left',
+          marginLeft: '60%',
+          position: 'absolute'
+        }"
+        class="picPanel"
+      >
         <tempImg :img-url="picUrl" :img-option="imgPosition" :click-able="true" @positionName="positionChange" />
       </div>
-      <div :style="{ width: '30%', height: '300px', marginTop: '-200px', float: 'left' ,marginLeft:'60%', position: 'absolute' }" class="picPanel">
+      <div
+        :style="{
+          width: '30%',
+          height: '300px',
+          marginTop: '-200px',
+          float: 'left',
+          marginLeft: '60%',
+          position: 'absolute'
+        }"
+        class="picPanel"
+      >
         <tempImg :img-url="picUrlDetail" :img-option="imgPosition" :click-able="true" @positionName="positionChange" />
       </div>
     </div>
@@ -89,27 +109,86 @@ export default {
       picUrlB: require('../../../assets/img/HTRT_G1.png'),
       tempEchart: 'eqpTemp',
       imgPosition: 0,
-      limitMax: { 'APJ-IGBT-REFLOW1': [80, 80, 90, 90, 102, 102, 116, 116, 116, 116],
+      limitMax: {
+        'APJ-IGBT-REFLOW1': [80, 80, 90, 90, 102, 102, 116, 116, 116, 116],
         'APJ-FRD-REFLOW1': [80, 80, 90, 90, 102, 102, 116, 116, 116, 116],
         'APJ-DBCT-REFLOW1': [80, 80, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140],
         'APJ-DBCB-REFLOW1': [80, 80, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140],
         'APJ-AT1': [165, 165, 156, 156, 156, 156, 156, 156, 156, 156, 156, 156, 27],
         'APJ-CLEAN-US1': [75, 75, 75, 125],
-        'APJ-TRM1': [190, 190, 190, 190, 190, 190, 192, 192, 190, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192],
+        'APJ-TRM1': [
+          190, 190, 190, 190, 190, 190, 192, 192, 190, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192, 192,
+          192, 192
+        ],
         'APJ-RT': [166, 164, 164, 166, 166, 175, 26],
         'APJ-HT': [164, 164, 164, 164, 164, 164, 164, 164, 175, 164, 164, 166],
-        'APJ-HTRT1': [165, 165, 165, 165, 165, 165, 165, 165, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 160, 160, 168, 168, 160, 160, 168, 168, 32],
+        'APJ-HTRT1': [
+          165,
+          165,
+          165,
+          165,
+          165,
+          165,
+          165,
+          165,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          160,
+          160,
+          168,
+          168,
+          160,
+          160,
+          168,
+          168,
+          32
+        ],
         'APJ-OVEN1': [125],
         'APJ-AT2': [154, 154, 154, 154, 154, 154, 154, 154, 154, 154],
         'APJ-FREEZER3': [6, 6],
         'APJ-OVEN2': [192],
-        'APJ-FREEZER2': [12], 'APJ-FREEZER1': [-16],
+        'APJ-FREEZER2': [12],
+        'APJ-FREEZER1': [-16],
         'SIM-TRM1': [156, 156, 156, 156, 156, 156, 192, 192, 192, 192, 192, 192],
         'SIM-TRM2': [156, 156, 156, 156, 156, 156, 192, 192, 192, 192, 192, 192],
         'SIM-PRINTER1': [36, 70],
-        'SIM-REFLOW1': [144, 150, 154, 160, 154, 160, 154, 160, 164, 164, 190, 190, 280, 280, 270, 270, null, null, null]
+        'SIM-REFLOW1': [
+          144,
+          150,
+          154,
+          160,
+          154,
+          160,
+          154,
+          160,
+          164,
+          164,
+          190,
+          190,
+          280,
+          280,
+          270,
+          270,
+          null,
+          null,
+          null
+        ]
       },
-      limitMin: { 'APJ-IGBT-REFLOW1': [-10, -20, 70, 70, 87, 87, 104, 104, 104, 104],
+      limitMin: {
+        'APJ-IGBT-REFLOW1': [-10, -20, 70, 70, 87, 87, 104, 104, 104, 104],
         'APJ-FRD-REFLOW1': [-10, -20, 70, 70, 87, 87, 104, 104, 104, 104],
         'APJ-DBCT-REFLOW1': [-10, -10, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
         'APJ-DBCB-REFLOW1': [-10, -10, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
@@ -118,16 +197,70 @@ export default {
         'APJ-TRM1': [170, 170, 170, 170, 170, 170, 178, 178, 170],
         'APJ-RT': [154, 152, 152, 154, 154, 155, 14],
         'APJ-HT': [152, 152, 152, 152, 152, 152, 152, 152, 155, 152, 152, 154],
-        'APJ-HTRT1': [150, 150, 150, 150, 150, 150, 150, 150, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 150, 150, 152, 152, 150, 150, 152, 152, 18],
+        'APJ-HTRT1': [
+          150,
+          150,
+          150,
+          150,
+          150,
+          150,
+          150,
+          150,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          150,
+          150,
+          152,
+          152,
+          150,
+          150,
+          152,
+          152,
+          18
+        ],
         'APJ-OVEN1': [95],
         'APJ-AT2': [146, 146, 146, 146, 146, 146, 146, 146, 146, 146],
         'APJ-FREEZER3': [-6, -6],
         'APJ-OVEN2': [172],
-        'APJ-FREEZER2': [-2], 'APJ-FREEZER1': [null],
+        'APJ-FREEZER2': [-2],
+        'APJ-FREEZER1': [null],
         'SIM-TRM1': [144, 144, 144, 144, 144, 144, 177, 177, 177, 177, 177, 177],
         'SIM-TRM2': [144, 144, 144, 144, 144, 144, 177, 177, 177, 177, 177, 177],
         'SIM-PRINTER1': [18, 10],
-        'SIM-REFLOW1': [136, 140, 146, 150, 146, 150, 146, 150, 156, 156, 180, 180, 270, 270, 260, 260, null, null, null]
+        'SIM-REFLOW1': [
+          136,
+          140,
+          146,
+          150,
+          146,
+          150,
+          146,
+          150,
+          156,
+          156,
+          180,
+          180,
+          270,
+          270,
+          260,
+          260,
+          null,
+          null,
+          null
+        ]
       },
       searchLineFlag: false
     }
@@ -144,6 +277,13 @@ export default {
     })
   },
   methods: {
+    isNull(value) {
+      if (value) {
+        return false
+      }
+      return true
+    },
+
     onValueChange(name) {
       this.form.eqpId = name
     },
@@ -157,6 +297,7 @@ export default {
       var end = this.form.dateTime[1].slice(8, 10)
       var startc = parseInt(start)
       var endc = parseInt(end)
+      console.log(startc, endc)
       console.log('qq' + startc + 'ww' + endc)
       if (endc - startc > 6) {
         this.$alert('限制时间范围为7天内', '请重新选择时间范围！', {
@@ -214,7 +355,7 @@ export default {
               for (let index = 0; index < this.tempsTitles.length; index++) {
                 if (
                   this.tempsTitles[index].indexOf('当前值') !== -1 ||
-                    this.tempsTitles[index].indexOf('现在值') !== -1
+                  this.tempsTitles[index].indexOf('现在值') !== -1
                 ) {
                   this.editableTabs.push({
                     name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''),
@@ -230,7 +371,7 @@ export default {
               for (let index = 0; index < this.tempsTitles.length; index++) {
                 if (
                   this.tempsTitles[index].indexOf('当前值') !== -1 ||
-                    this.tempsTitles[index].indexOf('现在值') !== -1
+                  this.tempsTitles[index].indexOf('现在值') !== -1
                 ) {
                   this.editableTabs.push({
                     name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''),
@@ -246,7 +387,7 @@ export default {
               for (let index = 0; index < this.tempsTitles.length; index++) {
                 if (
                   this.tempsTitles[index].indexOf('当前值') !== -1 ||
-                    this.tempsTitles[index].indexOf('现在值') !== -1
+                  this.tempsTitles[index].indexOf('现在值') !== -1
                 ) {
                   this.editableTabs.push({
                     name: this.tempsTitles[index].replace('当前值', '').replace('现在值', ''),
@@ -278,7 +419,10 @@ export default {
               }
             }
             this.flag = parseInt(tp) < parseInt(this.tempsValue[0]['temp_min']) ? tp : this.tempsValue[0]['temp_min']
-            this.tpMaxY = parseInt(maxTp) < parseInt(this.tempsValue[0]['temp_max']) ? this.tempsValue[0]['temp_max'] : parseInt(maxTp)
+            this.tpMaxY =
+              parseInt(maxTp) < parseInt(this.tempsValue[0]['temp_max'])
+                ? this.tempsValue[0]['temp_max']
+                : parseInt(maxTp)
             this.initChart(0)
           })
         }
@@ -544,7 +688,8 @@ export default {
           }
         }
       }
-      if ((this.form.eqpId === 'APJ-RT' && index === '5') || (this.form.eqpId === 'APJ-HT' && index === '8')) { // 高温的预热平台没有上下限和设定值
+      if ((this.form.eqpId === 'APJ-RT' && index === '5') || (this.form.eqpId === 'APJ-HT' && index === '8')) {
+        // 高温的预热平台没有上下限和设定值
         option.series[1].data = [] // 设定
         option.series[2].data = [] // 下限
         option.series[3].data = [] // 上限
@@ -613,9 +758,9 @@ export default {
         }
         this.flag = parseInt(tp) < parseInt(this.tempsValue[0]['temp_min']) ? tp : this.tempsValue[0]['temp_min']
         this.tpMaxY =
-            parseInt(maxTpTab0) < parseInt(this.tempsValue[0]['temp_max'])
-              ? this.tempsValue[0]['temp_max']
-              : parseInt(maxTpTab0)
+          parseInt(maxTpTab0) < parseInt(this.tempsValue[0]['temp_max'])
+            ? this.tempsValue[0]['temp_max']
+            : parseInt(maxTpTab0)
       } else {
         var key = 4 * (tab.index - 1)
         var a = 100000
@@ -631,13 +776,13 @@ export default {
           }
         }
         this.flag =
-            parseInt(a) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 2])
-              ? a
-              : this.tempsValue[0].other_temps_value.split(',')[key + 2]
+          parseInt(a) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 2])
+            ? a
+            : this.tempsValue[0].other_temps_value.split(',')[key + 2]
         this.tpMaxY =
-            parseInt(maxTpTab) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3])
-              ? parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3])
-              : parseInt(maxTpTab)
+          parseInt(maxTpTab) < parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3])
+            ? parseInt(this.tempsValue[0].other_temps_value.split(',')[key + 3])
+            : parseInt(maxTpTab)
       }
       if (this.form.eqpId === 'APJ-FREEZER3') {
         this.flag = -30
@@ -665,29 +810,29 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .tempchar {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
+.tempchar {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
 
-    .form {
-      margin-top: 20px;
-    }
+  .form {
+    margin-top: 20px;
   }
-  #chartPanelLeft {
-    float: left;
-    width: 40%;
-    height: 100%;
-    margin-left: 0px;
-  }
-  #chartPanelRight {
-    float: left;
-    width: 40%;
-    height: 100%;
-  }
-  img{
-    width:100%;
-    height:100%;
-    border: 1px solid red;
-  }
+}
+#chartPanelLeft {
+  float: left;
+  width: 40%;
+  height: 100%;
+  margin-left: 0px;
+}
+#chartPanelRight {
+  float: left;
+  width: 40%;
+  height: 100%;
+}
+img {
+  width: 100%;
+  height: 100%;
+  border: 1px solid red;
+}
 </style>

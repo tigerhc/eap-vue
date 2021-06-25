@@ -121,9 +121,33 @@ export default {
   }
 }
 </script>
-<style scoped>
-.menu-wrapper {
-  /* margin-left: 5px; */
-}
+<style scoped lang="scss">
+// .menu-wrapper:hover {
+//   background: #1951be;
+// }
+// .el-menu-item {
+//   background: transparent;
+// }
+// .el-menu-item:hover {
+//   background: #1951be;
+// }
+// .el-submenu:hover {
+//   background-color: #1951be !important;
+// }
+
+// /deep/.el-menu-item:hover {
+//   outline: 0 !important;
+//   background: #1951be !important;
+// }
+// /deep/.el-menu-item.is-active {
+//   color: #fff !important;
+//   background: #1951be !important;
+// }
+// /deep/.el-submenu__title:focus,
+// .el-submenu__title:hover {
+//   outline: 0 !important;
+//   // color: #409EFF !important;
+//   background: #1951be !important;
+// }
 </style>
 

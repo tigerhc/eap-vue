@@ -2,7 +2,7 @@
   <div class="Rtplotyieldday">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="6">
+        <el-col :span="8">
           <el-form-item label="线别" prop="lineNo">
             <el-select v-model="form.lineNo">
               <el-option
@@ -10,7 +10,8 @@
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
-                :disabled="item.disabled" />
+                :disabled="item.disabled"
+              />
             </el-select>
           </el-form-item>
         </el-col>
@@ -18,9 +19,24 @@
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>
     </el-form>
-    <el-table :data="tableData" :cell-class-name="color" style="width: 100%" >
-      <el-table-column v-for="col in cols" :key="col.prop" :fixed="col.fixed" :prop="col.prop" :label="col.label" :class-name="col.color" :width="col.width">
-        <el-table-column v-for="(son, k) in col.child" :key="k" :prop="son.prop" :label="son.label" :class-name="son.color" :width="son.width"/>
+    <el-table :data="tableData" :cell-class-name="color" style="width: 100%">
+      <el-table-column
+        v-for="col in cols"
+        :key="col.prop"
+        :fixed="col.fixed"
+        :prop="col.prop"
+        :label="col.label"
+        :class-name="col.color"
+        :width="col.width"
+      >
+        <el-table-column
+          v-for="(son, k) in col.child"
+          :key="k"
+          :prop="son.prop"
+          :label="son.label"
+          :class-name="son.color"
+          :width="son.width"
+        />
       </el-table-column>
     </el-table>
   </div>
@@ -35,12 +51,12 @@ export default {
     return {
       tableData: [],
       colsDef: [
-        { 'prop': 'production_name', 'label': '品名' },
-        { 'prop': 'lot_no', 'label': 'NO' }
+        { prop: 'production_name', label: '品名' },
+        { prop: 'lot_no', label: 'NO' }
       ],
       cols: [
-        { 'fixed': true, 'prop': 'production_name', 'label': '品名', 'width': '250' },
-        { 'fixed': true, 'prop': 'lot_no', 'label': 'NO', 'width': '100' }
+        { fixed: true, prop: 'production_name', label: '品名', width: '250' },
+        { fixed: true, prop: 'lot_no', label: 'NO', width: '100' }
       ], // 列集合
       lineNo: '',
       form: {
@@ -51,16 +67,20 @@ export default {
       },
       source: [],
       // 先写死
-      lineNoOptions: [{
-        value: 'SIM',
-        label: 'SIM'
-      }, {
-        value: 'SMA',
-        label: 'SMA'
-      }, {
-        value: 'SX',
-        label: 'SX'
-      }]
+      lineNoOptions: [
+        {
+          value: 'SIM',
+          label: 'SIM'
+        },
+        {
+          value: 'SMA',
+          label: 'SMA'
+        },
+        {
+          value: 'SX',
+          label: 'SX'
+        }
+      ]
     }
   },
   watch: {
@@ -76,10 +96,12 @@ export default {
       this.form = {
         lineNo: 'APJ'
       }
-      this.lineNoOptions = [{
-        value: 'APJ',
-        label: 'APJ'
-      }]
+      this.lineNoOptions = [
+        {
+          value: 'APJ',
+          label: 'APJ'
+        }
+      ]
     }
     this.initStation()
   },
@@ -90,7 +112,7 @@ export default {
         method: 'get'
       }).then((response) => {
         const stations = response.data
-        const c = { 'prop': '', 'label': '工程一览' }
+        const c = { prop: '', label: '工程一览' }
         const child = []
         for (let i = 0; i < stations.length; i++) {
           child.push({ prop: stations[i].name, label: stations[i].name, color: '' })
@@ -203,46 +225,44 @@ export default {
 }
 </script>
 <style lang="scss">
-  .Rtplotyieldday {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
+.Rtplotyieldday {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
 
-    .el-table td{
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-      text-align: center;
-      color: black;
-    }
-    .el-table thead.is-group th{
-      background-color: #9999ff;
-      text-align: center;
-      color: black;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-    }
-    .el-table__row td.jk-cyan{
-      background-color: #87c0f5;
-      border-right: 1px solid #87c0f5;
-      text-align: right;
-    }
-    .el-table__row td.jk-violet{
-      background-color: #9400d3;
-      border-right: 1px solid #9400d3;
-      text-align: right;
-    }
-    .el-table__row td.jk-violet-1{
-      background-color: #9400d3;
-      border-right: 1px solid #9400d3;
-    }
-    .el-table__row td.jk-white{
-      background-color: #f5f7fa;
-      border-right: 1px solid #f5f7fa;
-    }
-    .form {
-      margin-top: 20px;
-    }
-
+  .el-table td {
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    text-align: center;
+    color: black;
   }
-
+  .el-table thead.is-group th {
+    background-color: #9999ff;
+    text-align: center;
+    color: black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+  }
+  .el-table__row td.jk-cyan {
+    background-color: #87c0f5;
+    border-right: 1px solid #87c0f5;
+    text-align: right;
+  }
+  .el-table__row td.jk-violet {
+    background-color: #9400d3;
+    border-right: 1px solid #9400d3;
+    text-align: right;
+  }
+  .el-table__row td.jk-violet-1 {
+    background-color: #9400d3;
+    border-right: 1px solid #9400d3;
+  }
+  .el-table__row td.jk-white {
+    background-color: #f5f7fa;
+    border-right: 1px solid #f5f7fa;
+  }
+  .form {
+    margin-top: 20px;
+  }
+}
 </style>

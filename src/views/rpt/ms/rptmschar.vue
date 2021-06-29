@@ -3,7 +3,7 @@
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
         <el-col :span="6">
-          <el-form-item label="设备号" prop="eqpId">
+          <el-form-item prop="eqpId">
             <w-select-eqp
               :str="form.eqpId"
               :multiple="false"
@@ -14,15 +14,15 @@
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="类型" prop="productionNo">
-            <el-select v-model="form.productionNo" multiple filterable placeholder="请选择">
+          <el-form-item prop="productionNo">
+            <el-select v-model="form.productionNo" multiple filterable placeholder="请选择类型">
               <el-option v-for="item in noList" :key="item.id" :label="item.productionNo" :value="item.productionNo" />
             </el-select>
             <!--            <w-select :str="form.productionNo" :multiple="true" :disabled="false" @input="onNoChange($event)"/>-->
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="日期" prop="dateTime">
+          <el-form-item prop="dateTime">
             <el-date-picker
               v-model="form.dateTime"
               type="daterange"

@@ -1,63 +1,57 @@
 <template>
   <div class="hisDatas">
-    <el-card>
-      <div class="search">
-        <div class="search-item">
-          <label for="">设备：</label>
-          <el-select v-model="eqpV" placeholder="请选择设备">
-            <el-option v-for="item in eqpO" :key="item.value" :label="item.label" :value="item.value" />
-          </el-select>
-        </div>
-        <div class="search-item">
-          <label for="">传感器：</label>
-          <el-select v-model="sensorV" placeholder="请选择传感器">
-            <el-option v-for="item in sensorO" :key="item.value" :label="item.label" :value="item.value" />
-          </el-select>
-        </div>
-        <div class="search-item">
-          <label for="">示数类型：</label>
-          <el-select v-model="indicationV" placeholder="请选择示数类型">
-            <el-option v-for="item in indicationO" :key="item.value" :label="item.label" :value="item.value" />
-          </el-select>
-        </div>
-        <div class="search-item">
-          <label for="">时间：</label>
-          <el-date-picker
-            v-model="timeV"
-            type="datetimerange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            @change="getTimeV()"
-          />
-        </div>
-        <div class="search-item">
-          <el-button type="primary">查询</el-button>
-        </div>
+    <div class="search">
+      <div class="search-item">
+        <el-select v-model="eqpV" placeholder="请选择设备">
+          <el-option v-for="item in eqpO" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
       </div>
-      <div id="myChart" />
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="总数据" name="first">
-          <el-table v-loading="isLoading" :data="totalDatas" style="width: 100%">
-            <el-table-column prop="eqp_id" label="设备编号" />
-            <el-table-column prop="collect_date" label="采集时间" />
-            <el-table-column prop="this_num" label="本次示数" />
-            <el-table-column prop="num_multiple" label="计数比" />
-            <el-table-column prop="num_type" label="示数类型" />
-          </el-table>
-        </el-tab-pane>
-        <el-tab-pane label="异常数据" name="second">
-          <el-table v-loading="abnormaLoading" :data="abnormalDatas" style="width: 100%">
-            <el-table-column prop="eqp_id" label="设备编号" />
-            <el-table-column prop="collect_date" label="采集时间" />
-            <el-table-column prop="this_num" label="本次示数" />
-            <el-table-column prop="num_multiple" label="计数比" />
-            <el-table-column prop="num_type" label="示数类型" />
-          </el-table>
-        </el-tab-pane>
-      </el-tabs>
-    </el-card>
+      <div class="search-item">
+        <el-select v-model="sensorV" placeholder="请选择传感器">
+          <el-option v-for="item in sensorO" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+      </div>
+      <div class="search-item">
+        <el-select v-model="indicationV" placeholder="请选择示数类型">
+          <el-option v-for="item in indicationO" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+      </div>
+      <div class="search-item">
+        <el-date-picker
+          v-model="timeV"
+          type="datetimerange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          @change="getTimeV()"
+        />
+      </div>
+      <div class="search-item">
+        <el-button type="primary">查询</el-button>
+      </div>
+    </div>
+    <div id="myChart" />
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="总数据" name="first">
+        <el-table v-loading="isLoading" :data="totalDatas" style="width: 100%">
+          <el-table-column prop="eqp_id" label="设备编号" />
+          <el-table-column prop="collect_date" label="采集时间" />
+          <el-table-column prop="this_num" label="本次示数" />
+          <el-table-column prop="num_multiple" label="计数比" />
+          <el-table-column prop="num_type" label="示数类型" />
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="异常数据" name="second">
+        <el-table v-loading="abnormaLoading" :data="abnormalDatas" style="width: 100%">
+          <el-table-column prop="eqp_id" label="设备编号" />
+          <el-table-column prop="collect_date" label="采集时间" />
+          <el-table-column prop="this_num" label="本次示数" />
+          <el-table-column prop="num_multiple" label="计数比" />
+          <el-table-column prop="num_type" label="示数类型" />
+        </el-table>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -177,7 +171,6 @@ export default {
               inside: true
             },
             axisLabel: {
-              inside: true,
               formatter: '{value}%'
             },
             type: 'value',
@@ -192,7 +185,7 @@ export default {
               show: false
             },
             // 设置坐标轴偏移位置
-            offset: -1100
+            offset: 250
           },
           {
             name: '风速',
@@ -200,7 +193,6 @@ export default {
               inside: true
             },
             axisLabel: {
-              inside: true,
               formatter: '{value}km/h'
             },
             type: 'value',
@@ -211,7 +203,7 @@ export default {
                 width: 2
               }
             },
-            offset: -1170,
+            offset: 180,
             splitLine: {
               show: false // 想要不显示网格线，改为false
             }
@@ -257,9 +249,9 @@ export default {
         grid: {
           y: '20%',
           // 左侧
-          x: '20%',
+          x: '5%',
           // 右侧
-          x2: '20%'
+          x2: '26%'
         },
         xAxis: {
           // name: '时间',
@@ -360,11 +352,11 @@ export default {
   width: 100%;
   height: 50px;
   line-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
-.search-item {
-  float: left;
-  margin-left: 15px;
-}
+
 #myChart {
   width: 100%;
   height: 400px;

@@ -2,22 +2,22 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="condition-panel">
-      <el-form class="form" label-width="90px" size="small">
+      <el-form class="form">
         <el-row>
-          <el-col :span="4">
-            <el-form-item label="类型:">
-              <el-select v-model="form1.type" :style="{width:'90px'}" @change="findProduction">
+          <el-col :span="5">
+            <el-form-item>
+              <el-select v-model="form1.type" :style="{ width: '90px' }" placeholder="类型" @change="findProduction">
                 <el-option v-for="item in TypeResult" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
-              <el-select v-model="form1.lineNo" :style="{width:'90px'}" @change="findProduction">
+              <el-select v-model="form1.lineNo" :style="{ width: '90px' }" placeholder="类型" @change="findProduction">
                 <el-option v-for="item in lineNoResult" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
-            <el-form-item label="机种名:">
+          <el-col :span="3">
+            <el-form-item>
               <div class="condition">
-                <el-select v-model="form.productionName" class="wid90" @change="search">
+                <el-select v-model="form.productionName" class="wid90" placeholder="请选择机种名" @change="search">
                   <el-option
                     v-for="item in productionResult"
                     :key="item.label"
@@ -28,18 +28,17 @@
               </div>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
-            <el-form-item label="位置:">
-              <el-select v-model="form.local" class="wid90" @change="search">
+          <el-col :span="3">
+            <el-form-item>
+              <el-select v-model="form.local" class="wid90" placeholder="请选择位置" @change="search">
                 <el-option v-for="item in localResult" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
-            <el-form-item label="日期:">
+          <el-col :span="9">
+            <el-form-item>
               <el-date-picker
                 v-model="dateTime"
-                style="width: 250%"
                 type="daterange"
                 value-format="yyyy-MM-dd"
                 range-separator="-"
@@ -49,12 +48,8 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="1">
-            <el-button type="primary" style="margin-left: 295px; height: 32px" @click="search">查询</el-button>
-          </el-col>
-          <el-col :span="1">
-            <el-button type="primary" style="margin-left: 300px; height: 32px" @click="finddetail">导出</el-button>
-          </el-col>
+          <el-button type="primary" @click="search">查询</el-button>
+          <el-button type="primary" @click="finddetail">导出</el-button>
         </el-row>
       </el-form>
     </div>
@@ -107,9 +102,38 @@ export default {
       picUrlG: require('../../../assets/img/56GI.png'),
       picUrlH: require('../../../assets/img/56GI2.png'),
       picUrlI: require('../../../assets/img/56GI3.png'),
-      localResultSim: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }, { value: 'c', label: 'C' }, { value: 'c21', label: 'c21' }],
-      localResultSx: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }, { value: 'c', label: 'C' }, { value: 'd', label: 'D' }],
-      localResultGi: [{ value: 'burr_f', label: 'burr_f' }, { value: 'pin_f1', label: 'pin_f1' }, { value: 'pin_f2', label: 'pin_f2' }, { value: 'pin_f3', label: 'pin_f3' }, { value: 'pin_f4', label: 'pin_f4' }, { value: 'pin_f5', label: 'pin_f5' }, { value: 'pin_f6', label: 'pin_f6' }, { value: 'pin_f1_f2', label: 'pin_f1_f2' }, { value: 'pin_f2_f3', label: 'pin_f2_f3' }, { value: 'pin_f3_f4', label: 'pin_f3_f4' }, { value: 'pin_f4_f5', label: 'pin_f4_f5' }, { value: 'pin_f5_f6', label: 'pin_f5_f6' }, { value: 'pin_s1', label: 'pin_s1' }, { value: 'pin_s2', label: 'pin_s2' }, { value: 'pin_s3', label: 'pin_s3' }, { value: 'pin_s4', label: 'pin_s4' }, { value: 'pin_s5', label: 'pin_s5' }, { value: 'pin_s6', label: 'pin_s6' }],
+      localResultSim: [
+        { value: 'a', label: 'A' },
+        { value: 'b', label: 'B' },
+        { value: 'c', label: 'C' },
+        { value: 'c21', label: 'c21' }
+      ],
+      localResultSx: [
+        { value: 'a', label: 'A' },
+        { value: 'b', label: 'B' },
+        { value: 'c', label: 'C' },
+        { value: 'd', label: 'D' }
+      ],
+      localResultGi: [
+        { value: 'burr_f', label: 'burr_f' },
+        { value: 'pin_f1', label: 'pin_f1' },
+        { value: 'pin_f2', label: 'pin_f2' },
+        { value: 'pin_f3', label: 'pin_f3' },
+        { value: 'pin_f4', label: 'pin_f4' },
+        { value: 'pin_f5', label: 'pin_f5' },
+        { value: 'pin_f6', label: 'pin_f6' },
+        { value: 'pin_f1_f2', label: 'pin_f1_f2' },
+        { value: 'pin_f2_f3', label: 'pin_f2_f3' },
+        { value: 'pin_f3_f4', label: 'pin_f3_f4' },
+        { value: 'pin_f4_f5', label: 'pin_f4_f5' },
+        { value: 'pin_f5_f6', label: 'pin_f5_f6' },
+        { value: 'pin_s1', label: 'pin_s1' },
+        { value: 'pin_s2', label: 'pin_s2' },
+        { value: 'pin_s3', label: 'pin_s3' },
+        { value: 'pin_s4', label: 'pin_s4' },
+        { value: 'pin_s5', label: 'pin_s5' },
+        { value: 'pin_s6', label: 'pin_s6' }
+      ],
       lineTypeResult: [
         {
           value: '0001',
@@ -229,9 +253,17 @@ export default {
       } else if (this.form1.lineNo === '5GI' || this.form1.lineNo === '5GI') {
         if (this.form.local === 'burr_f') {
           this.picUrl = this.picUrlI
-        } else if (this.form.local === 'pin_s1' || this.form.local === 'pin_s2' || this.form.local === 'pin_s3' || this.form.local === 'pin_s4' || this.form.local === 'pin_s5' || this.form.local === 'pin_s6') {
+        } else if (
+          this.form.local === 'pin_s1' ||
+          this.form.local === 'pin_s2' ||
+          this.form.local === 'pin_s3' ||
+          this.form.local === 'pin_s4' ||
+          this.form.local === 'pin_s5' ||
+          this.form.local === 'pin_s6'
+        ) {
           this.picUrl = this.picUrlH
-        } else { // this.form.local === 'pin_f1' || this.form.local === 'pin_f2' || this.form.local === 'pin_f3'|| this.form.local === 'pin_f4'|| this.form.local === 'pin_f5'|| this.form.local === 'pin_f6'||pin_f1_f2,pin_f2_f3,pin_f3_f4,pin_f4_f5,pin_f5_f6
+        } else {
+          // this.form.local === 'pin_f1' || this.form.local === 'pin_f2' || this.form.local === 'pin_f3'|| this.form.local === 'pin_f4'|| this.form.local === 'pin_f5'|| this.form.local === 'pin_f6'||pin_f1_f2,pin_f2_f3,pin_f3_f4,pin_f4_f5,pin_f5_f6
           this.picUrl = this.picUrlG
         }
       }
@@ -298,24 +330,96 @@ export default {
             '2-1:C21',
             '上限',
             '下限',
-            '1-毛刺', '2-毛刺', '3-毛刺', '4-毛刺', '5-毛刺',
-            '1-1:1PIN', '2-1:1PIN', '3-1:1PIN', '4-1:1PIN', '5-1:1PIN',
-            '1-1:2PIN', '2-1:2PIN', '3-1:2PIN', '4-1:2PIN', '5-1:2PIN',
-            '1-1:3PIN', '2-1:3PIN', '3-1:3PIN', '4-1:3PIN', '5-1:3PIN',
-            '1-1:4PIN', '2-1:4PIN', '3-1:4PIN', '4-1:4PIN', '5-1:4PIN',
-            '1-1:5PIN', '2-1:5PIN', '3-1:5PIN', '4-1:5PIN', '5-1:5PIN',
-            '1-1:6PIN', '2-1:6PIN', '3-1:6PIN', '4-1:6PIN', '5-1:6PIN',
-            '1-1:1PIN-2PIN', '2-1:1PIN-2PIN', '3-1:1PIN-2PIN', '4-1:1PIN-2PIN', '5-1:1PIN-2PIN',
-            '1-1:2PIN-3PIN', '2-1:2PIN-3PIN', '3-1:2PIN-3PIN', '4-1:2PIN-3PIN', '5-1:2PIN-3PIN',
-            '1-1:3PIN-4PIN', '2-1:3PIN-4PIN', '3-1:3PIN-4PIN', '4-1:3PIN-4PIN', '5-1:3PIN-4PIN',
-            '1-1:4PIN-5PIN', '2-1:4PIN-5PIN', '3-1:4PIN-5PIN', '4-1:4PIN-5PIN', '5-1:4PIN-5PIN',
-            '1-1:5PIN-6PIN', '2-1:5PIN-6PIN', '3-1:5PIN-6PIN', '4-1:5PIN-6PIN', '5-1:5PIN-6PIN',
-            '1-2:1PIN', '2-2:1PIN', '3-2:1PIN', '4-2:1PIN', '5-2:1PIN',
-            '1-2:2PIN', '2-2:2PIN', '3-2:2PIN', '4-2:2PIN', '5-2:2PIN',
-            '1-2:3PIN', '2-2:3PIN', '3-2:3PIN', '4-2:3PIN', '5-2:3PIN',
-            '1-2:4PIN', '2-2:4PIN', '3-2:4PIN', '4-2:4PIN', '5-2:4PIN',
-            '1-2:5PIN', '2-2:5PIN', '3-2:5PIN', '4-2:5PIN', '5-2:5PIN',
-            '1-2:6PIN', '2-2:6PIN', '3-2:6PIN', '4-2:6PIN', '5-2:6PIN'
+            '1-毛刺',
+            '2-毛刺',
+            '3-毛刺',
+            '4-毛刺',
+            '5-毛刺',
+            '1-1:1PIN',
+            '2-1:1PIN',
+            '3-1:1PIN',
+            '4-1:1PIN',
+            '5-1:1PIN',
+            '1-1:2PIN',
+            '2-1:2PIN',
+            '3-1:2PIN',
+            '4-1:2PIN',
+            '5-1:2PIN',
+            '1-1:3PIN',
+            '2-1:3PIN',
+            '3-1:3PIN',
+            '4-1:3PIN',
+            '5-1:3PIN',
+            '1-1:4PIN',
+            '2-1:4PIN',
+            '3-1:4PIN',
+            '4-1:4PIN',
+            '5-1:4PIN',
+            '1-1:5PIN',
+            '2-1:5PIN',
+            '3-1:5PIN',
+            '4-1:5PIN',
+            '5-1:5PIN',
+            '1-1:6PIN',
+            '2-1:6PIN',
+            '3-1:6PIN',
+            '4-1:6PIN',
+            '5-1:6PIN',
+            '1-1:1PIN-2PIN',
+            '2-1:1PIN-2PIN',
+            '3-1:1PIN-2PIN',
+            '4-1:1PIN-2PIN',
+            '5-1:1PIN-2PIN',
+            '1-1:2PIN-3PIN',
+            '2-1:2PIN-3PIN',
+            '3-1:2PIN-3PIN',
+            '4-1:2PIN-3PIN',
+            '5-1:2PIN-3PIN',
+            '1-1:3PIN-4PIN',
+            '2-1:3PIN-4PIN',
+            '3-1:3PIN-4PIN',
+            '4-1:3PIN-4PIN',
+            '5-1:3PIN-4PIN',
+            '1-1:4PIN-5PIN',
+            '2-1:4PIN-5PIN',
+            '3-1:4PIN-5PIN',
+            '4-1:4PIN-5PIN',
+            '5-1:4PIN-5PIN',
+            '1-1:5PIN-6PIN',
+            '2-1:5PIN-6PIN',
+            '3-1:5PIN-6PIN',
+            '4-1:5PIN-6PIN',
+            '5-1:5PIN-6PIN',
+            '1-2:1PIN',
+            '2-2:1PIN',
+            '3-2:1PIN',
+            '4-2:1PIN',
+            '5-2:1PIN',
+            '1-2:2PIN',
+            '2-2:2PIN',
+            '3-2:2PIN',
+            '4-2:2PIN',
+            '5-2:2PIN',
+            '1-2:3PIN',
+            '2-2:3PIN',
+            '3-2:3PIN',
+            '4-2:3PIN',
+            '5-2:3PIN',
+            '1-2:4PIN',
+            '2-2:4PIN',
+            '3-2:4PIN',
+            '4-2:4PIN',
+            '5-2:4PIN',
+            '1-2:5PIN',
+            '2-2:5PIN',
+            '3-2:5PIN',
+            '4-2:5PIN',
+            '5-2:5PIN',
+            '1-2:6PIN',
+            '2-2:6PIN',
+            '3-2:6PIN',
+            '4-2:6PIN',
+            '5-2:6PIN'
           ]
         },
         grid: {
@@ -362,6 +466,9 @@ export default {
     display: inline-block;
     font-family: sans-serif;
     margin: 0;
+  }
+  .wid90 {
+    width: 100px;
   }
 }
 </style>

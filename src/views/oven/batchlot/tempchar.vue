@@ -2,7 +2,7 @@
   <div id="tempchar" class="tempchar">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="6">
+        <el-col :span="7">
           <el-form-item label="设备号:" prop="eqpId">
             <div class="condition">
               <el-select v-model="form.eqpId" clearable @change="changeImg">
@@ -11,7 +11,7 @@
             </div>
           </el-form-item>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="日期:" prop="dateTime">
             <el-date-picker
               v-model="form.dateTime"
@@ -23,7 +23,7 @@
             />
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="5">
           <el-button type="primary" @click="search">查询</el-button>
           <el-button type="primary" @click="searchLine"> {{ searchBtn }} </el-button>
         </el-col>

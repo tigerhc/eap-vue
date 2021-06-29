@@ -2,7 +2,7 @@
   <div id="tempchar" class="tempchar">
     <el-form ref="form" :model="form" :rules="formRules" :inline="true" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="6">
+        <el-col :span="8">
           <el-form-item label="批量号" prop="lotNo">
             <el-input v-model="form.lotNo" placeholder="请输入批量号" clearable />
           </el-form-item>

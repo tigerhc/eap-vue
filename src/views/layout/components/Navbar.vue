@@ -185,6 +185,14 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+/deep/.el-tabs__nav-next,
+/deep/.el-tabs__nav-prev {
+  color: #fff !important;
+  font-size: 20px !important;
+  text-align: center;
+  height: 50px;
+  line-height: 50px;
+}
 .navbar {
   height: 50px;
   // line-height: 50px;

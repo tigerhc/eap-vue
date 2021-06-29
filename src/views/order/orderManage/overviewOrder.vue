@@ -39,7 +39,8 @@
 </template>
 
 <script>
-// import x from ''
+import request from '@/utils/request'
+
 export default {
   components: {},
   data() {
@@ -47,7 +48,19 @@ export default {
       table: {}
     }
   },
-  methods: {}
+  mounted() {
+    this.createDict()
+  },
+  methods: {
+    createDict() {
+      return request({
+        url: `/rw/rwplanhis/test/11`,
+        method: 'get'
+      }).then((res) => {
+        console.log(res)
+      })
+    }
+  }
 }
 </script>
 

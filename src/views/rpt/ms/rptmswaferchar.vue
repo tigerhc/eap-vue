@@ -3,8 +3,8 @@
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
         <el-col :span="6">
-          <el-form-item label="线别" prop="lineNo">
-            <el-select v-model="form.lineNo">
+          <el-form-item prop="lineNo">
+            <el-select v-model="form.lineNo" placeholder="请选择线别">
               <el-option
                 v-for="item in lineNoOptions"
                 :key="item.value"
@@ -16,7 +16,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="9">
-          <el-form-item label="日期" prop="dateTime">
+          <el-form-item prop="dateTime">
             <el-date-picker
               v-model="form.dateTime"
               type="daterange"

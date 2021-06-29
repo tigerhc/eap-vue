@@ -1,20 +1,26 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="condition-panel">
-      <el-form class="form" label-width="90px" size="small">
-        <el-col :span="4">
-          <el-form-item label="批号:">
+      <el-form class="form">
+        <el-col :span="3">
+          <el-form-item>
             <div class="condition">
               <input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner" >
             </div>
           </el-form-item>
         </el-col>
-        <el-col :span="10">
-          <el-form-item label="机种名：">
-            <el-select v-model="productionNo" class="wid90" @change="productionNoChange">
+        <el-col :span="5">
+          <el-form-item>
+            <el-select
+              v-model="productionNo"
+              style="width: 100px"
+              class="wid90"
+              placeholder="机种名"
+              @change="productionNoChange"
+            >
               <el-option v-for="item in lineNoOptions" :key="item.lineNo" :label="item.lineNo" :value="item.lineNo" />
             </el-select>
-            <el-select v-model="chartParam.productionNo" class="wider" @change="updateEqp">
+            <el-select v-model="chartParam.productionNo" class="wid90" @change="updateEqp">
               <el-option v-for="item in productionNoOptions" :key="item" :label="item" :value="item" />
             </el-select>
             <el-select
@@ -32,7 +38,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="7">
           <el-date-picker
             v-model="dateTime"
             type="daterange"
@@ -560,7 +566,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
 .condition {
   width: 90px;
   height: 35px;
@@ -600,7 +606,7 @@ export default {
   margin-top: 50px;
 }
 .wid90 {
-  width: 90px;
+  width: 100px;
 }
 .echAppPanel {
   width: 100%;

@@ -3,21 +3,21 @@
     <el-form ref="form" :model="form" :inline="true" class="form" label-width="90px" size="small">
       <el-row>
         <el-col :span="5">
-          <el-form-item label="设备" prop="station_code">
-            <el-select v-model="form.eqpId" filterable placeholder="请选择">
+          <el-form-item prop="station_code">
+            <el-select v-model="form.eqpId" filterable placeholder="请选择设备">
               <el-option v-for="item in list" :key="item.eqpId" :label="item.eqpName" :value="item.eqpId" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="5">
-          <el-form-item label="类型" prop="station_code">
-            <el-select v-model="type" filterable placeholder="请选择">
+          <el-form-item prop="station_code">
+            <el-select v-model="type" filterable placeholder="请选择类型">
               <el-option v-for="item in list2" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="10">
-          <el-form-item label="日期" prop="dateTime">
+          <el-form-item prop="dateTime">
             <el-date-picker
               v-model="dateTime"
               type="daterange"
@@ -77,7 +77,8 @@ export default {
       maxValue: undefined,
       minValue: undefined,
       toolbarStatus: { exportsLoading: false },
-      list2: [{ value: 'μm', label: 'μm', disabled: true },
+      list2: [
+        { value: 'μm', label: 'μm', disabled: true },
         { value: 'temp', label: '温度' },
         { value: 'wet', label: '湿度', disabled: true },
         { value: 'flow', label: '流量', disabled: true }
@@ -116,23 +117,26 @@ export default {
       }
       this.toolbarStatus.exportsLoading = true
       const q = this.form
-      this.api.export(q).then((response) => {
-        if (response.code === 0) {
-          return import('./Export2Excel').then((excel) => {
-            excel.export_byte_to_excel(response.bytes, response.title)
+      this.api
+        .export(q)
+        .then((response) => {
+          if (response.code === 0) {
+            return import('./Export2Excel').then((excel) => {
+              excel.export_byte_to_excel(response.bytes, response.title)
+              this.toolbarStatus.exportsLoading = false
+            })
+          } else {
+            this.$notify.error({
+              title: '失败',
+              message: (response && response.errmsg) || '导出失败!',
+              duration: 2000
+            })
             this.toolbarStatus.exportsLoading = false
-          })
-        } else {
-          this.$notify.error({
-            title: '失败',
-            message: (response && response.errmsg) || '导出失败!',
-            duration: 2000
-          })
+          }
+        })
+        .catch((e) => {
           this.toolbarStatus.exportsLoading = false
-        }
-      }).catch((e) => {
-        this.toolbarStatus.exportsLoading = false
-      })
+        })
     },
     search() {
       var a = this.type

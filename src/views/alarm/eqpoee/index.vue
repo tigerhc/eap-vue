@@ -2,7 +2,7 @@
   <div class="Eqpoee">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="9">
+        <el-col :span="10">
           <el-form-item label="日期" prop="dateTime">
             <el-date-picker
               v-model="form.dateTime"

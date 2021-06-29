@@ -1,24 +1,24 @@
 <template>
   <div class="eqpInfo">
-    <el-row>
-      <el-card>
-        <h2>设备概况</h2>
-        <div id="survey" />
-      </el-card>
-      <el-card>
-        <h2>今日报警</h2>
+    <div class="row">
+      <div class="col">
+        <h3>设备概况</h3>
+        <div id="survey"/>
+      </div>
+      <div class="col">
+        <h3>今日报警</h3>
         <w-select-dept class="selection" @input="change" />
         <div id="alarm" />
-      </el-card>
-      <el-card>
-        <h2>产品进度</h2>
+      </div>
+      <div class="col">
+        <h3>产品进度</h3>
         <div id="progress" />
-      </el-card>
-      <el-card>
-        <h2>合格率</h2>
+      </div>
+      <div class="col">
+        <h3>合格率</h3>
         <div id="qualified" />
-      </el-card>
-    </el-row>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -110,7 +110,7 @@ export default {
             emphasis: {
               label: {
                 show: true,
-                fontSize: '28',
+                fontSize: '24',
                 fontWeight: 'bold'
               }
             },
@@ -155,7 +155,7 @@ export default {
             emphasis: {
               label: {
                 show: true,
-                fontSize: '28',
+                fontSize: '24',
                 fontWeight: 'bold'
               }
             },
@@ -295,35 +295,47 @@ export default {
 }
 </script>
 
-<style  scoped >
-h2 {
-  margin: 0;
-}
-#survey,
-#alarm,
-#progress,
-#qualified {
-  width: 100%;
-  height: 300px;
-}
+<style  scoped lang='scss' >
 .eqpInfo {
   width: 100%;
   height: calc(100vh - 85px);
   padding-top: 20px;
-}
-.eqpInfo .el-row {
-  width: 100%;
-  height: 40%;
-  display: flex;
-  align-content: center;
-  justify-content: space-around;
-}
-.eqpInfo .el-row .el-card {
-  width: 23%;
-}
-.selection {
-  float: left;
-  margin-top: 10px;
-  z-index: 10;
+  .row {
+    width: 100%;
+    height: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    .col {
+      width: 23%;
+      height: 100%;
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      display: flex;
+      // align-items: center;
+      justify-content: space-between;
+      flex-direction: column;
+      h3 {
+        margin: 0;
+        line-height: 25px;
+        margin-bottom: 15px;
+      }
+      #survey,
+      #alarm,
+      #progress,
+      #qualified {
+        width: 100%;
+        height: calc(100% - 25px - 36px - 15px);
+        div {
+          width: 100%;
+          height: 100%;
+          .canvas {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+  }
 }
 </style>

@@ -14,7 +14,7 @@
 								<el-option
 									v-for="item in eqps"
 									:key="item.eqpId"
-									:label="item.eqpId"
+									:label="item.label"
 									:value="item.eqpId" />
 							</el-select>
         </el-col>
@@ -68,10 +68,29 @@
             @click="handleParamClick(scope.row)"
           >{{ scope.row.productionParam }}</el-button>-->
           <el-button
+v-if="scope.row.eqpId!=='APJ-HTRT1'"
             type="text"
             size="small"
-            @click="handleParamClick(scope.row)"
+            @click="handleParamClick(scope.row, '')"
           >生产条件明细</el-button>
+          <el-button
+v-if="scope.row.eqpId ==='APJ-HTRT1'"
+            type="text"
+            size="small"
+            @click="handleParamClick(scope.row, 'HTDC')"
+          >HTDC明细</el-button>
+          <el-button
+v-if="scope.row.eqpId ==='APJ-HTRT1'"
+                     type="text"
+                     size="small"
+                     @click="handleParamClick(scope.row, 'HTAC')"
+          >HTAC明细</el-button>
+          <el-button
+v-if="scope.row.eqpId ==='APJ-HTRT1'"
+                     type="text"
+                     size="small"
+                     @click="handleParamClick(scope.row, 'RTDC')"
+          >RTDC明细</el-button>
         </template>
       </el-table-column>
       <el-table-column prop="lotNo" label="物料信息" width="100">
@@ -86,18 +105,23 @@
     </el-table>
     <el-dialog :visible.sync="dialogTableVisible" title="生产条件">
       <div class="prodTitlePanel">
+        <div v-show="spEqp" class="prodTitle">机台：</div>
         <div v-for="(item,index) in prodTitleArr" :key="'T'+index" :value="item" class="prodTitle">{{ item.colName }}：</div>
       </div>
       <div class="prodValuePanel">
+        <div v-show="spEqp" class="prodValue">{{ firstValue }}</div>
         <div v-for="(item,index) in prodValueArr" :key="'pvA'+index" :value="item" :class="prodAlarmValue.indexOf(','+index+',')>-1?'prodAlarmValue':'prodValue'">{{ item }}</div>
       </div>
       <div class="prodMinPanel">
+        <div v-show="spEqp" class="prodTitleMinValue"/>
         <div v-for="(item,index) in prodTitleArr" :key="'pvMin'+index" :value="item" class="prodTitleMinValue">最小值:{{ item.limitMin }}</div>
       </div>
       <div class="prodMaxPanel">
+        <div v-show="spEqp" class="prodTitleMaxValue"/>
         <div v-for="(item,index) in prodTitleArr" :key="'pvMax'+index" :value="item" class="prodTitleMaxValue">最大值:{{ item.limitMax }}</div>
       </div>
       <div class="prodSetPanel">
+        <div v-show="spEqp" class="prodTitleSetValue"/>
         <div v-for="(item,index) in prodTitleArr" :key="'pvS'+index" :value="item" class="prodTitleSetValue">设定值:{{ item.defaultValue }}</div>
       </div>
     </el-dialog>
@@ -218,12 +242,21 @@ export default {
             }
           }
         ]
-      }
+      },
+      firstValue: '',
+      spEqp: false
     }
   },
   created() {
     getTrayEqpList().then((response) => {
       this.eqps = response.data.eqps
+      for (var i = 0; i < this.eqps.length; i++) {
+        if (this.eqps[i].eqpId.indexOf('HB2-XRAY1') > 0) {
+          this.eqps[i].label = 'APJ-XRAY1'
+        } else {
+          this.eqps[i].label = this.eqps[i].eqpId
+        }
+      }
     })
   },
   methods: {
@@ -325,33 +358,38 @@ export default {
         }
       })
     },
-    handleParamClick(row) {
+    handleParamClick(row, btn) {
       // 初始化使用的数据变量
       this.prodAlarmValue = ','
       this.prodValueArr = []
       var _this = this
-      getPuctionParam(row.id).then((response) => {
+      getPuctionParam(row.id, btn).then((response) => {
         var paramObj = response.data.paramObj
         if (paramObj !== undefined && paramObj !== null) {
           // 标题
           _this.prodTitleArr = paramObj.title
-
           // 拆分实测值
-          if (row.eqpId === 'APJ-VI1' || row.eqpId === 'APJ-AT1') {
+          if (row.eqpId === 'APJ-VI1' || row.eqpId === 'APJ-AT1' || row.eqpId === 'APJ-HTRT1') {
+            this.firstValue = paramObj.paramValue.substring(0, paramObj.paramValue.indexOf(','))
+            paramObj.paramValue = paramObj.paramValue.substring(paramObj.paramValue.indexOf(',') + 1)
             var params = paramObj.paramValue.split(',')
             for (var i = 0; i < params.length; i++) {
               var arrIndex = parseInt(i / 3)
               if (i % 3 === 0) { // 最大
+                if (paramObj.title[arrIndex].limitMax === undefined) {
+                  console.log(paramObj.title[arrIndex])
+                }
                 paramObj.title[arrIndex].limitMax = params[i]
               } else if (i % 3 === 1) { // 最小
                 paramObj.title[arrIndex].limitMin = params[i]
               } else { // 实测
                 _this.prodValueArr.push(params[i])
                 if (_this._chkParamValue(params[i], paramObj.title[arrIndex])) {
-                  _this.prodAlarmValue = _this.prodAlarmValue + i + ','
+                  _this.prodAlarmValue = _this.prodAlarmValue + arrIndex + ','
                 }
               }
             }
+            this.spEqp = true // 特殊设备凌欧 TODO
           } else {
             if (paramObj.paramValue !== undefined && paramObj.paramValue !== null) {
               var pvs = paramObj.paramValue.split(',')
@@ -375,6 +413,7 @@ export default {
                 }
               }
             }
+            this.spEqp = false // 隐藏特殊设备凌欧的部分
           }
         }
         _this.dialogTableVisible = true
@@ -403,7 +442,8 @@ export default {
         if (numRe.test(titleObj.limitMin) && numRe.test(titleObj.limitMax)) {
           var min = parseFloat(titleObj.limitMin)
           var max = parseFloat(titleObj.limitMax)
-          var rs = paramV > min && paramV < max
+          paramV = parseFloat(paramV)
+          var rs = paramV >= min && paramV <= max
           return !rs
         } else {
           return false

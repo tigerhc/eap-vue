@@ -9,7 +9,7 @@ export function fetchUserRoleIds(userid) {
 
 export function fetchRoleIds(userid) {
   return request({
-    url: `/fab/iotUserRole/${userid}/roleIds`,
+    url: '/fab/iotUserRole/ ' + userid + '/roleIds',
     method: 'get'
   })
 }

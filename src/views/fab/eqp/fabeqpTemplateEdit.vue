@@ -2,7 +2,7 @@
   <div class="app-container calendar-list-container">
     <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
       <el-tab-pane label="设备参数列表" name="all">
-        <w-table v-bind="table" url=""/>
+        <w-table v-bind="table" url="" />
       </el-tab-pane>
       <el-tab-pane label="传感器绑定" name="sorsen">
         <w-form v-bind="formConf" :col="3" :model="model">
@@ -101,7 +101,7 @@
         </w-form>
       </el-tab-pane>
       <el-tab-pane label="设备自带参数列表" name="self">
-        <w-edt-table v-bind="table1" url=""/>
+        <w-edt-table v-bind="table1" url="" />
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -236,7 +236,7 @@ export default {
           activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
         },
         onLoadData: (m, type) => {
-          console.info(m)
+          console.info(m, type)
           this.getInitializationData()
           this.getSelectedData()
           // if (m.officeIds) {
@@ -276,6 +276,7 @@ export default {
     // this.model.fabModelTemplateBodyList = this.arr
   },
   methods: {
+    handleClick() {},
     getA() {
       const isCheck = (() => {
         const res = []

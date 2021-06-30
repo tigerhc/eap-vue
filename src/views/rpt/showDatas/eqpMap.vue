@@ -16,12 +16,12 @@
       <div class="container_left">
         <div class="container_left_search">
           <el-select slot="prepend" v-model="select" placeholder="请选择">
-            <el-option label="餐厅名" value="1"/>
-            <el-option label="订单号" value="2"/>
-            <el-option label="用户电话" value="3"/>
+            <el-option label="餐厅名" value="1" />
+            <el-option label="订单号" value="2" />
+            <el-option label="用户电话" value="3" />
           </el-select>
           <el-input v-model="eqpName" placeholder="请输入设备名称" class="input-with-select">
-            <el-button slot="append" icon="el-icon-search"/>
+            <el-button slot="append" icon="el-icon-search" />
           </el-input>
         </div>
         <div class="container_left_show">
@@ -58,7 +58,7 @@
           <div class="realTimeData">
             <label for="">实时数据</label>
             <el-input v-model="realTimeData" placeholder="请输入变量名称" class="input-with-select">
-              <el-button slot="append" icon="el-icon-search"/>
+              <el-button slot="append" icon="el-icon-search" />
             </el-input>
           </div>
           <div class="showData">

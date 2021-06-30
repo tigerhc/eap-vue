@@ -43,7 +43,7 @@ export default {
     return {
       table: {
         handler: {
-          add: 'views/fab/eqp/fabeqpTemplateEdit',
+          add: 'views/fab/eqp/fabeqpTemplateAdd',
           edit: 'views/fab/eqp/fabeqpTemplateEdit'
           // view: 'views/fab/eqpmodel/fabequipmentEdit'
         }

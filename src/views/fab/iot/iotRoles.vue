@@ -12,7 +12,6 @@
         :default-expand-all="true"
         :highlight-current="true"
         :props="Props"
-        :expand-on-click-node="false"
         style="height: 520px; overflow: auto"
         @node-click="handleNodeClick"
       />
@@ -43,9 +42,9 @@
         <el-button v-waves size="mini" type="primary" icon="el-icon-search" @click="handleFilter">{{
           $t('table.search')
         }}</el-button>
-        <!-- <el-button size="mini" type="primary" icon="el-icon-edit" @click="handleCreate">{{
+        <el-button size="mini" type="primary" icon="el-icon-edit" @click="handleCreate">{{
           $t('table.add')
-        }}</el-button> -->
+        }}</el-button>
         <el-button
           v-waves
           :loading="downloadLoading"
@@ -91,7 +90,7 @@
           <template slot-scope="scope">
             <!-- <el-button type="text" size="mini" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
             <el-button size="mini" type="text" @click="handleDelete(scope.row)">{{ $t('table.delete') }}</el-button> -->
-            <el-button size="mini" type="text" @click="toAssignRoles(scope.row)">设置角色</el-button>
+            <el-button size="mini" type="primary" @click="toAssignRoles(scope.row)">设置角色</el-button>
             <!-- <el-button size="mini" type="text" @click="handleModifyPassword(scope.row)">重置密码</el-button> -->
           </template>
         </el-table-column>
@@ -183,10 +182,17 @@
 </template>
 
 <script>
+// import { fetchOrganizationList } from '@/api/sys/organization'
+// import { fetchList, createUser, deleteUser, updateUser, modifyPassword, exportUser } from '@/api/sys/user'
+// import { fetchRoleList } from '@/api/sys/role'
+// import { fetchUserRoleIds, insertByUserId, deleteByUserId } from '@/api/sys/userRole'
+// import waves from '@/directive/waves' // 水波纹指令
+// import { getDictList } from '@/utils/dict'
+
 import { fetchOrganizationList } from '@/api/sys/organization'
 import { fetchList, createUser, deleteUser, updateUser, modifyPassword, exportUser } from '@/api/sys/user'
 import { fetchRoleList } from '@/api/sys/role'
-import { fetchRoleIds, insertUserId, deleteUserId } from '@/api/sys/userRole'
+import { fetchUserRoleIds, insertByUserId, deleteByUserId } from '@/api/sys/userRole'
 import waves from '@/directive/waves' // 水波纹指令
 import { getDictList } from '@/utils/dict'
 
@@ -268,6 +274,7 @@ export default {
   },
   created() {
     this.getList()
+    this.getUsableRoleList()
     this.getOrginData()
   },
   methods: {
@@ -282,12 +289,14 @@ export default {
     },
     getUsableRoleList() {
       fetchRoleList().then((response) => {
-        this.roleList = JSON.parse(JSON.stringify(response.data))
+        this.roleList = response.data
+        console.log(this.roleList)
       })
     },
     getUserRoleIds(userId) {
-      fetchRoleIds(userId).then((response) => {
+      fetchUserRoleIds(userId).then((response) => {
         this.userRoleIds = response.data
+        console.log(this.userRoleIds)
       })
     },
     handleFilter() {
@@ -436,7 +445,7 @@ export default {
     },
     handleInsertByUserId(selectCurentUserId, roleIds) {
       var idsStr = roleIds.join(',')
-      insertUserId(selectCurentUserId, idsStr).then((response) => {
+      insertByUserId(selectCurentUserId, idsStr).then((response) => {
         if (response.data.code === 0) {
           this.$notify({
             title: '成功',
@@ -455,7 +464,7 @@ export default {
     },
     handleDeleteByUserId(selectCurentUserId, roleIds) {
       var idsStr = roleIds.join(',')
-      deleteUserId(selectCurentUserId, idsStr).then((response) => {
+      deleteByUserId(selectCurentUserId, idsStr).then((response) => {
         if (response.data.code === 0) {
           this.$notify({
             title: '成功',
@@ -493,11 +502,9 @@ export default {
     toAssignRoles(row) {
       this.selectCurentUserId = row.id
       this.dialogFormRolesVisible = true
-      this.getUsableRoleList()
       this.getUserRoleIds(this.selectCurentUserId)
     },
     handleChangeRoles(value, direction, movedKeys) {
-      console.log(direction, movedKeys)
       if (direction === 'left') {
         this.handleDeleteByUserId(this.selectCurentUserId, movedKeys)
       } else {

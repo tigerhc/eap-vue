@@ -69,3 +69,11 @@ export function findDustEqps() {
     method: 'get'
   })
 }
+
+export function findThrustEqps(params) {
+  return request({
+    url: '/ms/msmeasurethrust/thrustProductionName',
+    method: 'get',
+    params: params
+  })
+}

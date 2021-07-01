@@ -53,9 +53,9 @@ export default {
   },
   mounted() {
     if (window.location.hostname === '10.160.144.9') {
-      document.getElementById('projectName').innerHTML = 'CIM9(二栋)'
+      document.getElementById('projectName').innerHTML = 'CIM(二栋)'
     } else {
-      document.getElementById('projectName').innerHTML = 'CIM8(一栋)'
+      document.getElementById('projectName').innerHTML = 'CIM(一栋)'
     }
   },
   methods: {

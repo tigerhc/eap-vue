@@ -1,6 +1,6 @@
 <template>
   <div class="tags-view-container">
-    <scroll-pane ref="scrollPane" class="tags-view-wrapper">
+    <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
       <router-link
         v-for="tag in visitedViews"
         ref="tag"
@@ -74,19 +74,22 @@ export default {
     },
     moveToCurrentTag() {
       const tags = this.$refs.tag
-      this.$nextTick(() => {
-        for (const tag of tags) {
-          // debugger
-          if (tag.to === this.$route.fullPath) {
-            this.$refs.scrollPane.moveToTarget(tag)
+      if (tags) {
+        this.$nextTick(() => {
+          for (const tag of tags) {
+            // debugger
+            if (tag.to === this.$route.fullPath) {
+              this.$refs.scrollPane.moveToTarget(tag)
+              break
+            }
+            // when query is different then update
+            if (tag.to !== this.$route.fullPath) {
+              this.$store.dispatch('updateVisitedView', this.$route)
+            }
             break
           }
-          // when query is different then update
-          if (tag.to !== this.$route.fullPath) {
-            this.$store.dispatch('updateVisitedView', this.$route)
-          }
-        }
-      })
+        })
+      }
     },
     refreshSelectedTag(view) {
       this.$store.dispatch('delCachedView', view).then(() => {
@@ -121,14 +124,32 @@ export default {
       this.$router.push('/')
     },
     openMenu(tag, e) {
+      // this.visible = true
+      // this.selectedTag = tag
+      // const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
+      // this.left = e.clientX - offsetLeft + 15 // 15: margin right
+      // this.top = e.clientY
+      const menuMinWidth = 105
+      const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
+      const offsetWidth = this.$el.offsetWidth // container width
+      const maxLeft = offsetWidth - menuMinWidth // left boundary
+      const left = e.clientX - offsetLeft + 15 // 15: margin right
+
+      if (left > maxLeft) {
+        this.left = maxLeft
+      } else {
+        this.left = left
+      }
+
+      this.top = e.clientY
       this.visible = true
       this.selectedTag = tag
-      const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
-      this.left = e.clientX - offsetLeft + 15 // 15: margin right
-      this.top = e.clientY
     },
     closeMenu() {
       this.visible = false
+    },
+    handleScroll() {
+      this.closeMenu()
     }
   }
 }

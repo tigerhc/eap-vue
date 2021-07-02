@@ -5,9 +5,11 @@ import { getToken } from '@/utils/auth'
 import qs from 'qs'
 
 // 转换请求方式
-axios.defaults.transformRequest = [function(data) {
-  return qs.stringify(data, { arrayFormat: 'indices', allowDots: true })
-}]
+axios.defaults.transformRequest = [
+  function(data) {
+    return qs.stringify(data, { arrayFormat: 'indices', allowDots: true })
+  }
+]
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.BASE_API // api 的 base_url
@@ -16,7 +18,7 @@ const service = axios.create({
 
 // request interceptor
 service.interceptors.request.use(
-  config => {
+  (config) => {
     // Do something before request is sent
     if (store.getters.token) {
       // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
@@ -45,7 +47,7 @@ service.interceptors.request.use(
     }
     return config
   },
-  error => {
+  (error) => {
     // Do something with request error
     console.log(error) // for debug
     Promise.reject(error)
@@ -61,7 +63,7 @@ service.interceptors.response.use(
    * 如想通过 xmlhttprequest 来状态码标识 逻辑可写在下面error中
    * 以下代码均为样例，请结合自生需求加以修改，若不需要，则可删除
    */
-  response => {
+  (response) => {
     const res = response.data
     if (res.code != null && res.code !== 0) {
       // 200004:Token 过期了;
@@ -92,9 +94,9 @@ service.interceptors.response.use(
     }
     return Promise.resolve(response)
   },
-  error => {
+  (error) => {
     Message({
-      message: error.data && error.data.msg || error.message,
+      message: (error.data && error.data.msg) || error.message,
       type: 'error',
       duration: 5 * 1000
     })

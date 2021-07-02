@@ -2,7 +2,7 @@
 <template>
   <!-- eslint-disable vue/require-component-is-->
   <component v-bind="linkProps(to)">
-    <slot/>
+    <slot />
   </component>
 </template>
 
@@ -13,7 +13,9 @@ export default {
   props: {
     to: {
       type: Object,
-      default: () => { '/' },
+      default: () => {
+        '/'
+      },
       required: true
     }
   },

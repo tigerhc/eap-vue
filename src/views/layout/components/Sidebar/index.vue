@@ -14,8 +14,8 @@
       :default-openeds="openeds"
       style="height: 90%"
       mode="vertical"
-      background-color="#002140"
-      text-color="#bfcbd9"
+      background-color="#2780ec"
+      text-color="#ffffff"
       active-text-color="#409EFF"
     >
       >
@@ -72,7 +72,7 @@ export default {
   min-height: 55px;
   height: 10%;
   align-items: center;
-  background-color: #002140;
+  background-color: #2780ec;
   opacity: 1;
   overflow: visible;
   position: relative;
@@ -89,6 +89,14 @@ export default {
     vertical-align: middle;
     font-weight: 600;
     white-space: nowrap;
+  }
+  /deep/.el-submenu__title i {
+    color: #fff;
+  }
+
+  /deep/.el-submenu__icon-arrow,
+  /deep/ .el-icon-arrow-down {
+    color: #fff;
   }
 }
 </style>

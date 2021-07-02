@@ -239,7 +239,7 @@ export default {
         },
         onLoadData: (m, type) => {
           console.info(m, type)
-          this.getInitializationData()
+
           this.getSelectedData()
           // if (m.officeIds) {
           //   m.officeIds = m.officeIds
@@ -274,7 +274,7 @@ export default {
     this.model.createDate = dateFormat(new Date())
     this.model.updateBy = this.$store.getters.roles[0]
     this.model.updateDate = dateFormat(new Date())
-
+    this.getInitializationData()
     // this.model.fabModelTemplateBodyList = this.arr
   },
   methods: {

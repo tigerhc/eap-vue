@@ -122,6 +122,15 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+/deep/.el-submenu__title i {
+  color: #fff;
+  font-size: 16px;
+}
+
+/deep/.el-submenu__icon-arrow,
+/deep/ .el-icon-arrow-down {
+  color: #fff;
+}
 // .menu-wrapper:hover {
 //   background: #1951be;
 // }

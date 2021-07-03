@@ -176,7 +176,7 @@ export default {
     timer() {
       setTimeout(() => {
         this.inIt()
-      }, 300000)
+      }, 60000)
     },
 
     getYield() {

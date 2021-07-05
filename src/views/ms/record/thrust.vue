@@ -2,18 +2,19 @@
   <div class="app-container calendar-list-container">
     <el-form class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="4">
+        <el-col :span="2">
           <el-form-item>
-            <el-select :style="{width:'80px'}" v-model="form.lineNo" clearable placeholder="线别">
+            <el-select :style="{width:'80px'}" v-model="form.lineNo" placeholder="线别" @change="lineChange">
               <el-option v-for="item in lines" :key="item" :label="item" :value="item" />
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="7">
           <el-form-item>
               <el-select v-model="form.eqpId" clearable placeholder="机种名">
-                <el-option v-for="item in thrustEqpId" :key="item.eqpId" :label="item.eqpName" :value="item.eqpId" />
+                <el-option v-for="item in thrustEqpId" :key="item" :label="item" :value="item" />
               </el-select>
+            <input v-model="form.lotNo" :style="{width:'80px',height:'32px',marginLeft:'20px'}" type="text" placeholder="批量号" class="el-input__inner">
           </el-form-item>
         </el-col>
         <el-col :span="10">
@@ -49,20 +50,22 @@
 <script>
 import * as echarts from 'echarts'
 import api from '../../oven/ports/fetch'
+import { findThrustEqps } from '@/api/ms/monitor'
 export default {
   name: 'Tempchar',
   data() {
     return {
       lines: ['5GI', '6GI'],
       thrustEqpId: [],
-      api: api('/ms/measuresx/findSxNumberExport'),
+      api: api('/ms/msmeasurethrust/exportLogThrust'),
       toolbarStatus: {
         exportsLoading: false
       },
       form: {
         lineNo: '',
         eqpId: undefined,
-        dateTime: []
+        dateTime: [],
+        lotNo: ''
       },
       editableTabsValue: '拉力',
       editableTabs: [{ 'index': 0, 'title': '拉力' }, { 'index': 1, 'title': '推力' }],
@@ -86,6 +89,13 @@ export default {
     // })
   },
   methods: {
+    lineChange() {
+      var param = {}
+      param.lineNo = this.form.lineNo
+      findThrustEqps(param).then((res) => {
+        this.thrustEqpId = res.data.productionNameList
+      })
+    },
     onValueChange(name) {
       this.form.eqpId = name
     },
@@ -348,10 +358,6 @@ export default {
       // var param = this.$refs.ref.fdis()
       // this.query.id = param
       // eslint-disable-next-line no-undef
-      this.form.type = 'LF'
-      this.form.startDate = this.form.dateTime[0]
-      this.form.endDate = this.form.dateTime[1]
-      this.form.lineNo = 'SX68123M(AU)D-RP' // this.form.eqpId
       if (this.toolbarStatus.exportsLoading) {
         return
       }
@@ -359,16 +365,14 @@ export default {
       // const q = (this.query)
       // const q = this.form
       var param = {}
-      param.endDate = '2021-06-30'
-      param.lineNo = 'SX'
-      param.local = 'a'
-      param.local56GI = ''
-      param.localSimC = ''
-      param.number = '0001'
-      param.productionName = 'SX68123M(AU)D-RP'
-      param.startDate = '2021-06-01'
-      param.type = 'LF'
-      // alert(q)
+      param.productionName = this.form.eqpId
+      param.startTime = this.form.dateTime[0] + ' 00:00:00'
+      param.endTime = this.form.dateTime[1] + ' 23:59:59'
+      param.lotNo = this.form.lotNo
+      if (param.productionName === '' || (param.lotNo === '' && param.startTime === '')) {
+        alert('请选择机种名和时间段')
+        return
+      }
       this.api.export(param).then((response) => {
         if (response.code === 0) {
           return import('../../oven/ports/Export2Excel').then((excel) => {

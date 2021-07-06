@@ -18,8 +18,8 @@
     <div v-if="trayId.indexOf('J0012') > -1 && eqpId.indexOf('HB2-SORT1') > -1" :style="{width:'37%',height:'38%',top:'41%',left:'32%'}" class="dbc_pstn"/>
     <div v-if="trayId.indexOf('J0012') > -1 && eqpId.indexOf('HB2-SMT1') > -1" :style="{width:'37%',height:'38%',top:'41%',left:'32%'}" class="smt1_pstn"/>
     <div v-if="trayId.indexOf('J0012') > -1 && eqpId.indexOf('HB2-SMT1') === -1 && eqpId.indexOf('HB2-SORT1') === -1" :style="{width:'37%',height:'38%',top:'41%',left:'32%'}" class="smt2_pstn"/>
-    <div v-if="trayId.indexOf('J0014') > -1" :style="{width:'4.6%',height:'4%',top:22.5+ (10 * y) +'%',left:6.5+(7.5 * x) +'%'}" class="igbt_pstn"/>
-    <div v-if="trayId.indexOf('J0015') > -1" :style="{width:'5%',height:'2%',top:25+ (7.5 * y) +'%',left:4+(8 * x) +'%'}" class="frd_pstn"/>
+    <div v-if="trayId.indexOf('J0014') > -1" :style="{width:'4.6%',height:'4%',top:25+ (6 * y) +'%',left:7+(10.6 * x) +'%'}" class="igbt_pstn"/>
+    <div v-if="trayId.indexOf('J0015') > -1" :style="{width:'3%',height:'4%',top:24+ (6 * y) +'%',left:7+(9 * x) +'%'}" class="frd_pstn"/>
     <div v-if="trayId.indexOf('J0016') > -1" :style="{width:'22%',height:'13%',top:11+ (17 * y) +'%',left:-23+(42 * x) +'%'}" class="dbc_pstn"/>
 
   </div>
@@ -34,9 +34,9 @@
   .J0010{background:url(../../../assets/img/J0010.png);width:100%;height:80%;position: absolute;background-size: 100% 100%; top:20%;}
   .J0011{background:url(../../../assets/img/J0011.png);width:100%;height:80%;position: absolute;background-size: 100% 100%; top:20%;}
   .J0012{background:url(../../../assets/img/J0012.png);width:100%;height:80%;position: absolute;background-size: 100% 100%; top:20%;}
-  .J0014{background:url(../../../assets/img/J0014.png);width:100%;height:80%;position: absolute;background-size: 100% 100%; top:20%;}
-  .J0015{background:url(../../../assets/img/J0015.png);width:100%;height:80%;position: absolute;background-size: 100% 100%; top:20%;}
-  .J0016{background:url(../../../assets/img/J0016.png);width:100%;height:80%;position: absolute;background-size: 100% 100%; top:20%;}
+  .J0014{background:url(../../../assets/img/J0014.jpg);width:100%;height:80%;position: absolute;background-size: 100% 100%; top:20%;}
+  .J0015{background:url(../../../assets/img/J0015.jpg);width:100%;height:80%;position: absolute;background-size: 100% 100%; top:20%;}
+  .J0016{background:url(../../../assets/img/J0016.jpg);width:100%;height:80%;position: absolute;background-size: 100% 100%; top:20%;}
   .J0017{background:url(../../../assets/img/J0017.png);width:100%;height:80%;position: absolute;background-size: 100% 100%; top:20%;}
   .J0018{background:url(../../../assets/img/J0018.png);width:100%;height:80%;position: absolute;background-size: 100% 100%; top:20%;}
   .chip{background:url(../../../assets/img/chip.png);width:100%;height:80%;position: absolute;background-size: 100% 100%; top:20%;}

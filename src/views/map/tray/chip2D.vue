@@ -123,7 +123,7 @@
 <style lang="scss">
   div{box-sizing: border-box;}
   .line_panel{height:400px;position: relative;}
-  .app-container{overflow-y:scroll;overflow-x:scroll;width:100%;}
+  .app-container{overflow-y:scroll;overflow-x:scroll;height: calc(100vh - 85px)}
   .eqp{position: absolute;width:200px;height: 80%;overflow-y:hidden; }
   .eqp_single{position: absolute;width:200px;height: 320px;overflow-y:hidden;}
   .arraw{background:url(../../../assets/img/arraw.png);width:50px;height:20px;position: absolute;background-size: 100% 100%; top:45%;}

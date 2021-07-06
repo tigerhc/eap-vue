@@ -376,9 +376,6 @@ export default {
             for (var i = 0; i < params.length; i++) {
               var arrIndex = parseInt(i / 3)
               if (i % 3 === 0) { // 最大
-                if (paramObj.title[arrIndex].limitMax === undefined) {
-                  console.log(paramObj.title[arrIndex])
-                }
                 paramObj.title[arrIndex].limitMax = params[i]
               } else if (i % 3 === 1) { // 最小
                 paramObj.title[arrIndex].limitMin = params[i]

@@ -93,8 +93,7 @@ export default {
     overflow: hidden;
     color: #666;
     background: #fff;
-    box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
-    border-color: rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: space-between;

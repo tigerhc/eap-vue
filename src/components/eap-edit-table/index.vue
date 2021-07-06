@@ -9,6 +9,7 @@ export default {
   props: {
     // -------------------
     // 数据来源不通过接口获取，直接外部传入
+
     datas: {
       type: Array,
       default: null
@@ -175,8 +176,8 @@ export default {
 
       if (
         !this.opHide &&
-          handler &&
-          (typeof this.$vnode.context[handler] === 'function' || typeof this[handler] === 'function')
+        handler &&
+        (typeof this.$vnode.context[handler] === 'function' || typeof this[handler] === 'function')
       ) {
         const h = this[handler] || this.$vnode.context[handler]
         const fn = () => {
@@ -971,8 +972,8 @@ function isHidden(conf) {
 </script>
 
 <style lang="scss">
-  .unfold-pop {
-    min-width: unset;
-    background-color: #ffe;
-  }
+.unfold-pop {
+  min-width: unset;
+  background-color: #ffe;
+}
 </style>

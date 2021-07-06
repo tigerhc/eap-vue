@@ -1,6 +1,14 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-form v-bind="formConf" :col="3" :model="model">
+    <w-form
+      :title="title"
+      :col="3"
+      :before-submit="beforeSubmit"
+      :rules="rules"
+      :on-load-data="onFormLoadData"
+      :model="model"
+      url="/fab/fabequipment/"
+    >
       <el-input v-model="model.eqpId" label="设备号" />
       <el-input v-model="model.eqpNo" label="设备序号" />
       <el-input v-model="model.eqpName" label="设备说明" />
@@ -33,18 +41,6 @@
       <el-input v-model="model.locationY" label="经度坐标" />
       <w-select-dic v-model="model.isBindCreated" label="是否生成绑定传感器" dict="SFYN" />
     </w-form>
-    <!-- <div style="border-top: 1px solid #ddd; padding: 5px 0; margin: 10px 0" />
-    <w-edt-table v-slot="{}" ref="language" v-bind="table" url="">
-      <w-table-col name="sensorType" label="传感器类型" align="left">
-        <el-input v-model="table.model.sensorType" />
-      </w-table-col>
-      <w-table-col name="sensorNum" label="传感器编号" align="left">
-        <el-input v-model="table.model.sensorNum" />
-      </w-table-col>
-      <w-table-col name="sensorName" label="传感器名称" align="left">
-        <el-input v-model="table.model.sensorName" />
-      </w-table-col>
-    </w-edt-table> -->
   </div>
 </template>
 <script>
@@ -87,35 +83,16 @@ export default {
         },
         datas: []
       },
-      formConf: {
-        url: '/fab/fabequipment/',
-        title: {
-          ADD: '新增资产',
-          EDIT: '修改资产',
-          VIEW: '设备详情'
-        },
-        rules: {
-          eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
-          modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
-          activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
-        },
-        onLoadData: (m, type) => {
-          console.info(m)
-          console.log(m.officeIds)
-          if (m.officeIds) {
-            m.officeIds = m.officeIds.split(',')
-          }
-          return m
-        },
-        beforeSubmit: (params, type) => {
-          const re = { ...params }
-          if (re.officeId) {
-            re.officeId = re.officeIds[re.officeIds.length - 1]
-            re.officeIds = undefined
-          }
 
-          return re
-        }
+      title: {
+        ADD: '新增资产',
+        EDIT: '修改资产',
+        VIEW: '设备详情'
+      },
+      rules: {
+        eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
+        modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
+        activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
       }
     }
   },
@@ -124,24 +101,28 @@ export default {
     this.model.createByName = this.$store.getters.roles[0]
     this.model.createDate = dateFormat(new Date())
     this.model.updateDate = dateFormat(new Date())
-
-    // this.getA()
-    // this.table.model.sensorName = `${this.model.eqpName}_传感器1`
-    // console.log(this.model.eqpName)
   },
   methods: {
     onDisplayChange(e) {
       this.model.modelName = e
+    },
+    beforeSubmit: (model, type) => {
+      if (model.officeIds) {
+        model.officeIds = model.officeIds.join(',')
+        model.officeId = model.officeIds
+      }
+      delete model['edcAmsRptDefineActEmailList']
+      const re = { ...model }
+      return re
+    },
+    onLoadData: (m, type) => {
+      console.info(m)
+      if (m.officeId) {
+        this.model.officeIds = m.officeId.split(',')
+        console.info(this.model.officeIds)
+      }
+      return m
     }
-    // getA() {
-    //   const id = this.$route.query.id
-    //   return request({
-    //     url: `/fab/fabequipment/${id}/find`,
-    //     method: `get`
-    //   }).then((res) => {
-    //     this.table.model.sensorName = `${res.data.results.eqpName}_传感器1`
-    //   })
-    // }
   }
 }
 </script>

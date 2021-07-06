@@ -10,11 +10,12 @@
       <el-col :span="16">
         <div>
           <strong
-            ><span id="FirstTitle" style="font-size: 20px">{{ projectText }}工程生产情报</span> </strong
-          ><date />
+            ><span id="FirstTitle" style="font-size: 20px">{{ projectText }}工程生产情报</span>
+          </strong>
+          &nbsp;&nbsp;<date />
         </div>
 
-        <el-row>
+        <el-row style="padding: 0 10px">
           <el-col :span="24">
             <eqp-panel-group ref="refs" @handleSetLineChartData="handleSetLineChartData" />
           </el-col>

@@ -68,18 +68,18 @@ export default {
           activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
         },
         onLoadData: (m, type) => {
-          console.info(m)
-          if (m.officeIds) {
-            m.officeIdsm.officeIds
+          if (m.officeId) {
+            m.officeIds = m.officeId.split(',')
           }
           return m
         },
-        beforeSubmit: (params, type) => {
-          const re = { ...params }
-          if (re.officeId) {
-            re.officeId = re.officeIds[re.officeIds.length - 1]
-            re.officeIds = undefined
+        beforeSubmit: (model, type) => {
+          if (model.officeIds) {
+            model.officeIds = model.officeIds.join(',')
+            model.officeId = model.officeIds
           }
+          delete model['edcAmsRptDefineActEmailList']
+          const re = { ...model }
           return re
         }
       }

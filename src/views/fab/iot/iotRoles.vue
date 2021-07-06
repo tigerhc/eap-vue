@@ -39,21 +39,13 @@
           placeholder="请输入手机号码"
           @keyup.enter.native="handleFilter"
         />
-        <el-button v-waves size="mini" type="primary" icon="el-icon-search" @click="handleFilter">{{
+        <el-button v-waves type="primary" icon="el-icon-search" @click="handleFilter">{{
           $t('table.search')
         }}</el-button>
-        <el-button size="mini" type="primary" icon="el-icon-edit" @click="handleCreate">{{
-          $t('table.add')
+        <el-button type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
+        <el-button v-waves :loading="downloadLoading" type="primary" icon="el-icon-download" @click="handleDownload">{{
+          $t('table.export')
         }}</el-button>
-        <el-button
-          v-waves
-          :loading="downloadLoading"
-          size="mini"
-          type="primary"
-          icon="el-icon-download"
-          @click="handleDownload"
-          >{{ $t('table.export') }}</el-button
-        >
       </div>
 
       <el-table

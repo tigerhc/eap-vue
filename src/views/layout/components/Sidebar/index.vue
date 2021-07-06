@@ -14,7 +14,7 @@
       :default-openeds="openeds"
       style="height: 90%"
       mode="vertical"
-      background-color="#2780ec"
+      background-color="#053084"
       text-color="#ffffff"
       active-text-color="#409EFF"
     >
@@ -69,10 +69,10 @@ export default {
 .header-sidebar {
   padding-left: 24px;
   display: flex;
-  min-height: 55px;
+  min-height: 50px;
   height: 10%;
   align-items: center;
-  background-color: #2780ec;
+  background-color: #1c5bc7;
   opacity: 1;
   overflow: visible;
   position: relative;

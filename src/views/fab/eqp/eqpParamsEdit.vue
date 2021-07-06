@@ -96,13 +96,6 @@ export default {
     this.getmodelId()
     fetchDict('NUM_TYPE').then((res) => {
       this.numtyeps = res.data
-      // this.numtyeps.forEach((item) => {
-      //   this.options2.forEach((it) => {
-      //     if (item.value === it) {
-      //       this.options3.push(item)
-      //     }
-      //   })
-      // })
     })
   },
   methods: {

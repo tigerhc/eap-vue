@@ -207,7 +207,7 @@ export default {
     line-height: 58px;
     height: 50px;
     float: left;
-    padding: 0 10px;
+    padding: 0 15px;
     color: #fff;
   }
   .breadcrumb-container {
@@ -275,7 +275,7 @@ export default {
   line-height: 50px;
 }
 .headerSur .el-tabs__item.is-active {
-  /* border-bottom: 2px solid #fff; */
+  border-bottom: 3px solid #d9d9d9;
   background: #174bad;
 }
 .headerSur .el-tabs__nav {
@@ -305,7 +305,7 @@ export default {
 }
 .headerSur .el-tabs__item:hover {
   /* color: white; */
-  /* border-bottom: 2px solid #fff; */
+  border-bottom: 3px solid #d9d9d9;
   background: #174bad;
 }
 .mar-top-20 {

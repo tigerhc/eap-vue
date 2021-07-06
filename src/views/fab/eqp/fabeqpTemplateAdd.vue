@@ -6,12 +6,16 @@
       </el-tab-pane>
       <el-tab-pane label="传感器绑定" name="sorsen">
         <w-form v-bind="formConf" :col="3" :model="model">
-          <el-row :col="24" style="margin-bottom: 15px">
+          <!-- <el-row :col="24" style="margin-bottom: 15px">
             <el-col :span="8">
               <i class="xing">*</i> <el-input v-model="model.classCode" placeholder="设备类型" />
             </el-col>
             <el-col :span="8"> <i class="xing">*</i> <el-input v-model="model.name" placeholder="模板名称" /> </el-col>
-          </el-row>
+          </el-row> -->
+          <el-row col="24" />
+          <el-input v-model="model.classCode" label="设备类型" />
+          <el-input v-model="model.name" label="模板名称" />
+          <el-row col="24" />
 
           <div class="menu-one">
             <div
@@ -233,9 +237,8 @@ export default {
           VIEW: '设备详情'
         },
         rules: {
-          eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
-          modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
-          activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
+          classCode: [{ required: true, message: '设备类型必填', trigger: 'blur' }],
+          name: [{ required: true, message: '模板名称必填', trigger: 'blur' }]
         },
         onLoadData: (m, type) => {
           console.info(m, type)

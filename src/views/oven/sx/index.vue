@@ -71,7 +71,7 @@
         <div class="simdtlText">{{ form.localSimC }}</div>
       </div>
       <div v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" :class="simClass" class="arrow_box"/>
-      <div v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" class="arrow_box giDtl">
+      <div v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" :class="form1.lineNo==='5GI'?'gi5Dtl':'gi6Dtl'" class="arrow_box">
         <div :class="form.local56GI==='burr_f'?'gi56Border':''" class="burrPST" @click="positionClick('burr_f')"/>
         <div :class="form.local56GI==='pinf'?'gi56Border':''" class="pinPST" @click="positionClick('pinf')"/>
         <div :class="form.local56GI==='pinf2f'?'gi56Border':''" class="pinf2fPST" @click="positionClick('pinf2f')"/>
@@ -238,9 +238,12 @@ export default {
         } else if (this.form1.lineNo === 'SIM') {
           this.localResult = this.localResultSim
           this.simClass = 'simABC'
-        } else if (this.form1.lineNo === '6GI' || this.form1.lineNo === '5GI') {
+        } else if (this.form1.lineNo === '5GI') {
           this.localResult = []
-          this.simClass = 'giClass'
+          this.simClass = 'gi5Class'
+        } else if (this.form1.lineNo === '6GI') {
+          this.localResult = []
+          this.simClass = 'gi6Class'
         }
       })
       this.form.productionName = ''
@@ -405,7 +408,7 @@ export default {
       this.myChart.setOption(option)
       // if (option && typeof option === 'object') {
       //   myChart.setOption(option)
-      // }
+      // }56GIS.png
     }
   }
 }
@@ -433,8 +436,11 @@ export default {
   .simB{background:url(../../../assets/img/SIMB.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
   .simC{background:url(../../../assets/img/SIMC.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
   .simCDtl{background:url(../../../assets/img/c21.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 380px;}
-  .giClass{background:url(../../../assets/img/56GIS.png);background-repeat:no-repeat;background-size: 116px 224px;height: 224px;width: 116px;}
+  .gi5Class{background:url(../../../assets/img/LF_5GI.png);background-repeat:no-repeat;background-size: 116px 224px;height: 224px;width: 116px;}
+  .gi6Class{background:url(../../../assets/img/LF_6GI.png);background-repeat:no-repeat;background-size: 116px 224px;height: 224px;width: 116px;}
   .giDtl{background:url(../../../assets/img/56GI_PST.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 380px;}
+  .gi5Dtl{background:url(../../../assets/img/5GI_PST.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 380px;}
+  .gi6Dtl{background:url(../../../assets/img/6GI_PST.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 380px;}
   .sxAll{height: 168px;width: 260px;position: relative}
   .sxAClass{height: 87px;width: 121px;position: absolute}
   .sxBClass{height: 86px;width: 138px;left:121px;position: absolute}

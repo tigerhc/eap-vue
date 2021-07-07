@@ -61,7 +61,7 @@
     </div>
     <!--详细图片-->
     <div v-if="imgUrl==='DETAIL-HT' || imgUrl==='DETAIL-RT'" class="dtlImg">
-      <div class="dtl_title">详细位置:</div>
+      <div class="dtl_title">放大区块:</div>
       <div v-show="imgUrl==='DETAIL-HT' && imgOption===0" class="dtl_HT1"/>
       <div v-show="imgUrl==='DETAIL-HT' && imgOption===1" class="dtl_HT2"/>
       <div v-show="imgUrl==='DETAIL-HT' && imgOption===2" class="dtl_HT3"/>
@@ -235,5 +235,5 @@ export default {
 
   .dtlImg{width:80%;height:80%;margin-left: 10%;margin-top: 10%;}
   .dtlImg-AT2{width:80%;height:80%;background:url(../../../assets/img/AT_DTL.png);background-repeat:no-repeat;background-size: 100% 100%;margin-left: 10%;margin-top: 10%;}
-  .dtl_title{position: absolute;margin-top:-5%;margin-left:-10%;font-size: large}
+  .dtl_title{position: absolute;margin-top:-7%;margin-left:-10%;font-size: large}
 </style>

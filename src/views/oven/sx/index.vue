@@ -444,8 +444,7 @@ export default {
   .sxAll{height: 100%;
     width: 28%;
     position: relative;
-    margin-top: -27%;
-    border: 1px solid red;
+    margin-top: -18%;
     margin-left: 0%;}
   .sxAClass{height: 174px;
     width: 220px;

@@ -400,7 +400,7 @@ export default {
         },
         yAxis: {
           type: 'value',
-          min: this.min,
+          // min: this.min,
           axisLabel: {
             formatter: this.formatter
           },
@@ -409,8 +409,12 @@ export default {
           //   return Math.ceil(value.max / num) * num + 3 * num
           // }
           max: (value) => {
-            var myMax = value.max + (value.max - this.min) * 0.2
+            var myMax = value.max + (value.max - value.min) * 0.2
             return parseFloat(myMax).toFixed(2)
+          },
+          min: (value) => {
+            var myMin = value.min - (value.max - value.min) * 0.2
+            return parseFloat(myMin).toFixed(2)
           }
         },
         series: this.series

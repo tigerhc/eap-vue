@@ -59,7 +59,7 @@
       </el-form>
     </div>
     <div class="frame">
-      <div id="main" style="width: 65%; height: 600px; overflow: hidden" />
+      <div id="main" style="width: 65%; height: 500px; overflow: hidden;margin-top:5%" />
       <img v-show="form1.lineNo!=='SIM' && form1.lineNo!=='5GI' && form1.lineNo!=='6GI' && form1.lineNo!=='SX'" id="mainImg" :src="picUrl" class="arrow_box">
       <div v-show="form1.lineNo==='SIM'" :class="simClass" class="arrow_box">
         <div class="simAPST" @click="positionClick('simA')"/>
@@ -248,6 +248,8 @@ export default {
       })
       this.form.productionName = ''
       this.form.local = ''
+      this.series = []
+      this.initChart()
     },
     search() {
       if (this.form.local === 'd') {
@@ -401,9 +403,20 @@ export default {
           min: this.min,
           axisLabel: {
             formatter: this.formatter
+          },
+          // max: (value) => {
+          //   let num = 10 ** (value.max.toString().length - 2)
+          //   return Math.ceil(value.max / num) * num + 3 * num
+          // }
+          max: (value) => {
+            var myMax = value.max + (value.max - this.min) * 0.2
+            return parseFloat(myMax).toFixed(2)
           }
         },
         series: this.series
+      }
+      if (this.form.productionName === '') {
+        option.series = []
       }
       this.myChart.setOption(option)
       // if (option && typeof option === 'object') {
@@ -431,11 +444,11 @@ export default {
       margin: 0;
     }
   }
-  .simABC{background:url(../../../assets/img/sim_abc.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
-  .simA{background:url(../../../assets/img/SIMA.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
-  .simB{background:url(../../../assets/img/SIMB.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
-  .simC{background:url(../../../assets/img/SIMC.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
-  .simCDtl{background:url(../../../assets/img/c21.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 380px;}
+  .simABC{background:url(../../../assets/img/sim_abc.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;margin-top: -15%;}
+  .simA{background:url(../../../assets/img/SIMA.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;margin-top: -15%;}
+  .simB{background:url(../../../assets/img/SIMB.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;margin-top: -15%;}
+  .simC{background:url(../../../assets/img/SIMC.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;margin-top: -15%;}
+  .simCDtl{background:url(../../../assets/img/c21.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 34%;}
   .gi5Class{background:url(../../../assets/img/LF_5GI.png);background-repeat:no-repeat;background-size: 60% 95%;height: 224px;width: 116px;margin-top: -15%;margin-left: 12.5%;}
   .gi6Class{background:url(../../../assets/img/LF_6GI.png);background-repeat:no-repeat;background-size: 60% 95%;height: 224px;width: 116px;margin-top: -15%;margin-left: 12.5%;}
   .giDtl{background:url(../../../assets/img/56GI_PST.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 300px;}

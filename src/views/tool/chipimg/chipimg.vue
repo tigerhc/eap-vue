@@ -70,7 +70,7 @@
 		<!--6GI-->
 		<div v-show="imgUrl.indexOf('GI6')>-1" class="gi6">
 			<!--IGBT 展示-->
-			<div :class="imgOption==='GI6IGBT'?'MIC_act':'gi5IGBT_bg'" class="gi6_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
+			<div :class="imgOption.indexOf('opacityIGBT')>-1?'MIC_act':'gi5IGBT_bg'" class="gi6_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
 			<!--MIC 透明展示-->
 			<div v-show="imgUrl.indexOf('opacity')>-1" :class="imgOption==='GI6MIC'?'MIC_act':'sxMIC6_bg'" class="gi6_mic_position smaller opacity" @click="positionClk('MIC')">MIC</div>
 			<!--MIC 不透明展示-->

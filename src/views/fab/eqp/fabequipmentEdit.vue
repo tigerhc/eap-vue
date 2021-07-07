@@ -51,7 +51,8 @@
       <el-tab-pane label="已绑定传感器" name="bindSorsen">
         <w-edt-table v-slot="{}" ref="language" v-bind="table" url="/fab/fabequipment/AoutAddSensor">
           <w-table-col name="sensorType" label="传感器类型" align="center">
-            <el-input v-model="table.model.sensorType" />
+            <!-- <el-input v-model="table.model.sensorType" /> -->
+            <w-select-dic v-model="table.model.sensorType" label="是否生成绑定传感器" dict="SFYN" />
           </w-table-col>
           <w-table-col name="sensorNum" label="传感器编号" align="center">
             <el-input v-model="table.model.sensorNum" />
@@ -139,7 +140,7 @@ export default {
       this.model.modelName = e
     },
     handleClick() {
-      return request({ url: 'fab/fabequipment/AoutAddSensor', methods: 'get' }).then((res) => {
+      return request({ url: 'fab/fabequipment/SensorList/TEST1', methods: 'get' }).then((res) => {
         console.log(res)
       })
     }

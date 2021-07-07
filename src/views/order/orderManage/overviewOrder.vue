@@ -1,7 +1,7 @@
 <template>
   <div class="app-container calendar-list-container">
     <w-table v-bind="table" url="/rw/rwplanhis">
-      <w-table-col name="id" label="工单号" align="left" query hidden />
+      <w-table-col name="id" label="工单号" align="left" query hidden condition="eq" />
       <w-table-col name="planId" label="（计划、报警）编号" align="left" />
       <w-table-col name="eqpId" label="设备编号" align="left" query querymode="select" />
       <w-table-col name="assignedUser" label="指派人" align="left" />

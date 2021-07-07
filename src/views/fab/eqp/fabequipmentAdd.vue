@@ -1,14 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-form
-      :title="title"
-      :col="3"
-      :before-submit="beforeSubmit"
-      :rules="rules"
-      :on-load-data="onFormLoadData"
-      :model="model"
-      url="/fab/fabequipment/"
-    >
+    <w-form v-bind="formConf" :col="3" :model="model">
       <el-input v-model="model.eqpId" label="设备号" />
       <el-input v-model="model.eqpNo" label="设备序号" />
       <el-input v-model="model.eqpName" label="设备说明" />
@@ -84,15 +76,43 @@ export default {
         datas: []
       },
 
-      title: {
-        ADD: '新增资产',
-        EDIT: '修改资产',
-        VIEW: '设备详情'
-      },
-      rules: {
-        eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
-        modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
-        activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
+      formConf: {
+        url: '/fab/fabequipment/',
+        title: {
+          ADD: '新增设备',
+          EDIT: '修改设备',
+          VIEW: '设备详情'
+        },
+        rules: {
+          eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
+          modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
+          activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
+        },
+        onLoadData: (m, type) => {
+          if (m.officeId) {
+            m.officeIds = m.officeId.split(',')
+          }
+          return m
+        },
+        beforeSubmit: (params, type) => {
+          if (params.isBindCreated === 'Y') {
+            if (!params.modelId) {
+              return this.$notify({
+                title: '失败',
+                message: '如果要自动生成传感器，请确保设备型号名称不能为空！！！',
+                type: 'error',
+                duration: 2000
+              })
+            }
+          }
+          if (params.officeIds) {
+            params.officeIds = params.officeIds.join(',')
+            params.officeId = params.officeIds
+          }
+          delete params['edcAmsRptDefineActEmailList']
+          const re = { ...params }
+          return re
+        }
       }
     }
   },
@@ -105,23 +125,6 @@ export default {
   methods: {
     onDisplayChange(e) {
       this.model.modelName = e
-    },
-    beforeSubmit: (model, type) => {
-      if (model.officeIds) {
-        model.officeIds = model.officeIds.join(',')
-        model.officeId = model.officeIds
-      }
-      delete model['edcAmsRptDefineActEmailList']
-      const re = { ...model }
-      return re
-    },
-    onLoadData: (m, type) => {
-      console.info(m)
-      if (m.officeId) {
-        this.model.officeIds = m.officeId.split(',')
-        console.info(this.model.officeIds)
-      }
-      return m
     }
   }
 }

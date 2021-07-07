@@ -167,7 +167,7 @@ export default {
             this.text = '尘埃粒子计数器(温度)'
             this.areaStyle = this.areaStyle0
             // 设置y轴最大值
-            this.tempMax = 26
+            this.tempMax = 25
             for (var i = 0; i < this.total['temp'].length; i++) {
               if (this.total['temp'][i] > this.tempMax) {
                 this.tempMax = this.total['temp'][i]
@@ -215,7 +215,7 @@ export default {
       var myYAxis = {}
       myYAxis.type = 'value'
       // if (a === 'temp' || a === 'wet') {
-      myYAxis.maxValue = this.tempMax
+      myYAxis.max = this.tempMax
       // }
       var option = {
         tooltip: {
@@ -394,6 +394,7 @@ export default {
             type: 'value',
             name: '0.5μm',
             max: 10000,
+            min: 0,
             axisLine: {
               lineStyle: {
                 color: colors[0]
@@ -420,6 +421,8 @@ export default {
           {
             position: 'right',
             offset: 140,
+            max: 10000,
+            min: 0,
             // max: 400,
             type: 'value',
             name: '1μm',
@@ -449,6 +452,8 @@ export default {
           {
             position: 'right',
             offset: 210,
+            max: 10000,
+            min: 0,
             type: 'value',
             name: '3μm',
             axisLine: {
@@ -463,6 +468,8 @@ export default {
           {
             position: 'right',
             offset: 280,
+            max: 10000,
+            min: 0,
             type: 'value',
             name: '5μm',
             // max: 50,
@@ -478,6 +485,8 @@ export default {
           {
             position: 'right',
             offset: 350,
+            max: 10000,
+            min: 0,
             type: 'value',
             // max: 30,
             name: '10μm',
@@ -521,6 +530,8 @@ export default {
           {
             position: 'right',
             offset: 490,
+            max: 10000,
+            min: 0,
             type: 'value',
             name: '0.3μm',
             axisLine: {

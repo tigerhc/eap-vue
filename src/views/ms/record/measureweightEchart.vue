@@ -192,6 +192,9 @@ export default {
         } else if (this.chartParam.detailOption === 4) {
           this.imgOption = 'GI6C'
         }
+        if (this.imgUrl.indexOf('GI6') > -1 && this.chartParam.detailOption === 1) {
+          this.imgOption = 'opacityIGBT'
+        }
         this.searchClick()
       }
     },
@@ -209,6 +212,10 @@ export default {
         } else if (pname === 'C') {
           this.chartParam.detailOption = 4
           this.imgOption = 'GI6C'
+        }
+        if (this.imgUrl.indexOf('GI6') > -1 && pname === 'IGBT') {
+          this.chartParam.detailOption = 1
+          this.imgOption = 'opacityIGBT'
         }
         this.searchClick()
       }

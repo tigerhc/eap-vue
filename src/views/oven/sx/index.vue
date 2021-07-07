@@ -59,7 +59,7 @@
       </el-form>
     </div>
     <div class="frame">
-      <div id="main" style="width: 65%; height: 300px; overflow: hidden" />
+      <div id="main" style="width: 65%; height: 600px; overflow: hidden" />
       <img v-show="form1.lineNo!=='SIM' && form1.lineNo!=='5GI' && form1.lineNo!=='6GI' && form1.lineNo!=='SX'" id="mainImg" :src="picUrl" class="arrow_box">
       <div v-show="form1.lineNo==='SIM'" :class="simClass" class="arrow_box">
         <div class="simAPST" @click="positionClick('simA')"/>
@@ -71,7 +71,7 @@
         <div class="simdtlText">{{ form.localSimC }}</div>
       </div>
       <div v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" :class="simClass" class="arrow_box"/>
-      <div v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" class="arrow_box giDtl">
+      <div v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" :class="form1.lineNo==='5GI'?'gi5Dtl':'gi6Dtl'" class="arrow_box">
         <div :class="form.local56GI==='burr_f'?'gi56Border':''" class="burrPST" @click="positionClick('burr_f')"/>
         <div :class="form.local56GI==='pinf'?'gi56Border':''" class="pinPST" @click="positionClick('pinf')"/>
         <div :class="form.local56GI==='pinf2f'?'gi56Border':''" class="pinf2fPST" @click="positionClick('pinf2f')"/>
@@ -238,9 +238,12 @@ export default {
         } else if (this.form1.lineNo === 'SIM') {
           this.localResult = this.localResultSim
           this.simClass = 'simABC'
-        } else if (this.form1.lineNo === '6GI' || this.form1.lineNo === '5GI') {
+        } else if (this.form1.lineNo === '5GI') {
           this.localResult = []
-          this.simClass = 'giClass'
+          this.simClass = 'gi5Class'
+        } else if (this.form1.lineNo === '6GI') {
+          this.localResult = []
+          this.simClass = 'gi6Class'
         }
       })
       this.form.productionName = ''
@@ -405,7 +408,7 @@ export default {
       this.myChart.setOption(option)
       // if (option && typeof option === 'object') {
       //   myChart.setOption(option)
-      // }
+      // }56GIS.png
     }
   }
 }
@@ -433,13 +436,32 @@ export default {
   .simB{background:url(../../../assets/img/SIMB.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
   .simC{background:url(../../../assets/img/SIMC.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
   .simCDtl{background:url(../../../assets/img/c21.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 380px;}
-  .giClass{background:url(../../../assets/img/56GIS.png);background-repeat:no-repeat;background-size: 116px 224px;height: 224px;width: 116px;}
-  .giDtl{background:url(../../../assets/img/56GI_PST.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 380px;}
-  .sxAll{height: 168px;width: 260px;position: relative}
-  .sxAClass{height: 87px;width: 121px;position: absolute}
-  .sxBClass{height: 86px;width: 138px;left:121px;position: absolute}
-  .sxCClass{height: 78px;width: 128px;position: absolute;top:87px}
-  .sxDClass{height: 35px;width: 130px;position: absolute;top:110px;left:128px;}
+  .gi5Class{background:url(../../../assets/img/LF_5GI.png);background-repeat:no-repeat;background-size: 60% 95%;height: 224px;width: 116px;margin-top: -15%;margin-left: 12.5%;}
+  .gi6Class{background:url(../../../assets/img/LF_6GI.png);background-repeat:no-repeat;background-size: 60% 95%;height: 224px;width: 116px;margin-top: -15%;margin-left: 12.5%;}
+  .giDtl{background:url(../../../assets/img/56GI_PST.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 300px;}
+  .gi5Dtl{background:url(../../../assets/img/5GI_PST.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 300px;}
+  .gi6Dtl{background:url(../../../assets/img/6GI_PST.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 300px;}
+  .sxAll{height: 100%;
+    width: 28%;
+    position: relative;
+    margin-top: -18%;
+    margin-left: 0%;}
+  .sxAClass{height: 174px;
+    width: 220px;
+    position: absolute;}
+  .sxBClass{    height: 174px;
+    width: 220px;
+    left: 260px;
+    position: absolute;}
+  .sxCClass{height: 156px;
+    width: 256px;
+    position: absolute;
+    top: 200px;}
+  .sxDClass{    height: 70px;
+    width: 260px;
+    position: absolute;
+    top: 243px;
+    left: 260px;}
   .sxAImg{background:url(../../../assets/img/sxA.png);background-repeat:no-repeat;background-size: 100% 100%;height: 100%;width: 100%;}
   .sxBImg{background:url(../../../assets/img/sxB.png);background-repeat:no-repeat;background-size: 100% 100%;height: 100%;width: 100%;}
   .sxCImg{background:url(../../../assets/img/sxC.png);background-repeat:no-repeat;background-size: 100% 100%;height: 100%;width: 100%;}
@@ -449,10 +471,10 @@ export default {
   .simAPST{width:7%;height:17%; position: absolute;}
   .simBPST{width:7%;height:17%; position: absolute;margin-left: 8%;}
   .simCPST{width:10%;height:15%; position: absolute;margin-top: 9%;margin-left: 2.5%;}
-  .burrPST{width:32%;height:45%; position: absolute;}
+  .burrPST{width:32%;height:50%; position: absolute;left: 64%;top: 44%;}
   .pinPST{width:40%;height:40%; position: absolute;margin-left: 60%;}
-  .pinf2fPST{width:40%;height:40%; position: absolute;margin-top: 55%;}
-  .pinsPST{width:40%;height:46%; position: absolute;margin-left: 60%;margin-top: 58%;}
+  .pinf2fPST{width:46%;height:42%; position: absolute;margin-top: -2%;left:6%;}
+  .pinsPST{width:40%;height:50%; position: absolute;margin-left: 8%;margin-top: 50%;}
   .gi56Border{border:5px solid #43ca17}
   .simdtlText{top: 80%; width: 100%; height: 20%; position: absolute;text-align: center; line-height: 55px;color:#43ca17;font-size: xx-large;}
   .pstColorC1{position:absolute;width: 3%;height: 9%;left: 12%;top: 73%;background-color: #43ca17}

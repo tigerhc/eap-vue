@@ -171,6 +171,7 @@ export default {
     },
     lineNoChange() {
       if (this.chartParam.lineNo !== '') {
+        this.chartParam.productionName = '' // 清空上次的选择
         var _this = this
         var paramObj = {}
         paramObj.productionNo = this.chartParam.lineNo
@@ -185,9 +186,9 @@ export default {
     },
     positionChange(pname) {
       if (
-        this.positionOptions.length > 0 &&
-        this.chartParam.productionName.indexOf('5GI') < 0 &&
-        this.chartParam.productionName.indexOf('6GI') < 0
+        this.positionOptions.length > 0 // &&
+        // this.chartParam.productionName.indexOf('5GI') < 0 &&
+        // this.chartParam.productionName.indexOf('6GI') < 0
       ) {
         this.chartParam.lineType = pname
         this.imgOption = this.imgUrl + pname
@@ -199,6 +200,9 @@ export default {
       param.productionName = this.chartParam.productionName.replace('J.', '')
       positionSelect(param).then((res) => {
         this.positionOptions = res.data.positionList
+        if (this.chartParam.productionName.indexOf('5GI') > -1 || this.chartParam.productionName.indexOf('6GI') > -1) {
+          this.positionOptions.splice(0, 0, 'IGBT')
+        }
         this.positionOptions.splice(0, 0, '全部')
       })
       if (this.chartParam.productionName.indexOf('SX681') > -1) {
@@ -239,7 +243,7 @@ export default {
         this.imgUrlHeight = '320px'
       } else if (this.chartParam.productionName.indexOf('6GI') > -1) {
         this.imgUrl = 'GI6_opacity'
-        this.imgOption = ''
+        // this.imgOption = ''
         this.chartParam.lineType = ''
         this.imgUrlWidth = '237.5px'
         this.imgUrlHeight = '365px'
@@ -277,7 +281,17 @@ export default {
       var _this = this
       _this.echarClear('echAppLine')
       this.chartParam.lineType = this.chartParam.lineType.replace('全部', '')
-      kongdongChart(this.chartParam).then((res) => {
+      var params = {}
+      // params.lineNo = this.chartParam.lineNo
+      params.productionName = this.chartParam.productionName
+      params.startDate = this.chartParam.startDate
+      params.endDate = this.chartParam.endDate
+      if (params.productionName.indexOf('5GI') < 0 && params.productionName.indexOf('6GI') < 0) {
+        params.lineType = this.chartParam.lineType
+      } else {
+        params.lineType = ''
+      }
+      kongdongChart(params).then((res) => {
         if (res.data.code === 0 || res.data.code === '0') {
           if (res.data.data !== undefined && res.data.data !== null) {
             _this.initLineChart(res.data.data)

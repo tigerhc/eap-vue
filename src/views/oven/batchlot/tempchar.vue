@@ -176,7 +176,12 @@ export default {
           null,
           null
         ],
-        'SIM-OVEN1': [190, 195, 195, 6, 6, 6, 6]
+        // 'SIM-OVEN1': [190, 195, 195, 6, 6, 6, 6],
+        'SIM-OVEN1': [195],
+        'SIM-OVEN2': [195],
+        'SMA-OVEN1': [190],
+        'SMA-FREEZER1': [6, 6],
+        'SX-FREEZER1': [6, 6]
       },
       limitMin: {
         'APJ-IGBT-REFLOW1': [-10, -20, 70, 70, 87, 87, 104, 104, 104, 104],
@@ -255,7 +260,12 @@ export default {
           null,
           null
         ],
-        'SIM-OVEN1': [160, 165, 165, -6, -6, -6, -6]
+        // 'SIM-OVEN1': [160,165,165,-6, -6,-6, -6],
+        'SIM-OVEN1': [165],
+        'SIM-OVEN2': [165],
+        'SMA-OVEN1': [160],
+        'SMA-FREEZER1': [-6, -6],
+        'SX-FREEZER1': [-6, -6]
       },
       searchBtn: '范围内查询'
     }
@@ -313,10 +323,14 @@ export default {
         this.form.eqpId === 'APJ-FREEZER1' ||
         this.form.eqpId === 'APJ-FREEZER2' ||
         this.form.eqpId === 'APJ-CLEAN-US1' ||
-        this.form.eqpId === 'SIM-OVEN1'
+        this.form.eqpId === 'SIM-OVEN1' ||
+        this.form.eqpId === 'SIM-OVEN2' ||
+        this.form.eqpId === 'SMA-OVEN1' ||
+        this.form.eqpId === 'SMA-FREEZER1' ||
+        this.form.eqpId === 'SX-FREEZER1'
       ) {
         this.picUrl = this.form.eqpId
-        this.picUrlDetail = this.picUrl.replace('APJ-', 'DETAIL-').replace('SIM-', 'DETAIL-')
+        this.picUrlDetail = this.picUrl.replace('APJ-', 'DETAIL-').replace('SIM-', 'DETAIL-').replace('SMA-', 'DETAIL-').replace('SX-', 'DETAIL-')
         this.tempEchart = 'unEqpTemp'
       } else {
         this.tempEchart = 'eqpTemp'

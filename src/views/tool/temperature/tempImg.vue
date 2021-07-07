@@ -40,15 +40,14 @@
     <div v-if="imgUrl==='APJ-FREEZER2'" class="FREEZER2" />
     <div v-if="imgUrl==='APJ-FREEZER1'" class="FREEZER1" />
     <div v-if="imgUrl==='APJ-CLEAN-US1'" class="CLEAN_US" />
-    <div v-if="imgUrl==='SIM-OVEN1' && imgOption===0" class="SMA-OVEN1" />
-    <div v-if="imgUrl==='SIM-OVEN1' && imgOption===1" class="SIM-OVEN1" />
-    <div v-if="imgUrl==='SIM-OVEN1' && imgOption===2" class="SIM-OVEN2" />
-    <div v-if="imgUrl==='SIM-OVEN1' && imgOption===3" class="SMA_FREEZER" />
-    <div v-if="imgUrl==='SIM-OVEN1' && imgOption===4" class="SMA_FREEZER" />
-    <div v-if="imgUrl==='SIM-OVEN1' && imgOption===5" class="SX_FREEZER" />
-    <div v-if="imgUrl==='SIM-OVEN1' && imgOption===6" class="SX_FREEZER" />
+    <div v-if="imgUrl==='SMA-OVEN1'" class="SMA-OVEN1" />
+    <div v-if="imgUrl==='SIM-OVEN1'" class="SIM-OVEN1" />
+    <div v-if="imgUrl==='SIM-OVEN2'" class="SIM-OVEN2" />
+    <div v-if="imgUrl==='SMA-FREEZER1'" class="SMA_FREEZER" />
+    <div v-if="imgUrl==='SX-FREEZER1'" class="SX_FREEZER" />
 
     <div v-if="imgUrl==='DETAIL-AT2'" class="dtlImg-AT2" >
+      <div class="dtl_title">详细位置:</div>
       <div :class="imgOption===0?'dtl_AT1':'dtl_AT1_p'" @click="positionClk(0)"/>
       <div :class="imgOption===1?'dtl_AT2':'dtl_AT2_p'" @click="positionClk(1)"/>
       <div :class="imgOption===2?'dtl_AT3':'dtl_AT3_p'" @click="positionClk(2)"/>
@@ -62,6 +61,7 @@
     </div>
     <!--详细图片-->
     <div v-if="imgUrl==='DETAIL-HT' || imgUrl==='DETAIL-RT'" class="dtlImg">
+      <div class="dtl_title">放大区块:</div>
       <div v-show="imgUrl==='DETAIL-HT' && imgOption===0" class="dtl_HT1"/>
       <div v-show="imgUrl==='DETAIL-HT' && imgOption===1" class="dtl_HT2"/>
       <div v-show="imgUrl==='DETAIL-HT' && imgOption===2" class="dtl_HT3"/>
@@ -181,40 +181,40 @@ export default {
   .positionAT9_p{position: absolute;width:2%;height:8%;left:73%;top:25%;}
   .positionAT10{position: absolute;width:2%;height:8%;border:1px solid #50fc08;left:70.5%;top:15.5%;}
   .positionAT10_p{position: absolute;width:2%;height:8%;left:70.5%;top:15.5%;}
-  .dtl_AT1{position: absolute;width:4%;height:20%;border:1px solid #50fc08;left:89%;top:54%;}
-  .dtl_AT1_p{position: absolute;width:4%;height:20%;left:89%;top:54%;}
-  .dtl_AT2{position: absolute;width:4%;height:20%;border:1px solid #50fc08;left:81%;top:26%;}
-  .dtl_AT2_p{position: absolute;width:4%;height:20%;left:81%;top:26%;}
-  .dtl_AT3{position: absolute;width:4%;height:20%;border:1px solid #50fc08;left:76%;top:54%;}
-  .dtl_AT3_p{position: absolute;width:4%;height:20%;left:76%;top:54%;}
-  .dtl_AT4{position: absolute;width:4%;height:20%;border:1px solid #50fc08;left:68%;top:26%;}
-  .dtl_AT4_p{position: absolute;width:4%;height:20%;left:68%;top:26%;}
-  .dtl_AT5{position: absolute;width:4%;height:20%;border:1px solid #50fc08;left:63%;top:54%;}
-  .dtl_AT5_p{position: absolute;width:4%;height:20%;left:63%;top:54%;}
-  .dtl_AT6{position: absolute;width:4%;height:20%;border:1px solid #50fc08;left:55%;top:26%;}
-  .dtl_AT6_p{position: absolute;width:4%;height:20%;left:55%;top:26%;}
-  .dtl_AT7{position: absolute;width:4%;height:20%;border:1px solid #50fc08;left:49.7%;top:54%;}
-  .dtl_AT7_p{position: absolute;width:4%;height:20%;left:49.7%;top:54%;}
-  .dtl_AT8{position: absolute;width:4%;height:20%;border:1px solid #50fc08;left:41.7%;top:26%;}
-  .dtl_AT8_p{position: absolute;width:4%;height:20%;left:41.7%;top:26%;}
-  .dtl_AT9{position: absolute;width:4%;height:20%;border:1px solid #50fc08;left:37%;top:54%;}
-  .dtl_AT9_p{position: absolute;width:4%;height:20%;left:37%;top:54%;}
-  .dtl_AT10{position: absolute;width:4%;height:20%;border:1px solid #50fc08;left:29%;top:26%;}
-  .dtl_AT10_p{position: absolute;width:4%;height:20%;left:29%;top:26%;}
+  .dtl_AT1{position: absolute;width:3%;height:17%;left:81%;top:60%;border:1px solid #50fc08;}
+  .dtl_AT1_p{position: absolute;width:3%;height:17%;left:81%;top:60%;}
+  .dtl_AT2{position: absolute;width:3%;height:16%;left:75%;top:38%;border:1px solid #50fc08;}
+  .dtl_AT2_p{position: absolute;width:3%;height:16%;left:75%;top:38%;}
+  .dtl_AT3{position: absolute;width:3%;height:16%;left:71%;top:60%;border:1px solid #50fc08;}
+  .dtl_AT3_p{position: absolute;width:3%;height:16%;left:71%;top:60%;}
+  .dtl_AT4{position: absolute;width:3%;height:16%;left:64%;top:38%;border:1px solid #50fc08;}
+  .dtl_AT4_p{position: absolute;width:3%;height:16%;left:64%;top:38%;}
+  .dtl_AT5{position: absolute;width:3%;height:16%;left:60%;top:60%;border:1px solid #50fc08;}
+  .dtl_AT5_p{position: absolute;width:3%;height:16%;left:60%;top:60%;}
+  .dtl_AT6{position: absolute;width:3%;height:16%;left:54%;top:38%;border:1px solid #50fc08;}
+  .dtl_AT6_p{position: absolute;width:3%;height:16%;left:54%;top:38%;}
+  .dtl_AT7{position: absolute;width:3%;height:16%;left:49.7%;top:60%;border:1px solid #50fc08;}
+  .dtl_AT7_p{position: absolute;width:3%;height:16%;left:49.7%;top:60%;}
+  .dtl_AT8{position: absolute;width:3%;height:16%;left:43.5%;top:38%;border:1px solid #50fc08;}
+  .dtl_AT8_p{position: absolute;width:3%;height:16%;left:43.5%;top:38%;}
+  .dtl_AT9{position: absolute;width:3%;height:16%;left:39%;top:60%;border:1px solid #50fc08;}
+  .dtl_AT9_p{position: absolute;width:3%;height:16%;left:39%;top:60%;}
+  .dtl_AT10{position: absolute;width:3%;height:16%;left:33%;top:38%;border:1px solid #50fc08;}
+  .dtl_AT10_p{position: absolute;width:3%;height:16%;left:33%;top:38%;}
   /**背景图*/
   .HTRT{width:100%;height:100%;background:url(../../../assets/img/HTRT.png);background-repeat:no-repeat;background-size: 100% 100%;}
   .AT{width:100%;height:100%;background:url(../../../assets/img/AT.png);background-repeat:no-repeat;background-size: 100% 100%;}
-  .OVEN1{width:100%;height:100%;background:url(../../../assets/img/APJ_OVEN1.jpg);background-repeat:no-repeat;background-size: 255px 282px;}
-  .OVEN2{width:100%;height:100%;background:url(../../../assets/img/APJ_OVEN2.jpg);background-repeat:no-repeat;background-size: 190px 298px;}
-  .FREEZER1{width:100%;height:100%;background:url(../../../assets/img/FREEZER1.jpg);background-repeat:no-repeat;background-size: 361px 260px;}
-  .FREEZER2{width:100%;height:100%;background:url(../../../assets/img/FREEZER2.png);background-repeat:no-repeat;background-size: 431px 228px;}
-  .FREEZER3{width:100%;height:200%;background:url(../../../assets/img/FREEZER3.jpg);background-repeat:no-repeat;background-size: 276px 428px;}
-  .CLEAN_US{width:100%;height:150%;background:url(../../../assets/img/APJ_CLEAN_US.jpg);background-repeat:no-repeat;background-size: 312px 395px;}
-  .SMA-OVEN1{width:100%;height:200%;background:url(../../../assets/img/SMA_OVEN.png);background-repeat:no-repeat;background-size: 508px 396px;}
-  .SIM-OVEN1{width:100%;height:200%;background:url(../../../assets/img/SIM_OVEN1.png);background-repeat:no-repeat;background-size: 288px 478px;}
-  .SIM-OVEN2{width:100%;height:200%;background:url(../../../assets/img/SIM_OVEN2.png);background-repeat:no-repeat;background-size: 288px 478px;}
-  .SX_FREEZER{width:100%;height:200%;background:url(../../../assets/img/SX_FREEZER.jpg);background-repeat:no-repeat;background-size: 288px 419px;}
-  .SMA_FREEZER{width:100%;height:200%;background:url(../../../assets/img/SMA_FREEZER.png);background-repeat:no-repeat;background-size: 275px 433px;}
+  .OVEN1{width:100%;height:142%;background:url(../../../assets/img/APJ_OVEN1.jpg);background-repeat:no-repeat;background-size: 70% 100%;margin-top: 11%;}
+  .OVEN2{width:100%;height:150%;background:url(../../../assets/img/APJ_OVEN2.jpg);background-repeat:no-repeat;background-size: 55% 95%;margin-top: 11%;}
+  .FREEZER1{width:100%;height:150%;background:url(../../../assets/img/FREEZER1.jpg);background-repeat:no-repeat;background-size: 100% 72%;margin-top: 20%;margin-left: -15%;}
+  .FREEZER2{width:100%;height:150%;background:url(../../../assets/img/FREEZER2.png);background-repeat:no-repeat;background-size: 84% 55%;margin-top: 25%;}
+  .FREEZER3{width:100%;height:150%;background:url(../../../assets/img/FREEZER3.jpg);background-repeat:no-repeat;background-size: 276px 428px;margin-top: 11%;}
+  .CLEAN_US{width:100%;height:150%;background:url(../../../assets/img/APJ_CLEAN_US.jpg);background-repeat:no-repeat;background-size: 70% 95%;margin-top: 11%;}
+  .SMA-OVEN1{width:100%;height:200%;background:url(../../../assets/img/SMA_OVEN.png);background-repeat:no-repeat;background-size: 508px 396px;margin-top: 15%;}
+  .SIM-OVEN1{width:100%;height:150%;background:url(../../../assets/img/SIM_OVEN1.png);background-repeat:no-repeat;background-size: 51% 95%;margin-top: 11%;margin-left:12%;}
+  .SIM-OVEN2{width:100%;height:150%;background:url(../../../assets/img/SIM_OVEN2.png);background-repeat:no-repeat;background-size: 51% 95%;margin-top: 11%;margin-left:12%;}
+  .SX_FREEZER{width:100%;height:150%;background:url(../../../assets/img/SX_FREEZER.jpg);background-repeat:no-repeat;background-size: 288px 419px;margin-top:11%;margin-left:10%;}
+  .SMA_FREEZER{width:100%;height:150%;background:url(../../../assets/img/SMA_FREEZER.png);background-repeat:no-repeat;background-size: 275px 433px;margin-top:11%;margin-left:12%;}
 
   .dtl_HT1{width:100%;height:100%;background:url(../../../assets/img/HTRT_G1.png);background-repeat:no-repeat;background-size: 100% 100%;}
   .dtl_HT2{width:100%;height:100%;background:url(../../../assets/img/HTRT_G2.png);background-repeat:no-repeat;background-size: 100% 100%;}
@@ -233,6 +233,7 @@ export default {
   .dtl_RT6{width:100%;height:100%;background:url(../../../assets/img/HTRT_YR2.png);background-repeat:no-repeat;background-size: 100% 100%;}
   .dtl_RT7{width:100%;height:100%;background:url(../../../assets/img/HTRT_LQ.png);background-repeat:no-repeat;background-size: 100% 100%;}
 
-  .dtlImg{width:100%;height:100%;}
-  .dtlImg-AT2{width:100%;height:100%;background:url(../../../assets/img/AT_DTL.png);background-repeat:no-repeat;background-size: 100% 100%;}
+  .dtlImg{width:80%;height:80%;margin-left: 10%;margin-top: 10%;}
+  .dtlImg-AT2{width:80%;height:80%;background:url(../../../assets/img/AT_DTL.png);background-repeat:no-repeat;background-size: 100% 100%;margin-left: 10%;margin-top: 10%;}
+  .dtl_title{position: absolute;margin-top:-7%;margin-left:-10%;font-size: large}
 </style>

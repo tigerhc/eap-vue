@@ -441,11 +441,28 @@ export default {
   .giDtl{background:url(../../../assets/img/56GI_PST.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 300px;}
   .gi5Dtl{background:url(../../../assets/img/5GI_PST.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 300px;}
   .gi6Dtl{background:url(../../../assets/img/6GI_PST.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 300px;}
-  .sxAll{height: 100%;width: 28%;position: relative;margin-top: -27%;border:1px solid red;margin-left: 0%;}
-  .sxAClass{height: 87px;width: 121px;position: absolute}
-  .sxBClass{height: 86px;width: 138px;left:121px;position: absolute}
-  .sxCClass{height: 78px;width: 128px;position: absolute;top:87px}
-  .sxDClass{height: 35px;width: 130px;position: absolute;top:110px;left:128px;}
+  .sxAll{height: 100%;
+    width: 28%;
+    position: relative;
+    margin-top: -27%;
+    border: 1px solid red;
+    margin-left: 0%;}
+  .sxAClass{height: 174px;
+    width: 220px;
+    position: absolute;}
+  .sxBClass{    height: 174px;
+    width: 220px;
+    left: 260px;
+    position: absolute;}
+  .sxCClass{height: 156px;
+    width: 256px;
+    position: absolute;
+    top: 200px;}
+  .sxDClass{    height: 70px;
+    width: 260px;
+    position: absolute;
+    top: 243px;
+    left: 260px;}
   .sxAImg{background:url(../../../assets/img/sxA.png);background-repeat:no-repeat;background-size: 100% 100%;height: 100%;width: 100%;}
   .sxBImg{background:url(../../../assets/img/sxB.png);background-repeat:no-repeat;background-size: 100% 100%;height: 100%;width: 100%;}
   .sxCImg{background:url(../../../assets/img/sxC.png);background-repeat:no-repeat;background-size: 100% 100%;height: 100%;width: 100%;}

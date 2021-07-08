@@ -2,37 +2,31 @@
   <div class="rtpmschar">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="6">
-          <el-form-item prop="eqpId">
-            <w-select-eqp
-              :str="form.eqpId"
-              :multiple="false"
-              :disabled="false"
-              param="MS"
-              @input="onValueChange($event)"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item prop="productionNo">
-            <el-select v-model="form.productionNo" multiple filterable placeholder="请选择类型">
-              <el-option v-for="item in noList" :key="item.id" :label="item.productionNo" :value="item.productionNo" />
-            </el-select>
-            <!--            <w-select :str="form.productionNo" :multiple="true" :disabled="false" @input="onNoChange($event)"/>-->
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item prop="dateTime">
-            <el-date-picker
-              v-model="form.dateTime"
-              type="daterange"
-              value-format="yyyy-MM-dd"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-            />
-          </el-form-item>
-        </el-col>
+        <el-form-item prop="eqpId">
+          <w-select-eqp
+            :str="form.eqpId"
+            :multiple="false"
+            :disabled="false"
+            param="MS"
+            @input="onValueChange($event)"
+          />
+        </el-form-item>
+        <el-form-item prop="productionNo">
+          <el-select v-model="form.productionNo" multiple filterable placeholder="请选择类型">
+            <el-option v-for="item in noList" :key="item.id" :label="item.productionNo" :value="item.productionNo" />
+          </el-select>
+          <!--            <w-select :str="form.productionNo" :multiple="true" :disabled="false" @input="onNoChange($event)"/>-->
+        </el-form-item>
+        <el-form-item prop="dateTime">
+          <el-date-picker
+            v-model="form.dateTime"
+            type="daterange"
+            value-format="yyyy-MM-dd"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          />
+        </el-form-item>
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>
     </el-form>

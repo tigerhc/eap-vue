@@ -221,7 +221,6 @@ export default {
       this.api
         .ajaxList(this.getParams(query))
         .then((resp) => {
-          console.log(resp)
           this.list = resp.results.map((item) => this.onloadsuccess(item))
           this.total = resp.total
         })

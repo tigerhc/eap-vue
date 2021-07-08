@@ -1,58 +1,58 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="condition-panel">
-      <el-form class="form">
+      <el-form :inline="true" class="form">
         <el-row>
-          <el-col :span="5">
-            <el-form-item>
-              <el-select v-model="form1.type" :style="{ width: '90px' }" placeholder="类型" @change="findProduction">
-                <el-option v-for="item in TypeResult" :key="item.value" :label="item.label" :value="item.value" />
+          <el-form-item>
+            <el-select v-model="form1.type" :style="{ width: '90px' }" placeholder="类型" @change="findProduction">
+              <el-option v-for="item in TypeResult" :key="item.value" :label="item.label" :value="item.value" />
+            </el-select>
+            <el-select v-model="form1.lineNo" :style="{ width: '90px' }" placeholder="类型" @change="findProduction">
+              <el-option v-for="item in lineNoResult" :key="item.value" :label="item.label" :value="item.value" />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <div class="condition">
+              <el-select v-model="form.productionName" class="wid90" placeholder="请选择机种名" @change="search">
+                <el-option v-for="item in productionResult" :key="item.label" :label="item.label" :value="item.label" />
               </el-select>
-              <el-select v-model="form1.lineNo" :style="{ width: '90px' }" placeholder="类型" @change="findProduction">
-                <el-option v-for="item in lineNoResult" :key="item.value" :label="item.label" :value="item.value" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="3">
-            <el-form-item>
-              <div class="condition">
-                <el-select v-model="form.productionName" class="wid90" placeholder="请选择机种名" @change="search">
-                  <el-option
-                    v-for="item in productionResult"
-                    :key="item.label"
-                    :label="item.label"
-                    :value="item.label"
-                  />
-                </el-select>
-              </div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="3">
-            <el-form-item>
-              <el-select v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" v-model="form.local56GI" :style="{width:'100px'}" clearable placeholder="位置" @change="positionClick('56GI')">
-                <el-option v-for="item in localResult56GI" :key="item.value" :label="item.label" :value="item.value" />
-              </el-select>
-              <el-select v-model="form.local" :style="{width:'105px'}" clearable placeholder="位置" @change="search" >
-                <el-option v-for="item in localResult" :key="item.value" :label="item.label" :value="item.value" />
-              </el-select>
-              <el-select v-show="form1.lineNo==='SIM' && form.local==='c'" v-model="form.localSimC" :style="{width:'70px'}" placeholder="位置" @change="search">
-                <el-option v-for="item in localResultSIMC" :key="item.value" :label="item.label" :value="item.value" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="9">
-            <el-form-item>
-              <el-date-picker
-                v-model="dateTime"
-                type="daterange"
-                value-format="yyyy-MM-dd"
-                range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                class="dateTimeClass"
-              />
-            </el-form-item>
-          </el-col>
+            </div>
+          </el-form-item>
+          <el-form-item>
+            <el-select
+              v-show="form1.lineNo === '5GI' || form1.lineNo === '6GI'"
+              v-model="form.local56GI"
+              :style="{ width: '100px' }"
+              clearable
+              placeholder="位置"
+              @change="positionClick('56GI')"
+            >
+              <el-option v-for="item in localResult56GI" :key="item.value" :label="item.label" :value="item.value" />
+            </el-select>
+            <el-select v-model="form.local" :style="{ width: '105px' }" clearable placeholder="位置" @change="search">
+              <el-option v-for="item in localResult" :key="item.value" :label="item.label" :value="item.value" />
+            </el-select>
+            <el-select
+              v-show="form1.lineNo === 'SIM' && form.local === 'c'"
+              v-model="form.localSimC"
+              :style="{ width: '70px' }"
+              placeholder="位置"
+              @change="search"
+            >
+              <el-option v-for="item in localResultSIMC" :key="item.value" :label="item.label" :value="item.value" />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-date-picker
+              v-model="dateTime"
+              :style="{ width: '260px' }"
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="-"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            />
+          </el-form-item>
           <el-button type="primary" @click="search">查询</el-button>
           <el-button type="primary" @click="finddetail">导出</el-button>
         </el-row>
@@ -60,28 +60,53 @@
     </div>
     <div class="frame">
       <div id="main" style="width: 65%; height: 600px; overflow: hidden" />
-      <img v-show="form1.lineNo!=='SIM' && form1.lineNo!=='5GI' && form1.lineNo!=='6GI' && form1.lineNo!=='SX'" id="mainImg" :src="picUrl" class="arrow_box">
-      <div v-show="form1.lineNo==='SIM'" :class="simClass" class="arrow_box">
-        <div class="simAPST" @click="positionClick('simA')"/>
-        <div class="simBPST" @click="positionClick('simB')"/>
-        <div class="simCPST" @click="positionClick('simC')"/>
+      <img
+        v-show="form1.lineNo !== 'SIM' && form1.lineNo !== '5GI' && form1.lineNo !== '6GI' && form1.lineNo !== 'SX'"
+        id="mainImg"
+        :src="picUrl"
+        class="arrow_box"
+      >
+      <div v-show="form1.lineNo === 'SIM'" :class="simClass" class="arrow_box">
+        <div class="simAPST" @click="positionClick('simA')" />
+        <div class="simBPST" @click="positionClick('simB')" />
+        <div class="simCPST" @click="positionClick('simC')" />
       </div>
-      <div v-show="form1.lineNo==='SIM' && form.local==='c'" class="arrow_box simCDtl">
-        <div :class="pstColor"/>
+      <div v-show="form1.lineNo === 'SIM' && form.local === 'c'" class="arrow_box simCDtl">
+        <div :class="pstColor" />
         <div class="simdtlText">{{ form.localSimC }}</div>
       </div>
-      <div v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" :class="simClass" class="arrow_box"/>
-      <div v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" :class="form1.lineNo==='5GI'?'gi5Dtl':'gi6Dtl'" class="arrow_box">
-        <div :class="form.local56GI==='burr_f'?'gi56Border':''" class="burrPST" @click="positionClick('burr_f')"/>
-        <div :class="form.local56GI==='pinf'?'gi56Border':''" class="pinPST" @click="positionClick('pinf')"/>
-        <div :class="form.local56GI==='pinf2f'?'gi56Border':''" class="pinf2fPST" @click="positionClick('pinf2f')"/>
-        <div :class="form.local56GI==='pins'?'gi56Border':''" class="pinsPST" @click="positionClick('pins')"/>
+      <div v-show="form1.lineNo === '5GI' || form1.lineNo === '6GI'" :class="simClass" class="arrow_box" />
+      <div
+        v-show="form1.lineNo === '5GI' || form1.lineNo === '6GI'"
+        :class="form1.lineNo === '5GI' ? 'gi5Dtl' : 'gi6Dtl'"
+        class="arrow_box"
+      >
+        <div
+          :class="form.local56GI === 'burr_f' ? 'gi56Border' : ''"
+          class="burrPST"
+          @click="positionClick('burr_f')"
+        />
+        <div :class="form.local56GI === 'pinf' ? 'gi56Border' : ''" class="pinPST" @click="positionClick('pinf')" />
+        <div
+          :class="form.local56GI === 'pinf2f' ? 'gi56Border' : ''"
+          class="pinf2fPST"
+          @click="positionClick('pinf2f')"
+        />
+        <div :class="form.local56GI === 'pins' ? 'gi56Border' : ''" class="pinsPST" @click="positionClick('pins')" />
       </div>
-      <div v-show="form1.lineNo==='SX'" class="arrow_box sxAll">
-        <div :class="form.local ==='a'?'grnBg':'blkBg'" class="sxAClass"><div class="sxAImg" @click="positionClick('a')"/></div>
-        <div :class="form.local ==='b'?'grnBg':'blkBg'" class="sxBClass"><div class="sxBImg" @click="positionClick('b')"/></div>
-        <div :class="form.local ==='c'?'grnBg':'blkBg'" class="sxCClass"><div class="sxCImg" @click="positionClick('c')"/></div>
-        <div :class="form.local ==='d'?'grnBg':'blkBg'" class="sxDClass"><div class="sxDImg" @click="positionClick('d')"/></div>
+      <div v-show="form1.lineNo === 'SX'" class="arrow_box sxAll">
+        <div :class="form.local === 'a' ? 'grnBg' : 'blkBg'" class="sxAClass">
+          <div class="sxAImg" @click="positionClick('a')" />
+        </div>
+        <div :class="form.local === 'b' ? 'grnBg' : 'blkBg'" class="sxBClass">
+          <div class="sxBImg" @click="positionClick('b')" />
+        </div>
+        <div :class="form.local === 'c' ? 'grnBg' : 'blkBg'" class="sxCClass">
+          <div class="sxCImg" @click="positionClick('c')" />
+        </div>
+        <div :class="form.local === 'd' ? 'grnBg' : 'blkBg'" class="sxDClass">
+          <div class="sxDImg" @click="positionClick('d')" />
+        </div>
       </div>
     </div>
   </div>
@@ -128,19 +153,94 @@ export default {
       picUrlG: require('../../../assets/img/56GI.png'),
       picUrlH: require('../../../assets/img/56GI2.png'),
       picUrlI: require('../../../assets/img/56GI3.png'),
-      localResultSim: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }, { value: 'c', label: 'C' }],
-      localResultSx: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }, { value: 'c', label: 'C' }, { value: 'd', label: 'D' }],
-      lineTypeResult: [{ value: '0001', label: '1' }, { value: '0002', label: '2' }],
-      TypeResult: [{ value: 'LF', label: 'LF' }, { value: 'check', label: '检查' }],
-      lineNoResult: [{ value: 'SX', label: 'SX' }, { value: 'SIM', label: 'SIM' }, { value: '5GI', label: '5GI' }, { value: '6GI', label: '6GI' }],
+      localResultSim: [
+        { value: 'a', label: 'A' },
+        { value: 'b', label: 'B' },
+        { value: 'c', label: 'C' }
+      ],
+      localResultSx: [
+        { value: 'a', label: 'A' },
+        { value: 'b', label: 'B' },
+        { value: 'c', label: 'C' },
+        { value: 'd', label: 'D' }
+      ],
+      lineTypeResult: [
+        { value: '0001', label: '1' },
+        { value: '0002', label: '2' }
+      ],
+      TypeResult: [
+        { value: 'LF', label: 'LF' },
+        { value: 'check', label: '检查' }
+      ],
+      lineNoResult: [
+        { value: 'SX', label: 'SX' },
+        { value: 'SIM', label: 'SIM' },
+        { value: '5GI', label: '5GI' },
+        { value: '6GI', label: '6GI' }
+      ],
       localResult: [],
       simClass: 'simABC',
       pstColor: '',
-      localResultSIMC: [{ value: 'c1', label: 'c1' }, { value: 'c2', label: 'c2' }, { value: 'c3', label: 'c3' }, { value: 'c4', label: 'c4' }, { value: 'c5', label: 'c5' }, { value: 'c6', label: 'c6' }, { value: 'c7', label: 'c7' }, { value: 'c8', label: 'c8' }, { value: 'c9', label: 'c9' }, { value: 'c10', label: 'c10' }, { value: 'c11', label: 'c11' }, { value: 'c12', label: 'c12' }, { value: 'c13', label: 'c13' }, { value: 'c14', label: 'c14' }, { value: 'c15', label: 'c15' }, { value: 'c16', label: 'c16' }, { value: 'c17', label: 'c17' }, { value: 'c19', label: 'c19' }, { value: 'c20', label: 'c20' }, { value: 'c21', label: 'c21' }, { value: 'c23', label: 'c23' }, { value: 'c24', label: 'c24' }, { value: 'c26', label: 'c26' }, { value: 'c28', label: 'c28' }, { value: 'c30', label: 'c30' }, { value: 'c31', label: 'c31' }, { value: 'c35', label: 'c35' }, { value: 'c37', label: 'c37' }, { value: 'c40', label: 'c40' }],
-      localResult56GI: [{ value: 'burr_f', label: '毛刺' }, { value: 'pinf', label: '正面弯曲' }, { value: 'pinf2f', label: '横筋间距' }, { value: 'pins', label: '侧面弯曲' }],
-      localResultGiPinf: [{ value: 'pin_f1', label: '正面弯曲1' }, { value: 'pin_f2', label: '正面弯曲2' }, { value: 'pin_f3', label: '正面弯曲3' }, { value: 'pin_f4', label: '正面弯曲4' }, { value: 'pin_f5', label: '正面弯曲5' }, { value: 'pin_f6', label: '正面弯曲6' }],
-      localResultGiPinf2f: [{ value: 'pin_f1_f2', label: '横筋间距1_2' }, { value: 'pin_f2_f3', label: '横筋间距2_3' }, { value: 'pin_f3_f4', label: '横筋间距3_4' }, { value: 'pin_f4_f5', label: '横筋间距4_5' }, { value: 'pin_f5_f6', label: '横筋间距5_6' }],
-      localResultGiPins: [{ value: 'pin_s1', label: '侧面弯曲1' }, { value: 'pin_s2', label: '侧面弯曲2' }, { value: 'pin_s3', label: '侧面弯曲3' }, { value: 'pin_s4', label: '侧面弯曲4' }, { value: 'pin_s5', label: '侧面弯曲5' }, { value: 'pin_s6', label: '侧面弯曲6' }],
+      localResultSIMC: [
+        { value: 'c1', label: 'c1' },
+        { value: 'c2', label: 'c2' },
+        { value: 'c3', label: 'c3' },
+        { value: 'c4', label: 'c4' },
+        { value: 'c5', label: 'c5' },
+        { value: 'c6', label: 'c6' },
+        { value: 'c7', label: 'c7' },
+        { value: 'c8', label: 'c8' },
+        { value: 'c9', label: 'c9' },
+        { value: 'c10', label: 'c10' },
+        { value: 'c11', label: 'c11' },
+        { value: 'c12', label: 'c12' },
+        { value: 'c13', label: 'c13' },
+        { value: 'c14', label: 'c14' },
+        { value: 'c15', label: 'c15' },
+        { value: 'c16', label: 'c16' },
+        { value: 'c17', label: 'c17' },
+        { value: 'c19', label: 'c19' },
+        { value: 'c20', label: 'c20' },
+        { value: 'c21', label: 'c21' },
+        { value: 'c23', label: 'c23' },
+        { value: 'c24', label: 'c24' },
+        { value: 'c26', label: 'c26' },
+        { value: 'c28', label: 'c28' },
+        { value: 'c30', label: 'c30' },
+        { value: 'c31', label: 'c31' },
+        { value: 'c35', label: 'c35' },
+        { value: 'c37', label: 'c37' },
+        { value: 'c40', label: 'c40' }
+      ],
+      localResult56GI: [
+        { value: 'burr_f', label: '毛刺' },
+        { value: 'pinf', label: '正面弯曲' },
+        { value: 'pinf2f', label: '横筋间距' },
+        { value: 'pins', label: '侧面弯曲' }
+      ],
+      localResultGiPinf: [
+        { value: 'pin_f1', label: '正面弯曲1' },
+        { value: 'pin_f2', label: '正面弯曲2' },
+        { value: 'pin_f3', label: '正面弯曲3' },
+        { value: 'pin_f4', label: '正面弯曲4' },
+        { value: 'pin_f5', label: '正面弯曲5' },
+        { value: 'pin_f6', label: '正面弯曲6' }
+      ],
+      localResultGiPinf2f: [
+        { value: 'pin_f1_f2', label: '横筋间距1_2' },
+        { value: 'pin_f2_f3', label: '横筋间距2_3' },
+        { value: 'pin_f3_f4', label: '横筋间距3_4' },
+        { value: 'pin_f4_f5', label: '横筋间距4_5' },
+        { value: 'pin_f5_f6', label: '横筋间距5_6' }
+      ],
+      localResultGiPins: [
+        { value: 'pin_s1', label: '侧面弯曲1' },
+        { value: 'pin_s2', label: '侧面弯曲2' },
+        { value: 'pin_s3', label: '侧面弯曲3' },
+        { value: 'pin_s4', label: '侧面弯曲4' },
+        { value: 'pin_s5', label: '侧面弯曲5' },
+        { value: 'pin_s6', label: '侧面弯曲6' }
+      ],
       localResultGiBurr: [{ value: 'burr_f', label: '毛刺' }]
     }
   },
@@ -212,23 +312,26 @@ export default {
       // const q = (this.query)
       const q = this.form
       // alert(q)
-      this.api.export(q).then((response) => {
-        if (response.code === 0) {
-          return import('../ports/Export2Excel').then((excel) => {
-            excel.export_byte_to_excel(response.bytes, response.title)
+      this.api
+        .export(q)
+        .then((response) => {
+          if (response.code === 0) {
+            return import('../ports/Export2Excel').then((excel) => {
+              excel.export_byte_to_excel(response.bytes, response.title)
+              this.toolbarStatus.exportsLoading = false
+            })
+          } else {
+            this.$notify.error({
+              title: '失败',
+              message: (response && response.errmsg) || '导出失败!',
+              duration: 2000
+            })
             this.toolbarStatus.exportsLoading = false
-          })
-        } else {
-          this.$notify.error({
-            title: '失败',
-            message: (response && response.errmsg) || '导出失败!',
-            duration: 2000
-          })
+          }
+        })
+        .catch((e) => {
           this.toolbarStatus.exportsLoading = false
-        }
-      }).catch((e) => {
-        this.toolbarStatus.exportsLoading = false
-      })
+        })
     },
     findProduction() {
       productionName(this.form1).then((response) => {
@@ -332,57 +435,232 @@ export default {
         tooltip: { trigger: 'axis' },
         legend: {
           data: [
-            '1-1:A', '1-2:A', '2-1:A', '2-2:A', '1-1:B', '1-2:B', '2-1:B', '2-2:B', '1-1:C', '1-2:C', '2-1:C', '2-2:C', '1-1:D', '1-2:D', '2-1:D', '2-2:D',
-            '上限', '下限',
-            '1-1:C1', '1-2:C1', '2-1:C1', '2-2:C1',
-            '1-1:C2', '1-2:C2', '2-1:C2', '2-2:C2',
-            '1-1:C3', '1-2:C3', '2-1:C3', '2-2:C3',
-            '1-1:C4', '1-2:C4', '2-1:C4', '2-2:C4',
-            '1-1:C5', '1-2:C5', '2-1:C5', '2-2:C5',
-            '1-1:C6', '1-2:C6', '2-1:C6', '2-2:C6',
-            '1-1:C7', '1-2:C7', '2-1:C7', '2-2:C7',
-            '1-1:C8', '1-2:C8', '2-1:C8', '2-2:C8',
-            '1-1:C9', '1-2:C9', '2-1:C9', '2-2:C9',
-            '1-1:C10', '1-2:C10', '2-1:C10', '2-2:C10',
-            '1-1:C11', '1-2:C11', '2-1:C11', '2-2:C11',
-            '1-1:C12', '1-2:C12', '2-1:C12', '2-2:C12',
-            '1-1:C13', '1-2:C13', '2-1:C13', '2-2:C13',
-            '1-1:C14', '1-2:C14', '2-1:C14', '2-2:C14',
-            '1-1:C15', '1-2:C15', '2-1:C15', '2-2:C15',
-            '1-1:C16', '1-2:C16', '2-1:C16', '2-2:C16',
-            '1-1:C17', '1-2:C17', '2-1:C17', '2-2:C17',
-            '1-1:C19', '1-2:C19', '2-1:C19', '2-2:C19',
-            '1-1:C20', '1-2:C20', '2-1:C20', '2-2:C20',
-            '1-1:C21', '1-2:C21', '2-1:C21', '2-2:C21',
-            '1-1:C23', '1-2:C23', '2-1:C23', '2-2:C23',
-            '1-1:C24', '1-2:C24', '2-1:C24', '2-2:C24',
-            '1-1:C26', '1-2:C26', '2-1:C26', '2-2:C26',
-            '1-1:C28', '1-2:C28', '2-1:C28', '2-2:C28',
-            '1-1:C30', '1-2:C30', '2-1:C30', '2-2:C30',
-            '1-1:C31', '1-2:C31', '2-1:C31', '2-2:C31',
-            '1-1:C35', '1-2:C35', '2-1:C35', '2-2:C35',
-            '1-1:C37', '1-2:C37', '2-1:C37', '2-2:C37',
-            '1-1:C40', '1-2:C40', '2-1:C40', '2-2:C40',
+            '1-1:A',
+            '1-2:A',
+            '2-1:A',
+            '2-2:A',
+            '1-1:B',
+            '1-2:B',
+            '2-1:B',
+            '2-2:B',
+            '1-1:C',
+            '1-2:C',
+            '2-1:C',
+            '2-2:C',
+            '1-1:D',
+            '1-2:D',
+            '2-1:D',
+            '2-2:D',
             '上限',
             '下限',
-            '1-毛刺', '2-毛刺', '3-毛刺', '4-毛刺', '5-毛刺',
-            '1-1:1PIN', '2-1:1PIN', '3-1:1PIN', '4-1:1PIN', '5-1:1PIN',
-            '1-1:2PIN', '2-1:2PIN', '3-1:2PIN', '4-1:2PIN', '5-1:2PIN',
-            '1-1:3PIN', '2-1:3PIN', '3-1:3PIN', '4-1:3PIN', '5-1:3PIN',
-            '1-1:4PIN', '2-1:4PIN', '3-1:4PIN', '4-1:4PIN', '5-1:4PIN',
-            '1-1:5PIN', '2-1:5PIN', '3-1:5PIN', '4-1:5PIN', '5-1:5PIN',
-            '1-1:6PIN', '2-1:6PIN', '3-1:6PIN', '4-1:6PIN', '5-1:6PIN',
-            '1-1:1PIN-2PIN', '2-1:1PIN-2PIN', '3-1:1PIN-2PIN', '4-1:1PIN-2PIN', '5-1:1PIN-2PIN',
-            '1-1:2PIN-3PIN', '2-1:2PIN-3PIN', '3-1:2PIN-3PIN', '4-1:2PIN-3PIN', '5-1:2PIN-3PIN',
-            '1-1:3PIN-4PIN', '2-1:3PIN-4PIN', '3-1:3PIN-4PIN', '4-1:3PIN-4PIN', '5-1:3PIN-4PIN',
-            '1-1:4PIN-5PIN', '2-1:4PIN-5PIN', '3-1:4PIN-5PIN', '4-1:4PIN-5PIN', '5-1:4PIN-5PIN',
-            '1-1:5PIN-6PIN', '2-1:5PIN-6PIN', '3-1:5PIN-6PIN', '4-1:5PIN-6PIN', '5-1:5PIN-6PIN',
-            '1-2:1PIN', '2-2:1PIN', '3-2:1PIN', '4-2:1PIN', '5-2:1PIN',
-            '1-2:2PIN', '2-2:2PIN', '3-2:2PIN', '4-2:2PIN', '5-2:2PIN',
-            '1-2:3PIN', '2-2:3PIN', '3-2:3PIN', '4-2:3PIN', '5-2:3PIN',
-            '1-2:4PIN', '2-2:4PIN', '3-2:4PIN', '4-2:4PIN', '5-2:4PIN',
-            '1-2:5PIN', '2-2:5PIN', '3-2:5PIN', '4-2:5PIN', '5-2:5PIN',
-            '1-2:6PIN', '2-2:6PIN', '3-2:6PIN', '4-2:6PIN', '5-2:6PIN'
+            '1-1:C1',
+            '1-2:C1',
+            '2-1:C1',
+            '2-2:C1',
+            '1-1:C2',
+            '1-2:C2',
+            '2-1:C2',
+            '2-2:C2',
+            '1-1:C3',
+            '1-2:C3',
+            '2-1:C3',
+            '2-2:C3',
+            '1-1:C4',
+            '1-2:C4',
+            '2-1:C4',
+            '2-2:C4',
+            '1-1:C5',
+            '1-2:C5',
+            '2-1:C5',
+            '2-2:C5',
+            '1-1:C6',
+            '1-2:C6',
+            '2-1:C6',
+            '2-2:C6',
+            '1-1:C7',
+            '1-2:C7',
+            '2-1:C7',
+            '2-2:C7',
+            '1-1:C8',
+            '1-2:C8',
+            '2-1:C8',
+            '2-2:C8',
+            '1-1:C9',
+            '1-2:C9',
+            '2-1:C9',
+            '2-2:C9',
+            '1-1:C10',
+            '1-2:C10',
+            '2-1:C10',
+            '2-2:C10',
+            '1-1:C11',
+            '1-2:C11',
+            '2-1:C11',
+            '2-2:C11',
+            '1-1:C12',
+            '1-2:C12',
+            '2-1:C12',
+            '2-2:C12',
+            '1-1:C13',
+            '1-2:C13',
+            '2-1:C13',
+            '2-2:C13',
+            '1-1:C14',
+            '1-2:C14',
+            '2-1:C14',
+            '2-2:C14',
+            '1-1:C15',
+            '1-2:C15',
+            '2-1:C15',
+            '2-2:C15',
+            '1-1:C16',
+            '1-2:C16',
+            '2-1:C16',
+            '2-2:C16',
+            '1-1:C17',
+            '1-2:C17',
+            '2-1:C17',
+            '2-2:C17',
+            '1-1:C19',
+            '1-2:C19',
+            '2-1:C19',
+            '2-2:C19',
+            '1-1:C20',
+            '1-2:C20',
+            '2-1:C20',
+            '2-2:C20',
+            '1-1:C21',
+            '1-2:C21',
+            '2-1:C21',
+            '2-2:C21',
+            '1-1:C23',
+            '1-2:C23',
+            '2-1:C23',
+            '2-2:C23',
+            '1-1:C24',
+            '1-2:C24',
+            '2-1:C24',
+            '2-2:C24',
+            '1-1:C26',
+            '1-2:C26',
+            '2-1:C26',
+            '2-2:C26',
+            '1-1:C28',
+            '1-2:C28',
+            '2-1:C28',
+            '2-2:C28',
+            '1-1:C30',
+            '1-2:C30',
+            '2-1:C30',
+            '2-2:C30',
+            '1-1:C31',
+            '1-2:C31',
+            '2-1:C31',
+            '2-2:C31',
+            '1-1:C35',
+            '1-2:C35',
+            '2-1:C35',
+            '2-2:C35',
+            '1-1:C37',
+            '1-2:C37',
+            '2-1:C37',
+            '2-2:C37',
+            '1-1:C40',
+            '1-2:C40',
+            '2-1:C40',
+            '2-2:C40',
+            '上限',
+            '下限',
+            '1-毛刺',
+            '2-毛刺',
+            '3-毛刺',
+            '4-毛刺',
+            '5-毛刺',
+            '1-1:1PIN',
+            '2-1:1PIN',
+            '3-1:1PIN',
+            '4-1:1PIN',
+            '5-1:1PIN',
+            '1-1:2PIN',
+            '2-1:2PIN',
+            '3-1:2PIN',
+            '4-1:2PIN',
+            '5-1:2PIN',
+            '1-1:3PIN',
+            '2-1:3PIN',
+            '3-1:3PIN',
+            '4-1:3PIN',
+            '5-1:3PIN',
+            '1-1:4PIN',
+            '2-1:4PIN',
+            '3-1:4PIN',
+            '4-1:4PIN',
+            '5-1:4PIN',
+            '1-1:5PIN',
+            '2-1:5PIN',
+            '3-1:5PIN',
+            '4-1:5PIN',
+            '5-1:5PIN',
+            '1-1:6PIN',
+            '2-1:6PIN',
+            '3-1:6PIN',
+            '4-1:6PIN',
+            '5-1:6PIN',
+            '1-1:1PIN-2PIN',
+            '2-1:1PIN-2PIN',
+            '3-1:1PIN-2PIN',
+            '4-1:1PIN-2PIN',
+            '5-1:1PIN-2PIN',
+            '1-1:2PIN-3PIN',
+            '2-1:2PIN-3PIN',
+            '3-1:2PIN-3PIN',
+            '4-1:2PIN-3PIN',
+            '5-1:2PIN-3PIN',
+            '1-1:3PIN-4PIN',
+            '2-1:3PIN-4PIN',
+            '3-1:3PIN-4PIN',
+            '4-1:3PIN-4PIN',
+            '5-1:3PIN-4PIN',
+            '1-1:4PIN-5PIN',
+            '2-1:4PIN-5PIN',
+            '3-1:4PIN-5PIN',
+            '4-1:4PIN-5PIN',
+            '5-1:4PIN-5PIN',
+            '1-1:5PIN-6PIN',
+            '2-1:5PIN-6PIN',
+            '3-1:5PIN-6PIN',
+            '4-1:5PIN-6PIN',
+            '5-1:5PIN-6PIN',
+            '1-2:1PIN',
+            '2-2:1PIN',
+            '3-2:1PIN',
+            '4-2:1PIN',
+            '5-2:1PIN',
+            '1-2:2PIN',
+            '2-2:2PIN',
+            '3-2:2PIN',
+            '4-2:2PIN',
+            '5-2:2PIN',
+            '1-2:3PIN',
+            '2-2:3PIN',
+            '3-2:3PIN',
+            '4-2:3PIN',
+            '5-2:3PIN',
+            '1-2:4PIN',
+            '2-2:4PIN',
+            '3-2:4PIN',
+            '4-2:4PIN',
+            '5-2:4PIN',
+            '1-2:5PIN',
+            '2-2:5PIN',
+            '3-2:5PIN',
+            '4-2:5PIN',
+            '5-2:5PIN',
+            '1-2:6PIN',
+            '2-2:6PIN',
+            '3-2:6PIN',
+            '4-2:6PIN',
+            '5-2:6PIN'
           ]
         },
         grid: {
@@ -415,95 +693,461 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import 'src/styles/proindex';
-  .Rtplotyieldday {
-    width: auto;
-    height: auto;
-    margin: 0 auto;
+@import 'src/styles/proindex';
+.Rtplotyieldday {
+  width: auto;
+  height: auto;
+  margin: 0 auto;
 
-    .form {
-      margin-top: 20px;
-    }
-    .condition {
-      box-sizing: border-box;
-      display: inline-block;
-      font-family: sans-serif;
-      margin: 0;
-    }
+  .form {
+    margin-top: 20px;
   }
-  .simABC{background:url(../../../assets/img/sim_abc.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
-  .simA{background:url(../../../assets/img/SIMA.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
-  .simB{background:url(../../../assets/img/SIMB.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
-  .simC{background:url(../../../assets/img/SIMC.jpg);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;}
-  .simCDtl{background:url(../../../assets/img/c21.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 380px;}
-  .gi5Class{background:url(../../../assets/img/LF_5GI.png);background-repeat:no-repeat;background-size: 60% 95%;height: 224px;width: 116px;margin-top: -15%;margin-left: 12.5%;}
-  .gi6Class{background:url(../../../assets/img/LF_6GI.png);background-repeat:no-repeat;background-size: 60% 95%;height: 224px;width: 116px;margin-top: -15%;margin-left: 12.5%;}
-  .giDtl{background:url(../../../assets/img/56GI_PST.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 300px;}
-  .gi5Dtl{background:url(../../../assets/img/5GI_PST.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 300px;}
-  .gi6Dtl{background:url(../../../assets/img/6GI_PST.png);background-repeat:no-repeat;background-size: 255px 282px;height: 290px;width: 260px;position: absolute;left: 65%;top: 300px;}
-  .sxAll{height: 100%;
-    width: 28%;
-    position: relative;
-    margin-top: -18%;
-    margin-left: 0%;}
-  .sxAClass{height: 174px;
-    width: 220px;
-    position: absolute;}
-  .sxBClass{    height: 174px;
-    width: 220px;
-    left: 260px;
-    position: absolute;}
-  .sxCClass{height: 156px;
-    width: 256px;
-    position: absolute;
-    top: 200px;}
-  .sxDClass{    height: 70px;
-    width: 260px;
-    position: absolute;
-    top: 243px;
-    left: 260px;}
-  .sxAImg{background:url(../../../assets/img/sxA.png);background-repeat:no-repeat;background-size: 100% 100%;height: 100%;width: 100%;}
-  .sxBImg{background:url(../../../assets/img/sxB.png);background-repeat:no-repeat;background-size: 100% 100%;height: 100%;width: 100%;}
-  .sxCImg{background:url(../../../assets/img/sxC.png);background-repeat:no-repeat;background-size: 100% 100%;height: 100%;width: 100%;}
-  .sxDImg{background:url(../../../assets/img/sxD.png);background-repeat:no-repeat;background-size: 100% 100%;height: 100%;width: 100%;}
-  .blkBg{background-color: #0b1d2c}
-  .grnBg{background-color: #43ca17}
-  .simAPST{width:7%;height:17%; position: absolute;}
-  .simBPST{width:7%;height:17%; position: absolute;margin-left: 8%;}
-  .simCPST{width:10%;height:15%; position: absolute;margin-top: 9%;margin-left: 2.5%;}
-  .burrPST{width:32%;height:50%; position: absolute;left: 64%;top: 44%;}
-  .pinPST{width:40%;height:40%; position: absolute;margin-left: 60%;}
-  .pinf2fPST{width:46%;height:42%; position: absolute;margin-top: -2%;left:6%;}
-  .pinsPST{width:40%;height:50%; position: absolute;margin-left: 8%;margin-top: 50%;}
-  .gi56Border{border:5px solid #43ca17}
-  .simdtlText{top: 80%; width: 100%; height: 20%; position: absolute;text-align: center; line-height: 55px;color:#43ca17;font-size: xx-large;}
-  .pstColorC1{position:absolute;width: 3%;height: 9%;left: 12%;top: 73%;background-color: #43ca17}
-  .pstColorC2{position:absolute;width: 3%;height: 9%;left: 16%;top: 73%;background-color: #43ca17}
-  .pstColorC3{position:absolute;width: 3%;height: 9%;left: 20%;top: 73%;background-color: #43ca17}
-  .pstColorC4{position:absolute;width: 3%;height: 9%;left: 24%;top: 73%;background-color: #43ca17}
-  .pstColorC5{position:absolute;width: 3%;height: 9%;left: 28%;top: 73%;background-color: #43ca17}
-  .pstColorC6{position:absolute;width: 3%;height: 9%;left: 31%;top: 73%;background-color: #43ca17}
-  .pstColorC7{position:absolute;width: 3%;height: 9%;left: 35%;top: 73%;background-color: #43ca17}
-  .pstColorC8{position:absolute;width: 3%;height: 9%;left: 39%;top: 73%;background-color: #43ca17}
-  .pstColorC9{position:absolute;width: 3%;height: 9%;left: 43%;top: 73%;background-color: #43ca17}
-  .pstColorC10{position:absolute;width: 3%;height: 9%;left: 46%;top: 73%;background-color: #43ca17}
-  .pstColorC11{position:absolute;width: 3%;height: 9%;left: 50%;top: 73%;background-color: #43ca17}
-  .pstColorC12{position:absolute;width: 3%;height: 9%;left: 54%;top: 73%;background-color: #43ca17}
-  .pstColorC13{position:absolute;width: 3%;height: 9%;left: 58%;top: 73%;background-color: #43ca17}
-  .pstColorC14{position:absolute;width: 3%;height: 9%;left: 62%;top: 73%;background-color: #43ca17}
-  .pstColorC15{position:absolute;width: 3%;height: 9%;left: 65%;top: 73%;background-color: #43ca17}
-  .pstColorC16{position:absolute;width: 3%;height: 9%;left: 69%;top: 73%;background-color: #43ca17}
-  .pstColorC17{position:absolute;width: 3%;height: 9%;left: 73%;top: 73%;background-color: #43ca17}
-  .pstColorC19{position:absolute;width: 3%;height: 9%;left: 80%;top: 73%;background-color: #43ca17}
-  .pstColorC20{position:absolute;width: 3%;height: 9%;left: 84%;top: 73%;background-color: #43ca17}
-  .pstColorC21{position:absolute;width: 3%;height: 9%;left: 84%;top: 12%;background-color: #43ca17}
-  .pstColorC23{position:absolute;width: 3%;height: 9%;left: 77%;top: 12%;background-color: #43ca17}
-  .pstColorC24{position:absolute;width: 3%;height: 9%;left: 72%;top: 12%;background-color: #43ca17}
-  .pstColorC26{position:absolute;width: 3%;height: 9%;left: 65%;top: 12%;background-color: #43ca17}
-  .pstColorC28{position:absolute;width: 3%;height: 9%;left: 57%;top: 12%;background-color: #43ca17}
-  .pstColorC30{position:absolute;width: 3%;height: 9%;left: 50%;top: 12%;background-color: #43ca17}
-  .pstColorC31{position:absolute;width: 3%;height: 9%;left: 46%;top: 12%;background-color: #43ca17}
-  .pstColorC35{position:absolute;width: 3%;height: 9%;left: 31%;top: 12%;background-color: #43ca17}
-  .pstColorC37{position:absolute;width: 3%;height: 9%;left: 24%;top: 12%;background-color: #43ca17}
-  .pstColorC40{position:absolute;width: 3%;height: 9%;left: 12%;top: 12%;background-color: #43ca17}
+  .condition {
+    box-sizing: border-box;
+    display: inline-block;
+    font-family: sans-serif;
+    margin: 0;
+  }
+}
+.simABC {
+  background: url(../../../assets/img/sim_abc.png);
+  background-repeat: no-repeat;
+  background-size: 255px 282px;
+  height: 290px;
+  width: 260px;
+}
+.simA {
+  background: url(../../../assets/img/SIMA.jpg);
+  background-repeat: no-repeat;
+  background-size: 255px 282px;
+  height: 290px;
+  width: 260px;
+}
+.simB {
+  background: url(../../../assets/img/SIMB.jpg);
+  background-repeat: no-repeat;
+  background-size: 255px 282px;
+  height: 290px;
+  width: 260px;
+}
+.simC {
+  background: url(../../../assets/img/SIMC.jpg);
+  background-repeat: no-repeat;
+  background-size: 255px 282px;
+  height: 290px;
+  width: 260px;
+}
+.simCDtl {
+  background: url(../../../assets/img/c21.png);
+  background-repeat: no-repeat;
+  background-size: 255px 282px;
+  height: 290px;
+  width: 260px;
+  position: absolute;
+  left: 65%;
+  top: 380px;
+}
+.gi5Class {
+  background: url(../../../assets/img/LF_5GI.png);
+  background-repeat: no-repeat;
+  background-size: 60% 95%;
+  height: 224px;
+  width: 116px;
+  margin-top: -15%;
+  margin-left: 12.5%;
+}
+.gi6Class {
+  background: url(../../../assets/img/LF_6GI.png);
+  background-repeat: no-repeat;
+  background-size: 60% 95%;
+  height: 224px;
+  width: 116px;
+  margin-top: -15%;
+  margin-left: 12.5%;
+}
+.giDtl {
+  background: url(../../../assets/img/56GI_PST.png);
+  background-repeat: no-repeat;
+  background-size: 255px 282px;
+  height: 290px;
+  width: 260px;
+  position: absolute;
+  left: 65%;
+  top: 300px;
+}
+.gi5Dtl {
+  background: url(../../../assets/img/5GI_PST.png);
+  background-repeat: no-repeat;
+  background-size: 255px 282px;
+  height: 290px;
+  width: 260px;
+  position: absolute;
+  left: 65%;
+  top: 300px;
+}
+.gi6Dtl {
+  background: url(../../../assets/img/6GI_PST.png);
+  background-repeat: no-repeat;
+  background-size: 255px 282px;
+  height: 290px;
+  width: 260px;
+  position: absolute;
+  left: 65%;
+  top: 300px;
+}
+.sxAll {
+  height: 100%;
+  width: 28%;
+  position: relative;
+  margin-top: -18%;
+  margin-left: 0%;
+}
+.sxAClass {
+  height: 174px;
+  width: 220px;
+  position: absolute;
+}
+.sxBClass {
+  height: 174px;
+  width: 220px;
+  left: 260px;
+  position: absolute;
+}
+.sxCClass {
+  height: 156px;
+  width: 256px;
+  position: absolute;
+  top: 200px;
+}
+.sxDClass {
+  height: 70px;
+  width: 260px;
+  position: absolute;
+  top: 243px;
+  left: 260px;
+}
+.sxAImg {
+  background: url(../../../assets/img/sxA.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 100%;
+  width: 100%;
+}
+.sxBImg {
+  background: url(../../../assets/img/sxB.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 100%;
+  width: 100%;
+}
+.sxCImg {
+  background: url(../../../assets/img/sxC.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 100%;
+  width: 100%;
+}
+.sxDImg {
+  background: url(../../../assets/img/sxD.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 100%;
+  width: 100%;
+}
+.blkBg {
+  background-color: #0b1d2c;
+}
+.grnBg {
+  background-color: #43ca17;
+}
+.simAPST {
+  width: 7%;
+  height: 17%;
+  position: absolute;
+}
+.simBPST {
+  width: 7%;
+  height: 17%;
+  position: absolute;
+  margin-left: 8%;
+}
+.simCPST {
+  width: 10%;
+  height: 15%;
+  position: absolute;
+  margin-top: 9%;
+  margin-left: 2.5%;
+}
+.burrPST {
+  width: 32%;
+  height: 50%;
+  position: absolute;
+  left: 64%;
+  top: 44%;
+}
+.pinPST {
+  width: 40%;
+  height: 40%;
+  position: absolute;
+  margin-left: 60%;
+}
+.pinf2fPST {
+  width: 46%;
+  height: 42%;
+  position: absolute;
+  margin-top: -2%;
+  left: 6%;
+}
+.pinsPST {
+  width: 40%;
+  height: 50%;
+  position: absolute;
+  margin-left: 8%;
+  margin-top: 50%;
+}
+.gi56Border {
+  border: 5px solid #43ca17;
+}
+.simdtlText {
+  top: 80%;
+  width: 100%;
+  height: 20%;
+  position: absolute;
+  text-align: center;
+  line-height: 55px;
+  color: #43ca17;
+  font-size: xx-large;
+}
+.pstColorC1 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 12%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC2 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 16%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC3 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 20%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC4 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 24%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC5 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 28%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC6 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 31%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC7 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 35%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC8 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 39%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC9 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 43%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC10 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 46%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC11 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 50%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC12 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 54%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC13 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 58%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC14 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 62%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC15 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 65%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC16 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 69%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC17 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 73%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC19 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 80%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC20 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 84%;
+  top: 73%;
+  background-color: #43ca17;
+}
+.pstColorC21 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 84%;
+  top: 12%;
+  background-color: #43ca17;
+}
+.pstColorC23 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 77%;
+  top: 12%;
+  background-color: #43ca17;
+}
+.pstColorC24 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 72%;
+  top: 12%;
+  background-color: #43ca17;
+}
+.pstColorC26 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 65%;
+  top: 12%;
+  background-color: #43ca17;
+}
+.pstColorC28 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 57%;
+  top: 12%;
+  background-color: #43ca17;
+}
+.pstColorC30 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 50%;
+  top: 12%;
+  background-color: #43ca17;
+}
+.pstColorC31 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 46%;
+  top: 12%;
+  background-color: #43ca17;
+}
+.pstColorC35 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 31%;
+  top: 12%;
+  background-color: #43ca17;
+}
+.pstColorC37 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 24%;
+  top: 12%;
+  background-color: #43ca17;
+}
+.pstColorC40 {
+  position: absolute;
+  width: 3%;
+  height: 9%;
+  left: 12%;
+  top: 12%;
+  background-color: #43ca17;
+}
 </style>

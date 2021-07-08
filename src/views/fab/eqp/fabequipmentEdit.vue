@@ -49,10 +49,10 @@
         </w-form>
       </el-tab-pane>
       <el-tab-pane label="已绑定传感器" name="bindSorsen">
-        <w-edt-table v-slot="{}" ref="language" v-bind="table" url="/fab/fabequipment/AoutAddSensor">
+        <w-edt-table v-slot="{}" ref="language" v-bind="table" url="">
           <w-table-col name="sensorType" label="传感器类型" align="center">
             <!-- <el-input v-model="table.model.sensorType" /> -->
-            <w-select-dic v-model="table.model.sensorType" label="是否生成绑定传感器" dict="SFYN" />
+            <w-select-dic v-model="table.model.sensorType" />
           </w-table-col>
           <w-table-col name="sensorNum" label="传感器编号" align="center">
             <el-input v-model="table.model.sensorNum" />
@@ -122,6 +122,11 @@ export default {
   },
   methods: {
     onFormLoadData(m) {
+      console.log(m.modelId)
+      if (m.isBindCreated === 'Y') {
+        this.createSensor(m.isBindCreated, m.modelId)
+      }
+
       if (m.officeId) {
         m.officeIds = m.officeId.split(',')
       }
@@ -139,9 +144,10 @@ export default {
     onDisplayChange(e) {
       this.model.modelName = e
     },
-    handleClick() {
-      return request({ url: 'fab/fabequipment/SensorList/TEST1', methods: 'get' }).then((res) => {
-        console.log(res)
+    handleClick() {},
+    createSensor(isBind, modleId) {
+      return request({ url: `fab/fabequipment/AoutAddSensor/${isBind}/${modleId}`, methods: 'get' }).then((res) => {
+        this.table.model = { ...res.data.results }
       })
     }
   }

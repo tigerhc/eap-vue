@@ -2,38 +2,28 @@
   <div class="Rtplotyieldday">
     <el-form ref="form" :model="form" :inline="true" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="5">
-          <el-form-item prop="station_code">
-            <el-select v-model="form.eqpId" filterable placeholder="请选择设备">
-              <el-option v-for="item in list" :key="item.eqpId" :label="item.eqpName" :value="item.eqpId" />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="5">
-          <el-form-item prop="station_code">
-            <el-select v-model="type" filterable placeholder="请选择类型">
-              <el-option v-for="item in list2" :key="item.value" :label="item.label" :value="item.value" />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="10">
-          <el-form-item prop="dateTime">
-            <el-date-picker
-              v-model="dateTime"
-              type="daterange"
-              value-format="yyyy-MM-dd"
-              range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="1">
-          <el-button type="primary" @click="search">查询</el-button>
-        </el-col>
-        <el-col :span="1">
-          <el-button type="primary" @click="finddetail">导出</el-button>
-        </el-col>
+        <el-form-item prop="station_code">
+          <el-select v-model="form.eqpId" filterable placeholder="请选择设备">
+            <el-option v-for="item in list" :key="item.eqpId" :label="item.eqpName" :value="item.eqpId" />
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="station_code">
+          <el-select v-model="type" filterable placeholder="请选择类型">
+            <el-option v-for="item in list2" :key="item.value" :label="item.label" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="dateTime">
+          <el-date-picker
+            v-model="dateTime"
+            type="daterange"
+            value-format="yyyy-MM-dd"
+            range-separator="-"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          />
+        </el-form-item>
+        <el-button type="primary" @click="search">查询</el-button>
+        <el-button type="primary" @click="finddetail">导出</el-button>
       </el-row>
     </el-form>
     <div id="main" style="width: 95%; height: 550px" />

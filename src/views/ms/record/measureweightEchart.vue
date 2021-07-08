@@ -1,15 +1,13 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="condition-panel">
-      <el-form class="form">
-        <el-col :span="3">
+      <el-form :inline="true" class="form">
+        <el-row>
           <el-form-item>
             <div class="condition">
               <input v-model="chartParam.lotNo" type="text" placeholder="批号" class="el-input__inner" >
             </div>
           </el-form-item>
-        </el-col>
-        <el-col :span="5">
           <el-form-item>
             <el-select
               v-model="productionNo"
@@ -37,46 +35,46 @@
               />
             </el-select>
           </el-form-item>
-        </el-col>
-        <el-col :span="7">
-          <el-date-picker
-            v-model="dateTime"
-            type="daterange"
-            value-format="yyyy-MM-dd"
-            range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            class="dateTimeClass"
-          />
-        </el-col>
+          <el-form-item>
+            <el-date-picker
+              v-model="dateTime"
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="-"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              class="wider"
+            />
+          </el-form-item>
+          <button
+            type="button"
+            class="el-button el-button--primary el-button--medium filter-item"
+            style="margin-left: 10px"
+            @click="searchClick"
+          >
+            <i class="el-icon-search" />
+            <span>搜索</span>
+          </button>
+          <button
+            type="button"
+            class="el-button el-button--primary el-button--medium filter-item"
+            style="margin-left: 10px"
+            @click="refreshClick"
+          >
+            <i class="el-icon-refresh" />
+            <span>清空</span>
+          </button>
+          <button
+            type="button"
+            class="el-button el-button--primary el-button--medium filter-item"
+            style="margin-left: 10px"
+            @click="finddetail"
+          >
+            <i class="el-icon-refresh" />
+            <span>导出</span>
+          </button>
+        </el-row>
       </el-form>
-      <button
-        type="button"
-        class="el-button el-button--primary el-button--medium filter-item"
-        style="margin-left: 10px"
-        @click="searchClick"
-      >
-        <i class="el-icon-search" />
-        <span>搜索</span>
-      </button>
-      <button
-        type="button"
-        class="el-button el-button--primary el-button--medium filter-item"
-        style="margin-left: 10px"
-        @click="refreshClick"
-      >
-        <i class="el-icon-refresh" />
-        <span>清空</span>
-      </button>
-      <button
-        type="button"
-        class="el-button el-button--primary el-button--medium filter-item"
-        style="margin-left: 10px"
-        @click="finddetail"
-      >
-        <i class="el-icon-refresh" />
-        <span>导出</span>
-      </button>
     </div>
     <div class="echAppPanel">
       <div id="echApp" :style="{ width: '60%', height: '100%', position: 'relative', float: 'left' }" />

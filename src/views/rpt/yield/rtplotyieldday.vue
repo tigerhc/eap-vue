@@ -2,44 +2,38 @@
   <div class="Rtplotyieldday">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="6">
-          <el-form-item prop="lineNo">
-            <el-select v-model="form.lineNo" placeholder="请选择线别" @change="ValueChange(1)">
-              <el-option
-                v-for="item in lineNoOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-                :disabled="item.disabled"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item prop="station_code">
-            <el-select v-model="form.station_code" filterable placeholder="请选择站别">
-              <el-option
-                v-for="item in noList"
-                :key="item.station_code"
-                :label="item.station_code"
-                :value="item.station_code"
-              />
-            </el-select>
-            <!--            <w-select :str="form.productionNo" :multiple="true" :disabled="false" @input="onNoChange($event)"/>-->
-          </el-form-item>
-        </el-col>
-        <el-col :span="9">
-          <el-form-item prop="dateTime">
-            <el-date-picker
-              v-model="form.dateTime"
-              type="daterange"
-              value-format="yyyy-MM-dd"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+        <el-form-item prop="lineNo">
+          <el-select v-model="form.lineNo" placeholder="请选择线别" @change="ValueChange(1)">
+            <el-option
+              v-for="item in lineNoOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              :disabled="item.disabled"
             />
-          </el-form-item>
-        </el-col>
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="station_code">
+          <el-select v-model="form.station_code" filterable placeholder="请选择站别">
+            <el-option
+              v-for="item in noList"
+              :key="item.station_code"
+              :label="item.station_code"
+              :value="item.station_code"
+            />
+          </el-select>
+          <!--            <w-select :str="form.productionNo" :multiple="true" :disabled="false" @input="onNoChange($event)"/>-->
+        </el-form-item>
+        <el-form-item prop="dateTime">
+          <el-date-picker
+            v-model="form.dateTime"
+            type="daterange"
+            value-format="yyyy-MM-dd"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          />
+        </el-form-item>
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>
     </el-form>

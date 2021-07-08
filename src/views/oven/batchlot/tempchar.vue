@@ -2,31 +2,25 @@
   <div id="tempchar" class="tempchar">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="7">
-          <el-form-item label="设备号:" prop="eqpId">
-            <div class="condition">
-              <el-select v-model="form.eqpId" clearable @change="changeImg">
-                <el-option v-for="item in tempEqpId" :key="item.eqpId" :label="item.eqpName" :value="item.eqpId" />
-              </el-select>
-            </div>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="日期:" prop="dateTime">
-            <el-date-picker
-              v-model="form.dateTime"
-              type="daterange"
-              value-format="yyyy-MM-dd"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col :span="5">
-          <el-button type="primary" @click="search">查询</el-button>
-          <el-button type="primary" @click="searchLine"> {{ searchBtn }} </el-button>
-        </el-col>
+        <el-form-item label="设备号:" prop="eqpId">
+          <div class="condition">
+            <el-select v-model="form.eqpId" clearable @change="changeImg">
+              <el-option v-for="item in tempEqpId" :key="item.eqpId" :label="item.eqpName" :value="item.eqpId" />
+            </el-select>
+          </div>
+        </el-form-item>
+        <el-form-item label="日期:" prop="dateTime">
+          <el-date-picker
+            v-model="form.dateTime"
+            type="daterange"
+            value-format="yyyy-MM-dd"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          />
+        </el-form-item>
+        <el-button type="primary" @click="search">查询</el-button>
+        <el-button type="primary" @click="searchLine"> {{ searchBtn }} </el-button>
       </el-row>
     </el-form>
     <el-tabs v-model="editableTabsValue" type="card" @tab-click="loadTempDataPart">
@@ -330,7 +324,11 @@ export default {
         this.form.eqpId === 'SX-FREEZER1'
       ) {
         this.picUrl = this.form.eqpId
-        this.picUrlDetail = this.picUrl.replace('APJ-', 'DETAIL-').replace('SIM-', 'DETAIL-').replace('SMA-', 'DETAIL-').replace('SX-', 'DETAIL-')
+        this.picUrlDetail = this.picUrl
+          .replace('APJ-', 'DETAIL-')
+          .replace('SIM-', 'DETAIL-')
+          .replace('SMA-', 'DETAIL-')
+          .replace('SX-', 'DETAIL-')
         this.tempEchart = 'unEqpTemp'
       } else {
         this.tempEchart = 'eqpTemp'

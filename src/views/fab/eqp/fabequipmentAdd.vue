@@ -36,7 +36,6 @@
   </div>
 </template>
 <script>
-// import request from '@/utils/request'
 import dateFormat from '@/utils/dateformat'
 
 export default {
@@ -105,6 +104,7 @@ export default {
               })
             }
           }
+
           if (params.officeIds) {
             params.officeIds = params.officeIds.join(',')
             params.officeId = params.officeIds
@@ -126,6 +126,11 @@ export default {
     onDisplayChange(e) {
       this.model.modelName = e
     }
+    // createSensor(isBind, modleId) {
+    //   return request({ url: `fab/fabequipment/AoutAddSensor/Y/25`, methods: 'get' }).then((res) => {
+    //     this.model.arr = { ...res.result }
+    //   })
+    // }
   }
 }
 </script>

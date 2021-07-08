@@ -59,7 +59,7 @@
       </el-form>
     </div>
     <div class="frame">
-      <div id="main" style="width: 65%; height: 600px; overflow: hidden" />
+      <div id="main" style="width: 65%; height: 500px; overflow: hidden; margin-top: 5%" />
       <img
         v-show="form1.lineNo !== 'SIM' && form1.lineNo !== '5GI' && form1.lineNo !== '6GI' && form1.lineNo !== 'SX'"
         id="mainImg"
@@ -351,6 +351,8 @@ export default {
       })
       this.form.productionName = ''
       this.form.local = ''
+      this.series = []
+      this.initChart()
     },
     search() {
       if (this.form.local === 'd') {
@@ -408,7 +410,7 @@ export default {
       findSxNumber(params).then((res) => {
         this.data = res.data[0]
         this.series = res.data[1]
-        this.min = res.data[2].min
+        // this.min = res.data[2].min
         this.initChart()
       })
     },
@@ -676,12 +678,27 @@ export default {
         },
         yAxis: {
           type: 'value',
-          min: this.min,
+          // min: this.min,
           axisLabel: {
             formatter: this.formatter
+          },
+          // max: (value) => {
+          //   let num = 10 ** (value.max.toString().length - 2)
+          //   return Math.ceil(value.max / num) * num + 3 * num
+          // }
+          max: (value) => {
+            var myMax = value.max + (value.max - value.min) * 0.2
+            return parseFloat(myMax).toFixed(2)
+          },
+          min: (value) => {
+            var myMin = value.min - (value.max - value.min) * 0.2
+            return parseFloat(myMin).toFixed(2)
           }
         },
         series: this.series
+      }
+      if (this.form.productionName === '') {
+        option.series = []
       }
       this.myChart.setOption(option)
       // if (option && typeof option === 'object') {
@@ -708,446 +725,450 @@ export default {
     font-family: sans-serif;
     margin: 0;
   }
-}
-.simABC {
-  background: url(../../../assets/img/sim_abc.png);
-  background-repeat: no-repeat;
-  background-size: 255px 282px;
-  height: 290px;
-  width: 260px;
-}
-.simA {
-  background: url(../../../assets/img/SIMA.jpg);
-  background-repeat: no-repeat;
-  background-size: 255px 282px;
-  height: 290px;
-  width: 260px;
-}
-.simB {
-  background: url(../../../assets/img/SIMB.jpg);
-  background-repeat: no-repeat;
-  background-size: 255px 282px;
-  height: 290px;
-  width: 260px;
-}
-.simC {
-  background: url(../../../assets/img/SIMC.jpg);
-  background-repeat: no-repeat;
-  background-size: 255px 282px;
-  height: 290px;
-  width: 260px;
-}
-.simCDtl {
-  background: url(../../../assets/img/c21.png);
-  background-repeat: no-repeat;
-  background-size: 255px 282px;
-  height: 290px;
-  width: 260px;
-  position: absolute;
-  left: 65%;
-  top: 380px;
-}
-.gi5Class {
-  background: url(../../../assets/img/LF_5GI.png);
-  background-repeat: no-repeat;
-  background-size: 60% 95%;
-  height: 224px;
-  width: 116px;
-  margin-top: -15%;
-  margin-left: 12.5%;
-}
-.gi6Class {
-  background: url(../../../assets/img/LF_6GI.png);
-  background-repeat: no-repeat;
-  background-size: 60% 95%;
-  height: 224px;
-  width: 116px;
-  margin-top: -15%;
-  margin-left: 12.5%;
-}
-.giDtl {
-  background: url(../../../assets/img/56GI_PST.png);
-  background-repeat: no-repeat;
-  background-size: 255px 282px;
-  height: 290px;
-  width: 260px;
-  position: absolute;
-  left: 65%;
-  top: 300px;
-}
-.gi5Dtl {
-  background: url(../../../assets/img/5GI_PST.png);
-  background-repeat: no-repeat;
-  background-size: 255px 282px;
-  height: 290px;
-  width: 260px;
-  position: absolute;
-  left: 65%;
-  top: 300px;
-}
-.gi6Dtl {
-  background: url(../../../assets/img/6GI_PST.png);
-  background-repeat: no-repeat;
-  background-size: 255px 282px;
-  height: 290px;
-  width: 260px;
-  position: absolute;
-  left: 65%;
-  top: 300px;
-}
-.sxAll {
-  height: 100%;
-  width: 28%;
-  position: relative;
-  margin-top: -18%;
-  margin-left: 0%;
-}
-.sxAClass {
-  height: 174px;
-  width: 220px;
-  position: absolute;
-}
-.sxBClass {
-  height: 174px;
-  width: 220px;
-  left: 260px;
-  position: absolute;
-}
-.sxCClass {
-  height: 156px;
-  width: 256px;
-  position: absolute;
-  top: 200px;
-}
-.sxDClass {
-  height: 70px;
-  width: 260px;
-  position: absolute;
-  top: 243px;
-  left: 260px;
-}
-.sxAImg {
-  background: url(../../../assets/img/sxA.png);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  height: 100%;
-  width: 100%;
-}
-.sxBImg {
-  background: url(../../../assets/img/sxB.png);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  height: 100%;
-  width: 100%;
-}
-.sxCImg {
-  background: url(../../../assets/img/sxC.png);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  height: 100%;
-  width: 100%;
-}
-.sxDImg {
-  background: url(../../../assets/img/sxD.png);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  height: 100%;
-  width: 100%;
-}
-.blkBg {
-  background-color: #0b1d2c;
-}
-.grnBg {
-  background-color: #43ca17;
-}
-.simAPST {
-  width: 7%;
-  height: 17%;
-  position: absolute;
-}
-.simBPST {
-  width: 7%;
-  height: 17%;
-  position: absolute;
-  margin-left: 8%;
-}
-.simCPST {
-  width: 10%;
-  height: 15%;
-  position: absolute;
-  margin-top: 9%;
-  margin-left: 2.5%;
-}
-.burrPST {
-  width: 32%;
-  height: 50%;
-  position: absolute;
-  left: 64%;
-  top: 44%;
-}
-.pinPST {
-  width: 40%;
-  height: 40%;
-  position: absolute;
-  margin-left: 60%;
-}
-.pinf2fPST {
-  width: 46%;
-  height: 42%;
-  position: absolute;
-  margin-top: -2%;
-  left: 6%;
-}
-.pinsPST {
-  width: 40%;
-  height: 50%;
-  position: absolute;
-  margin-left: 8%;
-  margin-top: 50%;
-}
-.gi56Border {
-  border: 5px solid #43ca17;
-}
-.simdtlText {
-  top: 80%;
-  width: 100%;
-  height: 20%;
-  position: absolute;
-  text-align: center;
-  line-height: 55px;
-  color: #43ca17;
-  font-size: xx-large;
-}
-.pstColorC1 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 12%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC2 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 16%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC3 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 20%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC4 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 24%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC5 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 28%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC6 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 31%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC7 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 35%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC8 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 39%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC9 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 43%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC10 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 46%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC11 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 50%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC12 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 54%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC13 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 58%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC14 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 62%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC15 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 65%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC16 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 69%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC17 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 73%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC19 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 80%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC20 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 84%;
-  top: 73%;
-  background-color: #43ca17;
-}
-.pstColorC21 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 84%;
-  top: 12%;
-  background-color: #43ca17;
-}
-.pstColorC23 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 77%;
-  top: 12%;
-  background-color: #43ca17;
-}
-.pstColorC24 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 72%;
-  top: 12%;
-  background-color: #43ca17;
-}
-.pstColorC26 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 65%;
-  top: 12%;
-  background-color: #43ca17;
-}
-.pstColorC28 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 57%;
-  top: 12%;
-  background-color: #43ca17;
-}
-.pstColorC30 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 50%;
-  top: 12%;
-  background-color: #43ca17;
-}
-.pstColorC31 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 46%;
-  top: 12%;
-  background-color: #43ca17;
-}
-.pstColorC35 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 31%;
-  top: 12%;
-  background-color: #43ca17;
-}
-.pstColorC37 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 24%;
-  top: 12%;
-  background-color: #43ca17;
-}
-.pstColorC40 {
-  position: absolute;
-  width: 3%;
-  height: 9%;
-  left: 12%;
-  top: 12%;
-  background-color: #43ca17;
+  .simABC {
+    background: url(../../../assets/img/sim_abc.png);
+    background-repeat: no-repeat;
+    background-size: 255px 282px;
+    height: 290px;
+    width: 260px;
+    margin-top: -15%;
+  }
+  .simA {
+    background: url(../../../assets/img/SIMA.jpg);
+    background-repeat: no-repeat;
+    background-size: 255px 282px;
+    height: 290px;
+    width: 260px;
+    margin-top: -15%;
+  }
+  .simB {
+    background: url(../../../assets/img/SIMB.jpg);
+    background-repeat: no-repeat;
+    background-size: 255px 282px;
+    height: 290px;
+    width: 260px;
+    margin-top: -15%;
+  }
+  .simC {
+    background: url(../../../assets/img/SIMC.jpg);
+    background-repeat: no-repeat;
+    background-size: 255px 282px;
+    height: 290px;
+    width: 260px;
+    margin-top: -15%;
+  }
+  .simCDtl {
+    background: url(../../../assets/img/c21.png);
+    background-repeat: no-repeat;
+    background-size: 255px 282px;
+    height: 290px;
+    width: 260px;
+    position: absolute;
+    left: 65%;
+    top: 34%;
+  }
+  .gi5Class {
+    background: url(../../../assets/img/LF_5GI.png);
+    background-repeat: no-repeat;
+    background-size: 60% 95%;
+    height: 224px;
+    width: 116px;
+    margin-top: -15%;
+    margin-left: 12.5%;
+  }
+  .gi6Class {
+    background: url(../../../assets/img/LF_6GI.png);
+    background-repeat: no-repeat;
+    background-size: 60% 95%;
+    height: 224px;
+    width: 116px;
+    margin-top: -15%;
+    margin-left: 12.5%;
+  }
+  .giDtl {
+    background: url(../../../assets/img/56GI_PST.png);
+    background-repeat: no-repeat;
+    background-size: 255px 282px;
+    height: 290px;
+    width: 260px;
+    position: absolute;
+    left: 65%;
+    top: 300px;
+  }
+  .gi5Dtl {
+    background: url(../../../assets/img/5GI_PST.png);
+    background-repeat: no-repeat;
+    background-size: 255px 282px;
+    height: 290px;
+    width: 260px;
+    position: absolute;
+    left: 65%;
+    top: 300px;
+  }
+  .gi6Dtl {
+    background: url(../../../assets/img/6GI_PST.png);
+    background-repeat: no-repeat;
+    background-size: 255px 282px;
+    height: 290px;
+    width: 260px;
+    position: absolute;
+    left: 65%;
+    top: 300px;
+  }
+  .sxAll {
+    height: 100%;
+    width: 28%;
+    position: relative;
+    margin-top: -18%;
+    margin-left: 0%;
+  }
+  .sxAClass {
+    height: 174px;
+    width: 220px;
+    position: absolute;
+  }
+  .sxBClass {
+    height: 174px;
+    width: 220px;
+    left: 260px;
+    position: absolute;
+  }
+  .sxCClass {
+    height: 156px;
+    width: 256px;
+    position: absolute;
+    top: 200px;
+  }
+  .sxDClass {
+    height: 70px;
+    width: 260px;
+    position: absolute;
+    top: 243px;
+    left: 260px;
+  }
+  .sxAImg {
+    background: url(../../../assets/img/sxA.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: 100%;
+    width: 100%;
+  }
+  .sxBImg {
+    background: url(../../../assets/img/sxB.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: 100%;
+    width: 100%;
+  }
+  .sxCImg {
+    background: url(../../../assets/img/sxC.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: 100%;
+    width: 100%;
+  }
+  .sxDImg {
+    background: url(../../../assets/img/sxD.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: 100%;
+    width: 100%;
+  }
+  .blkBg {
+    background-color: #0b1d2c;
+  }
+  .grnBg {
+    background-color: #43ca17;
+  }
+  .simAPST {
+    width: 7%;
+    height: 17%;
+    position: absolute;
+  }
+  .simBPST {
+    width: 7%;
+    height: 17%;
+    position: absolute;
+    margin-left: 8%;
+  }
+  .simCPST {
+    width: 10%;
+    height: 15%;
+    position: absolute;
+    margin-top: 9%;
+    margin-left: 2.5%;
+  }
+  .burrPST {
+    width: 32%;
+    height: 50%;
+    position: absolute;
+    left: 64%;
+    top: 44%;
+  }
+  .pinPST {
+    width: 40%;
+    height: 40%;
+    position: absolute;
+    margin-left: 60%;
+  }
+  .pinf2fPST {
+    width: 46%;
+    height: 42%;
+    position: absolute;
+    margin-top: -2%;
+    left: 6%;
+  }
+  .pinsPST {
+    width: 40%;
+    height: 50%;
+    position: absolute;
+    margin-left: 8%;
+    margin-top: 50%;
+  }
+  .gi56Border {
+    border: 5px solid #43ca17;
+  }
+  .simdtlText {
+    top: 80%;
+    width: 100%;
+    height: 20%;
+    position: absolute;
+    text-align: center;
+    line-height: 55px;
+    color: #43ca17;
+    font-size: xx-large;
+  }
+  .pstColorC1 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 12%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC2 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 16%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC3 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 20%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC4 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 24%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC5 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 28%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC6 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 31%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC7 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 35%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC8 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 39%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC9 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 43%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC10 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 46%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC11 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 50%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC12 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 54%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC13 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 58%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC14 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 62%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC15 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 65%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC16 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 69%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC17 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 73%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC19 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 80%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC20 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 84%;
+    top: 73%;
+    background-color: #43ca17;
+  }
+  .pstColorC21 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 84%;
+    top: 12%;
+    background-color: #43ca17;
+  }
+  .pstColorC23 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 77%;
+    top: 12%;
+    background-color: #43ca17;
+  }
+  .pstColorC24 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 72%;
+    top: 12%;
+    background-color: #43ca17;
+  }
+  .pstColorC26 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 65%;
+    top: 12%;
+    background-color: #43ca17;
+  }
+  .pstColorC28 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 57%;
+    top: 12%;
+    background-color: #43ca17;
+  }
+  .pstColorC30 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 50%;
+    top: 12%;
+    background-color: #43ca17;
+  }
+  .pstColorC31 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 46%;
+    top: 12%;
+    background-color: #43ca17;
+  }
+  .pstColorC35 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 31%;
+    top: 12%;
+    background-color: #43ca17;
+  }
+  .pstColorC37 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 24%;
+    top: 12%;
+    background-color: #43ca17;
+  }
+  .pstColorC40 {
+    position: absolute;
+    width: 3%;
+    height: 9%;
+    left: 12%;
+    top: 12%;
+    background-color: #43ca17;
+  }
 }
 </style>

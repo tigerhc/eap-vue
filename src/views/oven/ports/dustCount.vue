@@ -93,6 +93,12 @@ export default {
     }
   },
   created() {
+    var now = new Date()
+    var endDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10)
+    var startDate = endDate.slice(0, 8) + '01'
+    this.form.beginTime = startDate
+    this.form.endTime = endDate
+    this.dateTime = [startDate, endDate]
     findDustEqps().then((res) => {
       this.list = res.data.eqps
     })
@@ -411,7 +417,7 @@ export default {
           {
             position: 'right',
             offset: 140,
-            max: 10000,
+            max: 8000,
             min: 0,
             // max: 400,
             type: 'value',
@@ -442,7 +448,7 @@ export default {
           {
             position: 'right',
             offset: 210,
-            max: 10000,
+            max: 8000,
             min: 0,
             type: 'value',
             name: '3μm',
@@ -458,7 +464,7 @@ export default {
           {
             position: 'right',
             offset: 280,
-            max: 10000,
+            max: 8000,
             min: 0,
             type: 'value',
             name: '5μm',
@@ -475,7 +481,7 @@ export default {
           {
             position: 'right',
             offset: 350,
-            max: 10000,
+            max: 8000,
             min: 0,
             type: 'value',
             // max: 30,
@@ -520,7 +526,7 @@ export default {
           {
             position: 'right',
             offset: 490,
-            max: 10000,
+            max: 8000,
             min: 0,
             type: 'value',
             name: '0.3μm',

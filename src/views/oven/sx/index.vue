@@ -307,7 +307,7 @@ export default {
       findSxNumber(params).then((res) => {
         this.data = res.data[0]
         this.series = res.data[1]
-        this.min = res.data[2].min
+        // this.min = res.data[2].min
         this.initChart()
       })
     },

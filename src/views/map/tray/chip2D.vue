@@ -183,9 +183,9 @@ export default {
           return
         }
         for (var i = 0; i < dataList.length; i++) {
-          if (dataList[i].eqpId === 'APJ-IGBT-3DAOI1') {
+          if (dataList[i].eqpId === 'APJ-IGBT-SMT1') {
             this.startIgbtData.push(dataList[i])
-          } else if (dataList[i].eqpId === 'APJ-FRD-3DAOI1') {
+          } else if (dataList[i].eqpId === 'APJ-FRD-SMT1') {
             this.startFrdData.push(dataList[i])
           } else if (dataList[i].eqpId.indexOf('IGBT') > 0 || dataList[i].eqpId.indexOf('FRD') > 0) {
             this.igbtFrdList.push(dataList[i])
@@ -207,6 +207,23 @@ export default {
           }
         }
         this.loadIgbtFrd()
+
+        // 对HB1段的数据处理
+        var beforeHb1Cnt = this.igbtLine1.length + this.igbtLine2.length + this.igbtLine3.length + this.igbtLine4.length + this.igbtLine5.length + this.igbtLine6.length +
+          this.frdLine1.length + this.frdLine2.length + this.frdLine3.length + this.frdLine4.length + this.frdLine5.length + this.frdLine6.length
+        if (beforeHb1Cnt === 0 && this.hb1List.length > 0) {
+          this.handleSingleHb1()
+        } else if (beforeHb1Cnt === 0 && dataList.length === 1) {
+          if (dataList[0].eqpId.indexOf('IGBT') > -1) {
+            this.lineArrAddObj(1, 'IGBT', dataList[0])
+          } else if (dataList[0].eqpId.indexOf('FRD') > -1) {
+            this.lineArrAddObj(1, 'FRD', dataList[0])
+          } else if (dataList[0].eqpId.indexOf('DBCB') > -1) {
+            this.dbcbLine.push(dataList[0])
+          } else if (dataList[0].eqpId.indexOf('DBCT') > -1) {
+            this.dbctLine.push(dataList[0])
+          }
+        }
       })
     },
     loadIgbtFrd() {
@@ -244,7 +261,7 @@ export default {
         if (this.startFrdData.length > 0) {
           var lineIndex3 = 0
           var curObj2 = {}
-          for (var m = 0; m < this.startIgbtData.length; m++) {
+          for (var m = 0; m < this.startFrdData.length; m++) {
             // 开始节点
             lineIndex3 = lineIndex3 + 1
             this.lineArrAddObj(lineIndex3, 'FRD', this.startFrdData[m])
@@ -270,6 +287,17 @@ export default {
               }
             }
           }
+        }
+      }
+    },
+    handleSingleHb1() {
+      for (var i = 0; i < this.hb1List.length; i++) {
+        var fromTrayId = this.hb1List[i].fromTrayId
+        var toTrayId = this.hb1List[i].toTrayId
+        if ((fromTrayId !== null && fromTrayId.indexOf('J0010') > -1) || (toTrayId !== null && toTrayId.indexOf('J0010') > -1)) {
+          this.lineArrAddObj(1, 'IGBT', this.hb1List[i])
+        } else if ((fromTrayId !== null && fromTrayId.indexOf('J0011') > -1) || (toTrayId !== null && toTrayId.indexOf('J0011') > -1)) {
+          this.lineArrAddObj(1, 'FRD', this.hb1List[i])
         }
       }
     },

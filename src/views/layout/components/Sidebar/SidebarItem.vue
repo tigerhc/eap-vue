@@ -131,6 +131,9 @@ export default {
 /deep/ .el-icon-arrow-down {
   color: #fff;
 }
+/deep/ .el-scrollbar__wrap {
+  overflow: auto;
+}
 // .menu-wrapper:hover {
 //   background: #1951be;
 // }

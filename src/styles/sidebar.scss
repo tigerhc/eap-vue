@@ -25,7 +25,7 @@
     }
 
     .scrollbar-wrapper {
-      overflow-x: hidden !important;
+      overflow-x: auto !important;
     }
 
     .el-scrollbar__bar.is-vertical {
@@ -41,7 +41,9 @@
         height: calc(100% - 50px);
       }
     }
-
+    .el-scrollbar__wrap {
+      overflow: auto !important;
+    }
     .is-horizontal {
       display: none;
     }

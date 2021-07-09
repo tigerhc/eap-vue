@@ -247,4 +247,10 @@ export default {
     }
   }
 }
+.scrollbar-wrapper {
+  overflow-x: auto !important;
+}
+.el-scrollbar__wrap {
+  overflow: auto !important;
+}
 </style>

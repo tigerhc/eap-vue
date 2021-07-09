@@ -9,7 +9,7 @@
       <!--<w-table-col name="op" fixed width="200" />-->
       <!--<w-table-toolbar name="add" url="views/fab/eqpmodel/eqpmodelAdd" />-->
       <!--<w-table-toolbar hidden name="batchDelete" />-->
-      <w-table-toolbar name="dowhat" label="干啥" icon="el-icon-setting" type="warning" />
+<!--      <w-table-toolbar name="dowhat" label="干啥" icon="el-icon-setting" type="warning" />-->
       <w-table-button name="stop" icon="el-icon-setting" tip="确认终止？" label="终止" />
       <w-table-button name="test" icon="el-icon-setting" fold label="终止(fold)" />
     </w-table>

@@ -88,7 +88,7 @@ export default {
     }
     const dlg = (
       <el-dialog {...dialogConf}>
-        <div style='height:440px;overflow-y:auto'>
+        <div style='overflow-y:auto'>
           <Com ref='list' />
         </div>
         <div slot='footer' class='dialog-footer'>
@@ -116,3 +116,9 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+/deep/ .el-dialog__header {
+  background-color: #f1f1f1;
+  padding: 20px;
+}
+</style>

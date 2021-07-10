@@ -1474,6 +1474,7 @@
   color: #2d2f33;
 }
 .custom-theme .el-dialog__body {
+  height: 100px;
   padding: 30px 20px;
   color: #5a5e66;
   line-height: 24px;
@@ -6533,6 +6534,7 @@
   overflow: hidden;
   z-index: 3;
 }
+
 .custom-theme .el-table__body-wrapper,
 .custom-theme .el-table__footer-wrapper,
 .custom-theme .el-table__header-wrapper {

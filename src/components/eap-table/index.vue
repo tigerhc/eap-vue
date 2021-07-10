@@ -801,8 +801,8 @@ export default {
       style: {
         width: '100%',
         minHeight: this.hiddenQuery
-          ? 'calc(65vh - 84px - 96px - 42px - 1px )'
-          : 'calc(65vh - 84px - 96px - 42px - 46px - 1px )'
+          ? 'calc(77vh - 84px - 96px - 42px - 1px )'
+          : 'calc(77vh - 84px - 96px - 42px - 46px - 1px )'
       },
       key: this.tableKey,
       ref: 'table',
@@ -920,7 +920,7 @@ export default {
           {this.renderQuery(h)}
           {this.renderToobar()}
         </div>
-        <el-table {...tableConf} v-loading={this.isLoading}>
+        <el-table {...tableConf} v-loading={this.isLoading} height='250px'>
           {allCols}
         </el-table>
         {pagination}
@@ -946,8 +946,4 @@ function isHidden(conf) {
 .jk-table-container {
   min-height: calc(100vh - 84px);
 }
-/*96.4px 所以后面又减了1*/
-/*.el-table{*/
-/*  min-height: calc(100vh - 84px - 96px - 42px - 1px ) ;*/
-/*}*/
 </style>

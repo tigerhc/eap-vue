@@ -31,6 +31,7 @@
         name="eqpModelId"
         label="设备型号ID"
         hidden
+        hiddenquery
         dict
         query
         url="/fab/fabequipmentmodel/list"
@@ -96,8 +97,8 @@
 
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
       <!--      <w-table-toolbar name="uploadRecipe" label="上传recipe" type="primary" tip="上传recipe？" icon="el-icon-circle-plus-outline" />-->
-      <!--      <w-table-toolbar name="downloadRecipe" label="下载recipe" type="primary" tip="下载recipe？" icon="fa-download" />-->
       <w-table-toolbar name="uploadRecipe" label="上传recipe" type="primary" icon="el-icon-circle-plus-outline" />
+      <w-table-toolbar name="downloadRecipe" label="下载recipe" type="primary" tip="下载recipe？" icon="fa-download" />
       <w-table-toolbar name="bdRecipe" label="比对recipe" type="primary" icon="el-icon-circle-plus-outline" />
       <w-table-button name="edit" label="升级" url="views/rms/recipe/rmsrecipeEdit" icon="el-icon-setting" />
       <!--<w-table-button v-if="row.approveStep === 0 && row.status !== 'Y'" name="enable" label="启用" tip="确认启用？" icon="el-icon-bell" />-->

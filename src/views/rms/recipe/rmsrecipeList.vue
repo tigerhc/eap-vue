@@ -383,7 +383,7 @@ export default {
         recipe = recipe + '@' + oary[i]
       }
       request({
-        url: 'rms2/rmsrecipe/uploadrecipe',
+        url: 'rms/rmsrecipe/uploadrecipe',
         method: 'post',
         params: {
           eqpId: this.uploadRecipe1.eqpId,
@@ -470,7 +470,7 @@ export default {
         })
       } else {
         request({
-          url: '/rms2/rmsrecipe/getRecipeList',
+          url: '/rms/rmsrecipe/getRecipeList',
           method: 'get',
           params: {
             eqpId: this.eqpIdSel

@@ -14,7 +14,7 @@
       :default-openeds="openeds"
       style="height: 90%"
       mode="vertical"
-      background-color="#053084"
+      background-color="#263238"
       text-color="#ffffff"
       active-text-color="#409EFF"
     >
@@ -65,7 +65,7 @@ export default {
   }
 }
 </script>
-<style lang="scss"  scoped>
+<style lang="scss" scoped>
 .header-sidebar {
   padding-left: 24px;
   display: flex;

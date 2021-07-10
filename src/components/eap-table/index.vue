@@ -678,6 +678,7 @@ export default {
           width='200'
           label={this.$t('table.actions')}
           class-name='small-padding fixed-width'
+          show-overflow-tooltip
         />
       )
     },
@@ -897,7 +898,7 @@ export default {
           }
         }
       }
-      return <el-table-column {...conf} key={col.id} />
+      return <el-table-column {...conf} key={col.id} show-overflow-tooltip />
     })
     const renderDeft = Object.keys(deft).map((key) => {
       if (key === 'op') {
@@ -910,7 +911,7 @@ export default {
       const atr = {
         props: { ...conf }
       }
-      return <el-table-column {...atr} />
+      return <el-table-column {...atr} show-overflow-tooltip />
     })
     const allCols = [...renderDeft, ...renderCol, deft.op && this.renderButtons(deft.op)]
     return (

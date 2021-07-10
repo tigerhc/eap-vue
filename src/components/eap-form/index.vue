@@ -215,7 +215,10 @@ export default {
         const { label } = { ...attrs, ...propsData }
         if (tag && label && expression) {
           let [path = ''] = expression.match(/(?![^\.]).*/g)
-          path = path.split('.').filter(Boolean).join('.')
+          path = path
+            .split('.')
+            .filter(Boolean)
+            .join('.')
           return (
             <el-form-item label={label} prop={path}>
               {v}
@@ -306,8 +309,9 @@ export default {
     height: 50px;
     border-bottom: 1px solid #eee;
     padding: 13px 10px 1px 15px;
-    font-size: 16px;
+    font-size: 20px;
     margin-bottom: 20px;
+    font-weight: bold;
   }
 }
 </style>

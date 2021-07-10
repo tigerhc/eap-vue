@@ -6,43 +6,55 @@
       <el-input v-model="model.updateDate" :disabled="true" label="更新时间" />
     </w-form>
     <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
-    <w-edt-table v-slot="{row}" ref="language" v-bind="table" :params="table.param" url="/rms/rmsrecipetemplate/">
-      <w-table-col name="paraCode" align="left" required label="参数代码" width="400px" query condition="like"/>
-      <w-table-col name="paraName" align="left" label="参数名" width="300px" query condition="like">
+    <w-edt-table v-slot="{ row }" ref="language" v-bind="table" :params="table.param" url="/rms/rmsrecipetemplate/">
+      <w-table-col name="paraCode" align="center" required label="参数代码" query condition="like" />
+      <w-table-col name="paraName" align="center" label="参数名" query condition="like">
         <el-input v-model="table.model.paraName" />
       </w-table-col>
-      <w-table-col name="limitMin" label="最小值" >
+      <w-table-col name="limitMin" label="最小值" width="100px">
         <el-input v-model="table.model.limitMin" />
       </w-table-col>
-      <w-table-col name="limitMax" label="最大值" >
+      <w-table-col name="limitMax" label="最大值" width="100px">
         <el-input v-model="table.model.limitMax" />
       </w-table-col>
-      <w-table-col name="setValue" label="设定值" >
+      <w-table-col name="setValue" label="设定值" width="100px">
         <el-input v-model="table.model.setValue" />
       </w-table-col>
-      <w-table-col name="showFlag" label="是否首页显示" query condition="eq" dict="SHOW_FLAG" >
+      <w-table-col name="showFlag" label="是否显示" query condition="eq" dict="SHOW_FLAG">
         <w-select-dic v-model="table.model.showFlag" style="width:100%" label="显示" dict="SHOW_FLAG" />
       </w-table-col>
-      <w-table-col name="monitorFlag" label="是否监控" dict="MONITOR_FLAG" >
+      <w-table-col name="monitorFlag" label="是否监控" dict="MONITOR_FLAG">
         <w-select-dic v-model="table.model.monitorFlag" style="width:100%" label="是否监控" dict="MONITOR_FLAG" />
       </w-table-col>
-      <w-table-col name="sortNo" label="排序号" >
+      <w-table-col name="sortNo" label="排序号" width="100px">
         <el-input v-model="table.model.sortNo" />
       </w-table-col>
-      <w-table-toolbar name="add" hidden/>
-      <w-table-toolbar name="batchDelete" hidden/>
-      <w-table-button name="delete" hidden/>
-      <w-table-toolbar name="uploadRecipeTemplateButton" label="上传模板" type="primary" tip="上传模板？" icon="el-icon-circle-plus-outline" />
+      <w-table-toolbar name="add" hidden />
+      <w-table-toolbar name="batchDelete" hidden />
+      <w-table-button name="delete" hidden />
+      <w-table-toolbar
+        name="uploadRecipeTemplateButton"
+        label="上传模板"
+        type="primary"
+        tip="上传模板？"
+        icon="el-icon-circle-plus-outline"
+      />
     </w-edt-table>
 
     <el-dialog :visible.sync="dialogFormUploadRecipeTemplateVisible" title="上传模板">
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
-      <el-form ref="dataModifyForm" :model="uploadRecipeTemplate" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-<!--        <el-form-item label="程序名称" prop="recipeName">-->
-<!--          <el-input v-model="uploadRecipeTemplate.recipeName"/>-->
-<!--        </el-form-item>-->
+      <el-form
+        ref="dataModifyForm"
+        :model="uploadRecipeTemplate"
+        label-position="left"
+        label-width="100px"
+        style="width: 400px; margin-left:50px;"
+      >
+        <!--        <el-form-item label="程序名称" prop="recipeName">-->
+        <!--          <el-input v-model="uploadRecipeTemplate.recipeName"/>-->
+        <!--        </el-form-item>-->
         <el-form-item label="文件名称" prop="recipeName">
-          <el-input v-model="uploadRecipeTemplate.fileName"/>
+          <el-input v-model="uploadRecipeTemplate.fileName" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -125,7 +137,16 @@ export default {
       row.index = rowIndex
     },
     newGrid() {
-      const p = { paraCode: '', paraName: '', limitMin: '', limitMax: '', setValue: '', showFlag: '', monitorFlag: '', sortNo: '' }
+      const p = {
+        paraCode: '',
+        paraName: '',
+        limitMin: '',
+        limitMax: '',
+        setValue: '',
+        showFlag: '',
+        monitorFlag: '',
+        sortNo: ''
+      }
       this.model.detail.push(p)
     },
     // 弹出一个input框,输入后发送请求

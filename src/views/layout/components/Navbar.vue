@@ -42,7 +42,7 @@ slot="label"
       <el-dropdown class="avatar-container right-menu-item" trigger="click" @command="getHome">
         <div class="avatar-wrapper">
           <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar" >
-          <i class="el-icon-caret-bottom" />
+          <!-- <i class="el-icon-caret-bottom" /> -->
         </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item :command="url" trigger="click">
@@ -254,7 +254,10 @@ export default {
   }
 }
 </style>
-<style  >
+<style>
+.headerSur .el-tabs el-tabs--top {
+  display: flex;
+}
 /*覆写一级菜单样式*/
 .headerSur .el-tabs__header {
   margin: 0;
@@ -265,6 +268,9 @@ export default {
 }
 .headerSur .el-tabs__active-bar {
   height: 0;
+}
+.headerSur .el-tabs__nav-scroll {
+  display: flex;
 }
 .headerSur .el-tabs__item {
   color: #fff !important;
@@ -320,4 +326,3 @@ export default {
   }
 }
 </style>
-

@@ -242,8 +242,9 @@ code {
   background-color: #409eff;
   color: white;
 }
+
 .el-input.is-disabled .el-input__inner {
-  background-color: #ffffff;
+  background-color: #f3f3f3;
   border: 1px solid #dcdfe6;
   color: #606266;
   cursor: not-allowed;

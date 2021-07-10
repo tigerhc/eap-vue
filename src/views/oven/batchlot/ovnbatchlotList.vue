@@ -1,10 +1,30 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.eqpId" style="width: 200px;" class="filter-item" placeholder="请输入设备" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.officeName" style="width: 200px;" class="filter-item" placeholder="请输入站别" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.lotId" style="width: 200px;" class="filter-item" placeholder="请输入批次" @keyup.enter.native="handleFilter"/>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
+      <el-input
+        v-model="listQuery.eqpId"
+        style="width: 200px;"
+        class="filter-item"
+        placeholder="请输入设备"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-input
+        v-model="listQuery.officeName"
+        style="width: 200px;"
+        class="filter-item"
+        placeholder="请输入站别"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-input
+        v-model="listQuery.lotId"
+        style="width: 200px;"
+        class="filter-item"
+        placeholder="请输入批次"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{
+        $t('table.search')
+      }}</el-button>
     </div>
     <el-table
       v-loading="listLoading"
@@ -16,8 +36,9 @@
       style="width: 100%"
       @selection-change="handleSelectionChange"
       @select="chooseOne"
-      @select-all="chooseAll">
-      <el-table-column type="index" label="序号" width="50px" align="center"/>
+      @select-all="chooseAll"
+    >
+      <el-table-column type="index" label="序号" width="50px" align="center" />
       <el-table-column align="left" show-overflow-tooltip label="批次号">
         <template slot-scope="scope">
           <span class="textLink" @click="handleOperating(scope.row)">{{ scope.row.lotId }}</span>
@@ -48,19 +69,19 @@
           <span>{{ scope.row.endTime }}</span>
         </template>
       </el-table-column>
-
     </el-table>
 
     <div class="pagination-container">
       <el-pagination
         :current-page.sync="listQuery.page"
-        :page-sizes="[10,20,30, 50]"
+        :page-sizes="[10, 20, 30, 50]"
         :page-size="listQuery.limit"
         :total="total"
         background
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"/>
+        @current-change="handleCurrentChange"
+      />
     </div>
   </div>
 </template>
@@ -98,7 +119,7 @@ export default {
     getList() {
       this.listLoading = true
       const params = this.changeParams(this.listQuery)
-      fetchList(this.tab, params).then(response => {
+      fetchList(this.tab, params).then((response) => {
         this.list = response.data.results
         this.total = response.data.total
         this.listLoading = false
@@ -113,7 +134,7 @@ export default {
         'query.eqpId||like': obj.eqpId || '',
         'query.lotId||like': obj.lotId || '',
         'query.officeName||like': obj.officeName || '',
-        'queryFields': 'id,eqpId,officeName,lotId,recipeCode,startTime,endTime,activeFlag,'
+        queryFields: 'id,eqpId,officeName,lotId,recipeCode,startTime,endTime,activeFlag,'
       }
       return params
     },
@@ -148,7 +169,8 @@ export default {
         query: {
           id: item.id,
           list: item
-        }})
+        }
+      })
     }
   }
 }

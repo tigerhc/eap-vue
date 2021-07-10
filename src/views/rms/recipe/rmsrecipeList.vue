@@ -470,7 +470,7 @@ export default {
         })
       } else {
         request({
-          url: '/rms/rmsrecipe/getRecipeList',
+          url: '/rms/rmsrecipe/findRecipeList',
           method: 'get',
           params: {
             eqpId: this.eqpIdSel

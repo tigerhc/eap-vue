@@ -202,6 +202,7 @@
       <el-table
         ref="multipleTable"
         :data="searchRecipeList"
+        :cell-class-name="tableRowClassName"
         tooltip-effect="dark"
         style="width: 100%"
         height="350"
@@ -462,6 +463,12 @@ export default {
       }
       return ''
     },
+    tableRowClassName({ row, column, rowIndex, columnIndex }) {
+      if (rowIndex === 0 && columnIndex === 0) {
+        return 'success-row'
+      }
+      return ''
+    },
     // 查询recipe列表
     getRecipeList() {
       if (this.eqpIdSel === '') {
@@ -544,5 +551,8 @@ export default {
   .el-table .warning-cell {
     background: yellow;
   }
+}
+.el-table .success-row {
+  background: #50d3fb;
 }
 </style>

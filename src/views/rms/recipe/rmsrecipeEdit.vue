@@ -1,58 +1,7 @@
 <template>
   <div class="programEdit">
     <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
-      <el-tab-pane label="参数信息" name="first">
-        <el-form
-          ref="ruleForm"
-          :model="ruleForm"
-          :rules="rulesTab"
-          :inline="true"
-          :label-position="'right'"
-        >
-          <el-table
-            v-loading="load"
-            :data="ruleForm.tableData"
-            :row-class-name="tableRowClassName"
-            :height="tableHeight"
-            :cell-class-name="color"
-            border
-            fit
-            style="width: 100%"
-            highlight-current-row
-            @row-click="rowClick"
-            @row-dblclick="doubleClick"
-          >
-            <el-table-column type="index" label="序号" width="80px" align="center"/>
-            <el-table-column prop="paraCode" label="参数CODE" align="left"/>
-            <el-table-column prop="paraName" label="参数名称" align="left"/>
-            <el-table-column prop="setValue" label="设定值" align="center"/>
-            <el-table-column prop="minValue" label="最小值" align="center">
-              <template slot-scope="{row}">
-                <el-input
-                  v-if="row.index === doubleClickIndex"
-                  v-model="row.minValue"
-                />
-                <span v-if="row.index !== doubleClickIndex">{{ row.minValue }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="maxValue" label="最大值" align="center">
-              <template slot-scope="{row}">
-                <el-input
-                  v-if="row.index === doubleClickIndex"
-                  v-model="row.maxValue"
-                />
-                <span v-if="row.index !== doubleClickIndex">{{ row.maxValue }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" align="center">
-              <template slot-scope="scope">
-                <el-button type="text" size="small" @click="changeValue(scope.row)">提交</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="程序信息" name="second">
+      <el-tab-pane label="程序信息" name="first">
         <el-form ref="addForm" :inline="true" :rules="rules" :model="editList" class="editForm" label-width="150px">
           <el-form-item label="程序名称" prop="recipeCode">
             <el-input v-model="editList.recipeCode" disabled/>
@@ -116,6 +65,82 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
+      <el-tab-pane label="参数信息" name="second">
+        <el-form
+          ref="ruleForm"
+          :model="ruleForm"
+          :rules="rulesTab"
+          :inline="true"
+          :label-position="'right'"
+        >
+          <el-table
+            v-loading="load"
+            :data="ruleForm.tableData"
+            :row-class-name="tableRowClassName"
+            :height="tableHeight"
+            :cell-class-name="color"
+            border
+            fit
+            style="width: 100%"
+            highlight-current-row
+            @row-click="rowClick"
+            @row-dblclick="doubleClick"
+          >
+            <el-table-column type="index" label="序号" width="80px" align="center"/>
+            <el-table-column prop="paraCode" label="参数CODE" align="left"/>
+            <el-table-column prop="paraName" label="参数名称" align="left"/>
+            <el-table-column prop="setValue" label="设定值" align="center"/>
+            <el-table-column prop="minValue" label="最小值" align="center">
+              <template slot-scope="{row}">
+                <el-input
+                  v-if="row.index === doubleClickIndex"
+                  v-model="row.minValue"
+                />
+                <span v-if="row.index !== doubleClickIndex">{{ row.minValue }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="maxValue" label="最大值" align="center">
+              <template slot-scope="{row}">
+                <el-input
+                  v-if="row.index === doubleClickIndex"
+                  v-model="row.maxValue"
+                />
+                <span v-if="row.index !== doubleClickIndex">{{ row.maxValue }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" align="center">
+              <template slot-scope="scope">
+                <el-button type="text" size="small" @click="changeValue(scope.row)">提交</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-form>
+      </el-tab-pane>
+      <el-tab-pane label="附件" name="third">
+        <attachment-select :uploadurl="uploadurl" :biz="biz" @onSuccess="handleSuccessFile" />
+      </el-tab-pane>
+      <el-tab-pane label="图片" name="fourth">
+<!--        <picutre-select :uploadurl="uploadimageurl" :biz="biz"/>-->
+          <div style="margin-bottom:20px">
+            <el-upload
+              :action="uploadimageurl"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :before-remove="beforeRemove"
+              :limit="12"
+              :on-exceed="handleExceed"
+              :file-list="imageList"
+              class="upload-demo"
+              list-type="picture-card"
+              multiple>
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible" width="500px" height="500px">
+              <img :src="dialogImageUrl" width="100%" height="100%" alt="">
+            </el-dialog>
+          </div>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -151,6 +176,13 @@ export default {
         approveResultList: []
       },
       biz: this.$route.query.id,
+      uploadurl: process.env.BASE_API + '/attach/upload?access_token=' + this.$store.getters.token + '&biz=' + this.$route.query.id,
+      uploadimageurl: process.env.BASE_API + '/attach/uploadimg?access_token=' + this.$store.getters.token + '&biz=' + this.$route.query.id,
+      dialogImageUrl: '',
+      dialogVisible: false,
+      imageList: [
+
+      ],
       eqpModelNameList: [],
       ruleForm: {
         tableData: []
@@ -180,6 +212,27 @@ export default {
     this.gePictureList()
   },
   methods: {
+    handleSuccessFile(file) {
+      this.$notify({
+        title: '上传成功',
+        type: 'success',
+        duration: 2000
+      })
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePreview(file) {
+      console.log(file)
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`)
+    },
     // 获取详情
     getDeteils() {
       request({

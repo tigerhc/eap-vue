@@ -19,7 +19,7 @@
       border
       fit
       style="width: 100%">
-      <el-table-column type="index" label="序号" width="50px" align="center"/>
+      <el-table-column type="index" label="序号" width="60px" align="center"/>
       <el-table-column align="center" label="设备类型">
         <template slot-scope="scope">
           <span>{{ scope.row.eqpModelName }}</span>

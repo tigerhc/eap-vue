@@ -5,7 +5,7 @@
       <w-table-col
         name="recipeCode"
         label="程序名称"
-        width="240"
+        width="200"
         sort
         fixed
         align="center"
@@ -43,6 +43,7 @@
         name="versionType"
         label="程序等级"
         align="center"
+        width="100"
         dict="RECIPE_VERSION_TYPE"
         query
         hiddenquery
@@ -74,14 +75,14 @@
         filterable
         foldcolor
       />
-      <w-table-col name="createDate" label="创建时间" width="180" sort align="center" />
+      <w-table-col name="createDate" label="创建时间" width="170" sort align="center" />
       <w-table-col name="createByName" label="上传人" align="center" query hiddenquery condition="eq" />
       <!--<w-table-col name="versionNo" label="程序版本号" align="center"/>-->
       <!--<w-table-col name="versionNo" label="程序版本号" align="center"/>-->
       <w-table-col
         name="updateDate"
         label="更新时间"
-        width="180"
+        width="170"
         align="center"
         sort="1"
         query
@@ -93,7 +94,7 @@
       <w-table-toolbar name="add" hidden url="views/rms/recipe/rmsrecipeEdit" />
       <w-table-toolbar hidden name="batchDelete" />
 
-      <!--<w-table-button hidden name="delete" />-->
+      <w-table-button hidden name="delete" />
 
       <!--<w-table-toolbar name="exportExcel" label="导出Excel" tip="你想干啥111？" icon="fa-download" type="success" />-->
       <!--      <w-table-toolbar name="uploadRecipe" label="上传recipe" type="primary" tip="上传recipe？" icon="el-icon-circle-plus-outline" />-->
@@ -101,8 +102,8 @@
       <w-table-toolbar name="downloadRecipe" label="下载recipe" type="primary" tip="下载recipe？" icon="fa-download" />
       <w-table-toolbar name="bdRecipe" label="比对recipe" type="primary" icon="el-icon-circle-plus-outline" />
       <w-table-button name="edit" label="升级" url="views/rms/recipe/rmsrecipeEdit" icon="el-icon-setting" />
-      <!--<w-table-button v-if="row.approveStep === 0 && row.status !== 'Y'" name="enable" label="启用" tip="确认启用？" icon="el-icon-bell" />-->
-      <!--<w-table-button v-if="row.status === 'Y'" name="diable" label="停用" tip="确认停用？" icon="el-icon-circle-close" type="warning" />-->
+      <w-table-button v-if="row.approveStep === 0 && row.status !== 'Y'" name="enable" label="启用" tip="确认启用？" icon="el-icon-bell" />
+      <w-table-button v-if="row.status === 'Y'" name="diable" label="停用" tip="确认停用？" icon="el-icon-circle-close" type="warning" />
       <w-table-button
         :hidden="row.versionType !== 'DRAFT'"
         name="delete"
@@ -193,7 +194,7 @@
       style="width: 45%; margin: auto"
     >
       <div class="filter-container">
-        <el-input v-model="searchValue" placeholder="配方名称" class="filter-item" style="width: 200px;" />
+        <el-input v-model="searchValue" placeholder="配方名称" clearable class="filter-item" style="width: 200px;" />
         <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">{{
           $t('table.search')
         }}</el-button>
@@ -209,7 +210,7 @@
         @selection-change="selectionChange"
       >
         <el-table-column type="selection" width="39" />
-        <el-table-column align="center" label="配方名称">
+        <el-table-column align="left" label="配方名称">
           <template slot-scope="scope">
             <span>{{ scope.row }}</span>
           </template>
@@ -368,6 +369,7 @@ export default {
     },
     // 弹出一个input框,输入后发送请求
     uploadRecipe(row, table, ctx) {
+      this.$data = this.$options.data()
       this.dialogFormUploadRecipeVisible = true
     },
     downloadRecipe(row, table, ctx) {
@@ -387,7 +389,7 @@ export default {
         url: 'rms/rmsrecipe/uploadrecipe',
         method: 'post',
         params: {
-          eqpId: this.uploadRecipe1.eqpId,
+          eqpId: this.eqpIdSel,
           recipeList: recipe
         }
       }).then((res) => {
@@ -494,6 +496,7 @@ export default {
               this.allRecipeList.push(oary[i])
               this.searchRecipeList.push(oary[i])
             }
+            this.searchValue = ''
             this.dialogFormRecipeList = true
           } else {
             this.$notify({

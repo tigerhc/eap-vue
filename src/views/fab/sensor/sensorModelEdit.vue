@@ -1,10 +1,16 @@
 <template>
-  <w-form v-bind="formConf" :col="5" :model="model">
+  <w-form v-bind="formConf" :col="4" :model="model">
     <el-input v-model="model.manufacturerName" label="传感器厂家" />
     <el-input v-model="model.classCode" label="传感器类型" />
     <el-input v-model="model.parentType" label="传感器大类" />
     <el-input v-model="model.type" label="传感器小类" />
     <w-select-dic v-model="model.activeFlag" style="width: 100%" label="有效标志" dict="ACTIVE_FLAG" />
+    <el-input v-model="model.paramCode" label="参数CODE" />
+    <el-input v-model="model.paramName" label="参数名称" />
+    <el-input v-model="model.setValue" label="设定值" />
+    <el-input v-model="model.maxValue" label="最大值" />
+    <el-input v-model="model.minValue" label="最小值" />
+
     <!--todo 此属性需要占用两列该怎么没写-->
     <el-input v-model="model.smlPath" label="SML文件路径" col="24" />
     <el-input v-model="model.hostJavaClass" label="传感器对应的JAVA类" col="24" />
@@ -22,20 +28,8 @@
 
     <el-input v-model="model.createByName" :disabled="true" label="创建人" />
     <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
-    <el-row col="24" />
     <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
     <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
-
-    <!--测试-->
-    <!--<el-form-item label="活动时间">-->
-    <!--<el-col :span="11">-->
-    <!--<el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.date1" style="width: 100%;"></el-date-picker>-->
-    <!--</el-col>-->
-    <!--<el-col class="line" :span="2">-</el-col>-->
-    <!--<el-col :span="11">-->
-    <!--<el-time-picker placeholder="选择时间" v-model="sizeForm.date2" style="width: 100%;"></el-time-picker>-->
-    <!--</el-col>-->
-    <!--</el-form-item>-->
   </w-form>
 </template>
 <script>

@@ -193,7 +193,15 @@ export default {
   border-radius: 0px !important;
   display: flex;
   width: 100%;
-  background: -webkit-gradient(linear, left bottom, right top, color-stop(0, #1c5bc7), color-stop(1, #2780ec));
+  // background: #1c5bc7;
+  // background: -webkit-gradient(linear, left bottom, right top, color-stop(0, #1c5bc7), color-stop(1, #2780ec));
+
+  background: -moz-linear-gradient(top, #1c5bc7 0%, #2780ec 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #1c5bc7), color-stop(100%, #2780ec));
+  background: -webkit-linear-gradient(top, #1c5bc7 0%, #2780ec 100%);
+  background: -o-linear-gradient(top, #1c5bc7 0%, #2780ec 100%);
+  background: -ms-linear-gradient(top, #1c5bc7 0%, #2780ec 100%);
+  background: linear-gradient(to bottom, #1c5bc7 0%, #2780ec 100%);
 
   .headerSur {
     display: inline-block;

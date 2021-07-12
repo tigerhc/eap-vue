@@ -48,17 +48,17 @@
 		<!--5GI-->
 		<div v-show="imgUrl.indexOf('GI5')>-1" class="gi5">
 			<!--MIC 透明展示 2860-->
-			<div v-show="imgUrl.indexOf('opacity')>-1 && imgUrl.indexOf('GI5_2860')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5mic_2860_position smaller opacity" @click="positionClk('MIC')">MIC</div>
+			<div v-show="imgUrl.indexOf('opacity')>-1 && imgUrl.indexOf('GI5_2860')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5mic_2860_position smaller opacity">MIC</div>
 			<!--MIC 不透明展示 2860/28645-->
 			<div v-show="imgUrl.indexOf('opacity')<0 && imgUrl.indexOf('GI5_2860')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5mic_2860_position smaller" @click="positionClk('MIC')">MIC</div>
 
 			<!--MIC 透明展示 28645-->
-			<div v-show="imgUrl.indexOf('opacity')>-1 && imgUrl.indexOf('GI5_28645')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5_mic_position smaller opacity" @click="positionClk('MIC')">MIC</div>
+			<div v-show="imgUrl.indexOf('opacity')>-1 && imgUrl.indexOf('GI5_28645')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5_mic_position smaller opacity">MIC</div>
 			<!--MIC 不透明展示 2860/28645-->
 			<div v-show="imgUrl.indexOf('opacity')<0 && imgUrl.indexOf('GI5_28645')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5_mic_position smaller" @click="positionClk('MIC')">MIC</div>
 
 			<!--MIC 透明展示 2866-->
-			<div v-show="imgUrl.indexOf('opacity')>-1 && imgUrl.indexOf('GI5_2866')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5_2866_position smaller opacity" @click="positionClk('MIC')">MIC</div>
+			<div v-show="imgUrl.indexOf('opacity')>-1 && imgUrl.indexOf('GI5_2866')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5_2866_position smaller opacity">MIC</div>
 			<!--MIC 不透明展示 2866-->
 			<div v-show="imgUrl.indexOf('opacity')<0 && imgUrl.indexOf('GI5_2866')>-1" :class="imgOption.indexOf('MIC')>-1?'MIC_act':'gi5MIC_2860'" class="gi5_2866_position smaller" @click="positionClk('MIC')">MIC</div>
 			<!--IGBT 展示 2860-->
@@ -72,15 +72,15 @@
 			<!--IGBT 展示-->
 			<div :class="imgOption.indexOf('opacityIGBT')>-1?'MIC_act':'gi5IGBT_bg'" class="gi6_igbt_position smaller" @click="positionClk('IGBT')">IGBT</div>
 			<!--MIC 透明展示-->
-			<div v-show="imgUrl.indexOf('opacity')>-1" :class="imgOption==='GI6MIC'?'MIC_act':'sxMIC6_bg'" class="gi6_mic_position smaller opacity" @click="positionClk('MIC')">MIC</div>
+			<div v-show="imgUrl.indexOf('opacity')>-1" :class="imgOption==='GI6MIC'?'MIC_act':'sxMIC6_bg'" class="gi6_mic_position smaller opacity">MIC</div>
 			<!--MIC 不透明展示-->
 			<div v-show="imgUrl.indexOf('opacity')<0" :class="imgOption==='GI6MIC'?'MIC_act':'sxMIC6_bg'" class="gi6_mic_position smaller" @click="positionClk('MIC')">MIC</div>
 			<!--DIOD 透明展示-->
-			<div v-show="imgUrl.indexOf('opacity')>-1" :class="imgOption==='GI6DIOD'?'MIC_act':'gi5DIOD_bg'" class="gi6_diod_position smaller opacity" @click="positionClk('DIOD')">DIOD</div>
+			<div v-show="imgUrl.indexOf('opacity')>-1" :class="imgOption==='GI6DIOD'?'MIC_act':'gi5DIOD_bg'" class="gi6_diod_position smaller opacity">DIOD</div>
 			<!--DIOD 不透明展示-->
 			<div v-show="imgUrl.indexOf('opacity')<0" :class="imgOption==='GI6DIOD'?'MIC_act':'gi5DIOD_bg'" class="gi6_diod_position smaller" @click="positionClk('DIOD')">DIOD</div>
 			<!--C 透明展示-->
-			<div v-show="imgUrl.indexOf('opacity')>-1" :class="imgOption==='GI6C'?'MIC_act':'gi5C_bg'" class="gi6_c_position smaller opacity" @click="positionClk('C')">C</div>
+			<div v-show="imgUrl.indexOf('opacity')>-1" :class="imgOption==='GI6C'?'MIC_act':'gi5C_bg'" class="gi6_c_position smaller opacity">C</div>
 			<!--C 不透明展示-->
 			<div v-show="imgUrl.indexOf('opacity')<0" :class="imgOption==='GI6C'?'MIC_act':'gi5C_bg'" class="gi6_c_position smaller" @click="positionClk('C')">C</div>
 		</div>

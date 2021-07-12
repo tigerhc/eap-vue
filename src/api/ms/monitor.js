@@ -77,3 +77,11 @@ export function findThrustEqps(params) {
     params: params
   })
 }
+
+export function findThrustData(params) {
+  return request({
+    url: '/ms/msmeasurethrust/getEchartsData',
+    method: 'get',
+    params: params
+  })
+}

@@ -50,7 +50,7 @@
 <script>
 import * as echarts from 'echarts'
 import api from '../../oven/ports/fetch'
-import { findThrustEqps } from '@/api/ms/monitor'
+import { findThrustEqps, findThrustData } from '@/api/ms/monitor'
 export default {
   name: 'Tempchar',
   data() {
@@ -74,7 +74,9 @@ export default {
       echartCL: [],
       echartUCL: [],
       echartLCL: [],
-      echartRed: []
+      echartRed: [],
+      XData: [],
+      RData: []
     }
   },
   mounted() {
@@ -100,65 +102,47 @@ export default {
       this.form.eqpId = name
     },
     search() {
-      this.echartData.push(2.8)
-      this.echartData.push(3.2)
-      this.echartData.push(5.6)
-      this.echartData.push(4.8)
-      this.echartData.push(4.6)
-      this.echartAxis.push('a')
-      this.echartAxis.push('b')
-      this.echartAxis.push('c')
-      this.echartAxis.push('d')
-      for (var i = 0; i < this.echartAxis.length; i++) {
-        this.echartCL.push(2)
-        this.echartUCL.push(4)
-        this.echartLCL.push(6)
-        this.echartRed.push(1)
+      var param = {}
+      param.productionName = this.form.eqpId
+      param.startTime = this.form.dateTime[0] + ' 00:00:00'
+      param.endTime = this.form.dateTime[1] + ' 23:59:59'
+      param.lotNo = this.form.lotNo
+      if (this.editableTabsValue === '推力') {
+        param.type = 'pull'
+      } else {
+        param.type = 'thrust'
       }
-      var chartX = echarts.init(document.getElementById('XtempChart'))
-      chartX.setOption(this.getOption('X'))
-      var chartR = echarts.init(document.getElementById('RtempChart'))
-      chartR.setOption(this.getOption('R'))
+      findThrustData(param).then((res) => {
+        this.echartAxis = res.data.xAxis
+        this.XData = res.data.XData
+        this.RData = res.data.RData
+
+        var chartX = echarts.init(document.getElementById('XtempChart'))
+        chartX.setOption(this.getOption('X'))
+        var chartR = echarts.init(document.getElementById('RtempChart'))
+        chartR.setOption(this.getOption('R'))
+      })
     },
     getOption(XRflag) {
       const Cureoption = {
-        title: {
-          text: ''
-        },
+        title: { text: '' },
         color: ['#60c947', '#efbe29', '#efbe29', '#ee1313'],
         tooltip: {
           trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            label: {
-              backgroundColor: '#6a7985'
-            }
-          }
+          axisPointer: { type: 'cross', label: { backgroundColor: '#6a7985' }}
         },
         legend: {
           data: this.charLegend
           // data: ['运行温度', '低温报警', '高温报警']
         },
         dataZoom: [
-          {
-            type: 'inside',
-            start: 0,
-            end: 100
-          },
-          {
-            show: true,
-            type: 'slider',
-            y: '90%',
-            start: 0,
-            end: 100
-          }
+          { type: 'inside', start: 0, end: 100 },
+          { show: true, type: 'slider', y: '90%', start: 0, end: 100 }
         ],
         toolbox: {
           show: true,
           feature: {
-            dataZoom: {
-              yAxisIndex: 'none'
-            },
+            dataZoom: { yAxisIndex: 'none' },
             dataView: { readOnly: false },
             magicType: { type: ['line', 'bar'] },
             restore: {},
@@ -186,92 +170,39 @@ export default {
       var series = [
         {
           name: '实测值',
-          itemStyle: {
-            normal: {
-              color: '#1a3eef'
-            }
-          },
+          itemStyle: { normal: { color: '#1a3eef' }},
           type: 'line',
-          data: this.echartData,
+          data: this.XData,
           symbol: 'diamond',
           symbolSize: 20
         },
         {
           name: 'X CL',
-          itemStyle: {
-            normal: {
-              lineStyle: {
-                color: '#60c947',
-                width: 2
-              }
-            }
-          },
+          itemStyle: { normal: { lineStyle: { color: '#60c947', width: 2 }}},
           type: 'line',
           data: this.echartCL,
-          markLine: {
-            data: [{
-              name: '最大数据',
-              type: 'max'
-            }]
-          }
+          markLine: { data: [{ name: '最大数据', type: 'max' }] }
         },
         {
           name: 'X UCL',
-          itemStyle: {
-            normal: {
-              lineStyle: {
-                color: '#efbe29',
-                width: 2
-              }
-            }
-          },
+          itemStyle: { normal: { lineStyle: { color: '#efbe29', width: 2 }}},
           type: 'line',
           data: this.echartUCL,
-          markLine: {
-            data: [{
-              name: '最大数据',
-              type: 'max'
-            }]
-          }
+          markLine: { data: [{ name: '最大数据', type: 'max' }] }
         },
         {
           name: 'X LCL',
-          itemStyle: {
-            normal: {
-              lineStyle: {
-                color: '#efbe29',
-                width: 2
-              }
-            }
-          },
+          itemStyle: { normal: { lineStyle: { color: '#efbe29', width: 2 }}},
           type: 'line',
           data: this.echartLCL,
-          markLine: {
-            data: [{
-              name: '最大数据',
-              type: 'max'
-            }]
-          }
+          markLine: { data: [{ name: '最大数据', type: 'max' }] }
         },
         {
           name: 'LCL',
-          itemStyle: {
-            normal: {
-              lineStyle: {
-                color: '#ee1313',
-                width: 2,
-                type: 'dashed'
-              }
-            }
-          },
+          itemStyle: { normal: { lineStyle: { color: '#ee1313', width: 2, type: 'dashed' }}},
           type: 'line',
           data: this.echartRed,
-          markLine: {
-            data: [{
-              name: '最大数据',
-              type: 'max'
-            }]
-          }
+          markLine: { data: [{ name: '最大数据', type: 'max' }] }
         }
       ]
       return series
@@ -280,76 +211,32 @@ export default {
       var series = [
         {
           name: '偏差值',
-          itemStyle: {
-            normal: {
-              color: '#1a3eef',
-              lineStyle: {
-                color: '#1a3eef',
-                width: 3
-              }
-            }
-          },
+          itemStyle: { normal: { color: '#1a3eef', lineStyle: { color: '#1a3eef', width: 3 }}},
           type: 'line',
-          data: this.echartData,
+          data: this.RData,
           symbol: 'diamond',
           symbolSize: 20
         },
         {
           name: 'R CL',
-          itemStyle: {
-            normal: {
-              lineStyle: {
-                color: '#60c947',
-                width: 2
-              }
-            }
-          },
+          itemStyle: { normal: { lineStyle: { color: '#60c947', width: 2 }}},
           type: 'line',
           data: this.echartCL,
-          markLine: {
-            data: [{
-              name: '最大数据',
-              type: 'max'
-            }]
-          }
+          markLine: { data: [{ name: '最大数据', type: 'max' }] }
         },
         {
           name: 'R UCL',
-          itemStyle: {
-            normal: {
-              lineStyle: {
-                color: '#efbe29',
-                width: 2
-              }
-            }
-          },
+          itemStyle: { normal: { lineStyle: { color: '#efbe29', width: 2 }}},
           type: 'line',
           data: this.echartUCL,
-          markLine: {
-            data: [{
-              name: '最大数据',
-              type: 'max'
-            }]
-          }
+          markLine: { data: [{ name: '最大数据', type: 'max' }] }
         },
         {
           name: 'R LCL',
-          itemStyle: {
-            normal: {
-              lineStyle: {
-                color: '#efbe29',
-                width: 2
-              }
-            }
-          },
+          itemStyle: { normal: { lineStyle: { color: '#efbe29', width: 2 }}},
           type: 'line',
           data: this.echartLCL,
-          markLine: {
-            data: [{
-              name: '最大数据',
-              type: 'max'
-            }]
-          }
+          markLine: { data: [{ name: '最大数据', type: 'max' }] }
         }
       ]
       return series
@@ -404,20 +291,7 @@ export default {
       margin-top: 20px;
     }
   }
-  #chartPanelLeft {
-    float: left;
-    width: 40%;
-    height: 100%;
-    margin-left: 0px;
-  }
-  #chartPanelRight {
-    float: left;
-    width: 40%;
-    height: 100%;
-  }
-  img {
-    width: 100%;
-    height: 100%;
-    border: 1px solid red;
-  }
+  #chartPanelLeft {float: left; width: 40%; height: 100%; margin-left: 0px;}
+  #chartPanelRight { float: left; width: 40%; height: 100%; }
+  img { width: 100%; height: 100%; border: 1px solid red;}
 </style>

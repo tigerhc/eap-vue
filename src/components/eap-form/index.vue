@@ -92,7 +92,6 @@ export default {
         return
       }
       this.api.detail(id).then((resp) => {
-        console.log(resp)
         let m = resp.results
         // const { detail } = this.$vnode.context
         // m = (detail && detail.call(this, m)) || m
@@ -215,10 +214,7 @@ export default {
         const { label } = { ...attrs, ...propsData }
         if (tag && label && expression) {
           let [path = ''] = expression.match(/(?![^\.]).*/g)
-          path = path
-            .split('.')
-            .filter(Boolean)
-            .join('.')
+          path = path.split('.').filter(Boolean).join('.')
           return (
             <el-form-item label={label} prop={path}>
               {v}

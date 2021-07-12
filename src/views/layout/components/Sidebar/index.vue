@@ -9,9 +9,10 @@
     </div>
     <el-menu
       :show-timeout="200"
-      :default-active="$route.path"
+      :default-active="$router.path"
       :collapse="isCollapse"
-      :default-openeds="openeds"
+      :default-openeds="[0]"
+      :unique-opened="true"
       style="height: 90%"
       mode="vertical"
       background-color="#263238"

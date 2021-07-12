@@ -94,6 +94,7 @@ export default {
           return m
         },
         beforeSubmit: (params, type) => {
+          console.log(params)
           if (params.isBindCreated === 'Y') {
             if (!params.modelId) {
               return this.$notify({

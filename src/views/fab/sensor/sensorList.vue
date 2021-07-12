@@ -17,7 +17,7 @@
       <w-table-col name="ip" label="机台IP地址" align="center" />
       <w-table-col
         name="modelId"
-        label="设备型号"
+        label="传感器型号"
         query
         dict
         url="/fab/fabequipmentmodel/list"

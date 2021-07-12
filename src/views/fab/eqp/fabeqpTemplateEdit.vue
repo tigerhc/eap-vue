@@ -1,19 +1,37 @@
 <template>
   <div class="app-container calendar-list-container">
     <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
-      <el-tab-pane label="设备参数列表" name="all">
-        <w-table v-bind="table" url="" />
+      <el-tab-pane label="设备自带参数" name="self">
+        <w-edt-table v-slot="{}" ref="language" v-bind="table" url="/edc/edcparamdefinemodel">
+          <w-table-col name="paramCode" label="编码" align="center">
+            <el-input v-model="table.model.paramCode" />
+          </w-table-col>
+          <w-table-col name="subEqpId" label="设备号" align="center">
+            <el-input v-model="table.model.subEqpId" />
+          </w-table-col>
+          <w-table-col name="paramName" label="名称" align="center">
+            <el-input v-model="table.model.paramName" />
+          </w-table-col>
+          <w-table-col name="maxValue" label="最大值" align="center">
+            <el-input v-model="table.model.maxValue" />
+          </w-table-col>
+          <w-table-col name="minValue" label="最小值" align="center">
+            <el-input v-model="table.model.minValue" />
+          </w-table-col>
+          <w-table-col name="modelId" label="设备型号" align="center">
+            <el-input v-model="table.model.modelId" />
+          </w-table-col>
+        </w-edt-table>
       </el-tab-pane>
       <el-tab-pane label="传感器绑定" name="sorsen">
         <w-form v-bind="formConf" :col="3" :model="model">
-          <!-- <el-row :col="24" style="margin-bottom: 15px">
-            <el-input v-model="model.classCode" placeholder="设备类型" style="width: 230px" disabled />
-            <el-input v-model="model.name" placeholder="模板名称" style="width: 230px; margin-left: 15px" disabled />
-          </el-row> -->
           <el-row col="24" />
-          <el-input v-model="model.classCode" label="设备类型" disabled />
-          <el-input v-model="model.name" label="模板名称" disabled />
+          <el-input v-model="model.classCode" label="设备类型" disabled style="width: 110%" />
+          <el-input v-model="model.name" label="模板名称" disabled style="width: 110%" />
           <el-row col="24" />
+          <h3>设备大类</h3>
+          <h3>设备小类</h3>
+          <h3>厂家</h3>
           <div class="menu-one">
             <div
               v-for="(item, index) in options"
@@ -70,41 +88,23 @@
               @current-change="handleCurrentChange"
             />
           </div>
-
-          <el-row :col="24" style="margin-bottom: 15px">
-            <el-col :span="8">
-              <label>创建人：</label>
-              <el-input v-model="model.createBy" :disabled="true" />
-            </el-col>
-            <el-col :span="8">
-              <label>创建日期：</label>
-              <el-input v-model="model.createDate" :disabled="true" />
-            </el-col>
-            <el-col :span="8">
-              <label>有效标志：</label>
-              <el-select v-model="model.activeFlag" placeholder="请选择有效标志">
-                <el-option v-for="item in activeFlagO" :key="item.value" :label="item.label" :value="item.value" />
-              </el-select>
-            </el-col>
-          </el-row>
-          <el-row :col="24">
-            <el-col :span="8">
-              <label>修改人：</label>
-              <el-input v-model="model.updateBy" :disabled="true" />
-            </el-col>
-            <el-col :span="8">
-              <label>修改日期：</label>
-              <el-input v-model="model.updateDate" :disabled="true" />
-            </el-col>
-            <el-col :span="8">
-              <label>备注：</label>
-              <el-input v-model="model.remarks" type="textarea" style="width: 400px" />
-            </el-col>
-          </el-row>
+          <el-input v-model="model.createBy" :disabled="true" align="left" label="创建人" style="width: 110%" />
+          <el-input v-model="model.createDate" :disabled="true" align="left" label="创建日期" style="width: 110%" />
+          <w-select-dic v-model="model.activeFlag" label="有效标志" dict="ACTIVE_FLAG" style="width: 110%" />
+          <el-input v-model="model.updateBy" :disabled="true" align="left" label="修改人" style="width: 110%" />
+          <el-input v-model="model.updateDate" :disabled="true" align="left" label="修改日期" style="width: 110%" />
+          <el-input v-model="model.remarks" align="left" label="备注" type="textarea" style="width: 110%" />
         </w-form>
       </el-tab-pane>
-      <el-tab-pane label="设备自带参数列表" name="self">
-        <w-edt-table v-bind="table1" url="" />
+      <el-tab-pane label="设备参数总览" name="all">
+        <w-table v-bind="table1" url="">
+          <w-table-toolbar name="batchDelete" hidden />
+          <w-table-toolbar name="clean" hidden />
+          <w-table-toolbar name="add" hidden />
+          <w-table-toolbar name="exports" hidden />
+          <w-table-button name="edit" hidden />
+          <w-table-toolbar name="delete" hidden />
+        </w-table>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -119,9 +119,12 @@ export default {
   components: {},
   data() {
     return {
-      table: {},
+      table: {
+        model: {},
+        datas: []
+      },
       table1: {},
-      activeName: 'all',
+      activeName: 'self',
       isShow: false,
       show: false,
       showVisiable: false, // 控制显隐
@@ -440,7 +443,9 @@ export default {
 * {
   box-sizing: border-box;
 }
-
+h3 {
+  text-align: center;
+}
 /deep/ .el-table__header-wrapper .el-checkbox {
   display: none;
 }

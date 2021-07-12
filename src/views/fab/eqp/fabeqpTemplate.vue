@@ -31,6 +31,8 @@
       <w-table-col name="createDate" label="创建时间" namekey="createDate" />
       <w-table-toolbar name="batchDelete" hidden />
       <w-table-toolbar name="clean" hidden />
+      <w-table-toolbar name="add" hidden />
+      <w-table-button name="delete" hidden />
     </w-table>
   </div>
 </template>
@@ -43,7 +45,7 @@ export default {
     return {
       table: {
         handler: {
-          add: 'views/fab/eqp/fabeqpTemplateAdd',
+          // add: 'views/fab/eqp/fabeqpTemplateAdd',
           edit: 'views/fab/eqp/fabeqpTemplateEdit'
           // view: 'views/fab/eqpmodel/fabequipmentEdit'
         }

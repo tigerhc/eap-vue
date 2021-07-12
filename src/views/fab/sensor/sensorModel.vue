@@ -2,18 +2,18 @@
   <div class="app-container calendar-list-container">
     <w-table v-bind="table" :onloadsuccess="deal" url="/fab/fabsensormodel">
       <!--tip="确认查看"-->
-      <w-table-col name="manufacturerName" label="设备厂家" query condition="like" fixed handler="view" />
+      <w-table-col name="manufacturerName" label="传感器厂家" query condition="like" fixed handler="view" />
       <w-table-col
         name="classCode"
-        label="设备类型"
+        label="传感器类型"
         query
         condition="like"
         querymode="select"
         dict
         url="fab/fabequipmentmodel/classCodeList"
       />
-      <w-table-col name="parentType" label="设备大类" align="left" namekey="parentType" condition="eq" />
-      <w-table-col name="type" label="设备小类" namekey="type" condition="eq" />
+      <w-table-col name="parentType" label="传感器大类" align="left" namekey="parentType" condition="eq" />
+      <w-table-col name="type" label="传感器小类" namekey="type" condition="eq" />
 
       <w-table-col name="activeFlag" label="有效标志" width="200" dict="ACTIVE_FLAG" />
       <w-table-col name="updateDate" label="更新时间" width="200" sort query querymode="date" condition="between" />
@@ -26,8 +26,8 @@
     </w-table>
     <w-msgbox>
       <w-form-render :col="1" :model="model" label-width="5em">
-        <el-input v-model="model.manufacturerName" label="设备厂家" />
-        <el-input v-model="model.classCode" label="设备类型" />
+        <el-input v-model="model.manufacturerName" label="传感器厂家" />
+        <el-input v-model="model.classCode" label="传感器类型" />
         <w-select-dic v-model="model.activeFlag" style="width: 100%" label="有效标志" dict="ACTIVE_FLAG" />
       </w-form-render>
     </w-msgbox>
@@ -41,7 +41,7 @@ export default {
     return {
       table: {
         handler: {
-          add: 'views/fab/property/propertymodelEdit'
+          add: 'views/fab/sensor/sensorModelEdit'
           // edit: 'views/fab/property/propertymodelEdit'
           // view: 'views/fab/eqpmodel/fabequipmentEdit'
         }

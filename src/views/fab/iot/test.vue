@@ -7,17 +7,30 @@
 
 <script>
 import * as echarts from 'echarts'
+// import { tempbytime } from '@/api/public'
+// import request from '@/utils/request'
 
 export default {
   components: {},
   data() {
     return {
+      tempsValue: [],
       lineChart: [],
-      time: []
+      time: [],
+      form: {
+        eqpId: undefined,
+        dateTime: []
+      }
     }
   },
   mounted() {
-    this.kChart()
+    // tempbytime('APJ-TRM1', {
+    //   beginTime: '2021-07-01',
+    //   endTime: '2021-07-12'
+    // }).then((res) => {
+    //   this.tempsValue = res.data.results
+    //   this.kChart()
+    // })
     // this.lChart()
   },
   methods: {
@@ -28,35 +41,20 @@ export default {
 
       option = {
         xAxis: {
-          data: [
-            '2017-10-24',
-            '2017-10-25',
-            '2017-10-26',
-            '2017-10-27',
-            '2017-10-28',
-            '2017-10-29',
-            '2017-10-30',
-            '2017-10-31'
-          ]
+          type: 'category',
+          boundaryGap: false,
+
+          data: []
         },
         yAxis: {},
         series: [
           {
             type: 'k',
-            data: [
-              [20, 34, 10, 38, 49, 38, 29, 34],
-              [40, 35, 30, 50, 28, 59, 34, 56],
-              [31, 38, 33, 44, 43, 28, 47, 36],
-              [38, 15, 5, 42, 36, 37, 59, 35],
-              [20, 34, 10, 38, 36, 27, 48, 25],
-              [40, 35, 30, 50, 18, 36, 27, 19],
-              [31, 38, 33, 44, 36, 31, 26, 12],
-              [38, 15, 5, 42, 12, 34, 43, 12]
-            ]
+            data: ['other_temps_value']
           }
         ]
       }
-      mycharts.setOption(option)
+      mycharts.setOption(this.loadOption(option), true)
       mycharts.on('click', (params) => {
         this.lineChart = params.data.slice(1)
         this.time.push(params.name)
@@ -95,6 +93,22 @@ export default {
         ]
       }
       mycharts.setOption(option)
+    },
+    produce(data, name) {
+      var result = []
+      for (var i = 0, len = data.length; i < len; i++) {
+        result.push(data[i][name])
+      }
+      return result
+    },
+    loadOption(option) {
+      option.xAxis.data = this.produce(this.tempsValue, 'create_date')
+      option.series[0].data = this.produce(this.tempsValue, 'other_temps_value')
+      var limitMax = this.limitMax[this.form.eqpId][0]
+      var limitMin = this.limitMin[this.form.eqpId][0]
+      var myYAxis = this.getYAxis(option.series[0].data, limitMax, limitMin)
+      option.yAxis = myYAxis
+      return option
     }
   }
 }

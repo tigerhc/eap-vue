@@ -124,10 +124,10 @@ export default {
     },
     limit: function() {
       this.query.limit = this.limit
+    },
+    $route() {
+      this.getDatas()
     }
-    // $route() {
-    //   this.getDatas()
-    // }
   },
   created() {},
   mounted() {
@@ -801,8 +801,8 @@ export default {
       style: {
         width: '100%',
         minHeight: this.hiddenQuery
-          ? 'calc(77vh - 84px - 96px - 42px - 1px )'
-          : 'calc(77vh - 84px - 96px - 42px - 46px - 1px )'
+          ? 'calc(65vh - 84px - 96px - 42px - 1px )'
+          : 'calc(65vh - 84px - 96px - 42px - 46px - 1px )'
       },
       key: this.tableKey,
       ref: 'table',
@@ -920,7 +920,7 @@ export default {
           {this.renderQuery(h)}
           {this.renderToobar()}
         </div>
-        <el-table {...tableConf} v-loading={this.isLoading} height='250px'>
+        <el-table {...tableConf} v-loading={this.isLoading}>
           {allCols}
         </el-table>
         {pagination}

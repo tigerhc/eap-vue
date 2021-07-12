@@ -9,14 +9,14 @@ export function fetchUserRoleIds(userid) {
 
 export function fetchRoleIds(userid) {
   return request({
-    url: '/fab/iotUserRole/ ' + userid + '/roleIds',
+    url: '/fab/fabUserRole/ ' + userid + '/roleIds',
     method: 'get'
   })
 }
 
 export function insertUserId(userid, roleIds) {
   return request({
-    url: '/fab/iotUserRole/' + userid + '/insertByUserId',
+    url: '/fab/fabUserRole/' + userid + '/insertByUserId',
     method: 'post',
     data: { roleIds }
   })
@@ -24,7 +24,7 @@ export function insertUserId(userid, roleIds) {
 
 export function deleteUserId(userid, roleIds) {
   return request({
-    url: '/fab/iotUserRole/' + userid + '/deleteByUserId',
+    url: '/fab/fabUserRole/' + userid + '/deleteByUserId',
     method: 'post',
     data: { roleIds }
   })

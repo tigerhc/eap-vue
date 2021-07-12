@@ -20,6 +20,7 @@
 
     <el-input v-model="model.createByName" :disabled="true" label="创建人" />
     <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
+    <el-input v-model="model.templateName" label="模板名称" />
     <el-row col="24" />
     <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
     <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
@@ -49,7 +50,9 @@ export default {
         iconPath: '',
         activeFlag: '',
         remarks: '',
-        delFlag: 0
+        delFlag: 0,
+        templateName: '',
+        templateId: ''
       },
       formConf: {
         url: '/fab/fabequipmentmodel/',

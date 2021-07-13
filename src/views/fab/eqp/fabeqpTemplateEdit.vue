@@ -15,7 +15,7 @@
           <w-table-col name="minValue" label="最小值" align="center">
             <el-input v-model="table.model.minValue" />
           </w-table-col>
-          <w-table-col name="modelId" label="设备型号" align="center"/>
+          <w-table-col name="modelId" label="设备型号" align="center" />
           <w-table-toolbar name="clean" hidden />
         </w-edt-table>
       </el-tab-pane>
@@ -120,7 +120,7 @@ export default {
         datas: []
       },
       table1: {},
-      activeName: 'self',
+      activeName: 'sorsen',
       isShow: false,
       show: false,
       showVisiable: false, // 控制显隐
@@ -267,7 +267,8 @@ export default {
   },
   methods: {
     handleClick() {
-      this.getEdecParams(this.table.model.modelId)
+      console.log(this.model.classCode)
+      this.getEdecParams(this.model.classCode)
     },
     // 获取设备自带参数
     getEdecParams(eqpModelId) {

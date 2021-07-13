@@ -16,12 +16,11 @@
       <w-table-col name="bcCode" label="BC号" align="center" />
       <w-table-col name="ip" label="机台IP地址" align="center" />
       <w-table-col
-        name="modelId"
+        name="classCode"
         label="传感器型号"
         query
         dict
         url="/fab/fabequipmentmodel/list"
-        namekey="modelName"
         querymode="select"
         condition="eq"
         filterable

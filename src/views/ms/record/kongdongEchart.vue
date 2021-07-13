@@ -356,6 +356,7 @@ export default {
           {
             type: 'value',
             name: '空洞率',
+            boundaryGap: [0.2, 0.02],
             min: 0,
             // max: 150,
             // interval: 5,

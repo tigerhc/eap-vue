@@ -79,7 +79,7 @@ export default {
       this.myChart.setOption({
         tooltip: {},
         legend: {
-          data: ['RUN', 'IDLE', 'DOWN', 'OTHER'],
+          data: ['RUN', 'IDLE', 'DOWN', 'ALARM'],
           bottom: 20,
           right: 0
         },
@@ -132,7 +132,7 @@ export default {
     getVirtulData() {
       var data = []
       for (const item of this.list) {
-        data.push([item.periodDate, item.runTime, item.idleTime, item.downTime, item.otherTime])
+        data.push([item.periodDate, item.runTime, item.idleTime, item.downTime, item.alarmTime])
       }
       return data
     },
@@ -146,7 +146,11 @@ export default {
           label: {
             normal: {
               formatter: '{c}',
-              position: 'inside'
+              position: 'inside',
+              textStyle: {
+                color: '#146cd6',
+                fontSize: 14
+              }
             }
           },
           radius: 40,
@@ -157,15 +161,15 @@ export default {
               shadowColor: 'rgba(0, 0, 0, 0.5)'
             },
             color: function(params) {
-              var colorList = ['#43ca17', '#FFFF00', '#FF0000']
+              var colorList = ['#43ca17', '#FFFF00', '#777AAA', '#FF0000']
               return colorList[params.dataIndex]
             }
           },
           data: [
             { name: 'RUN', value: item[1] },
             { name: 'IDLE', value: item[2] },
-            { name: 'DOWN', value: item[3] }
-            // { name: 'OTHER', value: item[4] }
+            { name: 'DOWN', value: item[3] },
+            { name: 'ALARM', value: item[4] }
           ]
         }
       })

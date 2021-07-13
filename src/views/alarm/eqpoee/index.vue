@@ -144,7 +144,7 @@ export default {
         this.runlist.push(this.list2[i].runTime)
         this.idlelist.push(this.list2[i].idleTime)
         this.downlist.push(this.list2[i].downTime)
-        this.otherlist.push(this.list2[i].otherTime)
+        this.otherlist.push(this.list2[i].alarmTime)
       }
     },
     initChatrs2() {
@@ -161,7 +161,7 @@ export default {
           }
         },
         legend: {
-          data: ['RUN', 'IDLE', 'DOWN'] //, 'OTHER'
+          data: ['RUN', 'IDLE', 'DOWN', 'ALARM'] //
         },
         grid: {
           left: '3%',
@@ -220,26 +220,26 @@ export default {
             },
             itemStyle: {
               color: function(params) {
-                return '#FF0000'
+                return '#777AAA'
               }
             },
             data: this.downlist
+          },
+          {
+            name: 'ALARM',
+            type: 'bar',
+            stack: '总量',
+            label: {
+              show: false,
+              position: 'insideleft'
+            },
+            itemStyle: {
+              color: function(params) {
+                return '#FF0000'
+              }
+            },
+            data: this.otherlist
           }
-          // {
-          //   name: 'OTHER',
-          //   type: 'bar',
-          //   stack: '总量',
-          //   label: {
-          //     show: false,
-          //     position: 'insideleft'
-          //   },
-          //   itemStyle: {
-          //     color: function(params) {
-          //       return '#000000'
-          //     }
-          //   },
-          //   data: this.otherlist
-          // }
         ]
       }
       myChart.setOption(option, true)

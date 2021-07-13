@@ -146,7 +146,11 @@ export default {
           label: {
             normal: {
               formatter: '{c}',
-              position: 'inside'
+              position: 'inside',
+              textStyle: {
+                color: '#146cd6',
+                fontSize: 14
+              }
             }
           },
           radius: 40,

@@ -122,10 +122,11 @@ export default {
   },
   methods: {
     onFormLoadData(m) {
-      console.log(m.modelId)
-      if (m.isBindCreated === 'Y') {
-        this.createSensor(m.isBindCreated, m.modelId)
-      }
+      console.log(m)
+      // if (m.isBindCreated === 'Y') {
+      //   this.createSensor(m.isBindCreated, m.modelName)
+      // }
+      this.createSensor(m.isBindCreated, m.modelName)
 
       if (m.officeId) {
         m.officeIds = m.officeId.split(',')
@@ -145,9 +146,11 @@ export default {
       this.model.modelName = e
     },
     handleClick() {},
-    createSensor(isBind, modleId) {
-      return request({ url: `fab/fabequipment/AoutAddSensor/${isBind}/${modleId}`, methods: 'get' }).then((res) => {
+    createSensor(isBind, modelName) {
+      return request({ url: `fab/fabequipment/AoutAddSensor/Y/${modelName}`, methods: 'get' }).then((res) => {
+        console.log(res.data.results)
         this.table.model = { ...res.data.results }
+        console.log(this.table.model)
       })
     }
   }

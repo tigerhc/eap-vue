@@ -18,7 +18,7 @@ export function getList(query) {
 
 export function getIotList(query) {
   return request({
-    url: '/fab/iotroleeqp/list',
+    url: '/fab/fabroleeqp/list',
     method: 'get',
     params: query
   })
@@ -86,7 +86,7 @@ export function fetchRoleMenu(roleId) {
 
 export function setEqp(data) {
   return request({
-    url: '/fab/iotroleeqp/create',
+    url: '/fab/fabroleeqp/create',
     method: 'post',
     data
   })

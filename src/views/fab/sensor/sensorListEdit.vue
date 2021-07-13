@@ -15,8 +15,8 @@
       :display.sync="model.modelName"
       idkey="id"
       displaykey="manufacturerName"
-      label="设备型号名称"
-      title="选择设备型号"
+      label="传感器型号名称"
+      title="选择传感器型号"
       module="views/fab/eqpmodel/eqpmodelLook"
     />
     <el-input v-model="model.eqpParam" label="参数" />

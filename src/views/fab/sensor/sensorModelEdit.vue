@@ -1,13 +1,19 @@
 <template>
-  <w-form v-bind="formConf" :col="5" :model="model">
-    <el-input v-model="model.manufacturerName" label="设备厂家" />
-    <el-input v-model="model.classCode" label="设备类型" />
-    <el-input v-model="model.parentType" label="资产大类" />
-    <el-input v-model="model.type" label="资产小类" />
+  <w-form v-bind="formConf" :col="4" :model="model">
+    <el-input v-model="model.manufacturerName" label="传感器厂家" />
+    <el-input v-model="model.classCode" label="传感器类型" />
+    <el-input v-model="model.parentType" label="传感器大类" />
+    <el-input v-model="model.type" label="传感器小类" />
     <w-select-dic v-model="model.activeFlag" style="width: 100%" label="有效标志" dict="ACTIVE_FLAG" />
+    <el-input v-model="model.paramCode" label="参数CODE" />
+    <el-input v-model="model.paramName" label="参数名称" />
+    <el-input v-model="model.setValue" label="设定值" />
+    <el-input v-model="model.maxValue" label="最大值" />
+    <el-input v-model="model.minValue" label="最小值" />
+
     <!--todo 此属性需要占用两列该怎么没写-->
     <el-input v-model="model.smlPath" label="SML文件路径" col="24" />
-    <el-input v-model="model.hostJavaClass" label="设备对应的JAVA类" col="24" />
+    <el-input v-model="model.hostJavaClass" label="传感器对应的JAVA类" col="24" />
     <el-input v-model="model.iconPath" label="图标路径" col="24" />
 
     <!--todo 显示异常,应该写法有问题,不需要写宽度,是否也可以写成占用几列 style="width:540px"-->
@@ -22,20 +28,8 @@
 
     <el-input v-model="model.createByName" :disabled="true" label="创建人" />
     <el-input v-model="model.createDate" :disabled="true" label="创建日期" />
-    <el-row col="24" />
     <el-input v-model="model.updateByName" :disabled="true" label="更新人" />
     <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
-
-    <!--测试-->
-    <!--<el-form-item label="活动时间">-->
-    <!--<el-col :span="11">-->
-    <!--<el-date-picker type="date" placeholder="选择日期" v-model="sizeForm.date1" style="width: 100%;"></el-date-picker>-->
-    <!--</el-col>-->
-    <!--<el-col class="line" :span="2">-</el-col>-->
-    <!--<el-col :span="11">-->
-    <!--<el-time-picker placeholder="选择时间" v-model="sizeForm.date2" style="width: 100%;"></el-time-picker>-->
-    <!--</el-col>-->
-    <!--</el-form-item>-->
   </w-form>
 </template>
 <script>
@@ -65,13 +59,13 @@ export default {
       formConf: {
         url: '/fab/fabsensormodel/',
         title: {
-          ADD: '新增资产类型',
-          EDIT: '修改资产类型',
-          VIEW: '查看资产类型'
+          ADD: '新增传感器类型',
+          EDIT: '修改传感器类型',
+          VIEW: '查看传感器类型'
         },
         rules: {
-          manufacturerName: [{ required: true, message: '设备厂家必填', trigger: 'blur' }],
-          classCode: [{ required: true, message: '设备类型必填', trigger: 'blur' }],
+          manufacturerName: [{ required: true, message: '传感器厂家必填', trigger: 'blur' }],
+          classCode: [{ required: true, message: '传感器类型必填', trigger: 'blur' }],
           activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
         },
         onLoadData: (m, type) => {

@@ -24,16 +24,16 @@
         <el-row>
           <el-col :span="24">
             <div class="grid-content bg-purple-dark pdttable">
-              <div class="item">
-                <span class="bigfont">站点</span>
+              <div class="itemTitle">
+                <span class="bigerfont">站点</span>
                 <span class="bigfont">批次|数量</span>
                 <span class="bigfont">仕挂|数量</span>
                 <span class="bigfont">稼动状况</span>
               </div>
-              <div v-for="(item, index) in yieldList" :key="index" class="item">
-                <span class="bigfont">{{ item.step_code }}</span>
-                <span>{{ item.lot_no + '-' + item.lot_yield }}</span>
-                <span class="littlefont">{{ item.waitwip }}</span>
+              <div v-for="(item, index) in yieldList" :key="index" class="itemTitle">
+                <span class="bigerfont">{{ item.step_code }}</span>
+                <span class="bigfont">{{ item.lot_no + '-' + item.lot_yield }}</span>
+                <span class="bigfont littlefont">{{ item.waitwip }}</span>
                 <span :class="statusText[item.eqp_status]">{{ item.eqp_status }}</span>
               </div>
             </div>
@@ -247,7 +247,7 @@ export default {
       setTimeout(() => {
         this.inIt()
         this.$refs.refs.getData()
-      }, 150000)
+      }, 15000)
     },
 
     getYield() {
@@ -430,6 +430,37 @@ export default {
       }
       span.bigfont {
         font-size: 14px;
+        font-weight: bold;
+      }
+      span.bigerfont {
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
+    .itemTitle {
+      display: flex;
+      width: 120px;
+      height: 100px;
+      border: 1px solid #500f0f;
+      flex-direction: column;
+      margin-left: 2px;
+      margin-top: 0px;
+      span {
+        line-height: 20px;
+        text-align: center;
+        height: 25px;
+        border-bottom: 1px solid #dcdfe6;
+        font-size: 12px;
+      }
+      span.littlefont {
+        font-size: 10px;
+      }
+      span.bigfont {
+        font-size: 14px;
+        font-weight: bold;
+      }
+      span.bigerfont {
+        font-size: 18px;
         font-weight: bold;
       }
     }

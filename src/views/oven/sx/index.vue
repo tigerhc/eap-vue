@@ -16,7 +16,7 @@
           <el-col :span="3">
             <el-form-item>
               <div class="condition">
-                <el-select v-model="form.productionName" class="wid90" placeholder="请选择机种名" @change="search">
+                <el-select v-model="form.productionName" :style="{left:'-80px'}" class="wid90" placeholder="请选择机种名" @change="search">
                   <el-option
                     v-for="item in productionResult"
                     :key="item.label"
@@ -32,10 +32,10 @@
               <el-select v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" v-model="form.local56GI" :style="{width:'100px'}" clearable placeholder="位置" @change="positionClick('56GI')">
                 <el-option v-for="item in localResult56GI" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
-              <el-select v-model="form.local" :style="{width:'105px'}" clearable placeholder="位置" @change="search" >
+              <el-select v-model="form.local" :style="{width:'105px',left:'-80px'}" clearable placeholder="位置" @change="search" >
                 <el-option v-for="item in localResult" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
-              <el-select v-show="form1.lineNo==='SIM' && form.local==='c'" v-model="form.localSimC" :style="{width:'70px'}" placeholder="位置" @change="search">
+              <el-select v-show="form1.lineNo==='SIM' && form.local==='c'" v-model="form.localSimC" :style="{width:'70px',left:'-80px'}" placeholder="位置" @change="search">
                 <el-option v-for="item in localResultSIMC" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </el-form-item>

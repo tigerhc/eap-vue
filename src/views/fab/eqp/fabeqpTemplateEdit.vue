@@ -2,12 +2,9 @@
   <div class="app-container calendar-list-container">
     <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
       <el-tab-pane label="设备自带参数" name="self">
-        <w-edt-table v-slot="{}" ref="language" v-bind="table" url="/edc/edcparamdefinemodel">
+        <w-edt-table v-slot="{}" ref="language" v-bind="table" url="/api/edcparamapi">
           <w-table-col name="paramCode" label="编码" align="center">
             <el-input v-model="table.model.paramCode" />
-          </w-table-col>
-          <w-table-col name="subEqpId" label="设备号" align="center">
-            <el-input v-model="table.model.subEqpId" />
           </w-table-col>
           <w-table-col name="paramName" label="名称" align="center">
             <el-input v-model="table.model.paramName" />
@@ -18,9 +15,8 @@
           <w-table-col name="minValue" label="最小值" align="center">
             <el-input v-model="table.model.minValue" />
           </w-table-col>
-          <w-table-col name="modelId" label="设备型号" align="center">
-            <el-input v-model="table.model.modelId" />
-          </w-table-col>
+          <w-table-col name="modelId" label="设备型号" align="center"/>
+          <w-table-toolbar name="clean" hidden />
         </w-edt-table>
       </el-tab-pane>
       <el-tab-pane label="传感器绑定" name="sorsen">
@@ -242,29 +238,17 @@ export default {
           activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
         },
         onLoadData: (m, type) => {
-          console.info(m, type)
           this.getInitializationData()
           this.getSelectedData()
-          // if (m.officeIds) {
-          //   m.officeIds = m.officeIds
-          // }
+
           return m
         },
         beforeSubmit: (params, type) => {
           const re = { ...params }
-          // console.log(re)
-          // if (re.officeId) {
-          //   re.officeId = re.officeIds[re.officeIds.length - 1]
-          //   re.officeIds = undefined
-          // }
+
           return re
         }
       }
-
-      // arr: [
-      //   { parentType: '11', type: '11', subClassCode: '111', id: '', num: '1' },
-      //   { parentType: 'wdj1', type: 'wdj2', subClassCode: 'wdj', id: '', num: '1' }
-      // ]
     }
   },
   mounted() {
@@ -282,7 +266,15 @@ export default {
     // this.model.fabModelTemplateBodyList = this.arr
   },
   methods: {
-    handleClick() {},
+    handleClick() {
+      this.getEdecParams(this.table.model.modelId)
+    },
+    // 获取设备自带参数
+    getEdecParams(eqpModelId) {
+      return request(`api/edcparamapi/list/${eqpModelId}`).then((res) => {
+        console.log(res)
+      })
+    },
     getA() {
       const isCheck = (() => {
         const res = []

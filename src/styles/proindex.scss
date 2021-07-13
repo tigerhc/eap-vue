@@ -4,9 +4,9 @@
 @import './element-ui.scss';
 @import './sidebar.scss';
 @import './btn.scss';
-#zero{
+#zero {
   font-size: 25px;
-  border:  4px dashed green;
+  border: 4px dashed green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -16,12 +16,12 @@
   top: 5%;
   left: 18%;
 }
-active{
+active {
   background-color: red;
 }
-#T101{
+#T101 {
   font-size: 25px;
-  border:  4px dashed green;
+  border: 4px dashed green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -31,9 +31,9 @@ active{
   top: 25.5%;
   left: 23.2%;
 }
-#T102{
+#T102 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -43,9 +43,9 @@ active{
   top: 51%;
   left: 18.4%;
 }
-#T103{
+#T103 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -55,22 +55,22 @@ active{
   top: 51%;
   left: 26.8%;
 }
-#T104{
+#T104 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
   line-height: 90px;
   height: 90px;
   width: 8.5%;
-  top:33.3%;
+  top: 33.3%;
   left: 34.6%;
   transform: rotate(319deg);
 }
-#T105{
+#T105 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -80,9 +80,9 @@ active{
   top: 51%;
   left: 53.5%;
 }
-#T106{
+#T106 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -92,9 +92,9 @@ active{
   top: 51%;
   left: 60%;
 }
-#T107{
+#T107 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -104,14 +104,14 @@ active{
   top: 51%;
   left: 67%;
 }
-.element{
+.element {
   margin: 0;
   padding: 0;
   /*font-weight: bold;*/
 }
-#T108{
+#T108 {
   font-size: 25px;
-  border:  4px dashed green;
+  border: 4px dashed green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -121,9 +121,9 @@ active{
   top: 25.5%;
   left: 59.7%;
 }
-#T109{
+#T109 {
   font-size: 18px;
-  border:  4px dashed green;
+  border: 4px dashed green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -133,9 +133,9 @@ active{
   top: 28%;
   left: 71.3%;
 }
-#T110{
+#T110 {
   font-size: 18px;
-  border:  4px dashed green;
+  border: 4px dashed green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -148,23 +148,23 @@ active{
 .frame {
   width: 100%;
   display: flex;
-  align-items :center;
+  align-items: center;
 }
 #mainImg {
   margin-top: 60px;
   width: 20%;
   height: 35%;
 }
-.arrow_box{
+.arrow_box {
   animation: glow 800ms ease-out infinite alternate;
-  width:300px;
-  height:40px;
+  width: 300px;
+  height: 40px;
   margin-left: 100px;
   margin-top: 100px;
 }
-#T111{
+#T111 {
   font-size: 18px;
-  border:  4px dashed green;
+  border: 4px dashed green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -174,9 +174,9 @@ active{
   top: 33.5%;
   left: 77%;
 }
-#T112{
+#T112 {
   font-size: 25px;
-  border:  4px dashed green;
+  border: 4px dashed green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -186,9 +186,9 @@ active{
   top: 19%;
   left: 14%;
 }
-#T113{
+#T113 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -198,9 +198,9 @@ active{
   top: 15%;
   left: 21.5%;
 }
-#T114{
+#T114 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -210,9 +210,9 @@ active{
   top: 13%;
   left: 27.5%;
 }
-#T115{
+#T115 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -223,9 +223,9 @@ active{
   left: 34%;
   transform: rotate(38deg);
 }
-#T116{
+#T116 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -236,9 +236,9 @@ active{
   left: 37%;
   transform: rotate(38deg);
 }
-#T117{
+#T117 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -248,9 +248,9 @@ active{
   top: 16%;
   left: 53.5%;
 }
-#T118{
+#T118 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -260,18 +260,18 @@ active{
   top: 16%;
   left: 61.5%;
 }
-#id{
+#id {
   margin: 0;
   padding: 0;
-  height:700px;
-  background-repeat:no-repeat;
+  height: 700px;
+  background-repeat: no-repeat;
   background-size: 100% 100%;
   width: 80%;
   position: relative;
 }
-#T119{
+#T119 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -282,9 +282,9 @@ active{
   left: 67.5%;
   transform: rotate(38deg);
 }
-#T120{
+#T120 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -295,9 +295,9 @@ active{
   left: 77%;
   transform: rotate(38deg);
 }
-#T121{
+#T121 {
   font-size: 15px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -307,9 +307,9 @@ active{
   top: 30%;
   left: 78%;
 }
-#T122{
+#T122 {
   font-size: 15px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -320,9 +320,9 @@ active{
   left: 82%;
   transform: rotate(51deg);
 }
-#T123{
+#T123 {
   font-size: 15px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -332,9 +332,9 @@ active{
   top: 81%;
   left: 72%;
 }
-#T124{
+#T124 {
   font-size: 15px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -344,18 +344,18 @@ active{
   top: 81%;
   left: 63%;
 }
-#back{
+#back {
   margin: 0;
   padding: 0;
-  height:700px;
-  background-repeat:no-repeat;
+  height: 700px;
+  background-repeat: no-repeat;
   background-size: 100% 100%;
   width: 80%;
   position: relative;
 }
-#T125{
+#T125 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -365,9 +365,9 @@ active{
   top: 75%;
   left: 51.5%;
 }
-#T126{
+#T126 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -377,13 +377,13 @@ active{
   top: 75%;
   left: 40.5%;
 }
-.span{
+.span {
   display: block;
   transform: rotate(40deg);
 }
-#T127{
+#T127 {
   font-size: 15px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -393,9 +393,9 @@ active{
   top: 81%;
   left: 33%;
 }
-#T128{
+#T128 {
   font-size: 15px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;
@@ -405,9 +405,9 @@ active{
   top: 47.5%;
   left: 28%;
 }
-#T129{
+#T129 {
   font-size: 25px;
-  border:  4px solid green;
+  border: 4px solid green;
   position: absolute;
   background-color: limegreen;
   text-align: center;

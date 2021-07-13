@@ -38,11 +38,17 @@
   </w-form>
 </template>
 <script>
+import dateFormat from '@/utils/dateformat'
+
 export default {
   name: 'EditDevice',
   data() {
     return {
       model: {
+        createByName: '',
+        createDate: '',
+        updateByName: '',
+        updateDate: '',
         manufacturerName: '',
         classCode: '',
         smlPath: '',
@@ -63,6 +69,7 @@ export default {
         },
         rules: {
           manufacturerName: [{ required: true, message: '设备厂家必填', trigger: 'blur' }],
+          templateName: [{ required: true, message: '模板名称必填', trigger: 'blur' }],
           classCode: [{ required: true, message: '设备类型必填', trigger: 'blur' }],
           activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
         },
@@ -80,7 +87,12 @@ export default {
       }
     }
   },
-  mounted() {},
+  mounted() {
+    this.model.updateByName = this.$store.getters.roles[0]
+    this.model.createByName = this.$store.getters.roles[0]
+    this.model.createDate = dateFormat(new Date())
+    this.model.updateDate = dateFormat(new Date())
+  },
   methods: {
     onDisplayChange(e) {
       this.model.modelName = e

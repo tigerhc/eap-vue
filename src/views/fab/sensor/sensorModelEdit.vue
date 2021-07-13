@@ -1,7 +1,7 @@
 <template>
   <w-form v-bind="formConf" :col="4" :model="model">
     <el-input v-model="model.manufacturerName" label="传感器厂家" />
-    <el-input v-model="model.classCode" label="传感器类型" />
+    <el-input v-model="model.classCode" label="传感器类型" @blur="change" />
     <el-input v-model="model.parentType" label="传感器大类" />
     <el-input v-model="model.type" label="传感器小类" />
     <w-select-dic v-model="model.activeFlag" style="width: 100%" label="有效标志" dict="ACTIVE_FLAG" />
@@ -10,6 +10,9 @@
     <el-input v-model="model.setValue" label="设定值" />
     <el-input v-model="model.maxValue" label="最大值" />
     <el-input v-model="model.minValue" label="最小值" />
+    <el-select v-model="model.numType" placeholder="请选择" label="示数类型">
+      <el-option v-for="item in numTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
+    </el-select>
 
     <!--todo 此属性需要占用两列该怎么没写-->
     <el-input v-model="model.smlPath" label="SML文件路径" col="24" />
@@ -34,6 +37,8 @@
 </template>
 <script>
 import dateFormat from '@/utils/dateformat'
+import { fetchDict } from '@/api/sys/dict.js'
+import request from '@/utils/request'
 
 export default {
   name: 'EditDevice',
@@ -53,9 +58,11 @@ export default {
         createByName: '',
         createDate: '',
         updateByName: '',
-        updateDate: ''
+        updateDate: '',
+        numType: ''
       },
-
+      numTypeOptions: [],
+      numtyeps: [],
       formConf: {
         url: '/fab/fabsensormodel/',
         title: {
@@ -92,10 +99,32 @@ export default {
     this.model.createByName = this.$store.getters.roles[0]
     this.model.createDate = dateFormat(new Date())
     this.model.updateDate = dateFormat(new Date())
+    fetchDict('NUM_TYPE').then((res) => {
+      this.numtyeps = res.data
+    })
   },
   methods: {
     onDisplayChange(e) {
       this.model.modelName = e
+    },
+    getNumType() {
+      return request({
+        url: `fab/sensornumtype/numTypeList/${this.model.classCode}`,
+        methods: 'get'
+      }).then((res) => {
+        let options = []
+        options = res.data.results
+        this.numtyeps.forEach((item) => {
+          options.forEach((it) => {
+            if (item.value === it) {
+              this.numTypeOptions.push(item)
+            }
+          })
+        })
+      })
+    },
+    change() {
+      this.getNumType()
     }
   }
 }

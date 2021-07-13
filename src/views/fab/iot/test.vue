@@ -7,7 +7,7 @@
 
 <script>
 import * as echarts from 'echarts'
-// import { tempbytime } from '@/api/public'
+import { tempbytime } from '@/api/public'
 // import request from '@/utils/request'
 
 export default {
@@ -24,13 +24,14 @@ export default {
     }
   },
   mounted() {
-    // tempbytime('APJ-TRM1', {
-    //   beginTime: '2021-07-01',
-    //   endTime: '2021-07-12'
-    // }).then((res) => {
-    //   this.tempsValue = res.data.results
-    //   this.kChart()
-    // })
+    tempbytime('APJ-TRM1', {
+      beginTime: '2021-07-01',
+      endTime: '2021-07-12'
+    }).then((res) => {
+      this.tempsValue = res.data.results
+      console.log(res.data.results)
+      this.kChart()
+    })
     // this.lChart()
   },
   methods: {

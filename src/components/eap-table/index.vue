@@ -124,10 +124,10 @@ export default {
     },
     limit: function() {
       this.query.limit = this.limit
-    },
-    $route() {
-      this.getDatas()
     }
+    // $route() {
+    //   this.getDatas()
+    // }
   },
   created() {},
   mounted() {

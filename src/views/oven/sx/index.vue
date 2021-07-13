@@ -29,13 +29,13 @@
           </el-col>
           <el-col :span="3">
             <el-form-item>
-              <el-select v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" v-model="form.local56GI" :style="{width:'100px'}" clearable placeholder="位置" @change="positionClick('56GI')">
+              <el-select v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" v-model="form.local56GI" :style="{width:'80px', left:'-70px'}" clearable placeholder="位置" @change="positionClick('56GI')">
                 <el-option v-for="item in localResult56GI" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
-              <el-select v-model="form.local" :style="{width:'105px', left:'-80px'}" clearable placeholder="位置" @change="search" >
+              <el-select v-model="form.local" :style="{width:'100px', left:'-100px'}" clearable placeholder="位置" @change="search" >
                 <el-option v-for="item in localResult" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
-              <el-select v-show="form1.lineNo==='SIM' && form.local==='c'" v-model="form.localSimC" :style="{width:'70px',left:'-80px'}" placeholder="位置" @change="search">
+              <el-select v-show="form1.lineNo==='SIM' && form.local==='c'" v-model="form.localSimC" :style="{width:'70px',left:'0px'}" placeholder="位置" @change="search">
                 <el-option v-for="item in localResultSIMC" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </el-form-item>
@@ -386,13 +386,14 @@ export default {
             '1-2:4PIN', '2-2:4PIN', '3-2:4PIN', '4-2:4PIN', '5-2:4PIN',
             '1-2:5PIN', '2-2:5PIN', '3-2:5PIN', '4-2:5PIN', '5-2:5PIN',
             '1-2:6PIN', '2-2:6PIN', '3-2:6PIN', '4-2:6PIN', '5-2:6PIN'
-          ]
+          ],
+          top: '30px'
         },
         grid: {
           left: '3%',
           right: '4%',
           // bottom: '3%',
-          top: '50px',
+          top: '100px',
           containLabel: true
         },
         xAxis: {

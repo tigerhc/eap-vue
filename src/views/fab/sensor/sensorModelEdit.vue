@@ -63,6 +63,7 @@ export default {
       },
       numTypeOptions: [],
       numtyeps: [],
+      options: [],
       formConf: {
         url: '/fab/fabsensormodel/',
         title: {
@@ -76,18 +77,13 @@ export default {
           activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
         },
         onLoadData: (m, type) => {
-          console.info(m)
-          if (m.officeIds) {
-            m.officeIdsm.officeIds
-          }
+          m.numType = this.getNumTypeLabel(m.numType)
+          // console.info(m)
+
           return m
         },
         beforeSubmit: (params, type) => {
           const re = { ...params }
-          if (re.officeId) {
-            re.officeId = re.officeIds[re.officeIds.length - 1]
-            re.officeIds = undefined
-          }
 
           return re
         }
@@ -112,10 +108,9 @@ export default {
         url: `fab/sensornumtype/numTypeList/${this.model.classCode}`,
         methods: 'get'
       }).then((res) => {
-        let options = []
-        options = res.data.results
+        this.options = res.data.results
         this.numtyeps.forEach((item) => {
-          options.forEach((it) => {
+          this.options.forEach((it) => {
             if (item.value === it) {
               this.numTypeOptions.push(item)
             }
@@ -125,6 +120,16 @@ export default {
     },
     change() {
       this.getNumType()
+    },
+    // 将numType value转换label
+    getNumTypeLabel(val) {
+      var num = ''
+      this.numtyeps.forEach((item) => {
+        if (val === item.value) {
+          num = item.label
+        }
+      })
+      return num
     }
   }
 }

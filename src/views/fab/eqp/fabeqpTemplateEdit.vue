@@ -2,7 +2,14 @@
   <div class="app-container calendar-list-container">
     <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
       <el-tab-pane label="设备自带参数" name="self">
-        <w-form :before-submit="beforeSubmit1" :on-load-data="onLoadData1" :url="url" :col="1" :mode="model1">
+        <w-form
+          :title="title"
+          :col="3"
+          :model="model"
+          :before-submit="beforeSubmit"
+          :on-load-data="onLoadData"
+          url="fab/fabModeltemplate"
+        >
           <!-- <el-input v-model="model1.id" /> -->
 
           <w-edt-table v-slot="{}" ref="language" v-bind="table" :url="url">
@@ -138,8 +145,6 @@ export default {
   components: {},
   data() {
     return {
-      model1: { id: '' },
-      url: '/api/edcparamapi',
       table: {
         model: {},
         datas: []
@@ -279,6 +284,7 @@ export default {
   },
   methods: {
     onLoadData(m, type) {
+      console.log(m)
       this.getInitializationData()
       this.getSelectedData()
 
@@ -290,18 +296,18 @@ export default {
       return re
     },
 
-    onLoadData1(m, type) {
-      this.table.datas = m.edcAmsDefineI18nList
+    // onLoadData1(m, type) {
+    //   this.table.datas = m.edcAmsDefineI18nList
 
-      return m
-    },
-    beforeSubmit1(model, type) {
-      // model 将被保存的表单模型
-      delete model['edcAmsDefineI18nList'] // 删除原数据模型里的多语言数组
-      const lang = this.$refs.language.tranformData('edcAmsDefineI18nList') // 获取被转换格式的所有细表数据
-      const re = { ...model, ...lang } // 合并细表数据
-      return re // 返回新的数据模型
-    },
+    //   return m
+    // },
+    // beforeSubmit1(model, type) {
+    //   // model 将被保存的表单模型
+    //   delete model['edcAmsDefineI18nList'] // 删除原数据模型里的多语言数组
+    //   const lang = this.$refs.language.tranformData('edcAmsDefineI18nList') // 获取被转换格式的所有细表数据
+    //   const re = { ...model, ...lang } // 合并细表数据
+    //   return re // 返回新的数据模型
+    // },
 
     handleClick() {
       this.getEdecParams(this.model.modeId)
@@ -345,7 +351,7 @@ export default {
         this.selections.id = `${this.selections.parentType}${this.selections.type}${this.selections.subClassCode}`
         const sss = { ...this.selections }
         this.model.fabModelTemplateBodyList.push(sss)
-        console.log(this.model.fabModelTemplateBodyList)
+        // console.log(this.model.fabModelTemplateBodyList)
       } else {
         row.num--
         const id = row.treeValue
@@ -353,7 +359,7 @@ export default {
           if (id === item.subClassCode) {
             this.model.fabModelTemplateBodyList.splice(index, 1)
           }
-          console.log(this.model.fabModelTemplateBodyList)
+          // console.log(this.model.fabModelTemplateBodyList)
         })
       }
     },

@@ -2,7 +2,7 @@
   <div class="app-container calendar-list-container">
     <w-table v-bind="table" :onloadsuccess="deal" url="/fab/fabsensormodel">
       <!--tip="确认查看"-->
-      <w-table-col name="manufacturerName" label="传感器厂家" query condition="like" fixed handler="view" />
+      <w-table-col name="manufacturerName" label="传感器厂家" query condition="like" handler="view" />
       <w-table-col
         name="classCode"
         label="传感器类型"

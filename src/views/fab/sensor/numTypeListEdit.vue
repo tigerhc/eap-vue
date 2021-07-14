@@ -1,8 +1,7 @@
 <template>
   <w-form v-bind="formConf" :col="3" :model="model">
-    <el-select v-model="model.classCode" placeholder="设备类型" label="设备类型">
-      <el-option v-for="item in options" :key="item.id" :label="item.id" :value="item.id" />
-    </el-select>
+    <el-input v-model="model.classCode" label="传感器类型" />
+
     <w-select-dic v-model="model.numType" label="示数类型" dict="NUM_TYPE" placeholder="示数类型" />
     <el-input v-model="model.dataType" label="数据类型" />
     <el-input v-model="model.collectionFormula" label="采集方式" />
@@ -17,7 +16,7 @@
 </template>
 <script>
 import dateFormat from '@/utils/dateformat'
-import request from '@/utils/request'
+// import request from '@/utils/request'
 export default {
   name: 'MachineModel',
   data() {
@@ -78,15 +77,15 @@ export default {
   methods: {
     onDisplayChange(e) {
       this.model.modelName = e
-    },
-    getEqpModel() {
-      return request({
-        url: 'fab/fabequipmentmodel/classCodeList',
-        method: 'get'
-      }).then((res) => {
-        this.options = res.data.results
-      })
     }
+    // getEqpModel() {
+    //   return request({
+    //     url: 'fab/fabequipmentmodel/classCodeList',
+    //     method: 'get'
+    //   }).then((res) => {
+    //     this.options = res.data.results
+    //   })
+    // }
   }
 }
 </script>

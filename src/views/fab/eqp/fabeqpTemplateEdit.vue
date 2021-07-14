@@ -2,25 +2,41 @@
   <div class="app-container calendar-list-container">
     <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
       <el-tab-pane label="设备自带参数" name="self">
-        <w-edt-table v-slot="{}" ref="language" v-bind="table" url="/api/edcparamapi">
-          <w-table-col name="paramCode" label="编码" align="center">
-            <el-input v-model="table.model.paramCode" />
-          </w-table-col>
-          <w-table-col name="paramName" label="名称" align="center">
-            <el-input v-model="table.model.paramName" />
-          </w-table-col>
-          <w-table-col name="maxValue" label="最大值" align="center">
-            <el-input v-model="table.model.maxValue" />
-          </w-table-col>
-          <w-table-col name="minValue" label="最小值" align="center">
-            <el-input v-model="table.model.minValue" />
-          </w-table-col>
-          <w-table-col name="modelId" label="设备型号" align="center" />
-          <w-table-toolbar name="clean" hidden />
-        </w-edt-table>
+        <w-form :before-submit="beforeSubmit1" :on-load-data="onLoadData1" :url="url" :col="1" :mode="model1">
+          <!-- <el-input v-model="model1.id" /> -->
+
+          <w-edt-table v-slot="{}" ref="language" v-bind="table" :url="url">
+            <w-table-col name="paramCode" label="参数CODE" align="center">
+              <el-input v-model="table.model.paramCode" />
+            </w-table-col>
+            <w-table-col name="paramName" label="参数名称" align="center">
+              <el-input v-model="table.model.paramName" />
+            </w-table-col>
+            <w-table-col name="maxValue" label="最大值" align="center">
+              <el-input v-model="table.model.maxValue" />
+            </w-table-col>
+            <w-table-col name="minValue" label="最小值" align="center">
+              <el-input v-model="table.model.minValue" />
+            </w-table-col>
+            <w-table-col name="minValue" label="计量单位" align="center">
+              <el-input v-model="table.model.minValue" />
+            </w-table-col>
+            <w-table-col name="minValue" label="设定值" align="center">
+              <el-input v-model="table.model.minValue" />
+            </w-table-col>
+            <w-table-toolbar name="clean" hidden />
+          </w-edt-table>
+        </w-form>
       </el-tab-pane>
       <el-tab-pane label="传感器绑定" name="sorsen">
-        <w-form v-bind="formConf" :col="3" :model="model">
+        <w-form
+          :title="title"
+          :col="3"
+          :model="model"
+          :before-submit="beforeSubmit"
+          :on-load-data="onLoadData"
+          url="fab/fabModeltemplate"
+        >
           <el-row col="24" />
           <el-input v-model="model.classCode" label="设备类型" disabled style="width: 110%" />
           <el-input v-model="model.name" label="模板名称" disabled style="width: 110%" />
@@ -94,12 +110,19 @@
       </el-tab-pane>
       <el-tab-pane label="设备参数总览" name="all">
         <w-table v-bind="table1" url="">
+          <w-table-col name="paramCode" label="参数CODE" align="center" />
+          <w-table-col name="paramName" label="参数名称" align="center" />
+          <w-table-col name="maxValue" label="最大值" align="center" />
+          <w-table-col name="minValue" label="最小值" align="center" />
+          <w-table-col name="minValue" label="计量单位" align="center" />
+          <w-table-col name="minValue" label="设定值" align="center" />
           <w-table-toolbar name="batchDelete" hidden />
           <w-table-toolbar name="clean" hidden />
           <w-table-toolbar name="add" hidden />
           <w-table-toolbar name="exports" hidden />
           <w-table-button name="edit" hidden />
           <w-table-toolbar name="delete" hidden />
+          <w-table-toolbar name="search" hidden />
         </w-table>
       </el-tab-pane>
     </el-tabs>
@@ -115,6 +138,8 @@ export default {
   components: {},
   data() {
     return {
+      model1: { id: '' },
+      url: '/api/edcparamapi',
       table: {
         model: {},
         datas: []
@@ -208,6 +233,7 @@ export default {
       // 设备类型下拉框数据源
       classCodelOptions: [], // ////
       model: {
+        modeId: '',
         id: '',
         manufacturerName: '',
         updateBy: '',
@@ -225,29 +251,15 @@ export default {
       // 存储级联菜单选择的数据的对象
       selections: { parentType: '', type: '', subClassCode: '', id: '', num: '' },
 
-      formConf: {
-        url: 'fab/fabModeltemplate',
-        title: {
-          ADD: '新增设备',
-          EDIT: '修改设备',
-          VIEW: '设备详情'
-        },
-        rules: {
-          eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
-          modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
-          activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
-        },
-        onLoadData: (m, type) => {
-          this.getInitializationData()
-          this.getSelectedData()
-
-          return m
-        },
-        beforeSubmit: (params, type) => {
-          const re = { ...params }
-
-          return re
-        }
+      title: {
+        ADD: '新增设备',
+        EDIT: '修改设备',
+        VIEW: '设备详情'
+      },
+      rules: {
+        eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
+        modelName: [{ required: true, message: '设备类型必填', trigger: ['blur', 'change'] }],
+        activeFlag: [{ required: true, message: '有效标志必选', trigger: 'change' }]
       }
     }
   },
@@ -266,9 +278,33 @@ export default {
     // this.model.fabModelTemplateBodyList = this.arr
   },
   methods: {
+    onLoadData(m, type) {
+      this.getInitializationData()
+      this.getSelectedData()
+
+      return m
+    },
+    beforeSubmit(params, type) {
+      const re = { ...params }
+
+      return re
+    },
+
+    onLoadData1(m, type) {
+      this.table.datas = m.edcAmsDefineI18nList
+
+      return m
+    },
+    beforeSubmit1(model, type) {
+      // model 将被保存的表单模型
+      delete model['edcAmsDefineI18nList'] // 删除原数据模型里的多语言数组
+      const lang = this.$refs.language.tranformData('edcAmsDefineI18nList') // 获取被转换格式的所有细表数据
+      const re = { ...model, ...lang } // 合并细表数据
+      return re // 返回新的数据模型
+    },
+
     handleClick() {
-      console.log(this.model.classCode)
-      this.getEdecParams(this.model.classCode)
+      this.getEdecParams(this.model.modeId)
     },
     // 获取设备自带参数
     getEdecParams(eqpModelId) {

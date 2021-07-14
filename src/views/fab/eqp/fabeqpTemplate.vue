@@ -21,12 +21,12 @@
       <w-table-col
         name="classCode"
         label="设备类型"
-        namekey="classCode"
         query
         condition="like"
         dict
         url="fab/fabequipmentmodel/classCodeList"
       />
+      <w-table-col name="modeId" hidden />
       <w-table-col name="activeFlag" label="有效标志" namekey="activeFlag" />
       <w-table-col name="createDate" label="创建时间" namekey="createDate" />
       <w-table-toolbar name="batchDelete" hidden />

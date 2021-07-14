@@ -119,7 +119,7 @@ export default {
 </script>
 
 <style scoped>
-  .tempImg{width:100%;height:100%;background-repeat:no-repeat;background-size: 100% 100%;}
+  .tempImg{width:100%;height:100%;background-repeat:no-repeat;background-size: 80% 80%;}
   .tempImg div{background-repeat:no-repeat;overflow: hidden;}
   .positionHT1{position: absolute;width:3%;height:4%;border:1px solid #50fc08;left:14%;top:45%;}
   .positionHT1_p{position: absolute;width:3%;height:4%;left:14%;top:45%;}
@@ -202,7 +202,7 @@ export default {
   .dtl_AT10{position: absolute;width:3%;height:16%;left:33%;top:38%;border:1px solid #50fc08;}
   .dtl_AT10_p{position: absolute;width:3%;height:16%;left:33%;top:38%;}
   /**背景图*/
-  .HTRT{width:100%;height:100%;background:url(../../../assets/img/HTRT.png);background-repeat:no-repeat;background-size: 100% 100%;}
+  .HTRT{width:100%;height:100%;background:url(../../../assets/img/HTRT.png);background-repeat:no-repeat;background-size: 80% 80%;}
   .AT{width:100%;height:100%;background:url(../../../assets/img/AT.png);background-repeat:no-repeat;background-size: 100% 100%;}
   .OVEN1{width:100%;height:142%;background:url(../../../assets/img/APJ_OVEN1.jpg);background-repeat:no-repeat;background-size: 70% 100%;margin-top: 11%;}
   .OVEN2{width:100%;height:150%;background:url(../../../assets/img/APJ_OVEN2.jpg);background-repeat:no-repeat;background-size: 55% 95%;margin-top: 11%;}
@@ -216,24 +216,24 @@ export default {
   .SX_FREEZER{width:100%;height:150%;background:url(../../../assets/img/SX_FREEZER.jpg);background-repeat:no-repeat;background-size: 288px 419px;margin-top:11%;margin-left:10%;}
   .SMA_FREEZER{width:100%;height:150%;background:url(../../../assets/img/SMA_FREEZER.png);background-repeat:no-repeat;background-size: 275px 433px;margin-top:11%;margin-left:12%;}
 
-  .dtl_HT1{width:100%;height:100%;background:url(../../../assets/img/HTRT_G1.png);background-repeat:no-repeat;background-size: 100% 100%;}
-  .dtl_HT2{width:100%;height:100%;background:url(../../../assets/img/HTRT_G2.png);background-repeat:no-repeat;background-size: 100% 100%;}
-  .dtl_HT3{width:100%;height:100%;background:url(../../../assets/img/HTRT_G3.png);background-repeat:no-repeat;background-size: 100% 100%;}
-  .dtl_HT4{width:100%;height:100%;background:url(../../../assets/img/HTRT_G4.png);background-repeat:no-repeat;background-size: 100% 100%;}
-  .dtl_HT5{width:100%;height:100%;background:url(../../../assets/img/HTRT_G5.png);background-repeat:no-repeat;background-size: 100% 100%;}
-  .dtl_HT6{width:100%;height:100%;background:url(../../../assets/img/HTRT_G6.png);background-repeat:no-repeat;background-size: 100% 100%;}
-  .dtl_HT7{width:100%;height:100%;background:url(../../../assets/img/HTRT_G7.png);background-repeat:no-repeat;background-size: 100% 100%;}
-  .dtl_HT8{width:100%;height:100%;background:url(../../../assets/img/HTRT_G8.png);background-repeat:no-repeat;background-size: 100% 100%;}
-  .dtl_HT9{width:100%;height:100%;background:url(../../../assets/img/HTRT_YR1.png);background-repeat:no-repeat;background-size: 100% 100%;}
-  .dtl_HT10{width:100%;height:100%;background:url(../../../assets/img/HTRT_DCW.png);background-repeat:no-repeat;background-size: 100% 100%;}
+  .dtl_HT1{width:100%;height:100%;background:url(../../../assets/img/HTRT_G1.png);background-repeat:no-repeat;background-size: 80% 80%;}
+  .dtl_HT2{width:100%;height:100%;background:url(../../../assets/img/HTRT_G2.png);background-repeat:no-repeat;background-size: 80% 80%;}
+  .dtl_HT3{width:100%;height:100%;background:url(../../../assets/img/HTRT_G3.png);background-repeat:no-repeat;background-size: 80% 80%;}
+  .dtl_HT4{width:100%;height:100%;background:url(../../../assets/img/HTRT_G4.png);background-repeat:no-repeat;background-size: 80% 80%;}
+  .dtl_HT5{width:100%;height:100%;background:url(../../../assets/img/HTRT_G5.png);background-repeat:no-repeat;background-size: 80% 80%;}
+  .dtl_HT6{width:100%;height:100%;background:url(../../../assets/img/HTRT_G6.png);background-repeat:no-repeat;background-size: 80% 80%;}
+  .dtl_HT7{width:100%;height:100%;background:url(../../../assets/img/HTRT_G7.png);background-repeat:no-repeat;background-size: 80% 80%;}
+  .dtl_HT8{width:100%;height:100%;background:url(../../../assets/img/HTRT_G8.png);background-repeat:no-repeat;background-size: 80% 80%;}
+  .dtl_HT9{width:100%;height:100%;background:url(../../../assets/img/HTRT_YR1.png);background-repeat:no-repeat;background-size: 80% 80%;}
+  .dtl_HT10{width:100%;height:100%;background:url(../../../assets/img/HTRT_DCW.png);background-repeat:no-repeat;background-size: 80% 80%;}
 
-  .dtl_RT1{width:100%;height:100%;background:url(../../../assets/img/HTRT_ACW.png);background-repeat:no-repeat;background-size: 100% 100%;}
-  .dtl_RT2{width:100%;height:100%;background:url(../../../assets/img/HTRT_DCT.png);background-repeat:no-repeat;background-size: 100% 100%;}
-  .dtl_RT4{width:100%;height:100%;background:url(../../../assets/img/HTRT_ACT.png);background-repeat:no-repeat;background-size: 100% 100%;}
-  .dtl_RT6{width:100%;height:100%;background:url(../../../assets/img/HTRT_YR2.png);background-repeat:no-repeat;background-size: 100% 100%;}
-  .dtl_RT7{width:100%;height:100%;background:url(../../../assets/img/HTRT_LQ.png);background-repeat:no-repeat;background-size: 100% 100%;}
+  .dtl_RT1{width:100%;height:100%;background:url(../../../assets/img/HTRT_ACW.png);background-repeat:no-repeat;background-size: 80% 80%;}
+  .dtl_RT2{width:100%;height:100%;background:url(../../../assets/img/HTRT_DCT.png);background-repeat:no-repeat;background-size: 80% 80%;}
+  .dtl_RT4{width:100%;height:100%;background:url(../../../assets/img/HTRT_ACT.png);background-repeat:no-repeat;background-size: 80% 80%;}
+  .dtl_RT6{width:100%;height:100%;background:url(../../../assets/img/HTRT_YR2.png);background-repeat:no-repeat;background-size: 80% 80%;}
+  .dtl_RT7{width:100%;height:100%;background:url(../../../assets/img/HTRT_LQ.png);background-repeat:no-repeat;background-size: 80% 80%;}
 
-  .dtlImg{width:80%;height:80%;margin-left: 10%;margin-top: 10%;}
+  .dtlImg{width:80%;height:80%;margin-left: 10%;margin-top: 0px;}
   .dtlImg-AT2{width:80%;height:80%;background:url(../../../assets/img/AT_DTL.png);background-repeat:no-repeat;background-size: 100% 100%;margin-left: 10%;margin-top: 10%;}
   .dtl_title{position: absolute;margin-top:-7%;margin-left:-10%;font-size: large}
 </style>

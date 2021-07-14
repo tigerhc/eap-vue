@@ -449,7 +449,10 @@ export default {
           data: leftAxis
         },
         yAxis: {
+          scale: true,
           type: 'value',
+          splitNumber: 4,
+          boundaryGap: [0, 0.2],
           axisLabel: {
             formatter: '{value} %'
           }
@@ -475,7 +478,10 @@ export default {
           data: rightAxis
         },
         yAxis: {
+          scale: true,
           type: 'value',
+          splitNumber: 4,
+          boundaryGap: [0, 0.2],
           axisLabel: {
             formatter: '{value} %'
           }
@@ -567,7 +573,7 @@ export default {
   float: left;
 }
 .wid90 {
-  width: 100px;
+  width: 120px;
 }
 .wider {
   width: 240px;

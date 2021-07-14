@@ -327,6 +327,7 @@ export default {
       var option
       option = {
         color: ['#3CB371', '#00FFFF', '#ff0000', '#FF0000', '#1E90FF', '#FFA500', '#800000', '#1E90FF'],
+
         title: { text: '量测分离倾向管理图' + '  (单位:' + unit + ')'
         },
         toolbox: {
@@ -340,6 +341,7 @@ export default {
         },
         tooltip: { trigger: 'axis' },
         legend: {
+
           data: [
             '1-1:A', '1-2:A', '2-1:A', '2-2:A', '1-1:B', '1-2:B', '2-1:B', '2-2:B', '1-1:C', '1-2:C', '2-1:C', '2-2:C', '1-1:D', '1-2:D', '2-1:D', '2-2:D',
             '上限', '下限',
@@ -393,7 +395,11 @@ export default {
             '1-2:5PIN', '2-2:5PIN', '3-2:5PIN', '4-2:5PIN', '5-2:5PIN',
             '1-2:6PIN', '2-2:6PIN', '3-2:6PIN', '4-2:6PIN', '5-2:6PIN'
           ],
-          top: '30px'
+          top: '35px',
+          textStyle: {
+            fontSize: 20, // 设置legend字体大小 表格名称下一行
+            color: '#000000'
+          }
         },
         grid: {
           left: '3%',

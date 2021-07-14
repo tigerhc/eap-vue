@@ -55,7 +55,7 @@
         <chipTray :eqp-id="item.eqpId" :start-time="item.startTimeStr" :tray-id="item.toTrayId" :x="item.toX" :y="item.toY"/>
       </div>
 
-      <div :style="{left:'2450px',top:'-1600px',height:'4000px'}" class="smt_panel">
+      <div v-show="smt2.eqpId !== undefined" :style="{left:'2450px',top:'-1600px',height:'4000px'}" class="smt_panel">
         <div class="incloud"/>
         <div :style="{left:'50px', top:'1800px'}" class="eqp_single">
           <chipTray :eqp-id="smt2.eqpId" :start-time="smt2.startTimeStr" :tray-id="smt2.toTrayId"/>

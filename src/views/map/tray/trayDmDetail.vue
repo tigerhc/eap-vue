@@ -6,7 +6,7 @@
 				<ChipDm eqp-id="IBGT"/>
 				<div
 v-for="(item,index) in igbt1.lightPst"
-					:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
+					:style="{left:(item.dmX - 1)*8+'px',top:(item.dmY - 1)*8+'px',width:'8px',height:'8px'}"
 					:key="'i1'+item.dmX+'_'+item.dmY"
 					class="lightPst"
 					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt1')"/>
@@ -18,9 +18,10 @@ v-for="(item,index) in igbt1.lightPst"
 			</div>
 			<div v-if="igbtIndex > 1" :style="{left:'250px'}" class="chip_wigbt_panel">
 				<ChipDm eqp-id="IBGT"/>
+        <!--					:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"-->
 				<div
 v-for="(item,index) in igbt2.lightPst"
-					:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
+					:style="{left:(item.dmX - 1)*8+'px',top:(item.dmY - 1)*8+'px',height:'8px'}"
 					:key="'i2'+item.dmX+'_'+item.dmY"
 					class="lightPst"
 					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt2')"/>
@@ -34,7 +35,7 @@ v-for="(item,index) in igbt2.lightPst"
 				<ChipDm eqp-id="IBGT"/>
 				<div
 v-for="(item,index) in igbt3.lightPst"
-					:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
+					:style="{left:(item.dmX - 1)*8+'px',top:(item.dmY - 1)*8+'px',width:'8px',height:'8px'}"
 					:key="'i3'+item.dmX+'_'+item.dmY"
 					class="lightPst"
 					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt3')"/>
@@ -48,7 +49,7 @@ v-for="(item,index) in igbt3.lightPst"
 				<ChipDm eqp-id="IBGT"/>
 				<div
 v-for="(item,index) in igbt4.lightPst"
-					:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
+					:style="{left:(item.dmX - 1)*8+'px',top:(item.dmY - 1)*8+'px',width:'8px',height:'8px'}"
 					:key="'i4'+item.dmX+'_'+item.dmY"
 					class="lightPst"
 					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt4')"/>
@@ -62,7 +63,7 @@ v-for="(item,index) in igbt4.lightPst"
 				<ChipDm eqp-id="IBGT"/>
 				<div
 v-for="(item,index) in igbt5.lightPst"
-					:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
+					:style="{left:(item.dmX - 1)*8+'px',top:(item.dmY - 1)*8+'px',width:'8px',height:'8px'}"
 					:key="'i5'+item.dmX+'_'+item.dmY"
 					class="lightPst"
 					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt5')"/>
@@ -76,7 +77,7 @@ v-for="(item,index) in igbt5.lightPst"
 				<ChipDm eqp-id="IBGT"/>
 				<div
 v-for="(item,index) in igbt6.lightPst"
-					:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"
+					:style="{left:(item.dmX - 1)*8+'px',top:(item.dmY - 1)*8+'px',width:'8px',height:'8px'}"
 					:key="'i6'+item.dmX+'_'+item.dmY"
 					class="lightPst"
 					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt6')"/>
@@ -93,7 +94,7 @@ v-for="(item,index) in igbt6.lightPst"
 				<ChipDm eqp-id="FRD"/>
 				<div
 v-for="(item,index) in frd1.lightPst"
-					:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
+					:style="{left:(item.dmX-1)*10+'px',top:(item.dmY-1)*10+'px',width:'10px',height:'10px'}"
 					:key="'f1'+item.dmX+'_'+item.dmY"
 					class="lightPst"
 					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd1')"/>
@@ -107,7 +108,7 @@ v-for="(item,index) in frd1.lightPst"
 				<ChipDm eqp-id="FRD"/>
 				<div
 v-for="(item,index) in frd2.lightPst"
-					:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
+					:style="{left:(item.dmX-1)*10+'px',top:(item.dmY-1)*10+'px',width:'10px',height:'10px'}"
 					:key="'f2'+item.dmX+'_'+item.dmY"
 					class="lightPst"
 					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd2')"/>
@@ -121,7 +122,7 @@ v-for="(item,index) in frd2.lightPst"
 				<ChipDm eqp-id="FRD"/>
 				<div
 v-for="(item,index) in frd3.lightPst"
-					:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
+					:style="{left:(item.dmX-1)*10+'px',top:(item.dmY-1)*10+'px',width:'10px',height:'10px'}"
 					:key="'f3'+item.dmX+'_'+item.dmY"
 					class="lightPst"
 					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd3')"/>
@@ -135,7 +136,7 @@ v-for="(item,index) in frd3.lightPst"
 				<ChipDm eqp-id="FRD"/>
 				<div
 v-for="(item,index) in frd4.lightPst"
-					:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
+					:style="{left:(item.dmX-1)*10+'px',top:(item.dmY-1)*10+'px',width:'10px',height:'10px'}"
 					:key="'f4'+item.dmX+'_'+item.dmY"
 					class="lightPst"
 					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd4')"/>
@@ -149,7 +150,7 @@ v-for="(item,index) in frd4.lightPst"
 				<ChipDm eqp-id="FRD"/>
 				<div
 v-for="(item,index) in frd5.lightPst"
-					:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
+					:style="{left:(item.dmX-1)*10+'px',top:(item.dmY-1)*10+'px',width:'10px',height:'10px'}"
 					:key="'f5'+item.dmX+'_'+item.dmY"
 					class="lightPst"
 					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd5')"/>
@@ -163,7 +164,7 @@ v-for="(item,index) in frd5.lightPst"
 				<ChipDm eqp-id="FRD"/>
 				<div
 v-for="(item,index) in frd6.lightPst"
-					:style="{top:item.dmX*10+'px',left:item.dmY*10+'px',width:'10px',height:'10px'}"
+					:style="{left:(item.dmX-1)*10+'px',top:(item.dmY-1)*10+'px',width:'10px',height:'10px'}"
 					:key="'f6'+item.dmX+'_'+item.dmY"
 					class="lightPst"
 					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'frd6')"/>

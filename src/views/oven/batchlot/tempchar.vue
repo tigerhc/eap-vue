@@ -21,6 +21,7 @@
         </el-form-item>
         <el-button type="primary" @click="search">查询</el-button>
         <el-button type="primary" @click="searchLine"> {{ searchBtn }} </el-button>
+        <el-button type="primary" @click="tempExport">导出</el-button>
       </el-row>
     </el-form>
     <el-tabs v-model="editableTabsValue" type="card" @tab-click="loadTempDataPart">
@@ -65,6 +66,7 @@ import { tempbytime } from '@/api/public'
 import * as echarts from 'echarts'
 import { eqpList } from '@/api/oven/temperature'
 import tempImg from '@/views/tool/temperature/tempImg'
+import api from '../ports/fetch'
 
 export default {
   name: 'Tempchar',
@@ -261,7 +263,11 @@ export default {
         'SMA-FREEZER1': [-6, -6],
         'SX-FREEZER1': [-6, -6]
       },
-      searchBtn: '范围内查询'
+      searchBtn: '范围内查询',
+      api: api('/oven/ovnbatchlot/tempExport'),
+      toolbarStatus: {
+        exportsLoading: false
+      }
     }
   },
   mounted() {
@@ -276,6 +282,39 @@ export default {
     })
   },
   methods: {
+    tempExport() {
+      if (this.toolbarStatus.exportsLoading) {
+        return
+      }
+      this.toolbarStatus.exportsLoading = true
+      // const q = (this.query)
+      // const q = this.form
+      var param = {}
+      param.eqpId = this.form.eqpId
+      param.startTime = this.form.dateTime[0] + ' 00:00:00'
+      param.endTime = this.form.dateTime[1] + ' 23:59:59'
+      if (param.eqpId === '' || this.form.dateTime[0] === '' || this.form.dateTime[1] === '') {
+        alert('请选择机种名和时间段')
+        return
+      }
+      this.api.export(param).then((response) => {
+        if (response.code === 0) {
+          return import('../../oven/ports/Export2Excel').then((excel) => {
+            excel.export_byte_to_excel(response.bytes, response.title)
+            this.toolbarStatus.exportsLoading = false
+          })
+        } else {
+          this.$notify.error({
+            title: '失败',
+            message: (response && response.errmsg) || '导出失败!',
+            duration: 2000
+          })
+          this.toolbarStatus.exportsLoading = false
+        }
+      }).catch((e) => {
+        this.toolbarStatus.exportsLoading = false
+      })
+    },
     onValueChange(name) {
       this.form.eqpId = name
     },

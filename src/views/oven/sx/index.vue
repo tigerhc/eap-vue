@@ -16,7 +16,7 @@
           <el-col :span="3">
             <el-form-item>
               <div class="condition">
-                <el-select v-model="form.productionName" :style="{left:'-80px'}" class="wid90" placeholder="请选择机种名" @change="search">
+                <el-select v-model="form.productionName" :style="{left:'-80px',width:'210px'}" class="wid90" placeholder="请选择机种名" @change="search">
                   <el-option
                     v-for="item in productionResult"
                     :key="item.label"
@@ -29,10 +29,10 @@
           </el-col>
           <el-col :span="3">
             <el-form-item>
-              <el-select v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" v-model="form.local56GI" :style="{width:'80px', left:'-70px'}" clearable placeholder="位置" @change="positionClick('56GI')">
+              <el-select v-show="form1.lineNo==='5GI' || form1.lineNo==='6GI'" v-model="form.local56GI" :style="{width:'80px', left:'-50px'}" clearable placeholder="位置" @change="positionClick('56GI')">
                 <el-option v-for="item in localResult56GI" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
-              <el-select v-model="form.local" :style="{width:'100px', left:'-100px'}" clearable placeholder="位置" @change="search" >
+              <el-select v-model="form.local" :style="{width:'100px', left:'-30px'}" clearable placeholder="位置" @change="search" >
                 <el-option v-for="item in localResult" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
               <el-select v-show="form1.lineNo==='SIM' && form.local==='c'" v-model="form.localSimC" :style="{width:'70px',left:'0px'}" placeholder="位置" @change="search">
@@ -312,6 +312,12 @@ export default {
       })
     },
     initChart() {
+      var unit = ''
+      if (this.form.local === 'd') {
+        unit = ' °'
+      } else if (this.form.local !== null && this.form.local !== '') {
+        unit = ' mm'
+      }
       if (this.myChart != null) {
         this.myChart.dispose()
       }
@@ -321,7 +327,7 @@ export default {
       var option
       option = {
         color: ['#3CB371', '#00FFFF', '#ff0000', '#FF0000', '#1E90FF', '#FFA500', '#800000', '#1E90FF'],
-        title: { text: '量测分离倾向管理图'
+        title: { text: '量测分离倾向管理图' + '  (单位:' + unit + ')'
         },
         toolbox: {
           show: false,
@@ -411,20 +417,25 @@ export default {
           // // min: this.min,
           // axisLabel: {
           // formatter: this.formatter, //4行
+          // name: '单位:'+unit,
+          //         nameTextStyle: {//字体样式
+          //         fontSize: 16,//字体大小
+          //         padding: 15 //距离坐标位置的距离
+          //       },
           scale: true,
           type: 'value',
           splitNumber: 7,
-          boundaryGap: [0.2, 0.02],
-          min: 'dataMin', // 最小值为数据最低线
+          boundaryGap: [0.02, 0.02],
+          // min: 'dataMin', // 最小值为数据最低线
           // min: this.min,
           axisLabel: {
 
             // show: true,
             // 内容格式器
-            // formatter: function(value, index) {
-            //   return value.toFixed(2)
-            // },
-            formatter: this.formatter,
+            formatter: function(value, index) {
+              return value.toFixed(2)
+            },
+            // formatter: this.formatter,
             splitArea: { show: true },
             textStyle: {
               color: '#',

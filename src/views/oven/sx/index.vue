@@ -397,7 +397,7 @@ export default {
           ],
           top: '35px',
           textStyle: {
-            fontSize: 20,
+            fontSize: 20, // 设置legend字体大小 表格名称下一行
             color: '#000000'
           }
         },

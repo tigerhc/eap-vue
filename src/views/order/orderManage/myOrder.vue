@@ -53,7 +53,7 @@
       <w-table-button
         :hidden="row.planStatus != '4'"
         name="endOrders"
-        icon="el-icon-document-delete"
+        icon="el-icon-document-remove"
         label="结束工单"
         type="primary"
       />
@@ -204,27 +204,31 @@ export default {
     },
     // 确认派单
     dispatchDet() {
-      return request({ url: 'rw/rwplan/assign', methods: 'post', params: this.dispatchForm })
-        .then((res) => {
-          if (res.data.code === 0) {
-            return this.$notify({
-              title: '成功',
-              message: res.data.msg,
-              type: 'success',
-              duration: 2000
+      this.$refs['dispatchForm'].validate((v) => {
+        if (v) {
+          return request({ url: 'rw/rwplan/assign', methods: 'post', params: this.dispatchForm })
+            .then((res) => {
+              if (res.data.code === 0) {
+                return this.$notify({
+                  title: '成功',
+                  message: res.data.msg,
+                  type: 'success',
+                  duration: 2000
+                })
+              } else {
+                this.$notify({
+                  title: '失败',
+                  message: res.data.msg,
+                  type: 'error',
+                  duration: 2000
+                })
+              }
             })
-          } else {
-            this.$notify({
-              title: '失败',
-              message: '指派失败',
-              type: 'error',
-              duration: 2000
+            .finally(() => {
+              this.dispatchDialogVisible = false
             })
-          }
-        })
-        .finally(() => {
-          this.dispatchDialogVisible = false
-        })
+        }
+      })
     },
     // 接单
     receiveOrders(table) {
@@ -233,27 +237,33 @@ export default {
     },
     // 确认接单
     receiveOrdersDet() {
-      return request({ url: 'rw/rwplan/receiveOrder', methods: 'post', params: this.receiveOrdersForm })
-        .then((res) => {
-          if (res.data.code === 999998) {
-            return this.$notify({
-              title: '成功',
-              message: res.data.msg,
-              type: 'success',
-              duration: 2000
+      this.$refs['receiveOrdersForm'].validate((v) => {
+        if (v) {
+          return request({ url: 'rw/rwplan/receiveOrder', methods: 'post', params: this.receiveOrdersForm })
+            .then((res) => {
+              console.log(res.data)
+
+              if (res.data.code === 0) {
+                return this.$notify({
+                  title: '成功',
+                  message: res.data.msg,
+                  type: 'success',
+                  duration: 2000
+                })
+              } else {
+                this.$notify({
+                  title: '失败',
+                  message: res.data.msg,
+                  type: 'error',
+                  duration: 2000
+                })
+              }
             })
-          } else {
-            this.$notify({
-              title: '失败',
-              message: '指派失败',
-              type: 'error',
-              duration: 2000
+            .finally(() => {
+              this.receiveOrdersDialogVisible = false
             })
-          }
-        })
-        .finally(() => {
-          this.receiveOrdersDialogVisible = false
-        })
+        }
+      })
     },
     // 结束上报
     endReport(table) {
@@ -263,28 +273,32 @@ export default {
     },
     // 确认结束上报
     endReportDet() {
-      return request({ url: 'rw/rwplan/Report', methods: 'post', params: this.endReportForm })
-        .then((res) => {
-          console.log(res)
-          if (res.data.code === 999998) {
-            return this.$notify({
-              title: '成功',
-              message: res.data.msg,
-              type: 'success',
-              duration: 2000
+      this.$refs['endReportForm'].validate((v) => {
+        if (v) {
+          return request({ url: 'rw/rwplan/Report', methods: 'post', params: this.endReportForm })
+            .then((res) => {
+              console.log(res)
+              if (res.data.code === 0) {
+                return this.$notify({
+                  title: '成功',
+                  message: res.data.msg,
+                  type: 'success',
+                  duration: 2000
+                })
+              } else {
+                this.$notify({
+                  title: '失败',
+                  message: res.data.msg,
+                  type: 'error',
+                  duration: 2000
+                })
+              }
             })
-          } else {
-            this.$notify({
-              title: '失败',
-              message: '指派失败',
-              type: 'error',
-              duration: 2000
+            .finally(() => {
+              this.endReportDialogVisible = false
             })
-          }
-        })
-        .finally(() => {
-          this.endReportDialogVisible = false
-        })
+        }
+      })
     }
     // endOrders(table) {}
   }

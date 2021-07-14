@@ -158,7 +158,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="dialogFormRolesVisible" title="设置角色">
+    <el-dialog :visible.sync="dialogFormRolesVisible" title="设置角色" width="55%">
       <el-transfer
         :filterable="true"
         :props="{ key: 'id', label: 'name' }"
@@ -523,7 +523,12 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style scoped lang='scss'>
+/deep/.el-dialog .el-dialog__body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .searchModule {
   float: left;
   height: 95%;

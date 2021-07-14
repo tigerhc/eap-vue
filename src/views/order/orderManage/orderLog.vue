@@ -1,19 +1,33 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table/>
+    <w-table v-bind="table" :limit="15" url="">
+      <w-table-col name="wodId" label="工单号" align="center" />
+      <w-table-col name="eqpId" label="设备号" align="center" />
+      <w-table-col name="planType" label="工单类型" align="center" />
+      <w-table-col name="planStatus" label="工单状态" align="center" />
+      <w-table-col name="dealType" label="处理方式" align="center" />
+      <w-table-col name="remarks" label="备注" align="center" />
+      <w-table-col name="createBy" label="创建者" align="center" />
+      <w-table-col name="createDate" label="创建时间" align="center" />
+      <w-table-toolbar name="add" hidden />
+      <w-table-toolbar name="batchDelete" hidden />
+      <w-table-toolbar name="search" hidden />
+      <w-table-toolbar name="exports" hidden />
+      <w-table-toolbar name="clean" hidden />
+    </w-table>
   </div>
 </template>
 
 <script>
 export default {
   name: 'OrderLog',
-  components: {},
   data() {
-    return {}
+    return {
+      table: {
+        opHide: true
+      }
+    }
   },
   methods: {}
 }
 </script>
-
-<style  scoped>
-</style>

@@ -312,6 +312,12 @@ export default {
       })
     },
     initChart() {
+      var unit = ''
+      if (this.form.local === 'd') {
+        unit = ' °'
+      } else {
+        unit = ' mm'
+      }
       if (this.myChart != null) {
         this.myChart.dispose()
       }
@@ -421,10 +427,10 @@ export default {
 
             // show: true,
             // 内容格式器
-            // formatter: function(value, index) {
-            //   return value.toFixed(2)
-            // },
-            formatter: this.formatter,
+            formatter: function(value, index) {
+              return value.toFixed(2) + unit
+            },
+            // formatter: this.formatter,
             splitArea: { show: true },
             textStyle: {
               color: '#',

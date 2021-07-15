@@ -401,13 +401,16 @@ export default {
             name: '批号'
           },
           yAxis: {
+            scale: true,
+            splitNumber: 7,
+            boundaryGap: [0.02, 0.02],
             axisLabel: {
               formatter: '{value} mg'
             },
             type: 'value',
-            min: yMin,
-            max: yMax,
-            name: '重量mg'
+            // min: yMin,
+            // max: yMax,
+            name: '重量'
           },
           series: [
             {

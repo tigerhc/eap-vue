@@ -291,8 +291,8 @@ export default {
       // const q = this.form
       var param = {}
       param.eqpId = this.form.eqpId
-      param.startTime = this.form.dateTime[0] + ' 00:00:00'
-      param.endTime = this.form.dateTime[1] + ' 23:59:59'
+      param.startTime = this.form.dateTime[0]
+      param.endTime = this.form.dateTime[1]
       if (param.eqpId === '' || this.form.dateTime[0] === '' || this.form.dateTime[1] === '') {
         alert('请选择机种名和时间段')
         return

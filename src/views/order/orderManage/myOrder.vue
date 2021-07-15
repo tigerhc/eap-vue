@@ -300,8 +300,10 @@ export default {
         }
       })
     },
-    endOrders() {
-      return request({ url: 'rw/rwplan/Statement', methods: 'post' }).then((res) => {
+    endOrders(table) {
+      console.log(table)
+      return request({ url: 'rw/rwplan/Statement', methods: 'post', params: { id: table.id }}).then((res) => {
+        console.log(res)
         if (res.data.code === 0) {
           return this.$notify({
             title: '成功',

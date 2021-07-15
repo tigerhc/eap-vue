@@ -294,7 +294,7 @@ export default {
   },
   methods: {
     onLoadData(m, type) {
-      console.log(m)
+      // console.log(m)
       this.getInitializationData()
       this.getSelectedData()
       this.table.datas = m.edcparamApiSelfList
@@ -457,6 +457,7 @@ export default {
         url: 'fab/fabModeltemplatebody/modelTemplateList/',
         method: 'get'
       }).then((res) => {
+        // console.log(res)
         this.options = res.data.results
       })
     },
@@ -466,6 +467,7 @@ export default {
         url: `fab/fabModeltemplatebody/oneTemplateList/${this.model.id}`,
         method: 'get'
       }).then((res) => {
+        // console.log(res)
         this.model.fabModelTemplateBodyList = res.data.results
       })
     }

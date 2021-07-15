@@ -45,7 +45,9 @@ export default {
   components: {},
   data() {
     return {
-      table: {}
+      table: {
+        opHide: true
+      }
     }
   },
   mounted() {},

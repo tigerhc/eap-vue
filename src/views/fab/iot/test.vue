@@ -32,20 +32,30 @@ export default {
   },
   mounted() {
     tempbytimes('APJ-TRM1').then((res) => {
+      let a = 0
+      let b = 0
+      let c = 0
+      let d = 0
+      let e = 0
+      let f = 0
+      let g = 0
+      let h = 0
       res.data.results.forEach((item) => {
         if (item.periodDate === '2021-03-11') {
-          this.tempStart.push(parseInt(item.tempStart))
-          this.tempEnd.push(parseInt(item.tempEnd))
-          this.tempMax.push(parseInt(item.tempMax))
-          this.tempMin.push(parseInt(item.tempMin))
+          a = parseInt(item.tempStart)
+          b = parseInt(item.tempEnd)
+          c = parseInt(item.tempMax)
+          d = parseInt(item.tempMin)
         } else if (item.periodDate === '2021-03-12') {
-          this.tempStart2.push(parseInt(item.tempStart))
-          this.tempEnd2.push(parseInt(item.tempEnd))
-          this.tempMax2.push(parseInt(item.tempMax))
-          this.tempMin2.push(parseInt(item.tempMin))
+          e = parseInt(item.tempStart)
+          f = parseInt(item.tempEnd)
+          g = parseInt(item.tempMax)
+          h = parseInt(item.tempMin)
         }
       })
-      // console.log(this.tempStart)
+      this.tempStart = [a, b, c, d]
+      this.tempStart2 = [e, f, g, h]
+      console.log(this.tempStart)
       this.kChart()
     })
 
@@ -74,59 +84,12 @@ export default {
         yAxis: {},
         series: [
           {
-            name: 'temp_start',
             type: 'candlestick',
-            data: [this.tempStart, this.tempMax2],
-            itemStyle: {
-              color: '#174BAD',
-              color0: '#174BAD',
-              borderColor: '#174BAD',
-              borderColor0: '#174BAD'
-            }
-          },
-          {
-            name: 'temp_end',
-            type: 'candlestick',
-            data: [this.tempEnd, this.tempMax2],
-            itemStyle: {
-              color: '#23D454',
-              color0: '#23D454',
-              borderColor: '#23D454',
-              borderColor0: '#23D454'
-            }
-          },
-          {
-            name: 'temp_max',
-            type: 'candlestick',
-            data: [this.tempMax, this.tempMax2],
-            itemStyle: {
-              color: '#E0DA1A',
-              color0: '#E0DA1A',
-              borderColor: '#E0DA1A',
-              borderColor0: '#E0DA1A'
-            }
-          },
-          {
-            name: 'temp_min',
-            type: 'candlestick',
-            data: [this.tempMin, this.tempMin2],
-            itemStyle: {
-              color: '#E01A63',
-              color0: '#E01A63',
-              borderColor: '#E01A63',
-              borderColor0: '#E01A63'
-            }
+            data: [this.tempStart, this.tempStart2]
           }
         ],
         tooltip: {
           trigger: 'axis',
-          // position: ['50%', '50%'],
-          position: function(pos, params, dom, rect, size) {
-            // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
-            var obj = { top: 60 }
-            obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5
-            return obj
-          },
           axisPointer: {
             type: 'cross'
           }
@@ -202,13 +165,23 @@ export default {
     getLChartData(time) {
       return request(`oven/ovnbatchlotday/selectTime/${time}`)
         .then((res) => {
+          const time = []
+          const arr1 = []
+          const arr2 = []
+          const arr3 = []
+          const arr4 = []
           res.data.results.forEach((item) => {
-            this.time.push(item.createDate)
-            this.tempStart1.push(parseInt(item.tempStart))
-            this.tempEnd1.push(parseInt(item.tempEnd))
-            this.tempMax1.push(parseInt(item.tempMax))
+            time.push(item.createDate)
+            arr1.push(parseInt(item.tempStart))
+            arr2.push(parseInt(item.tempEnd))
+            arr3.push(parseInt(item.tempMax))
             this.tempMin1.push(parseInt(item.tempMin))
           })
+          this.time = time
+          this.tempStart1 = arr1
+          this.tempEnd1 = arr2
+          this.tempMax1 = arr3
+          this.tempMin1 = arr4
         })
         .finally(() => {
           this.lChart()

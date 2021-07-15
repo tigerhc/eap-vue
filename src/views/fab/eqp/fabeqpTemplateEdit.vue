@@ -132,13 +132,13 @@
           <w-table-toolbar name="search" hidden />
         </w-table> -->
         <el-table :data="edcParamAllTableData" border style="width: 100%">
-          <el-table-column type="index" width="50" label="序号"/>
-          <el-table-column prop="paramCode" label="参数CODE" align="center"/>
-          <el-table-column prop="paramName" label="参数名称" align="center"/>
-          <el-table-column prop="maxValue" label="最大值" align="center"/>
-          <el-table-column prop="minValue" label="最小值" align="center"/>
-          <el-table-column prop="paramUnit" label="计量单位" align="center"/>
-          <el-table-column prop="setValue" label="设定值" align="center"/>
+          <el-table-column type="index" width="50" label="序号" />
+          <el-table-column prop="paramCode" label="参数CODE" align="center" />
+          <el-table-column prop="paramName" label="参数名称" align="center" />
+          <el-table-column prop="maxValue" label="最大值" align="center" />
+          <el-table-column prop="minValue" label="最小值" align="center" />
+          <el-table-column prop="paramUnit" label="计量单位" align="center" />
+          <el-table-column prop="setValue" label="设定值" align="center" />
         </el-table>
       </el-tab-pane>
     </el-tabs>
@@ -267,9 +267,9 @@ export default {
       selections: { parentType: '', type: '', subClassCode: '', id: '', num: '' },
 
       title: {
-        ADD: '新增设备',
-        EDIT: '修改设备',
-        VIEW: '设备详情'
+        // ADD: '新增设备',
+        // EDIT: '修改设备',
+        // VIEW: '设备详情'
       },
       rules: {
         eqpId: [{ required: true, message: '设备号必填', trigger: 'blur' }],
@@ -302,6 +302,7 @@ export default {
       return m
     },
     beforeSubmit(model, type) {
+      delete model['edcparamApiSelfList'] // 删除原数据模型里的多语言数组
       const lang = this.$refs.language.tranformData('edcparamApiSelfList') // 获取被转换格式的所有细表数据
       const re = { ...model, ...lang } // 合并细表数据
       return re // 返回新的数据模型

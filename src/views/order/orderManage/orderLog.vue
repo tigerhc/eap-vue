@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-bind="table" :limit="15" url="">
+    <w-table v-bind="table" :limit="15" url="rw/wodplanlog">
       <w-table-col name="wodId" label="工单号" align="center" />
       <w-table-col name="eqpId" label="设备号" align="center" />
       <w-table-col name="planType" label="工单类型" align="center" />

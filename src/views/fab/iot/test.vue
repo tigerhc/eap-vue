@@ -67,28 +67,9 @@ export default {
         legend: {
           data: ['temp_start', 'temp_end', 'temp_max', 'temp_min']
         },
-        dataZoom: [
-          {
-            type: 'inside',
-            start: 50,
-            end: 100
-          },
-          {
-            show: true,
-            type: 'slider',
-            top: '90%',
-            start: 50,
-            end: 100
-          }
-        ],
         xAxis: {
           type: 'category',
-          data: ['2021-03-11', '2021-03-12'],
-          scale: true,
-          boundaryGap: false,
-          axisLine: { onZero: false },
-          splitLine: { show: false },
-          splitNumber: 20
+          data: ['2021-03-11', '2021-03-12']
         },
         yAxis: {},
         series: [
@@ -153,7 +134,6 @@ export default {
       }
       mycharts.setOption(option)
       mycharts.on('click', (params) => {
-        console.log(params.name)
         this.getLChartData(params.name)
       })
     },
@@ -222,7 +202,6 @@ export default {
     getLChartData(time) {
       return request(`oven/ovnbatchlotday/selectTime/${time}`)
         .then((res) => {
-          console.log(res)
           res.data.results.forEach((item) => {
             this.time.push(item.createDate)
             this.tempStart1.push(parseInt(item.tempStart))

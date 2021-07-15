@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-bind="table" url="">
+    <w-table v-bind="table" url="rw/wodplanday">
       <w-table-col name="eqpId" label="设备编号" align="center" query condition="eq" />
       <w-table-col name="planType" label="工单类型" align="center" query condition="eq" />
       <w-table-col name="planCycle" label="工单周期" align="center" dict="PLAN_CYCLE" />

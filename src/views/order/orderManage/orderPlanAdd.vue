@@ -30,7 +30,7 @@ export default {
     return {
       model: { eqpId: '', planType: '', assignedTime: '', planCycle: '', effectDate: '', remarks: '', createBy: '' },
       formConf: {
-        url: '',
+        url: 'rw/wodplanday',
         title: {
           ADD: '工单计划添加',
           EDIT: '工单计划修改',

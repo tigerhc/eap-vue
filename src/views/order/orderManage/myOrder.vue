@@ -68,19 +68,19 @@
       <el-dialog :visible.sync="dispatchDialogVisible" title="派单" width="30%">
         <el-form ref="dispatchForm" :model="dispatchForm" :rules="rules" label-width="80px">
           <el-form-item label="工单号" prop="id">
-            <el-input v-model="dispatchForm.id" />
+            <el-input v-model="dispatchForm.id" disabled />
           </el-form-item>
           <el-form-item label="指派人" prop="assignedUser">
-            <el-input v-model="dispatchForm.assignedUser" />
+            <el-input v-model="dispatchForm.assignedUser" disabled />
           </el-form-item>
           <el-form-item label="指派时间" prop="assignedTime">
-            <el-date-picker v-model="dispatchForm.assignedTime" type="datetime" placeholder="选择日期时间" />
+            <el-input v-model="dispatchForm.assignedTime" disabled />
           </el-form-item>
           <el-form-item label="被指派人" prop="designee">
             <el-input v-model="dispatchForm.designee" />
           </el-form-item>
           <el-form-item label="工单状态" prop="planStatus">
-            <el-input v-model="dispatchForm.planStatus" />
+            <w-select-dic v-model="dispatchForm.planStatus" dict="PLAN_STATUS" disabled />
           </el-form-item>
           <el-form-item label="处理意见" prop="dealAdvice">
             <el-input v-model="dispatchForm.dealAdvice" type="textarea" />
@@ -95,13 +95,15 @@
       <el-dialog :visible.sync="receiveOrdersDialogVisible" title="接单" width="30%">
         <el-form ref="receiveOrdersForm" :model="receiveOrdersForm" :rules="rules" label-width="80px">
           <el-form-item label="工单号" prop="id">
-            <el-input v-model="receiveOrdersForm.id" />
+            <el-input v-model="receiveOrdersForm.id" disabled />
           </el-form-item>
           <el-form-item label="被指派人" prop="designee">
             <el-input v-model="receiveOrdersForm.designee" />
           </el-form-item>
           <el-form-item label="工单状态" prop="planStatus">
-            <el-input v-model="receiveOrdersForm.planStatus" />
+            <w-select-dic v-model="receiveOrdersForm.planStatus" dict="PLAN_STATUS" disabled />
+
+            <!-- <el-input v-model="receiveOrdersForm.planStatus" /> -->
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -113,16 +115,16 @@
       <el-dialog :visible.sync="endReportDialogVisible" title="结束上报" width="30%">
         <el-form ref="endReportForm" :model="endReportForm" :rules="rules" label-width="80px">
           <el-form-item label="工单号" prop="id">
-            <el-input v-model="endReportForm.id" />
+            <el-input v-model="endReportForm.id" disabled />
           </el-form-item>
           <el-form-item label="处理类型" prop="dealType">
-            <el-input v-model="endReportForm.dealType" />
+            <w-select-dic v-model="endReportForm.dealType" label="客户端标志" dict="DEAL_TYPE" />
           </el-form-item>
           <el-form-item label="工单状态" prop="planStatus">
-            <el-input v-model="endReportForm.planStatus" />
+            <w-select-dic v-model="endReportForm.planStatus" dict="PLAN_STATUS" disabled />
           </el-form-item>
           <el-form-item label="处理时间" prop="dealTime">
-            <el-date-picker v-model="endReportForm.dealTime" type="datetime" placeholder="选择日期时间" />
+            <el-input v-model="endReportForm.dealTime" disabled />
           </el-form-item>
           <el-form-item label="处理描述" prop="dealDes">
             <el-input v-model="endReportForm.dealDes" type="textarea" />
@@ -139,6 +141,7 @@
 
 <script>
 import request from '@/utils/request'
+import dateFormat from '@/utils/dateformat'
 
 export default {
   data() {
@@ -193,7 +196,7 @@ export default {
   computed: {},
 
   mounted() {
-    // this.model.assignedTime = dateFormat(new Date())
+    this.dispatchForm.assignedTime = dateFormat(new Date())
     this.model.assignedUser = this.$store.getters.roles
   },
   methods: {

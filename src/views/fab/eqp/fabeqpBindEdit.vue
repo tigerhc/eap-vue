@@ -1,7 +1,5 @@
 <template>
   <w-form v-bind="formConf" :col="3" :model="model">
-    <!-- <el-input v-model="model.eqpId" label="传感器编号" /> -->
-    <!-- <w-select-dic v-model="model.eqpId" style="width: 100%" label="传感器编号" dict /> -->
     <el-select v-model="model.eqpId" placeholder="请选择" label="传感器编号">
       <el-option v-for="item in options" :key="item.id" :label="item.id" :value="item.id" />
     </el-select>

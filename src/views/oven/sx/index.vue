@@ -324,6 +324,24 @@ export default {
       var chartDom = document.getElementById('main')
       this.myChart = echarts.init(chartDom)
       // var app = {};
+      var findFlag = true // 下限是否是大于零的
+      var findLimit = false // 是否有下限
+      if (this.series !== undefined && this.series.length > 0) {
+        for (var lineIndex = 0; lineIndex < this.series.length; lineIndex++) {
+          if (this.series[lineIndex].name === '下限') {
+            if (this.series[lineIndex].data[0] === 0) {
+              findFlag = false
+            }
+            findLimit = true
+          }
+        }
+      }
+      var myYaxis
+      if (findFlag && findLimit) {
+        myYaxis = this.getYAxis(1) // 不是从零起
+      } else {
+        myYaxis = this.getYAxis(0) // 从零起
+      }
       var option
       option = {
         color: ['#3CB371', '#00FFFF', '#ff0000', '#FF0000', '#1E90FF', '#FFA500', '#800000', '#1E90FF'],
@@ -418,50 +436,7 @@ export default {
             }
           }
         },
-        yAxis: {
-          // type: 'value',
-          // // min: this.min,
-          // axisLabel: {
-          // formatter: this.formatter, //4行
-          // name: '单位:'+unit,
-          //         nameTextStyle: {//字体样式
-          //         fontSize: 16,//字体大小
-          //         padding: 15 //距离坐标位置的距离
-          //       },
-          scale: true,
-          type: 'value',
-          splitNumber: 7,
-          boundaryGap: [0.02, 0.02],
-          // min: 'dataMin', // 最小值为数据最低线
-          // min: this.min,
-          axisLabel: {
-
-            // show: true,
-            // 内容格式器
-            formatter: function(value, index) {
-              return value.toFixed(2)
-            },
-            // formatter: this.formatter,
-            splitArea: { show: true },
-            textStyle: {
-              color: '#',
-              fontSize: 20,
-              fontWeight: 800
-            }
-          }
-          // max: (value) => {
-          //   let num = 10 ** (value.max.toString().length - 2)
-          //   return Math.ceil(value.max / num) * num + 3 * num
-          // }
-          // ↓
-          // max: (value) => {
-          //   return parseFloat(myMax).toFixed(2)
-          // },
-          // min: (value) => {
-          //   var myMin = value.min - (value.max - value.min) * 0.2
-          //   return parseFloat(myMin).toFixed(2)
-          // }
-        },
+        yAxis: myYaxis,
         series: this.series
       }
       if (this.form.productionName === '') {
@@ -471,6 +446,53 @@ export default {
       // if (option && typeof option === 'object') {
       //   myChart.setOption(option)
       // }56GIS.png
+    },
+    getYAxis(myModel) {
+      if (myModel === 1) {
+        var yAxis = {
+          scale: true,
+          type: 'value',
+          splitNumber: 7,
+          boundaryGap: [0.02, 0.02],
+          // min: 'dataMin', // 最小值为数据最低线
+          // min: this.min,
+          axisLabel: {
+            // 内容格式器
+            formatter: function(value, index) {
+              return value.toFixed(2)
+            },
+            splitArea: { show: true },
+            textStyle: {
+              color: '#',
+              fontSize: 20,
+              fontWeight: 800
+            }
+          }
+        }
+        return yAxis
+      } else {
+        var yAxis0 = {
+          scale: true,
+          type: 'value',
+          splitNumber: 7,
+          boundaryGap: [0.02, 0.02],
+          min: 'dataMin', // 最小值为数据最低线
+          // min: this.min,
+          axisLabel: {
+            // 内容格式器
+            formatter: function(value, index) {
+              return value.toFixed(2)
+            },
+            splitArea: { show: true },
+            textStyle: {
+              color: '#',
+              fontSize: 20,
+              fontWeight: 800
+            }
+          }
+        }
+        return yAxis0
+      }
     }
   }
 }

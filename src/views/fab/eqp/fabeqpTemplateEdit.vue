@@ -4,15 +4,13 @@
       <el-tab-pane label="设备自带参数" name="self">
         <w-form
           :title="title"
-          :col="3"
+          :col="1"
           :model="model"
           :before-submit="beforeSubmit"
           :on-load-data="onLoadData"
           url="fab/fabModeltemplate"
         >
-          <!-- <el-input v-model="model1.id" /> -->
-
-          <w-edt-table v-slot="{}" ref="language" v-bind="table" :url="url">
+          <w-edt-table v-slot="{}" ref="language" v-bind="table" url="fab/fabModeltemplate">
             <w-table-col name="paramCode" label="参数CODE" align="center">
               <el-input v-model="table.model.paramCode" />
             </w-table-col>
@@ -25,11 +23,11 @@
             <w-table-col name="minValue" label="最小值" align="center">
               <el-input v-model="table.model.minValue" />
             </w-table-col>
-            <w-table-col name="minValue" label="计量单位" align="center">
-              <el-input v-model="table.model.minValue" />
+            <w-table-col name="paramUnit" label="计量单位" align="center">
+              <el-input v-model="table.model.paramUnit" />
             </w-table-col>
-            <w-table-col name="minValue" label="设定值" align="center">
-              <el-input v-model="table.model.minValue" />
+            <w-table-col name="setValue" label="设定值" align="center">
+              <el-input v-model="table.model.setValue" />
             </w-table-col>
             <w-table-toolbar name="clean" hidden />
           </w-edt-table>
@@ -77,7 +75,7 @@
             <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @select="change">
               <el-table-column type="selection" width="55" />
               <el-table-column prop="treeValue" label="名称/型号" />
-              <el-table-column prop="num" label="数量" @click="editRow(row)">
+              <!-- <el-table-column prop="num" label="数量" @click="editRow(row)">
                 <template slot-scope="scope">
                   <span
                     v-show="!showVisiable || editIndex != scope.$index"
@@ -95,7 +93,7 @@
                     @blur="showVisiable = false"
                   />
                 </template>
-              </el-table-column>
+              </el-table-column> -->
             </el-table>
             <el-pagination
               :current-page="pageInfo.pagenum"
@@ -116,13 +114,13 @@
         </w-form>
       </el-tab-pane>
       <el-tab-pane label="设备参数总览" name="all">
-        <w-table v-bind="table1" url="">
+        <!-- <w-table v-bind="table1" url="">
           <w-table-col name="paramCode" label="参数CODE" align="center" />
           <w-table-col name="paramName" label="参数名称" align="center" />
           <w-table-col name="maxValue" label="最大值" align="center" />
           <w-table-col name="minValue" label="最小值" align="center" />
-          <w-table-col name="minValue" label="计量单位" align="center" />
-          <w-table-col name="minValue" label="设定值" align="center" />
+          <w-table-col name="paramUnit" label="计量单位" align="center" />
+          <w-table-col name="setValue" label="设定值" align="center" />
           <w-table-toolbar name="batchDelete" hidden />
           <w-table-toolbar name="clean" hidden />
           <w-table-toolbar name="add" hidden />
@@ -130,7 +128,7 @@
           <w-table-button name="edit" hidden />
           <w-table-toolbar name="delete" hidden />
           <w-table-toolbar name="search" hidden />
-        </w-table>
+        </w-table> -->
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -284,30 +282,21 @@ export default {
   },
   methods: {
     onLoadData(m, type) {
-      console.log(m)
+      // console.log(m)
       this.getInitializationData()
       this.getSelectedData()
-
+      // this.table.datas = m.edcAmsDefineI18nList
       return m
     },
-    beforeSubmit(params, type) {
-      const re = { ...params }
+    beforeSubmit(model, type) {
+      // model 将被保存的表单模型
+      // delete model['edcparamApiSelfList'] // 删除原数据模型里的多语言数组
 
-      return re
+      const lang = this.$refs.language.tranformData('edcparamApiSelfList') // 获取被转换格式的所有细表数据
+
+      const re = { ...model, ...lang } // 合并细表数据
+      return re // 返回新的数据模型
     },
-
-    // onLoadData1(m, type) {
-    //   this.table.datas = m.edcAmsDefineI18nList
-
-    //   return m
-    // },
-    // beforeSubmit1(model, type) {
-    //   // model 将被保存的表单模型
-    //   delete model['edcAmsDefineI18nList'] // 删除原数据模型里的多语言数组
-    //   const lang = this.$refs.language.tranformData('edcAmsDefineI18nList') // 获取被转换格式的所有细表数据
-    //   const re = { ...model, ...lang } // 合并细表数据
-    //   return re // 返回新的数据模型
-    // },
 
     handleClick() {
       this.getEdecParams(this.model.modeId)

@@ -18,6 +18,10 @@ export default {
       tempEnd: [],
       tempMax: [],
       tempMin: [],
+      tempStart2: [],
+      tempEnd2: [],
+      tempMax2: [],
+      tempMin2: [],
       tempStart1: [],
       tempEnd1: [],
       tempMax1: [],
@@ -28,12 +32,18 @@ export default {
   },
   mounted() {
     tempbytimes('APJ-TRM1').then((res) => {
-      // console.log(res)
       res.data.results.forEach((item) => {
-        this.tempStart.push(parseInt(item.tempStart))
-        this.tempEnd.push(parseInt(item.tempEnd))
-        this.tempMax.push(parseInt(item.tempMax))
-        this.tempMin.push(parseInt(item.tempMin))
+        if (item.periodDate === '2021-03-11') {
+          this.tempStart.push(parseInt(item.tempStart))
+          this.tempEnd.push(parseInt(item.tempEnd))
+          this.tempMax.push(parseInt(item.tempMax))
+          this.tempMin.push(parseInt(item.tempMin))
+        } else if (item.periodDate === '2021-03-12') {
+          this.tempStart2.push(parseInt(item.tempStart))
+          this.tempEnd2.push(parseInt(item.tempEnd))
+          this.tempMax2.push(parseInt(item.tempMax))
+          this.tempMin2.push(parseInt(item.tempMin))
+        }
       })
       // console.log(this.tempStart)
       this.kChart()
@@ -57,17 +67,35 @@ export default {
         legend: {
           data: ['temp_start', 'temp_end', 'temp_max', 'temp_min']
         },
+        dataZoom: [
+          {
+            type: 'inside',
+            start: 50,
+            end: 100
+          },
+          {
+            show: true,
+            type: 'slider',
+            top: '90%',
+            start: 50,
+            end: 100
+          }
+        ],
         xAxis: {
           type: 'category',
+          data: ['2021-03-11', '2021-03-12'],
+          scale: true,
           boundaryGap: false,
-          data: ['2021-03-11']
+          axisLine: { onZero: false },
+          splitLine: { show: false },
+          splitNumber: 20
         },
         yAxis: {},
         series: [
           {
             name: 'temp_start',
             type: 'candlestick',
-            data: [this.tempStart],
+            data: [this.tempStart, this.tempMax2],
             itemStyle: {
               color: '#174BAD',
               color0: '#174BAD',
@@ -78,7 +106,7 @@ export default {
           {
             name: 'temp_end',
             type: 'candlestick',
-            data: [this.tempEnd],
+            data: [this.tempEnd, this.tempMax2],
             itemStyle: {
               color: '#23D454',
               color0: '#23D454',
@@ -89,7 +117,7 @@ export default {
           {
             name: 'temp_max',
             type: 'candlestick',
-            data: [this.tempMax],
+            data: [this.tempMax, this.tempMax2],
             itemStyle: {
               color: '#E0DA1A',
               color0: '#E0DA1A',
@@ -100,7 +128,7 @@ export default {
           {
             name: 'temp_min',
             type: 'candlestick',
-            data: [this.tempMin],
+            data: [this.tempMin, this.tempMin2],
             itemStyle: {
               color: '#E01A63',
               color0: '#E01A63',

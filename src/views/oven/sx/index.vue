@@ -4,12 +4,12 @@
       <el-form :inline="true" class="form">
         <el-row>
           <el-form-item>
-            <el-select v-model="form1.type" :style="{ width: '120px' }" placeholder="类型" @change="findProduction">
+            <el-select v-model="form1.type" :style="{ width: '200px' }" placeholder="类型" @change="findProduction">
               <el-option v-for="item in TypeResult" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-select v-model="form1.lineNo" :style="{ width: '120px' }" placeholder="类型" @change="findProduction">
+            <el-select v-model="form1.lineNo" :style="{ width: '200px' }" placeholder="类型" @change="findProduction">
               <el-option v-for="item in lineNoResult" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
@@ -17,7 +17,7 @@
             <div class="condition">
               <el-select
                 v-model="form.productionName"
-                :style="{ width: '180px' }"
+                :style="{ width: '200px' }"
                 placeholder="请选择机种名"
                 @change="search"
               >
@@ -30,20 +30,20 @@
             <el-select
               v-show="form1.lineNo === '5GI' || form1.lineNo === '6GI'"
               v-model="form.local56GI"
-              :style="{ width: '120px' }"
+              :style="{ width: '200px' }"
               clearable
               placeholder="位置"
               @change="positionClick('56GI')"
             >
               <el-option v-for="item in localResult56GI" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
-            <el-select v-model="form.local" :style="{ width: '120px' }" clearable placeholder="位置" @change="search">
+            <el-select v-model="form.local" :style="{ width: '200px' }" clearable placeholder="位置" @change="search">
               <el-option v-for="item in localResult" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
             <el-select
               v-show="form1.lineNo === 'SIM' && form.local === 'c'"
               v-model="form.localSimC"
-              :style="{ width: '120px' }"
+              :style="{ width: '200px' }"
               placeholder="位置"
               @change="search"
             >

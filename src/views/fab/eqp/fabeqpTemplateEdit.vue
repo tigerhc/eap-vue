@@ -10,6 +10,7 @@
           :on-load-data="onLoadData"
           url="fab/fabModeltemplate"
         >
+          <el-row col="24" />
           <w-edt-table v-slot="{}" ref="language" v-bind="table" url="fab/fabModeltemplate">
             <w-table-col name="paramCode" label="参数CODE" align="center">
               <el-input v-model="table.model.paramCode" />
@@ -31,6 +32,7 @@
             </w-table-col>
             <w-table-toolbar name="clean" hidden />
           </w-edt-table>
+          <el-row col="24" />
         </w-form>
       </el-tab-pane>
       <el-tab-pane label="传感器绑定" name="sorsen">
@@ -114,7 +116,7 @@
         </w-form>
       </el-tab-pane>
       <el-tab-pane label="设备参数总览" name="all">
-        <!-- <w-table v-bind="table1" url="">
+        <!-- <w-table v-bind="table1">
           <w-table-col name="paramCode" label="参数CODE" align="center" />
           <w-table-col name="paramName" label="参数名称" align="center" />
           <w-table-col name="maxValue" label="最大值" align="center" />
@@ -129,6 +131,15 @@
           <w-table-toolbar name="delete" hidden />
           <w-table-toolbar name="search" hidden />
         </w-table> -->
+        <el-table :data="edcParamAllTableData" border style="width: 100%">
+          <el-table-column type="index" width="50" label="序号"/>
+          <el-table-column prop="paramCode" label="参数CODE" align="center"/>
+          <el-table-column prop="paramName" label="参数名称" align="center"/>
+          <el-table-column prop="maxValue" label="最大值" align="center"/>
+          <el-table-column prop="minValue" label="最小值" align="center"/>
+          <el-table-column prop="paramUnit" label="计量单位" align="center"/>
+          <el-table-column prop="setValue" label="设定值" align="center"/>
+        </el-table>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -143,6 +154,7 @@ export default {
   components: {},
   data() {
     return {
+      edcParamAllTableData: [],
       table: {
         model: {},
         datas: []
@@ -282,31 +294,28 @@ export default {
   },
   methods: {
     onLoadData(m, type) {
-      // console.log(m)
+      console.log(m)
       this.getInitializationData()
       this.getSelectedData()
-      // this.table.datas = m.edcAmsDefineI18nList
+      this.table.datas = m.edcparamApiSelfList
+      this.edcParamAllTableData = m.edcparamApiAllList
       return m
     },
     beforeSubmit(model, type) {
-      // model 将被保存的表单模型
-      // delete model['edcparamApiSelfList'] // 删除原数据模型里的多语言数组
-
       const lang = this.$refs.language.tranformData('edcparamApiSelfList') // 获取被转换格式的所有细表数据
-
       const re = { ...model, ...lang } // 合并细表数据
       return re // 返回新的数据模型
     },
 
     handleClick() {
-      this.getEdecParams(this.model.modeId)
+      // this.getEdecParams(this.model.modeId)
     },
     // 获取设备自带参数
-    getEdecParams(eqpModelId) {
-      return request(`api/edcparamapi/list/${eqpModelId}`).then((res) => {
-        console.log(res)
-      })
-    },
+    // getEdecParams(eqpModelId) {
+    //   return request(`api/edcparamapi/list/${eqpModelId}`).then((res) => {
+    //     console.log(res)
+    //   })
+    // },
     getA() {
       const isCheck = (() => {
         const res = []

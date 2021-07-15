@@ -299,8 +299,26 @@ export default {
             })
         }
       })
+    },
+    endOrders() {
+      return request({ url: 'rw/rwplan/Statement', methods: 'post' }).then((res) => {
+        if (res.data.code === 0) {
+          return this.$notify({
+            title: '成功',
+            message: res.data.msg,
+            type: 'success',
+            duration: 2000
+          })
+        } else {
+          this.$notify({
+            title: '失败',
+            message: res.data.msg,
+            type: 'error',
+            duration: 2000
+          })
+        }
+      })
     }
-    // endOrders(table) {}
   }
 }
 </script>

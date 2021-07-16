@@ -49,7 +49,7 @@ export default {
     return {
       model: { assignedUser: '', designee: '', assignedTime: '', effectDate: '', planType: '', eqpId: '' },
       formConf: {
-        url: '',
+        url: 'rw/wodplanday',
         title: {
           ADD: '工单制定',
           EDIT: '工单制定',

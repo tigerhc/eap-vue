@@ -297,23 +297,26 @@ export default {
         alert('请选择机种名和时间段')
         return
       }
-      this.api.export(param).then((response) => {
-        if (response.code === 0) {
-          return import('../../oven/ports/Export2Excel').then((excel) => {
-            excel.export_byte_to_excel(response.bytes, response.title)
+      this.api
+        .export(param)
+        .then((response) => {
+          if (response.code === 0) {
+            return import('../../oven/ports/Export2Excel').then((excel) => {
+              excel.export_byte_to_excel(response.bytes, response.title)
+              this.toolbarStatus.exportsLoading = false
+            })
+          } else {
+            this.$notify.error({
+              title: '失败',
+              message: (response && response.errmsg) || '导出失败!',
+              duration: 2000
+            })
             this.toolbarStatus.exportsLoading = false
-          })
-        } else {
-          this.$notify.error({
-            title: '失败',
-            message: (response && response.errmsg) || '导出失败!',
-            duration: 2000
-          })
+          }
+        })
+        .catch((e) => {
           this.toolbarStatus.exportsLoading = false
-        }
-      }).catch((e) => {
-        this.toolbarStatus.exportsLoading = false
-      })
+        })
     },
     onValueChange(name) {
       this.form.eqpId = name

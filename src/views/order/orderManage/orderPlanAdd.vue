@@ -2,16 +2,16 @@
   <div class="app-container calendar-list-container">
     <w-form v-bind="formConf" :col="3" :model="model">
       <el-input v-model="model.eqpId" label="设备编号" />
-
-      <el-input v-model="model.planType" label="工单类型" />
+      <w-select-dic v-model="model.planType" label="工单类型" dict="PLAN_TYPE" />
       <w-select-dic v-model="model.planCycle" label="工单周期" dict="PLAN_CYCLE" />
-      <!-- <el-input v-model="model.effectDate" label="生效时间" /> -->
       <el-date-picker
         v-model="model.effectDate"
         :picker-options="option"
         type="datetime"
         placeholder="选择生效时间"
         start=""
+        label="生效时间"
+        value-format="yyyy-MM-dd HH:mm:ss"
         @change="handle"
       />
       <el-input v-model="model.createBy" label="创建人" disabled />

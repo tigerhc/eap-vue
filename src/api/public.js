@@ -103,13 +103,6 @@ export function tempbytime(eqpId, data) {
   })
 }
 
-export function tempbytimes(eqpId) {
-  return request({
-    url: 'oven/ovnbatchlotday/findDetail/' + eqpId,
-    method: 'get'
-  })
-}
-
 export function tempbytimeOther(data) {
   return request({
     url: 'oven/ovnbatchlot/tempbytimeOther',

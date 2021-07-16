@@ -5,8 +5,8 @@
       <el-input v-model="model.classCode" :disabled="true" label="设备类型" />
       <el-input v-model="model.updateDate" :disabled="true" label="更新时间" />
     </w-form>
-    <div style="border-top:1px solid #ddd;padding:5px 0;margin:10px 0" />
-    <w-edt-table v-slot="{ row }" ref="language" v-bind="table" :params="table.param" url="/rms/rmsrecipetemplate/">
+    <div style="border-top: 1px solid #ddd; padding: 5px 0; margin: 10px 0" />
+    <w-edt-table v-slot="{}" ref="language" v-bind="table" :params="table.param" url="/rms/rmsrecipetemplate/">
       <w-table-col name="paraCode" align="center" required label="参数代码" query condition="like" />
       <w-table-col name="paraName" align="center" label="参数名" query condition="like">
         <el-input v-model="table.model.paraName" />
@@ -21,10 +21,10 @@
         <el-input v-model="table.model.setValue" />
       </w-table-col>
       <w-table-col name="showFlag" label="是否显示" query condition="eq" dict="SHOW_FLAG">
-        <w-select-dic v-model="table.model.showFlag" style="width:100%" label="显示" dict="SHOW_FLAG" />
+        <w-select-dic v-model="table.model.showFlag" style="width: 100%" label="显示" dict="SHOW_FLAG" />
       </w-table-col>
       <w-table-col name="monitorFlag" label="是否监控" dict="MONITOR_FLAG">
-        <w-select-dic v-model="table.model.monitorFlag" style="width:100%" label="是否监控" dict="MONITOR_FLAG" />
+        <w-select-dic v-model="table.model.monitorFlag" style="width: 100%" label="是否监控" dict="MONITOR_FLAG" />
       </w-table-col>
       <w-table-col name="sortNo" label="排序号" width="100px">
         <el-input v-model="table.model.sortNo" />
@@ -48,7 +48,7 @@
         :model="uploadRecipeTemplate"
         label-position="left"
         label-width="100px"
-        style="width: 400px; margin-left:50px;"
+        style="width: 400px; margin-left: 50px"
       >
         <!--        <el-form-item label="程序名称" prop="recipeName">-->
         <!--          <el-input v-model="uploadRecipeTemplate.recipeName"/>-->

@@ -132,8 +132,12 @@ export default {
           axisPointer: { type: 'cross', label: { backgroundColor: '#6a7985' }}
         },
         legend: {
-          data: this.charLegend
+          data: this.charLegend,
           // data: ['运行温度', '低温报警', '高温报警']
+          textStyle: {
+            fontSize: 15, // 设置legend字体大小 表格名称下一行
+            color: '#000000'
+          }
         },
         dataZoom: [
           { type: 'inside', start: 0, end: 100 },
@@ -155,13 +159,27 @@ export default {
           axisLine: { onZero: false },
           data: this.echartAxis
         },
-        yAxis: { type: 'value' }
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+            // 内容格式器  保留2位小数
+            // formatter: function(value, index) {
+            //   return value.toFixed(2)
+            // },
+            splitArea: { show: true },
+            textStyle: {
+              color: '#',
+              fontSize: 15,
+              fontWeight: 800
+            }
+          }
+        }
       }
       if (XRflag === 'X') {
-        Cureoption.title.text = 'X管理图'
+        Cureoption.title.text = 'X管理图(单位:gf)'
         Cureoption.series = this.getXseries()
       } else if (XRflag === 'R') {
-        Cureoption.title.text = 'R管理图'
+        Cureoption.title.text = 'R管理图(单位:gf)'
         Cureoption.series = this.getRseries()
       }
       return Cureoption

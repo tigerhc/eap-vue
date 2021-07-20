@@ -80,13 +80,13 @@ export default {
           console.log(res)
           const data = res.data.results[this.num]
           // let arr = []
-          // res.data.results.forEach((item, index) => {
-          //   this.kTime.push(item[this.num].periodDate)
-          //   arr.push(parseInt(item[this.num].tempStart), parseInt(item.tempEnd), parseInt(item.tempMax), parseInt(item.tempMin))
-          //   this.kData.push(arr)
-          //   arr = []
-          //   this.editableTabs.push(item.eqpTemp)
-          // })
+          data.forEach((item) => {
+            // this.kTime.push(item[this.num].periodDate)
+            // arr.push(parseInt(item[this.num].tempStart), parseInt(item.tempEnd), parseInt(item.tempMax), parseInt(item.tempMin))
+            // this.kData.push(arr)
+            // arr = []
+            this.editableTabs.push(item.eqpTemp)
+          })
           this.kTime.push(data.periodDate)
           this.kData.push(
             parseInt(data.tempStart),

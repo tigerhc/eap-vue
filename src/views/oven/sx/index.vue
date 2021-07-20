@@ -4,12 +4,12 @@
       <el-form :inline="true" class="form">
         <el-row>
           <el-form-item>
-            <el-select v-model="form1.type" :style="{ width: '200px' }" placeholder="类型" @change="findProduction">
+            <el-select v-model="form1.type" :style="{ width: '100px' }" placeholder="类型" @change="findProduction">
               <el-option v-for="item in TypeResult" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-select v-model="form1.lineNo" :style="{ width: '200px' }" placeholder="类型" @change="findProduction">
+            <el-select v-model="form1.lineNo" :style="{ width: '100px' }" placeholder="类型" @change="findProduction">
               <el-option v-for="item in lineNoResult" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
@@ -17,7 +17,7 @@
             <div class="condition">
               <el-select
                 v-model="form.productionName"
-                :style="{ width: '200px' }"
+                :style="{ width: '250px' }"
                 placeholder="请选择机种名"
                 @change="search"
               >
@@ -37,7 +37,7 @@
             >
               <el-option v-for="item in localResult56GI" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
-            <el-select v-model="form.local" :style="{ width: '200px' }" clearable placeholder="位置" @change="search">
+            <el-select v-model="form.local" :style="{ width: '130px' }" clearable placeholder="位置" @change="search">
               <el-option v-for="item in localResult" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
             <el-select

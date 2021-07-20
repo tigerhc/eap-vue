@@ -40,6 +40,7 @@ export default {
   components: {},
   data() {
     return {
+      num: 0,
       editableTabsValue: '',
       editableTabs: [],
       tempEqpId: [],
@@ -69,7 +70,7 @@ export default {
     search() {
       this.$refs['form'].validate((val) => {
         if (val) {
-          this.getKData(this.form.eqpId, this.form.dateTime[0], this.form.dateTime[1])
+          this.getKData(this.form.eqpId, this.form.dateTime[0], this.form.dateTime[1], this.num)
         }
       })
     },

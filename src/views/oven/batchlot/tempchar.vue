@@ -684,9 +684,11 @@ export default {
         var tempsValues = data[i].other_temps_value.split(',')
         result.push(tempsValues[key])
       }
+      console.log(result)
       return result
     },
     loadTempDataPart(tab) {
+      console.log(tab.index)
       // 更新图片
       this.imgPosition = parseInt(tab.index)
       // eslint-disable-next-line eqeqeq

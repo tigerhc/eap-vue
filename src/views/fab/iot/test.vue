@@ -65,7 +65,10 @@ export default {
   },
   methods: {
     loadTempDataPart(tab) {
-      this.getKData(tab.index)
+      const eqpId = this.form.eqpId
+      const startTime = this.form.dateTime[0]
+      const endTime = this.form.dateTime[1]
+      this.getKData(eqpId, startTime, endTime, tab.index)
     },
     search() {
       this.$refs['form'].validate((val) => {
@@ -77,24 +80,26 @@ export default {
     getKData(eqpId, startTime, endTime, index) {
       return request(`oven/ovnbatchlotday/findDetail/${eqpId}/${startTime}/${endTime}`)
         .then((res) => {
-          console.log(res)
           const data = res.data.results[index]
-          // let arr = []
+          const arr1 = []
+          const arr2 = []
+          const arr3 = []
+          arr2.push(data.periodDate)
+          arr3.push(
+            parseInt(data.tempStart),
+            parseInt(data.tempEnd),
+            parseInt(data.tempMax),
+            parseInt(data.tempMin))
           res.data.results.forEach((item) => {
             // this.kTime.push(item[this.num].periodDate)
             // arr.push(parseInt(item[this.num].tempStart), parseInt(item.tempEnd), parseInt(item.tempMax), parseInt(item.tempMin))
             // this.kData.push(arr)
-            // arr = []
-            this.editableTabs.push(item.eqpTemp)
+            arr1.push(item.eqpTemp)
           })
-          this.kTime.push(data.periodDate)
-          this.kData.push(
-            parseInt(data.tempStart),
-            parseInt(data.tempEnd),
-            parseInt(data.tempMax),
-            parseInt(data.tempMin)
-          )
-          this.editableTabsValue = this.editableTabs[0]
+          this.editableTabs = arr1
+          this.kTime = arr2
+          this.kData = arr3
+          this.editableTabsValue = this.editableTabs[index]
         })
         .finally(() => {
           this.kChart(index)
@@ -113,11 +118,11 @@ export default {
           type: 'category',
           data: this.kTime
         },
-        yAxis: {},
+        yAxis: { type: 'value', max: 190, min: 170 },
         series: [
           {
             type: 'k',
-            data: this.kData
+            data: [this.kData]
           }
         ],
         tooltip: {
@@ -283,7 +288,6 @@ export default {
         endTime: time
       })
         .then((res) => {
-          console.log(res)
           this.tempsValue = res.data.results
           loading.close()
         })
@@ -294,21 +298,11 @@ export default {
     loadTempData(option, index) {
       option.xAxis.data = this.produce(this.tempsValue, 'create_date')
       option.series[0].data = this.produceOther(this.tempsValue, index, 0)
-      var limitMax = this.limitMax[this.form.eqpId][index]
-      var limitMin = this.limitMin[this.form.eqpId][index]
-      if ((this.form.eqpId === 'APJ-RT' && index === '5') || (this.form.eqpId === 'APJ-HT' && index === '8')) {
-        // 高温的预热平台没有上下限和设定值
-        option.series[1].data = [] // 设定
-        option.series[2].data = [] // 下限
-        option.series[3].data = [] // 上限
-        limitMax = ''
-        limitMin = ''
-      } else {
-        option.series[1].data = this.produceOther(this.tempsValue, index, 1) // 设定
-        option.series[2].data = this.produceOther(this.tempsValue, index, 2) // 下限
-        option.series[3].data = this.produceOther(this.tempsValue, index, 3) // 上限
-      }
-      // 设置y轴的最大值和最小值
+      option.series[1].data = this.produceOther(this.tempsValue, index, 1) // 设定
+      option.series[2].data = this.produceOther(this.tempsValue, index, 2) // 下限
+      option.series[3].data = this.produceOther(this.tempsValue, index, 3) // 上限
+      var limitMax = 186
+      var limitMin = 174
       var myYAxis = this.getYAxis(option.series[0].data, limitMax, limitMin)
       option.yAxis = myYAxis
       return option
@@ -340,7 +334,6 @@ export default {
         var tempsValues = data[i].other_temps_value.split(',')
         result.push(tempsValues[key])
       }
-      console.log(result)
       return result
     },
     getYAxis(tempsValue, limitMax, limitMin) {

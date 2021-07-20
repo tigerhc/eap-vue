@@ -40,7 +40,6 @@ export default {
   components: {},
   data() {
     return {
-      num: 0,
       editableTabsValue: '',
       editableTabs: [],
       tempEqpId: [],
@@ -65,7 +64,7 @@ export default {
   },
   methods: {
     loadTempDataPart(tab) {
-      this.num = tab.index
+      this.getKData(tab.index)
     },
     search() {
       this.$refs['form'].validate((val) => {
@@ -74,11 +73,11 @@ export default {
         }
       })
     },
-    getKData(eqpId, startTime, endTime) {
+    getKData(eqpId, startTime, endTime, index) {
       return request(`oven/ovnbatchlotday/findDetail/${eqpId}/${startTime}/${endTime}`)
         .then((res) => {
           console.log(res)
-          const data = res.data.results[this.num]
+          const data = res.data.results[index]
           // let arr = []
           res.data.results.forEach((item) => {
             // this.kTime.push(item[this.num].periodDate)

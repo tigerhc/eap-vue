@@ -97,10 +97,10 @@ export default {
           this.editableTabsValue = this.editableTabs[0]
         })
         .finally(() => {
-          this.kChart()
+          this.kChart(index)
         })
     },
-    kChart() {
+    kChart(index) {
       var chartDom = document.getElementById('kChart')
       var mycharts = echarts.init(chartDom)
       var option
@@ -129,10 +129,10 @@ export default {
       }
       mycharts.setOption(option)
       mycharts.on('click', (params) => {
-        this.getLData(params.name)
+        this.getLData(params.name, index)
       })
     },
-    lChart() {
+    lChart(index) {
       var mycharts = echarts.init(document.getElementById('lineChart'))
       var option
       option = {
@@ -264,9 +264,13 @@ export default {
           }
         ]
       }
-      mycharts.setOption(this.loadTempDataFirst(option), true)
+      if (index === 0 || index === '0') {
+        mycharts.setOption(this.loadTempDataFirst(option), true)
+      } else {
+        mycharts.setOption(this.loadTempData(option, index), true)
+      }
     },
-    getLData(time) {
+    getLData(time, index) {
       this.tempsValue = []
       const loading = this.$loading({
         lock: true,
@@ -284,8 +288,30 @@ export default {
           loading.close()
         })
         .finally(() => {
-          this.lChart()
+          this.lChart(index)
         })
+    },
+    loadTempData(option, index) {
+      option.xAxis.data = this.produce(this.tempsValue, 'create_date')
+      option.series[0].data = this.produceOther(this.tempsValue, index, 0)
+      var limitMax = this.limitMax[this.form.eqpId][index]
+      var limitMin = this.limitMin[this.form.eqpId][index]
+      if ((this.form.eqpId === 'APJ-RT' && index === '5') || (this.form.eqpId === 'APJ-HT' && index === '8')) {
+        // 高温的预热平台没有上下限和设定值
+        option.series[1].data = [] // 设定
+        option.series[2].data = [] // 下限
+        option.series[3].data = [] // 上限
+        limitMax = ''
+        limitMin = ''
+      } else {
+        option.series[1].data = this.produceOther(this.tempsValue, index, 1) // 设定
+        option.series[2].data = this.produceOther(this.tempsValue, index, 2) // 下限
+        option.series[3].data = this.produceOther(this.tempsValue, index, 3) // 上限
+      }
+      // 设置y轴的最大值和最小值
+      var myYAxis = this.getYAxis(option.series[0].data, limitMax, limitMin)
+      option.yAxis = myYAxis
+      return option
     },
     loadTempDataFirst(option) {
       option.xAxis.data = this.produce(this.tempsValue, 'create_date')
@@ -305,6 +331,16 @@ export default {
       for (var i = 0, len = data.length; i < len; i++) {
         result.push(data[i][name])
       }
+      return result
+    },
+    produceOther(data, index, int) {
+      var key = 4 * (index - 1) + int
+      var result = []
+      for (var i = 0, len = data.length; i < len; i++) {
+        var tempsValues = data[i].other_temps_value.split(',')
+        result.push(tempsValues[key])
+      }
+      console.log(result)
       return result
     },
     getYAxis(tempsValue, limitMax, limitMin) {

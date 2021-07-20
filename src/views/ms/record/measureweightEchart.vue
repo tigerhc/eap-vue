@@ -614,7 +614,7 @@ export default {
   margin-top: 50px;
 }
 .wid90 {
-  width: 100px;
+  width: 250px;
 }
 .echAppPanel {
   width: 100%;

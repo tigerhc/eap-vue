@@ -80,7 +80,7 @@ export default {
           console.log(res)
           const data = res.data.results[this.num]
           // let arr = []
-          data.forEach((item) => {
+          res.data.results.forEach((item) => {
             // this.kTime.push(item[this.num].periodDate)
             // arr.push(parseInt(item[this.num].tempStart), parseInt(item.tempEnd), parseInt(item.tempMax), parseInt(item.tempMin))
             // this.kData.push(arr)

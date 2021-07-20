@@ -21,9 +21,10 @@
           <el-form-item label="日期:">
             <el-date-picker
               v-model="dateTime"
+              :style="{ width: '270px' }"
               type="daterange"
               value-format="yyyy-MM-dd"
-              range-separator="-"
+              range-separator="__"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               class="dateTimeClass"

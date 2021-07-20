@@ -47,14 +47,18 @@
 
       <w-table-toolbar name="initStatus" label="初始化所有状态" type="warning" />
     </w-table>
+    <!--设备列表组件-->
+<!--    <eap-eqpt/>-->
   </div>
 </template>
 
 <script>
 import request from '@/utils/request'
+import EapEqpt from '../../../components/eap-eqpt/index'
 // import { Loading } from 'element-ui'
 export default {
   name: 'Eqp',
+  components: { EapEqpt },
   data() {
     return {
       isLoading: false,

@@ -71,10 +71,13 @@ export default {
       editableTabs: [{ 'index': 0, 'title': '拉力' }, { 'index': 1, 'title': '推力' }],
       echartData: [],
       echartAxis: [],
-      echartCL: [],
-      echartUCL: [],
+      echartX_CL: [],
+      echartX_UCL: [],
+      echartX_LCL: [],
       echartLCL: [],
-      echartRed: [],
+      echartR_CL: [],
+      echartR_UCL: [],
+      // echartR_LCL: [],
       XData: [],
       RData: []
     }
@@ -116,6 +119,12 @@ export default {
         this.echartAxis = res.data.xAxis
         this.XData = res.data.XData
         this.RData = res.data.RData
+        this.echartX_CL = res.data.XCL
+        this.echartX_UCL = res.data.XUCL
+        this.echartX_LCL = res.data.XLCL
+        this.echartLCL = res.data.LCL
+        this.echartR_CL = res.data.RCL
+        this.echartR_UCL = res.data.RUCL
 
         var chartX = echarts.init(document.getElementById('XtempChart'))
         chartX.setOption(this.getOption('X'))
@@ -132,8 +141,12 @@ export default {
           axisPointer: { type: 'cross', label: { backgroundColor: '#6a7985' }}
         },
         legend: {
-          data: this.charLegend
+          data: this.charLegend,
           // data: ['运行温度', '低温报警', '高温报警']
+          textStyle: {
+            fontSize: 15, // 设置legend字体大小 表格名称下一行
+            color: '#000000'
+          }
         },
         dataZoom: [
           { type: 'inside', start: 0, end: 100 },
@@ -155,13 +168,27 @@ export default {
           axisLine: { onZero: false },
           data: this.echartAxis
         },
-        yAxis: { type: 'value' }
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+            // 内容格式器  保留2位小数
+            // formatter: function(value, index) {
+            //   return value.toFixed(2)
+            // },
+            splitArea: { show: true },
+            textStyle: {
+              color: '#',
+              fontSize: 15,
+              fontWeight: 800
+            }
+          }
+        }
       }
       if (XRflag === 'X') {
-        Cureoption.title.text = 'X管理图'
+        Cureoption.title.text = 'X管理图(单位:gf)'
         Cureoption.series = this.getXseries()
       } else if (XRflag === 'R') {
-        Cureoption.title.text = 'R管理图'
+        Cureoption.title.text = 'R管理图(单位:gf)'
         Cureoption.series = this.getRseries()
       }
       return Cureoption
@@ -180,28 +207,28 @@ export default {
           name: 'X CL',
           itemStyle: { normal: { lineStyle: { color: '#60c947', width: 2 }}},
           type: 'line',
-          data: this.echartCL,
+          data: this.echartX_CL,
           markLine: { data: [{ name: '最大数据', type: 'max' }] }
         },
         {
           name: 'X UCL',
           itemStyle: { normal: { lineStyle: { color: '#efbe29', width: 2 }}},
           type: 'line',
-          data: this.echartUCL,
+          data: this.echartX_UCL,
           markLine: { data: [{ name: '最大数据', type: 'max' }] }
         },
         {
           name: 'X LCL',
           itemStyle: { normal: { lineStyle: { color: '#efbe29', width: 2 }}},
           type: 'line',
-          data: this.echartLCL,
+          data: this.echartX_LCL,
           markLine: { data: [{ name: '最大数据', type: 'max' }] }
         },
         {
           name: 'LCL',
           itemStyle: { normal: { lineStyle: { color: '#ee1313', width: 2, type: 'dashed' }}},
           type: 'line',
-          data: this.echartRed,
+          data: this.echartLCL,
           markLine: { data: [{ name: '最大数据', type: 'max' }] }
         }
       ]
@@ -221,23 +248,23 @@ export default {
           name: 'R CL',
           itemStyle: { normal: { lineStyle: { color: '#60c947', width: 2 }}},
           type: 'line',
-          data: this.echartCL,
+          data: this.echartR_CL,
           markLine: { data: [{ name: '最大数据', type: 'max' }] }
         },
         {
           name: 'R UCL',
           itemStyle: { normal: { lineStyle: { color: '#efbe29', width: 2 }}},
           type: 'line',
-          data: this.echartUCL,
-          markLine: { data: [{ name: '最大数据', type: 'max' }] }
-        },
-        {
-          name: 'R LCL',
-          itemStyle: { normal: { lineStyle: { color: '#efbe29', width: 2 }}},
-          type: 'line',
-          data: this.echartLCL,
+          data: this.echartR_UCL,
           markLine: { data: [{ name: '最大数据', type: 'max' }] }
         }
+        // ,{
+        //   name: 'R LCL',
+        //   itemStyle: { normal: { lineStyle: { color: '#efbe29', width: 2 }}},
+        //   type: 'line',
+        //   data: this.echartLCL,
+        //   markLine: { data: [{ name: '最大数据', type: 'max' }] }
+        // }
       ]
       return series
     },

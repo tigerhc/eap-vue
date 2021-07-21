@@ -13,7 +13,7 @@
     <div v-if="trayId.indexOf('J0008') > -1 && eqpId.indexOf('IGBT-SORT2') === -1" :style="{width:'5%',height:'6%',top:25+ (8 * y) +'%',left:8.5+(6.5 * x) +'%'}" class="igbt_dm_pstn"/>
     <div v-if="trayId.indexOf('J0008') > -1 && eqpId.indexOf('IGBT-SORT2') > -1" :style="{width:'5%',height:'6%',top:25+ (8 * y) +'%',left:8.5+(6.5 * x) +'%'}" class="igbt_pstn"/>
     <div v-if="trayId.indexOf('J0009') > -1" :style="{width:'3%',height:'6.5%',top:23+ (8.4 * y) +'%',left:15.5+(4.5 * x) +'%'}" class="frd_pstn"/>
-    <div v-if="trayId.indexOf('J0010') > -1" :style="{width:'9%',height:'6.5%',top:35+ (7.2 * y) +'%',left:-3.2+(10.7 * x) +'%'}" class="igbt_dm_pstn"/>
+    <div v-if="trayId.indexOf('J0010') > -1" :style="{width:'9%',height:'6.5%',top:27+ (7.3 * y) +'%',left:-3.2+(10.7 * x) +'%'}" class="igbt_dm_pstn"/>
     <div v-if="trayId.indexOf('J0011') > -1" :style="{width:'8.5%',height:'4%',top:28.7+ (4.9 * y) +'%',left:2.1+(10.8 * x) +'%'}" class="frd_pstn"/><!--13,24-->
     <div v-if="trayId.indexOf('J0012') > -1 && eqpId.indexOf('HB2-SORT1') > -1" :style="{width:'37%',height:'38%',top:'41%',left:'32%'}" class="dbc_pstn"/>
     <div v-if="trayId.indexOf('J0012') > -1 && eqpId.indexOf('HB2-SMT1') > -1" :style="{width:'37%',height:'38%',top:'41%',left:'32%'}" class="smt1_pstn"/>

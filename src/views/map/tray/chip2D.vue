@@ -118,7 +118,7 @@
       </div>
     </div>
     <!--<div :style="{width: '200px',height:'320px'}" class="eqp">
-      <chipTray :eqp-id="'test'" :start-time="''" :tray-id="'J001500001'" :x="8" :y="7"/>
+      <chipTray :eqp-id="'test'" :start-time="''" :tray-id="'J001000001'" :x="8" :y="7"/>
     </div>-->
   </div>
 </template>
@@ -201,9 +201,11 @@ export default {
             this.dbcbLine.push(dataList[i])
           } else if (dataList[i].eqpId.indexOf('HB2-SMT1') > 0) {
             this.smt1 = dataList[i]
+            this.smt1.eqpId = this.smt1.eqpId + '(FRD)'
             this.smtCount = this.smt1.smtCount
           } else if (dataList[i].eqpId.indexOf('HB2-SMT2') > 0) {
             this.smt2 = dataList[i]
+            this.smt2.eqpId = this.smt2.eqpId + '(IGBT)'
           } else {
             if (dataList[i].toTrayId.indexOf('J00') === -1) {
               // dataList[i].toTrayId = 'chip'

@@ -37,7 +37,7 @@
     </div>
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="lotNo" label="批次号" width="70" fixed/>
-      <el-table-column prop="chipId" label="制品号" width="200" fixed>
+      <el-table-column prop="chipId" label="制品号" width="220" fixed>
         <template v-if="scope.row.chipId" slot-scope="scope">
           <el-button
             type="text"
@@ -60,7 +60,7 @@
 			</el-table-column>
       <el-table-column prop="dmX" label="晶圆X" width="60"/>
       <el-table-column prop="dmY" label="晶圆Y" width="60"/>
-      <el-table-column prop="productionParam" label="生产条件" width="100">
+      <el-table-column prop="productionParam" label="生产条件 / 检查结果" width="180">
         <template slot-scope="scope">
           <!-- <el-button
             type="text"
@@ -72,7 +72,7 @@ v-if="scope.row.eqpId!=='APJ-HTRT1'"
             type="text"
             size="small"
             @click="handleParamClick(scope.row, '')"
-          >生产条件明细</el-button>
+          >生产条件/检查结果</el-button>
           <el-button
 v-if="scope.row.eqpId ==='APJ-HTRT1'"
             type="text"

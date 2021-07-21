@@ -508,7 +508,7 @@ export default {
             axisLabel: {
               formatter: '{value}'
             }
-          },
+          }
           // {
           //   position: 'right',
           //   offset: 560,
@@ -523,22 +523,22 @@ export default {
           //     formatter: '{value}'
           //   }
           // },
-          {
-            position: 'right',
-            offset: 490,
-            max: 8000,
-            min: 0,
-            type: 'value',
-            name: '0.3μm',
-            axisLine: {
-              lineStyle: {
-                color: colors[7]
-              }
-            },
-            axisLabel: {
-              formatter: '{value}'
-            }
-          }
+          // {
+          //   position: 'right',
+          //   offset: 490,
+          //   max: 8000,
+          //   min: 0,
+          //   type: 'value',
+          //   name: '0.3μm',
+          //   axisLine: {
+          //     lineStyle: {
+          //       color: colors[7]
+          //     }
+          //   },
+          //   axisLabel: {
+          //     formatter: '{value}'
+          //   }
+          // }
         ],
         toolbox: {
           show: true,
@@ -694,7 +694,7 @@ export default {
             },
             yAxisIndex: '6',
             data: this.total['pressure']
-          },
+          }
           // {
           //   name: '湿度',
           //   type: 'line',
@@ -708,19 +708,19 @@ export default {
           //   yAxisIndex: '9',
           //   data: this.total['wet']
           // },
-          {
-            name: '0.3μm',
-            type: 'line',
-            barMaxWidth: '20%',
-            label: {
-              normal: {
-                show: true,
-                position: 'top'
-              }
-            },
-            yAxisIndex: '7',
-            data: this.total['piont3μm']
-          }
+          // {
+          //   name: '0.3μm',
+          //   type: 'line',
+          //   barMaxWidth: '20%',
+          //   label: {
+          //     normal: {
+          //       show: true,
+          //       position: 'top'
+          //     }
+          //   },
+          //   yAxisIndex: '7',
+          //   data: this.total['piont3μm']
+          // }
         ]
       }
       this.myChart.setOption(option)

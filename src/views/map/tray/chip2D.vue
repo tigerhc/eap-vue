@@ -117,6 +117,9 @@
         </div>
       </div>
     </div>
+    <!--<div :style="{width: '200px',height:'320px'}" class="eqp">
+      <chipTray :eqp-id="'test'" :start-time="''" :tray-id="'J001500001'" :x="8" :y="7"/>
+    </div>-->
   </div>
 </template>
 
@@ -203,7 +206,8 @@ export default {
             this.smt2 = dataList[i]
           } else {
             if (dataList[i].toTrayId.indexOf('J00') === -1) {
-              dataList[i].toTrayId = 'chip'
+              // dataList[i].toTrayId = 'chip'
+              dataList[i].toTrayId = dataList[i].chipId
             }
             this.otherData.push(dataList[i])
           }

@@ -18,10 +18,9 @@
     <div v-if="trayId.indexOf('J0012') > -1 && eqpId.indexOf('HB2-SORT1') > -1" :style="{width:'37%',height:'38%',top:'41%',left:'32%'}" class="dbc_pstn"/>
     <div v-if="trayId.indexOf('J0012') > -1 && eqpId.indexOf('HB2-SMT1') > -1" :style="{width:'37%',height:'38%',top:'41%',left:'32%'}" class="smt1_pstn"/>
     <div v-if="trayId.indexOf('J0012') > -1 && eqpId.indexOf('HB2-SMT1') === -1 && eqpId.indexOf('HB2-SORT1') === -1" :style="{width:'37%',height:'38%',top:'41%',left:'32%'}" class="smt2_pstn"/>
-    <div v-if="trayId.indexOf('J0014') > -1" :style="{width:'4.6%',height:'4%',top:25+ (6 * y) +'%',left:7+(10.6 * x) +'%'}" class="igbt_pstn"/>
-    <div v-if="trayId.indexOf('J0015') > -1" :style="{width:'3%',height:'4%',top:24+ (6 * y) +'%',left:7+(9 * x) +'%'}" class="frd_pstn"/>
+    <div v-if="trayId.indexOf('J0014') > -1" :style="{width:'4.6%',height:'4%',top:25+ (6 * y) +'%',left:4+(12.5 * x) +'%'}" class="igbt_pstn"/>
+    <div v-if="trayId.indexOf('J0015') > -1" :style="{width:'3%',height:'4%',top:24+ (6.2 * y) +'%',left:7+(9.4 * x) +'%'}" class="frd_pstn"/>
     <div v-if="trayId.indexOf('J0016') > -1" :style="{width:'22%',height:'13%',top:11+ (17 * y) +'%',left:-23+(42 * x) +'%'}" class="dbc_pstn"/>
-
   </div>
 </template>
 
@@ -53,6 +52,8 @@
   .blackFont{width:36%;height:12%;position: absolute;top:88%;left:46%;color:#00ff00}
   .info .eqpId{width:100%;height:60%;position: absolute;top:-10%;}
   .info .startTime{width:100%;height:50%;position: absolute;top:50%}
+
+  .chip .lightFont{width:36%;height:12%;position: absolute;top:88%;left:0% !important;font-size: small;}
 </style>
 
 <script>
@@ -101,6 +102,7 @@ export default {
       this.trayCode = this.trayId.substr(0, 5)
     } else {
       this.trayCode = 'chip'
+      // this.trayCode = this.trayId
     }
     if (this.trayId.indexOf('J0014') > -1 || this.trayId.indexOf('J0015') > -1 || this.trayId.indexOf('J0016') > -1 || this.trayId.indexOf('J0008') > -1 || this.trayId.indexOf('J0012') > -1) {
       this.trayIdFontColor = 'blackFont'

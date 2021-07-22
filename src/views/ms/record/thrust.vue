@@ -139,7 +139,9 @@ export default {
     },
     getOption(XRflag) {
       const Cureoption = {
-        title: { text: '' },
+        title: { text: '',
+          left: 100
+        },
         color: ['#60c947', '#efbe29', '#efbe29', '#ee1313'],
         tooltip: {
           trigger: 'axis',
@@ -198,7 +200,7 @@ export default {
       } else if (XRflag === 'R') {
         Cureoption.title.text = 'R管理图(单位:gf)'
         Cureoption.yAxis.min = 0
-        Cureoption.yAxis.max = 100
+        Cureoption.yAxis.max = 40
         Cureoption.series = this.getRseries()
       }
       return Cureoption

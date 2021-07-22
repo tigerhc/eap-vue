@@ -4,12 +4,12 @@
       <el-form :inline="true" class="form">
         <el-row>
           <el-form-item>
-            <el-select v-model="form1.type" :style="{ width: '100px' }" placeholder="类型" @change="findProduction">
+            <el-select v-model="form1.type" :style="{ width: '150px' }" placeholder="类型" @change="findProduction">
               <el-option v-for="item in TypeResult" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-select v-model="form1.lineNo" :style="{ width: '100px' }" placeholder="类型" @change="findProduction">
+            <el-select v-model="form1.lineNo" :style="{ width: '150px' }" placeholder="类型" @change="findProduction">
               <el-option v-for="item in lineNoResult" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
@@ -37,7 +37,7 @@
             >
               <el-option v-for="item in localResult56GI" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
-            <el-select v-model="form.local" :style="{ width: '130px' }" clearable placeholder="位置" @change="search">
+            <el-select v-model="form.local" :style="{ width: '150px' }" clearable placeholder="位置" @change="search">
               <el-option v-for="item in localResult" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
             <el-select
@@ -54,7 +54,7 @@
           <el-form-item>
             <el-date-picker
               v-model="dateTime"
-              :style="{ width: '250px' }"
+              :style="{ width: '300px' }"
               type="daterange"
               value-format="yyyy-MM-dd"
               range-separator="-"
@@ -781,6 +781,14 @@ export default {
 
 <style lang="scss" scoped>
 @import 'src/styles/proindex';
+
+/deep/ .el-select,
+/deep/ .el-input,
+/deep/ .el-input__inner,
+/deep/ .el-range-input {
+  font-size: 18px;
+}
+
 .Rtplotyieldday {
   width: auto;
   height: auto;

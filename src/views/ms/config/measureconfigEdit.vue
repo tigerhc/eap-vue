@@ -14,6 +14,7 @@
       <el-input v-model="model.productionNo" label="产品" />
       <!-- <el-input v-model="model.timing" label="时机" /> -->
       <w-select-dic v-model="model.timing" style="width: 100%" label="时机" dict="TIMING" />
+      <el-input v-model="model.processNo" label="工序" />
       <el-input v-model="model.status" label="状态" />
       <el-input v-model="model.sampleCount" label="采样数" />
       <el-input v-model="model.fileFlag" label="采样文件" />
@@ -119,6 +120,7 @@ export default {
       model: {
         eqpModelName: '',
         productionNo: '',
+        processNo: '',
         detail: [],
         timing: '',
         status: '',

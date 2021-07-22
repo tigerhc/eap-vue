@@ -9,6 +9,8 @@
       <w-table-col name="param4" label="参数4" width="100" align="left" />
       <w-table-col name="param4" label="参数5" width="100" align="left"/>
       <w-table-toolbar name="add" url="views/ms/eqpparam/mseqpparamEdit" />
+      <w-table-toolbar name="search" hidden/>
+      <w-table-toolbar name="clean" hidden/>
 
     </w-table>
 

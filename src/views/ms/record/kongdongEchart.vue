@@ -327,7 +327,7 @@ export default {
       var option = {
         title: {
           text: '空洞率%',
-          left: 50,
+          left: '10%',
           top: -2
         },
         // grid: {
@@ -339,6 +339,13 @@ export default {
           enterable: true, // 鼠标是 否可进入提示框浮层中
           formatter: this.formatterHover // 修改鼠标悬停显示的内容
         },
+        grid: {
+          top: '40%',
+          left: '10%',
+          right: '4%',
+          bottom: '%',
+          containLabel: true
+        },
         toolbox: {
           feature: {
             dataView: { show: true, readOnly: false },
@@ -347,12 +354,12 @@ export default {
             saveAsImage: { show: true }
           },
           orient: 'horizontal',
-          top: '10%',
+          top: '23%',
           left: '80%'
         },
         legend: {
           data: kongdongData.legend,
-          top: '20px'
+          top: '13%'
         },
         xAxis: {
           type: 'category',

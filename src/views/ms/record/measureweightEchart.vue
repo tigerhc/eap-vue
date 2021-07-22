@@ -379,6 +379,13 @@ export default {
             text: '重量(mg)',
             left: 20
           },
+          grid: {
+            top: '20%',
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
           tooltip: {
             trigger: 'axis',
             axisPointer: {},
@@ -393,7 +400,7 @@ export default {
               saveAsImage: { show: true }
             },
             orient: 'horizontal',
-            top: '5%',
+            top: '10%',
             left: '80%'
           },
           legend: {
@@ -426,7 +433,7 @@ export default {
             // splitArea: { show: true },
               textStyle: {
                 fontSize: 20,
-                fontWeight: 1000
+                fontWeight: 800
               }
             }
           },

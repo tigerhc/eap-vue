@@ -39,10 +39,10 @@
       <el-tab-pane v-for="item in editableTabs" :key="item.title" :label="item.title" :name="item.title" />
     </el-tabs>
     <div class="eqpTemp">
-      <div id="XtempChart" style="width: 100%; height: 280px; overflow: hidden" />
+      <div id="XtempChart" style="width: 100%; height: 400px; overflow: hidden" />
     </div>
     <div class="eqpTemp">
-      <div id="RtempChart" style="width: 100%; height: 280px; overflow: hidden; margin-top:100px" />
+      <div id="RtempChart" style="width: 100%; height: 400px; overflow: hidden; margin-top:100px" />
     </div>
   </div>
 </template>

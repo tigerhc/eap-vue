@@ -21,3 +21,10 @@ export function fetchYield(data) {
     params: data
   })
 }
+
+export function getEqpList() {
+  return request({
+    url: '/fab/fabequipment/SelectStarteqpIdlist',
+    method: 'get'
+  })
+}

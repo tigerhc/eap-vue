@@ -325,14 +325,26 @@ export default {
     initLineChart(kongdongData) {
       this.chart = echarts.init(document.getElementById('echAppLine'))
       var option = {
-        grid: {
-          top: '25%'
+        title: {
+          text: '空洞率%',
+          left: '10%',
+          top: -2
         },
+        // grid: {
+        //   top: '25%'
+        // },
         tooltip: {
           trigger: 'item',
           triggerOn: 'mousemove',
           enterable: true, // 鼠标是 否可进入提示框浮层中
           formatter: this.formatterHover // 修改鼠标悬停显示的内容
+        },
+        grid: {
+          top: '40%',
+          left: '10%',
+          right: '4%',
+          bottom: '%',
+          containLabel: true
         },
         toolbox: {
           feature: {
@@ -342,11 +354,12 @@ export default {
             saveAsImage: { show: true }
           },
           orient: 'horizontal',
-          top: '10%',
+          top: '23%',
           left: '80%'
         },
         legend: {
-          data: kongdongData.legend
+          data: kongdongData.legend,
+          top: '13%'
         },
         xAxis: {
           type: 'category',
@@ -354,15 +367,22 @@ export default {
           data: kongdongData.xAxis
         },
         yAxis: [
+
           {
+            top: '20px',
             type: 'value',
-            name: '空洞率',
+            // name: '空洞率%',
             boundaryGap: [0.2, 0.02],
             min: 0,
             // max: 150,
             // interval: 5,
             axisLabel: {
-              formatter: '{value} %'
+
+              textStyle: {
+                color: '#',
+                fontSize: 20,
+                fontWeight: 800
+              }
             }
           }
         ],

@@ -375,6 +375,17 @@ export default {
 
         this.chart = echarts.init(document.getElementById('echApp'))
         var option = {
+          title: {
+            text: '重量(mg)',
+            left: 20
+          },
+          grid: {
+            top: '20%',
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
           tooltip: {
             trigger: 'axis',
             axisPointer: {},
@@ -389,10 +400,11 @@ export default {
               saveAsImage: { show: true }
             },
             orient: 'horizontal',
-            top: '5%',
+            top: '10%',
             left: '80%'
           },
           legend: {
+            top: 20,
             data: ['平均重量', '测量值', '设定管理下限', '设定管理上限', '工程管理上限', '工程管理下限']
           },
           xAxis: {
@@ -404,13 +416,26 @@ export default {
             scale: true,
             splitNumber: 7,
             boundaryGap: [0.02, 0.02],
-            axisLabel: {
-              formatter: '{value} mg'
-            },
+
             type: 'value',
             // min: yMin,
             // max: yMax,
-            name: '重量'
+            // name: '重量(mg)',
+            // fontSize : 20,
+            // title:{
+            //   text:'重量(mg)', //主标题
+            //   textStyle:{
+            //   fontSize:20, //大小
+            //   },
+            // },
+            axisLabel: {
+            // Y轴内容格式器
+            // splitArea: { show: true },
+              textStyle: {
+                fontSize: 20,
+                fontWeight: 800
+              }
+            }
           },
           series: [
             {

@@ -678,6 +678,9 @@ export default {
       return option
     },
     produceOther(data, index, int) {
+      console.log(data)
+      console.log(index)
+      console.log(int)
       var key = 4 * (index - 1) + int
       var result = []
       for (var i = 0, len = data.length; i < len; i++) {

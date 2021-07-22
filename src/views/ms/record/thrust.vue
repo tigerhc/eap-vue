@@ -170,6 +170,8 @@ export default {
         },
         yAxis: {
           type: 'value',
+          min: 'dataMin', // 最小值为数据最低线
+
           axisLabel: {
             // 内容格式器  保留2位小数
             // formatter: function(value, index) {
@@ -184,11 +186,14 @@ export default {
           }
         }
       }
+
       if (XRflag === 'X') {
         Cureoption.title.text = 'X管理图(单位:gf)'
         Cureoption.series = this.getXseries()
       } else if (XRflag === 'R') {
         Cureoption.title.text = 'R管理图(单位:gf)'
+        Cureoption.yAxis.min = 0
+        Cureoption.yAxis.max = 100
         Cureoption.series = this.getRseries()
       }
       return Cureoption

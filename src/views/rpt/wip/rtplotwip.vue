@@ -19,7 +19,7 @@
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>
     </el-form>
-    <el-table :data="tableData" :cell-class-name="color" style="width: 100%">
+    <el-table :data="tableData" :cell-class-name="color" style="width: 97%;margin-left:1%;border: 1px solid black;">
       <el-table-column
         v-for="col in cols"
         :key="col.prop"

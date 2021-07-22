@@ -32,7 +32,8 @@ export default {
     },
     url: {
       type: String,
-      default: '/fab/fabequipment/eqpIdlist'
+      // default: '/fab/fabequipment/eqpIdlist'
+      default: 'edc/edceqpstate/selectEqpList'
     },
     multiple: {
       type: Boolean,
@@ -66,7 +67,8 @@ export default {
   mounted() {
     this.api.anylist({ 'page.size': 99999 }).then(
       (resp) => {
-        this.data = (resp && resp.results) || []
+        // this.data = (resp && resp.results) || []
+        this.data = resp.id
       },
       (e) => {
       }

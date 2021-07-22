@@ -33,7 +33,8 @@
 <script>
 import * as echarts from 'echarts'
 import { eqpStateTime } from '@/api/public'
-import { eqpIdlist } from '@/api/oven/temperature'
+// import { eqpIdlist } from '@/api/oven/temperature'
+import { getEqpList } from '@/api/fab/monitor'
 export default {
   name: 'WTableButton',
   props: {},
@@ -74,7 +75,8 @@ export default {
   },
   mounted() {},
   created() {
-    eqpIdlist().then((response) => {
+    getEqpList().then((response) => {
+      // this.list3 = response.eqpId
       this.list3 = response.data.results
     })
   },

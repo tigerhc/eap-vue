@@ -325,9 +325,14 @@ export default {
     initLineChart(kongdongData) {
       this.chart = echarts.init(document.getElementById('echAppLine'))
       var option = {
-        grid: {
-          top: '25%'
+        title: {
+          text: '空洞率%',
+          left: 50,
+          top: -2
         },
+        // grid: {
+        //   top: '25%'
+        // },
         tooltip: {
           trigger: 'item',
           triggerOn: 'mousemove',
@@ -346,7 +351,8 @@ export default {
           left: '80%'
         },
         legend: {
-          data: kongdongData.legend
+          data: kongdongData.legend,
+          top: '20px'
         },
         xAxis: {
           type: 'category',
@@ -354,15 +360,22 @@ export default {
           data: kongdongData.xAxis
         },
         yAxis: [
+
           {
+            top: '20px',
             type: 'value',
-            name: '空洞率',
+            // name: '空洞率%',
             boundaryGap: [0.2, 0.02],
             min: 0,
             // max: 150,
             // interval: 5,
             axisLabel: {
-              formatter: '{value} %'
+
+              textStyle: {
+                color: '#',
+                fontSize: 20,
+                fontWeight: 800
+              }
             }
           }
         ],

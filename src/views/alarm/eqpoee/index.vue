@@ -1,7 +1,10 @@
 <template>
   <div class="Eqpoee">
-    <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
+    <el-form ref="form" :model="form" :inline="true" class="form" label-width="90px" size="small"> <!--:rules="formRules"-->
       <el-row>
+        <el-form-item label="设备号" prop="eqpId">
+          <w-select-eqp :span="8" :str="form.eqpId" :disabled="false" @input="onValueChange($event)" />
+        </el-form-item>
         <el-form-item label="日期" prop="dateTime">
           <el-date-picker
             v-model="form.dateTime"
@@ -11,9 +14,6 @@
             start-placeholder="开始日期"
             end-placeholder="结束日期"
           />
-        </el-form-item>
-        <el-form-item label="设备号" prop="eqpId">
-          <w-select-eqp :span="8" :str="form.eqpId" :disabled="false" @input="onValueChange($event)" />
         </el-form-item>
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>

@@ -35,7 +35,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <el-tabs v-model="editableTabsValue" type="card" >
+    <el-tabs v-model="editableTabsValue" type="card" @tab-click="tabChange">
       <el-tab-pane v-for="item in editableTabs" :key="item.title" :label="item.title" :name="item.title" />
     </el-tabs>
     <div class="eqpTemp">
@@ -101,6 +101,9 @@ export default {
         this.thrustEqpId = res.data.productionNameList
       })
     },
+    tabChange() {
+      this.search()
+    },
     onValueChange(name) {
       this.form.eqpId = name
     },
@@ -111,9 +114,11 @@ export default {
       param.endTime = this.form.dateTime[1] + ' 23:59:59'
       param.lotNo = this.form.lotNo
       if (this.editableTabsValue === '推力') {
-        param.type = 'pull'
-      } else {
+        // param.type = 'pull'
         param.type = 'thrust'
+      } else {
+        // param.type = 'thrust'
+        param.type = 'pull'
       }
       findThrustData(param).then((res) => {
         this.echartAxis = res.data.xAxis

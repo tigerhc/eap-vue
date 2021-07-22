@@ -211,7 +211,7 @@ export default {
           type: 'line',
           data: this.XData,
           symbol: 'diamond',
-          symbolSize: 20
+          symbolSize: 10
         },
         {
           name: 'X CL',
@@ -252,7 +252,7 @@ export default {
           type: 'line',
           data: this.RData,
           symbol: 'diamond',
-          symbolSize: 20
+          symbolSize: 10
         },
         {
           name: 'R CL',

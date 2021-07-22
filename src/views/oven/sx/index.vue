@@ -17,7 +17,7 @@
             <div class="condition">
               <el-select
                 v-model="form.productionName"
-                :style="{ width: '250px' }"
+                :style="{ width: '270px' }"
                 placeholder="请选择机种名"
                 @change="search"
               >
@@ -455,14 +455,25 @@ export default {
         color: ['#3CB371', '#00FFFF', '#ff0000', '#FF0000', '#1E90FF', '#FFA500', '#800000', '#1E90FF'],
 
         title: { text: '量测分离倾向管理图' + '  (单位:' + unit + ')' },
+        // toolbox: {
+        //   show: false,
+        //   feature: {
+        //     dataView: { readOnly: false },
+        //     magicType: { type: ['line', 'bar'] },
+        //     restore: {},
+        //     saveAsImage: {}
+        //   }
+        // },
         toolbox: {
-          show: false,
           feature: {
-            dataView: { readOnly: false },
-            magicType: { type: ['line', 'bar'] },
-            restore: {},
-            saveAsImage: {}
-          }
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ['line', 'bar'] },
+            restore: { show: true },
+            saveAsImage: { show: true }
+          },
+          orient: 'horizontal',
+          top: '10%',
+          left: '80%'
         },
         tooltip: { trigger: 'axis' },
         legend: {

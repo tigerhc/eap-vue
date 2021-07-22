@@ -359,7 +359,12 @@ export default {
         },
         legend: {
           data: kongdongData.legend,
-          top: '13%'
+          top: '13%',
+          left: '5%',
+          textStyle: {
+            fontSize: 15, // 设置legend字体大小 表格名称下一行
+            color: '#000000'
+          }
         },
         xAxis: {
           type: 'category',

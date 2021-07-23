@@ -13,6 +13,9 @@
             ><span id="FirstTitle" style="font-size: 20px">{{ projectText }}工程生产情报</span>
           </strong>
           &nbsp;&nbsp;<date />
+          <el-select :style="{width:'120px',float: 'right',marginRight: '1%',marginTop: '2px'}" v-model="curProject" placeholder="工程选择" @change="projectChange">
+            <el-option v-for="item in projectList" :key="item" :label="item" :value="item" />
+          </el-select>
         </div>
 
         <el-row style="padding: 0 10px">
@@ -189,7 +192,9 @@ export default {
         IDLE2: '#8B0000',
         READY: '#000000'
       },
-      projectText: ''
+      projectText: '',
+      curProject: '',
+      projectList: ['部品', '前工程', '后工程']
     }
   },
   watch: {
@@ -225,6 +230,9 @@ export default {
     }
   },
   methods: {
+    projectChange() {
+      console.log(this.curProject)
+    },
     inIt() {
       this.getData()
       this.getList()

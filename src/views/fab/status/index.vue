@@ -18,8 +18,8 @@
           </el-select>
         </div>
 
-        <el-row style="padding: 0 10px">
-          <el-col :span="24">
+        <el-row style="padding: 10 10px;margin-top: 30px;">
+          <el-col :span="24" style="margin-top: 10px;">
             <eqp-panel-group ref="refs" @handleSetLineChartData="handleSetLineChartData" />
           </el-col>
         </el-row>

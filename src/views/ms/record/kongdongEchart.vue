@@ -343,7 +343,7 @@ export default {
           top: '40%',
           left: '10%',
           right: '4%',
-          bottom: '%',
+          bottom: '-1%',
           containLabel: true
         },
         toolbox: {
@@ -360,7 +360,7 @@ export default {
         legend: {
           data: kongdongData.legend,
           top: '13%',
-          left: '5%',
+          // left: '5%',
           textStyle: {
             fontSize: 15, // 设置legend字体大小 表格名称下一行
             color: '#000000'
@@ -377,7 +377,7 @@ export default {
             top: '20px',
             type: 'value',
             // name: '空洞率%',
-            boundaryGap: [0.2, 0.02],
+            boundaryGap: [0, 0.02],
             min: 0,
             // max: 150,
             // interval: 5,
@@ -479,6 +479,7 @@ export default {
           type: 'value',
           splitNumber: 4,
           boundaryGap: [0, 0.2],
+          min: 0,
           axisLabel: {
             formatter: '{value} %'
           }
@@ -508,6 +509,7 @@ export default {
           type: 'value',
           splitNumber: 4,
           boundaryGap: [0, 0.2],
+          min: 0,
           axisLabel: {
             formatter: '{value} %'
           }

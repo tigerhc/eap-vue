@@ -35,14 +35,14 @@
         </el-col>
       </el-row>
     </el-form>
-    <el-tabs v-model="editableTabsValue" type="card" >
+    <el-tabs v-model="editableTabsValue" type="card" @tab-click="tabChange">
       <el-tab-pane v-for="item in editableTabs" :key="item.title" :label="item.title" :name="item.title" />
     </el-tabs>
     <div class="eqpTemp">
-      <div id="XtempChart" style="width: 100%; height: 280px; overflow: hidden" />
+      <div id="XtempChart" style="width: 100%; height: 400px; overflow: hidden" />
     </div>
     <div class="eqpTemp">
-      <div id="RtempChart" style="width: 100%; height: 280px; overflow: hidden; margin-top:100px" />
+      <div id="RtempChart" style="width: 100%; height: 400px; overflow: hidden; margin-top:100px" />
     </div>
   </div>
 </template>
@@ -101,6 +101,9 @@ export default {
         this.thrustEqpId = res.data.productionNameList
       })
     },
+    tabChange() {
+      this.search()
+    },
     onValueChange(name) {
       this.form.eqpId = name
     },
@@ -111,9 +114,11 @@ export default {
       param.endTime = this.form.dateTime[1] + ' 23:59:59'
       param.lotNo = this.form.lotNo
       if (this.editableTabsValue === '推力') {
-        param.type = 'pull'
-      } else {
+        // param.type = 'pull'
         param.type = 'thrust'
+      } else {
+        // param.type = 'thrust'
+        param.type = 'pull'
       }
       findThrustData(param).then((res) => {
         this.echartAxis = res.data.xAxis
@@ -134,7 +139,9 @@ export default {
     },
     getOption(XRflag) {
       const Cureoption = {
-        title: { text: '' },
+        title: { text: '',
+          left: 100
+        },
         color: ['#60c947', '#efbe29', '#efbe29', '#ee1313'],
         tooltip: {
           trigger: 'axis',
@@ -193,7 +200,7 @@ export default {
       } else if (XRflag === 'R') {
         Cureoption.title.text = 'R管理图(单位:gf)'
         Cureoption.yAxis.min = 0
-        Cureoption.yAxis.max = 100
+        Cureoption.yAxis.max = 40
         Cureoption.series = this.getRseries()
       }
       return Cureoption
@@ -206,7 +213,7 @@ export default {
           type: 'line',
           data: this.XData,
           symbol: 'diamond',
-          symbolSize: 20
+          symbolSize: 10
         },
         {
           name: 'X CL',
@@ -247,7 +254,7 @@ export default {
           type: 'line',
           data: this.RData,
           symbol: 'diamond',
-          symbolSize: 20
+          symbolSize: 10
         },
         {
           name: 'R CL',

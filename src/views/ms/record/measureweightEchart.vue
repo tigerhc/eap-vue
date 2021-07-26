@@ -405,7 +405,11 @@ export default {
           },
           legend: {
             top: 20,
-            data: ['平均重量', '测量值', '设定管理下限', '设定管理上限', '工程管理上限', '工程管理下限']
+            data: ['平均重量', '测量值', '设定管理下限', '设定管理上限', '工程管理上限', '工程管理下限'],
+            textStyle: {
+              fontSize: 15, // 设置legend字体大小 表格名称下一行
+              color: '#000000'
+            }
           },
           xAxis: {
             data: categoryData,

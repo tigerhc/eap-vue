@@ -48,7 +48,7 @@
       <w-table-toolbar name="initStatus" label="初始化所有状态" type="warning" />
     </w-table>
     <!--设备列表组件-->
-<!--    <eap-eqpt/>-->
+    <!--    <eap-eqpt/>-->
   </div>
 </template>
 

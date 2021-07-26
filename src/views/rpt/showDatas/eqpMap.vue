@@ -122,13 +122,38 @@ export default {
     }
   },
   mounted() {},
-
+  created() {
+    this.initWebsocket()
+  },
   methods: {
     control() {
       this.$router.push({ name: 'views/rpt/showDatas/quickOverview' })
     },
     handleClick1() {},
-    handleClick() {}
+    handleClick() {},
+    initWebsocket() {
+      var url = 'ws://localhost:9998/echo'
+      if (WebSocket === 'undefined') {
+        alert('您的浏览器不支持WebSocket！！！')
+      }
+      var socket = new WebSocket(url)
+      socket.onopen = () => {
+        socket.send('发送数据')
+        console.log('监听打开')
+      }
+      socket.onclose = () => {
+        console.log('监听关闭')
+      }
+      socket.onerror = () => {
+        console.log('监听异常')
+      }
+      socket.onmessage = (e) => {
+        this.webScoketOnMessage(e)
+      }
+    },
+    webScoketOnMessage(data) {
+      console.log(data)
+    }
   }
 }
 </script>

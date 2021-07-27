@@ -1,5 +1,5 @@
 <template>
-  <div id="tempchar" class="app">
+  <div id="tempchar" class="app app-container calendar-list-container">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
         <el-form-item label="设备号:" prop="eqpId">
@@ -25,8 +25,8 @@
     <el-tabs v-model="editableTabsValue" type="card" @tab-click="loadTempDataPart">
       <el-tab-pane v-for="item in editableTabs" :key="item" :label="item" :name="item" />
     </el-tabs>
-    <div id="kChart" />
-    <div id="lineChart" />
+    <div v-if="kShow" id="kChart" />
+    <div v-if="lShow" id="lineChart" />
   </div>
 </template>
 
@@ -40,6 +40,8 @@ export default {
   components: {},
   data() {
     return {
+      kShow: false,
+      lShow: false,
       num: 0,
       editableTabsValue: '',
       editableTabs: [],
@@ -64,15 +66,23 @@ export default {
     })
   },
   methods: {
+    // 为tabs标题去重
+    unique(arr) {
+      return Array.from(new Set(arr))
+    },
     loadTempDataPart(tab) {
       const eqpId = this.form.eqpId
       const startTime = this.form.dateTime[0]
       const endTime = this.form.dateTime[1]
       this.getKData(eqpId, startTime, endTime, tab.index)
+      this.lShow = false
     },
     search() {
       this.$refs['form'].validate((val) => {
         if (val) {
+          this.lShow = false
+          this.kShow = false
+
           this.getKData(this.form.eqpId, this.form.dateTime[0], this.form.dateTime[1], this.num)
         }
       })
@@ -80,26 +90,35 @@ export default {
     getKData(eqpId, startTime, endTime, index) {
       return request(`oven/ovnbatchlotday/findDetail/${eqpId}/${startTime}/${endTime}`)
         .then((res) => {
-          const data = res.data.results[index]
           const arr1 = []
           const arr2 = []
           const arr3 = []
-          arr2.push(data.periodDate)
-          arr3.push(
-            parseInt(data.tempStart),
-            parseInt(data.tempEnd),
-            parseInt(data.tempMax),
-            parseInt(data.tempMin))
-          res.data.results.forEach((item) => {
-            // this.kTime.push(item[this.num].periodDate)
-            // arr.push(parseInt(item[this.num].tempStart), parseInt(item.tempEnd), parseInt(item.tempMax), parseInt(item.tempMin))
-            // this.kData.push(arr)
-            arr1.push(item.eqpTemp)
+          const arr4 = []
+          const datas = res.data.results
+          datas.sort(function(a, b) {
+            return a.periodDate > b.periodDate ? 1 : -1
           })
-          this.editableTabs = arr1
-          this.kTime = arr2
-          this.kData = arr3
+
+          datas.forEach((item) => {
+            arr2.push(item.periodDate)
+            arr1.push(item.eqpTemp)
+            if (item.eqpTemp === arr1[index]) {
+              arr3.push(item)
+            }
+          })
+          arr3.forEach((it) => {
+            arr4.push(parseInt(it.tempStart), parseInt(it.tempEnd), parseInt(it.tempMax), parseInt(it.tempMin))
+          })
+          const result = []
+          for (var i = 0; i < arr4.length; i += 4) {
+            result.push(arr4.slice(i, i + 4))
+          }
+          this.kData = result
+          console.log(this.kData)
+          this.editableTabs = this.unique(arr1)
+          this.kTime = this.unique(arr2)
           this.editableTabsValue = this.editableTabs[index]
+          this.kShow = true
         })
         .finally(() => {
           this.kChart(index)
@@ -118,11 +137,11 @@ export default {
           type: 'category',
           data: this.kTime
         },
-        yAxis: { type: 'value', max: 190, min: 170 },
+        yAxis: { type: 'value', max: 200, min: 160 },
         series: [
           {
             type: 'k',
-            data: [this.kData]
+            data: this.kData
           }
         ],
         tooltip: {
@@ -135,6 +154,7 @@ export default {
       mycharts.setOption(option)
       mycharts.on('click', (params) => {
         this.getLData(params.name, index)
+        this.lShow = false
       })
     },
     lChart(index) {
@@ -290,6 +310,7 @@ export default {
         .then((res) => {
           this.tempsValue = res.data.results
           loading.close()
+          this.lShow = true
         })
         .finally(() => {
           this.lChart(index)
@@ -380,9 +401,6 @@ export default {
 #lineChart {
   width: 100%;
   height: 400px;
-  margin-top: 20px;
-}
-.form {
   margin-top: 20px;
 }
 </style>

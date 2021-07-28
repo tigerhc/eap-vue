@@ -10,40 +10,32 @@
         </el-col>
         <el-col :span="5" class="tray-chip-eqp-selet">
           <!--<w-select-eqp v-model="searchObj.eqpIds"/>-->
-							<el-select v-model="searchObj.eqpIds" clearable>
-								<el-option
-									v-for="item in eqps"
-									:key="item.eqpId"
-									:label="item.label"
-									:value="item.eqpId" />
-							</el-select>
+          <el-select v-model="searchObj.eqpIds" clearable>
+            <el-option v-for="item in eqps" :key="item.eqpId" :label="item.label" :value="item.eqpId" />
+          </el-select>
         </el-col>
         <el-date-picker
-          v-model="searchObj.time"
-          :picker-options="dateOptions"
-          :editable="false"
-          type="datetimerange"
+v-model="searchObj.time"
+:picker-options="dateOptions"
+:editable="false"
+type="datetimerange"
           popper-class="tray-chip-date-picker"
-          range-separator="至"
-          value-format="yyyy-MM-dd HH:mm:ss"
+range-separator="至"
+value-format="yyyy-MM-dd HH:mm:ss"
           start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          align="right"
-        />
+end-placeholder="结束日期"
+align="right" />
         <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
 				<el-button type="primary" icon="el-icon-refresh" @click="clnParam">清空</el-button>
-        <el-button type="text" class="a-tray-job-history" @click="toHistory">任务历史</el-button>
+        <el-button type="primary" @click="traceExport">导出</el-button>
+        <!--<el-button type="text" class="a-tray-job-history" @click="toHistory">任务历史</el-button>-->
       </el-row>
     </div>
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="lotNo" label="批次号" width="70" fixed/>
       <el-table-column prop="chipId" label="制品号" width="220" fixed>
         <template v-if="scope.row.chipId" slot-scope="scope">
-          <el-button
-            type="text"
-            size="small"
-            @click="handleChipClick(scope.row)"
-          >{{ scope.row.chipId }}</el-button>
+          <el-button type="text" size="small" @click="handleChipClick(scope.row)" >{{ scope.row.chipId }}</el-button>
         </template>
       </el-table-column>
       <el-table-column prop="eqpId" label="设备号" width="150" fixed/>
@@ -51,7 +43,7 @@
       <el-table-column prop="toTrayId" label="托盘ID" width="100"/>
       <el-table-column prop="toX" label="X坐标" width="60"/>
       <el-table-column prop="toY" label="Y坐标" width="60"/>
-      <el-table-column prop="judgeResult" label="质量" width="60"/>
+      <el-table-column prop="judgeResult" label="综合判定" width="60"/>
       <el-table-column :formatter="colDateFormatter" prop="startTime" label="时间" width="180"/>
 			<el-table-column prop="dmId" label="晶圆ID" width="100">
 				<template v-if="scope.row.dmId" slot-scope="scope">
@@ -67,39 +59,15 @@
             size="small"
             @click="handleParamClick(scope.row)"
           >{{ scope.row.productionParam }}</el-button>-->
-          <el-button
-v-if="scope.row.eqpId!=='APJ-HTRT1'"
-            type="text"
-            size="small"
-            @click="handleParamClick(scope.row, '')"
-          >生产条件/检查结果</el-button>
-          <el-button
-v-if="scope.row.eqpId ==='APJ-HTRT1'"
-            type="text"
-            size="small"
-            @click="handleParamClick(scope.row, 'HTDC')"
-          >HTDC明细</el-button>
-          <el-button
-v-if="scope.row.eqpId ==='APJ-HTRT1'"
-                     type="text"
-                     size="small"
-                     @click="handleParamClick(scope.row, 'HTAC')"
-          >HTAC明细</el-button>
-          <el-button
-v-if="scope.row.eqpId ==='APJ-HTRT1'"
-                     type="text"
-                     size="small"
-                     @click="handleParamClick(scope.row, 'RTDC')"
-          >RTDC明细</el-button>
+          <el-button v-if="scope.row.eqpId!=='APJ-HTRT1'" type="text" size="small" @click="handleParamClick(scope.row, '')" >生产条件/检查结果</el-button>
+          <el-button v-if="scope.row.eqpId ==='APJ-HTRT1'" type="text" size="small" @click="handleParamClick(scope.row, 'HTDC')" >HTDC明细</el-button>
+          <el-button v-if="scope.row.eqpId ==='APJ-HTRT1'" type="text" size="small" @click="handleParamClick(scope.row, 'HTAC')" >HTAC明细</el-button>
+          <el-button v-if="scope.row.eqpId ==='APJ-HTRT1'" type="text" size="small" @click="handleParamClick(scope.row, 'RTDC')" >RTDC明细</el-button>
         </template>
       </el-table-column>
       <el-table-column prop="lotNo" label="物料信息" width="100">
         <template slot-scope="scope">
-          <el-button
-            type="text"
-            size="small"
-            @click="handleGoodsClick(scope.row)"
-          >查询物料</el-button>
+          <el-button type="text" size="small" @click="handleGoodsClick(scope.row)" >查询物料</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -176,11 +144,15 @@ v-if="scope.row.eqpId ==='APJ-HTRT1'"
 import request from '@/utils/request'
 import dateFormat from '@/utils/dateformat'
 import { getTrayEqpList, getPuctionParam, getPuctionGoods } from '@/api/map/monitor'
+import api from '../ports/fetch'
 
 export default {
   name: 'TrayChipMoveList',
   data() {
     return {
+      toolbarStatus: {
+        exportsLoading: false
+      },
       tableData: [],
       searchObj: {
         lotNo: null,
@@ -244,7 +216,8 @@ export default {
         ]
       },
       firstValue: '',
-      spEqp: false
+      spEqp: false,
+      api: api('/map/maptraychipmove/traceDataExport')
     }
   },
   created() {
@@ -260,6 +233,51 @@ export default {
     })
   },
   methods: {
+    traceExport() {
+      if (this.toolbarStatus.exportsLoading) {
+        return
+      }
+      this.toolbarStatus.exportsLoading = true
+      const data = {}
+      data.pageSize = 99999
+      // data.offset = (this.searchObj.page - 1) * this.searchObj.pageSize
+      data.offset = 0
+      data.total = this.searchObj.total
+      if (this.searchObj.lotNo !== null && this.searchObj.lotNo !== '') {
+        data.lotNo = this.searchObj.lotNo
+      }
+      if (this.searchObj.chipId && this.searchObj.chipId.trim() !== '') {
+        if (this.searchObj.lotNo === null || this.searchObj.lotNo === '') {
+          return
+        }
+        data.chipIds = this.searchObj.chipId.trim().split(',')
+      }
+      if (this.searchObj.time === null) {
+        this.searchObj.time = []
+      }
+      if (this.searchObj.time[0] !== undefined && this.searchObj.time[1] !== undefined) {
+        data.sTime = this.searchObj.time[0]
+        data.eTime = this.searchObj.time[1]
+      }
+      data.eqpIds = this.searchObj.eqpIds
+      this.api.export(data).then((response) => {
+        if (response.code === 0) {
+          return import('../ports/Export2Excel').then((excel) => {
+            excel.export_byte_to_excel(response.bytes, response.title)
+            this.toolbarStatus.exportsLoading = false
+          })
+        } else {
+          this.$notify.error({
+            title: '失败',
+            message: (response && response.errmsg) || '导出失败!',
+            duration: 2000
+          })
+          this.toolbarStatus.exportsLoading = false
+        }
+      }).catch((e) => {
+        this.toolbarStatus.exportsLoading = false
+      })
+    },
     search() {
       const data = {}
       data.pageSize = this.searchObj.pageSize

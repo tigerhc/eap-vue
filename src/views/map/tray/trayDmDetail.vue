@@ -21,7 +21,7 @@ v-for="(item,index) in igbt1.lightPst"
         <!--					:style="{top:item.dmX*8+'px',left:item.dmY*8+'px',width:'8px',height:'8px'}"-->
 				<div
 v-for="(item,index) in igbt2.lightPst"
-					:style="{left:(item.dmX - 1)*8+'px',top:(item.dmY - 1)*8+'px',height:'8px'}"
+					:style="{left:(item.dmX - 1)*8+'px',top:(item.dmY - 1)*8+'px',width:'8px',height:'8px'}"
 					:key="'i2'+item.dmX+'_'+item.dmY"
 					class="lightPst"
 					@click="showXy('X:'+item.dmX+',Y:'+item.dmY, index, 'igbt2')"/>
@@ -118,7 +118,7 @@ v-for="(item,index) in frd2.lightPst"
 					<div class="dmTimeDiv">{{ frd2.showTime }}</div>
 				</div>
 			</div>
-			<div v-if="frdIndex > 2" :style="{left:'500px'}" class="chip_dm_panel">
+			<div v-if="frdIndex > 2" :style="{left:'1000px'}" class="chip_dm_panel">
 				<ChipDm eqp-id="FRD"/>
 				<div
 v-for="(item,index) in frd3.lightPst"
@@ -132,7 +132,7 @@ v-for="(item,index) in frd3.lightPst"
 					<div class="dmTimeDiv">{{ frd3.showTime }}</div>
 				</div>
 			</div>
-			<div v-if="frdIndex > 3" :style="{left:'500px'}" class="chip_dm_panel">
+			<div v-if="frdIndex > 3" :style="{left:'1500px'}" class="chip_dm_panel">
 				<ChipDm eqp-id="FRD"/>
 				<div
 v-for="(item,index) in frd4.lightPst"
@@ -146,7 +146,7 @@ v-for="(item,index) in frd4.lightPst"
 					<div class="dmTimeDiv">{{ frd4.showTime }}</div>
 				</div>
 			</div>
-			<div v-if="frdIndex > 4" :style="{left:'500px'}" class="chip_dm_panel">
+			<div v-if="frdIndex > 4" :style="{left:'2000px'}" class="chip_dm_panel">
 				<ChipDm eqp-id="FRD"/>
 				<div
 v-for="(item,index) in frd5.lightPst"
@@ -160,7 +160,7 @@ v-for="(item,index) in frd5.lightPst"
 					<div class="dmTimeDiv">{{ frd5.showTime }}</div>
 				</div>
 			</div>
-			<div v-if="frdIndex > 5" :style="{left:'500px'}" class="chip_dm_panel">
+			<div v-if="frdIndex > 5" :style="{left:'2500px'}" class="chip_dm_panel">
 				<ChipDm eqp-id="FRD"/>
 				<div
 v-for="(item,index) in frd6.lightPst"
@@ -180,7 +180,7 @@ v-for="(item,index) in frd6.lightPst"
 
 <style lang="scss">
 	.igbt_chipdm_panel{width:100%; height:336px;position: relative;margin-left:50px;}
-	.chip_dm_panel{width:334px;height:184px;border:1px solid #5e5f5e;position: absolute;top:100px;}
+	.chip_dm_panel{width:334px;height:181px;border:1px solid #5e5f5e;position: absolute;top:100px;}
   .chip_wigbt_panel{width:218px;height:234px;border:1px solid #5e5f5e;position: absolute;top:100px;}
   .igbt_title{width:50px;height:100%;margin-left:-50px;line-height: 336px;}
   .frd_title{width:50px;height:100%;margin-left:-50px;line-height: 336px;}

@@ -20,7 +20,7 @@
 
         <el-row style="padding: 10 10px;margin-top: 30px;">
           <el-col :span="24" style="margin-top: 10px;">
-            <eqp-panel-group ref="refs" @handleSetLineChartData="handleSetLineChartData" />
+            <eqp-panel-group ref="refs" :sel-project="curProject" @handleSetLineChartData="handleSetLineChartData" />
           </el-col>
         </el-row>
 
@@ -231,7 +231,10 @@ export default {
   },
   methods: {
     projectChange() {
-      console.log(this.curProject)
+      // if (window.location.hostname.indexOf('10.160.144.9') > -1) {
+      //   this.host = "http://10.160.144.9:800/dashboard";
+      // }
+      this.inIt()
     },
     inIt() {
       this.getData()
@@ -242,7 +245,9 @@ export default {
       this.lineChartData = lineChartData[type]
     },
     getData() {
-      fetchGetChart().then((response) => {
+      var param = {}
+      param.curProject = this.curProject
+      fetchGetChart(param).then((response) => {
         for (const item of response.data) {
           this.statusList.push(item.EQP_STATUS)
         }
@@ -260,7 +265,8 @@ export default {
 
     getYield() {
       fetchYield({
-        lineNo: 'APJ'
+        lineNo: 'APJ',
+        curProject: this.curProject
       }).then((response) => {
         this.yieldList = response.data
       })
@@ -273,7 +279,8 @@ export default {
         'page.pn': 1,
         'page.size': 999999,
         delFlag: 0,
-        queryFields: 'eqpId,controlState,lotNo,eqpStatus,connectionStatus,recipeCode,lockFlag,'
+        queryFields: 'eqpId,controlState,lotNo,eqpStatus,connectionStatus,recipeCode,lockFlag,',
+        curProject: this.curProject
       }
       fetchDataList(params).then((res) => {
         this.tabData = res.data

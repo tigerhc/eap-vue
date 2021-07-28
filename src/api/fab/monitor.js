@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-export function fetchGetChart() {
+export function fetchGetChart(query) {
   return request({
     url: '/fab/fabequipmentstatus/chart',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }
 export function fetchDataList(query) {

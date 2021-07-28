@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-export function fetchHeader() {
+export function fetchHeader(query) {
   return request({
     url: '/mes/meslotwip/indexFour',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }
 

@@ -58,9 +58,22 @@ export default {
   components: {
     CountTo
   },
+  props: {
+    selProject: {
+      type: String,
+      default: function() {
+        return ''
+      }
+    }
+  },
   data() {
     return {
       dataList: []
+    }
+  },
+  watch: {
+    selProject(newName, oldName) {
+      this.getData()
     }
   },
   mounted() {
@@ -68,7 +81,9 @@ export default {
   },
   methods: {
     getData() {
-      fetchHeader().then((res) => {
+      var params = {}
+      params.curProject = this.selProject
+      fetchHeader(params).then((res) => {
         this.dataList = res.data
       })
     },

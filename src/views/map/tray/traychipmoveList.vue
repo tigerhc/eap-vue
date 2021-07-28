@@ -138,6 +138,8 @@ align="right" />
 .prodTitleMaxValue{width:100%;height:40px;line-height:40px;padding-left:5px;background-color: #d0d0d7}
 .prodTitleSetValue{width:100%;height:40px;line-height:40px;padding-left:5px;background-color: #d0d0d7}
 .prodValuePanel .prodAlarmValue{width:100%;height:40px;line-height:40px;padding-left:5px;background-color: #DD4A68}
+
+.el-input__inner{font-size: larger !important;}
 </style>
 
 <script>

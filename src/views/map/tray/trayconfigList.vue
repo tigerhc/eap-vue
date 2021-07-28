@@ -16,7 +16,9 @@
 
   </div>
 </template>
-
+<style lang="scss">
+.el-input__inner{font-size: larger !important;}
+</style>
 <script>
 export default {
   name: 'TrayConfigList',

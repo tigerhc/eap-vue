@@ -559,7 +559,7 @@ export default {
   box-sizing: border-box;
   color: #606266;
   display: inline-block;
-  font-size: inherit;
+  font-size: 25px;
   height: 35px;
   line-height: 40px;
   outline: 0;

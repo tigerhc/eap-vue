@@ -44,7 +44,7 @@ align="right" />
       <el-table-column prop="toX" label="X坐标" width="60"/>
       <el-table-column prop="toY" label="Y坐标" width="60"/>
       <el-table-column prop="judgeResult" label="综合判定" width="60"/>
-      <el-table-column :formatter="colDateFormatter" prop="startTime" label="时间" width="180"/>
+      <el-table-column :formatter="colDateFormatter" prop="startTimeStr" label="时间" width="180"/>
 			<el-table-column prop="dmId" label="晶圆ID" width="100">
 				<template v-if="scope.row.dmId" slot-scope="scope">
           <el-button type="text" size="small" @click="handleDMClick(scope.row)">{{ scope.row.dmId }}</el-button>

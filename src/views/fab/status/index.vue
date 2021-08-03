@@ -14,7 +14,7 @@
           </strong>
           &nbsp;&nbsp;<date />
           <el-select :style="{width:'120px',float: 'right',marginRight: '1%',marginTop: '2px'}" v-model="curProject" placeholder="工程选择" @change="projectChange">
-            <el-option v-for="item in projectList" :key="item" :label="item" :value="item" />
+            <el-option v-for="item in projectList" :key="item" :label="item.lab" :value="item.value" />
           </el-select>
         </div>
 
@@ -193,8 +193,11 @@ export default {
         READY: '#000000'
       },
       projectText: '',
-      curProject: '',
-      projectList: ['部品', '前工程', '后工程']
+      curProject: 'YK',
+      // projectList: [{ lab: '前工程', value: 'YK' }, { lab: '后工程', value: 'EK' }]
+      projectList: [],
+      DMProjectList: [{ lab: '部品', value: 'BP' }, { lab: '前工程', value: 'YK' }, { lab: '后工程', value: 'EK' }],
+      SIMProjectList: [{ lab: '前工程', value: 'YK' }, { lab: '后工程', value: 'EK' }]
     }
   },
   watch: {
@@ -215,10 +218,17 @@ export default {
   },
   mounted() {
     // eslint-disable-next-line eqeqeq,no-empty
-    // if (window.location.host == '10.160.144.9:82') {
-    //   var ele = window.document.getElementById('FirstTitle')
-    //   ele.innerHTML = 'APJ工程生产情报 '
-    // }
+    if (window.location.host.indexOf('10.160.144.9') > -1) {
+      // var ele = window.document.getElementById('FirstTitle')
+      // ele.innerHTML = 'DM工程生产情报'
+      this.projectText = 'DM'
+      this.curProject = 'BP'
+      this.projectList = this.DMProjectList
+    } else {
+      this.projectText = 'SIM'
+      this.curProject = 'YK'
+      this.projectList = this.SIMProjectList
+    }
 
     this.inIt()
     if (this.timer) {
@@ -265,7 +275,7 @@ export default {
 
     getYield() {
       fetchYield({
-        lineNo: 'APJ',
+        lineNo: 'DM',
         curProject: this.curProject
       }).then((response) => {
         this.yieldList = response.data
@@ -291,38 +301,40 @@ export default {
         this.tabData2[4] = []
         this.tabData2[5] = []
         this.tabData2[6] = []
-        this.tabData.forEach((item) => {
-          // APJ
-          if (item.eqpId === 'APJ-FRD-SMT1') {
-            lineIndex = 1
-            this.projectText = 'APJ'
-          }
-          if (item.eqpId === 'APJ-HB1-SORT1') {
-            lineIndex = 2
-          }
-          if (item.eqpId === 'APJ-DBCT-SORT1') {
-            lineIndex = 3
-          }
-          if (item.eqpId === 'APJ-DBCB-SORT1') {
-            lineIndex = 4
-          }
-          if (item.eqpId === 'APJ-HB2-SORT1') {
-            lineIndex = 5
-          }
-          if (item.eqpId === 'APJ-TRM1') {
-            lineIndex = 6
-          }
-          // SIM
-          if (item.eqpId === 'SIM-WB-1A') {
-            lineIndex = 1
-            this.projectText = 'SIM'
-          }
-          if (item.eqpId === 'SIM-AOI1') {
-            lineIndex = 2
-            this.projectText = 'SIM'
-          }
-          this.tabData2[lineIndex].push(item)
-        })
+        if (this.tabData !== '[][]') {
+          this.tabData.forEach((item) => {
+            // APJ
+            if (item.eqpId === 'DM-FRD-SMT1') {
+              lineIndex = 1
+              // this.projectText = 'DM'
+            }
+            if (item.eqpId === 'DM-HB1-SORT1') {
+              lineIndex = 2
+            }
+            if (item.eqpId === 'DM-DBCT-SORT1') {
+              lineIndex = 3
+            }
+            if (item.eqpId === 'DM-DBCB-SORT1') {
+              lineIndex = 4
+            }
+            if (item.eqpId === 'DM-HB2-SORT1') {
+              lineIndex = 5
+            }
+            if (item.eqpId === 'DM-TRM1') {
+              lineIndex = 6
+            }
+            // SIM
+            if (item.eqpId === 'SIM-WB-1A') {
+              lineIndex = 1
+              // this.projectText = 'SIM'
+            }
+            if (item.eqpId === 'SIM-AOI1') {
+              lineIndex = 2
+              // this.projectText = 'SIM'
+            }
+            this.tabData2[lineIndex].push(item)
+          })
+        }
         // this.dataList.forEach(item => {
         //   const obj = {}
         //   obj.name = item.EQP_STATUS

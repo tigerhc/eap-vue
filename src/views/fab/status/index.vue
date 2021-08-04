@@ -1,5 +1,5 @@
 <template>
-  <div class="monitor">
+  <div :style="{overflowY:yScroll,height:monitorHeight}" class="monitor">
     <el-row>
       <el-col :span="8">
         <el-button style="float: left" type="text" @click="maxFull" />
@@ -25,7 +25,7 @@
         </el-row>
 
         <el-row>
-          <el-col :span="24">
+          <el-col :span="24" :style="{marginLeft:'-40%',width: '130%'}">
             <div class="grid-content bg-purple-dark pdttable">
               <div class="itemTitle">
                 <span class="bigerfont">站点</span>
@@ -79,7 +79,7 @@
         </div>
       </div>
     </div>
-    <div class="contentBi" style="display: flex; flex-direction: row">
+    <div class="contentBi" ><!--style="display: flex; flex-direction: row"-->
       <div class="content">
         <div v-for="(item, index) in tabData2[3]" :key="index">
           <div class="item">
@@ -91,7 +91,7 @@
         </div>
       </div>
 
-      <div class="content" style="margin-left: 110px">
+      <div class="content" ><!--style="margin-left: 110px"-->
         <div v-for="(item, index) in tabData2[4]" :key="index">
           <div class="item">
             <span>{{ item.eqpId }}</span>
@@ -197,7 +197,9 @@ export default {
       // projectList: [{ lab: '前工程', value: 'YK' }, { lab: '后工程', value: 'EK' }]
       projectList: [],
       DMProjectList: [{ lab: '部品', value: 'BP' }, { lab: '前工程', value: 'YK' }, { lab: '后工程', value: 'EK' }],
-      SIMProjectList: [{ lab: '前工程', value: 'YK' }, { lab: '后工程', value: 'EK' }]
+      SIMProjectList: [{ lab: '前工程', value: 'YK' }, { lab: '后工程', value: 'EK' }],
+      yScroll: 'hidden',
+      monitorHeight: '100vh'
     }
   },
   watch: {
@@ -223,12 +225,19 @@ export default {
       // ele.innerHTML = 'DM工程生产情报'
       this.projectText = 'DM'
       this.curProject = 'BP'
+      this.yScroll = 'scroll'
+      this.monitorHeight = '800px'
       this.projectList = this.DMProjectList
     } else {
       this.projectText = 'SIM'
       this.curProject = 'YK'
+      this.yScroll = 'hidden'
+      this.monitorHeight = '100vh'
       this.projectList = this.SIMProjectList
     }
+    // this.projectText = 'DM' // TODO 本地调试
+    // this.curProject = 'YK' // TODO 本地调试
+    // this.projectList = this.DMProjectList // TODO 本地调试
 
     this.inIt()
     if (this.timer) {
@@ -236,7 +245,7 @@ export default {
     } else {
       this.timer = setInterval(() => {
         this.inIt()
-      }, 150000)
+      }, 15000)
     }
   },
   methods: {
@@ -244,6 +253,14 @@ export default {
       // if (window.location.hostname.indexOf('10.160.144.9') > -1) {
       //   this.host = "http://10.160.144.9:800/dashboard";
       // }
+      // 样式控制, 仅部品加滚动条
+      if (this.curProject === 'BP') {
+        this.yScroll = 'scroll'
+        this.monitorHeight = '800px'
+      } else {
+        this.yScroll = 'hidden'
+        this.monitorHeight = '100vh'
+      }
       this.inIt()
     },
     inIt() {
@@ -431,6 +448,7 @@ export default {
   background-color: DarkRed;
 }
 .monitor {
+  overflow-x: hidden;
   .pdttable {
     /*border-top : 1px solid #dcdfe6;*/
     /*padding-top: 10px;*/
@@ -439,7 +457,7 @@ export default {
     flex-wrap: wrap;
     .item {
       display: flex;
-      width: 100px;
+      width: 120px;
       height: 80px;
       border: 1px solid #500f0f;
       flex-direction: column;
@@ -466,16 +484,16 @@ export default {
     }
     .itemTitle {
       display: flex;
-      width: 120px;
-      height: 100px;
+      width: 160px;
+      height: 140px;
       border: 1px solid #500f0f;
       flex-direction: column;
       margin-left: 2px;
       margin-top: 0px;
       span {
-        line-height: 20px;
+        line-height: 35px;
         text-align: center;
-        height: 25px;
+        height: 35px;
         border-bottom: 1px solid #dcdfe6;
         font-size: 12px;
       }
@@ -502,7 +520,7 @@ export default {
     flex-wrap: wrap;
     .item {
       display: flex;
-      width: 100px;
+      width: 178px;
       height: 80px;
       border: 1px solid #500f0f;
       flex-direction: column;
@@ -534,4 +552,8 @@ export default {
     }
   }
 }
+</style>
+<style>
+  .card-panel-text{font-size: 20px !important;}
+  .panel-group .card-panel{height: 210px !important;}
 </style>

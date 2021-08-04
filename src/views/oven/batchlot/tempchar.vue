@@ -2,9 +2,9 @@
   <div id="tempchar" class="tempchar">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
       <el-row>
-        <el-form-item label="设备号:" prop="eqpId">
+        <el-form-item label="设备号:" ><!--prop="eqpId"-->
           <div class="condition">
-            <el-select v-model="form.eqpId" clearable @change="changeImg">
+            <el-select v-model="form.eqpId" :style="{width:'295px'}" clearable @change="changeImg">
               <el-option v-for="item in tempEqpId" :key="item.eqpId" :label="item.eqpName" :value="item.eqpId" />
             </el-select>
           </div>
@@ -96,82 +96,26 @@ export default {
       tempEchart: 'eqpTemp',
       imgPosition: 0,
       limitMax: {
-        'APJ-IGBT-REFLOW1': [80, 80, 90, 90, 102, 102, 116, 116, 116, 116],
-        'APJ-FRD-REFLOW1': [80, 80, 90, 90, 102, 102, 116, 116, 116, 116],
-        'APJ-DBCT-REFLOW1': [80, 80, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140],
-        'APJ-DBCB-REFLOW1': [80, 80, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140],
-        'APJ-AT1': [165, 165, 156, 156, 156, 156, 156, 156, 156, 156, 156, 156, 27],
-        'APJ-CLEAN-US1': [75, 75, 75, 125],
-        'APJ-TRM1': [
-          186, 186, 186, 186, 186, 186, 192, 192, 186, 186, 186, 186, 186, 186, 192, 192, 186, 186, 186, 186, 186, 186,
-          192, 192
-        ],
-        'APJ-RT': [166, 164, 164, 166, 166, 175, 26],
-        'APJ-HT': [164, 164, 164, 164, 164, 164, 164, 164, 175, 164, 164, 166],
-        'APJ-HTRT1': [
-          165,
-          165,
-          165,
-          165,
-          165,
-          165,
-          165,
-          165,
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          164,
-          164,
-          168,
-          168,
-          164,
-          164,
-          168,
-          168,
-          33
-        ],
-        'APJ-OVEN1': [125],
-        'APJ-AT2': [154, 154, 154, 154, 154, 154, 154, 154, 154, 154],
-        'APJ-FREEZER3': [6, 6],
-        'APJ-OVEN2': [192],
-        'APJ-FREEZER2': [12],
-        'APJ-FREEZER1': [-16],
+        'DM-IGBT-REFLOW1': [80, 80, 90, 90, 102, 102, 116, 116, 116, 116],
+        'DM-FRD-REFLOW1': [80, 80, 90, 90, 102, 102, 116, 116, 116, 116],
+        'DM-DBCT-REFLOW1': [80, 80, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140],
+        'DM-DBCB-REFLOW1': [80, 80, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140],
+        'DM-AT1': [165, 165, 156, 156, 156, 156, 156, 156, 156, 156, 156, 156, 27],
+        'DM-CLEAN-US1': [75, 75, 75, 125],
+        'DM-TRM1': [186, 186, 186, 186, 186, 186, 192, 192, 186, 186, 186, 186, 186, 186, 192, 192, 186, 186, 186, 186, 186, 186, 192, 192],
+        'DM-RT': [166, 164, 164, 166, 166, 175, 26],
+        'DM-HT': [164, 164, 164, 164, 164, 164, 164, 164, 175, 164, 164, 166],
+        'DM-HTRT1': [165, 165, 165, 165, 165, 165, 165, 165, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 164, 164, 168, 168, 164, 164, 168, 168, 33],
+        'DM-OVEN1': [125],
+        'DM-AT2': [154, 154, 154, 154, 154, 154, 154, 154, 154, 154],
+        'DM-FREEZER3': [6, 6],
+        'DM-OVEN2': [192],
+        'DM-FREEZER2': [12],
+        'DM-FREEZER1': [-16],
         'SIM-TRM1': [156, 156, 156, 156, 156, 156, 192, 192, 192, 192, 192, 192],
         'SIM-TRM2': [156, 156, 156, 156, 156, 156, 192, 192, 192, 192, 192, 192],
         'SIM-PRINTER1': [36, 70],
-        'SIM-REFLOW1': [
-          144,
-          150,
-          154,
-          160,
-          154,
-          160,
-          154,
-          160,
-          164,
-          164,
-          190,
-          190,
-          280,
-          280,
-          270,
-          270,
-          null,
-          null,
-          null
-        ],
+        'SIM-REFLOW1': [144, 150, 154, 160, 154, 160, 154, 160, 164, 164, 190, 190, 280, 280, 270, 270, null, null, null],
         // 'SIM-OVEN1': [190, 195, 195, 6, 6, 6, 6],
         'SIM-OVEN1': [195],
         'SIM-OVEN2': [195],
@@ -180,82 +124,26 @@ export default {
         'SX-FREEZER1': [6, 6]
       },
       limitMin: {
-        'APJ-IGBT-REFLOW1': [0, 0, 70, 70, 87, 87, 104, 104, 104, 104],
-        'APJ-FRD-REFLOW1': [0, 0, 70, 70, 87, 87, 104, 104, 104, 104],
-        'APJ-DBCT-REFLOW1': [0, 0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
-        'APJ-DBCB-REFLOW1': [0, 0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
-        'APJ-AT1': [130, 130, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 12],
-        'APJ-CLEAN-US1': [45, 45, 45, 95],
-        'APJ-TRM1': [
-          174, 174, 174, 174, 174, 174, 177, 177, 174, 174, 174, 174, 174, 174, 177, 177, 174, 174, 174, 174, 174, 174,
-          177, 177
-        ],
-        'APJ-RT': [154, 152, 152, 154, 154, 155, 14],
-        'APJ-HT': [152, 152, 152, 152, 152, 152, 152, 152, 155, 152, 152, 154],
-        'APJ-HTRT1': [
-          150,
-          150,
-          150,
-          150,
-          150,
-          150,
-          150,
-          150,
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          '',
-          150,
-          150,
-          152,
-          152,
-          150,
-          150,
-          152,
-          152,
-          18
-        ],
-        'APJ-OVEN1': [95],
-        'APJ-AT2': [146, 146, 146, 146, 146, 146, 146, 146, 146, 146],
-        'APJ-FREEZER3': [-6, -6],
-        'APJ-OVEN2': [172],
-        'APJ-FREEZER2': [-2],
-        'APJ-FREEZER1': [null],
+        'DM-IGBT-REFLOW1': [0, 0, 70, 70, 87, 87, 104, 104, 104, 104],
+        'DM-FRD-REFLOW1': [0, 0, 70, 70, 87, 87, 104, 104, 104, 104],
+        'DM-DBCT-REFLOW1': [0, 0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+        'DM-DBCB-REFLOW1': [0, 0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+        'DM-AT1': [130, 130, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 12],
+        'DM-CLEAN-US1': [45, 45, 45, 95],
+        'DM-TRM1': [174, 174, 174, 174, 174, 174, 177, 177, 174, 174, 174, 174, 174, 174, 177, 177, 174, 174, 174, 174, 174, 174, 177, 177],
+        'DM-RT': [154, 152, 152, 154, 154, 155, 14],
+        'DM-HT': [152, 152, 152, 152, 152, 152, 152, 152, 155, 152, 152, 154],
+        'DM-HTRT1': [150, 150, 150, 150, 150, 150, 150, 150, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 150, 150, 152, 152, 150, 150, 152, 152, 18],
+        'DM-OVEN1': [95],
+        'DM-AT2': [146, 146, 146, 146, 146, 146, 146, 146, 146, 146],
+        'DM-FREEZER3': [-6, -6],
+        'DM-OVEN2': [172],
+        'DM-FREEZER2': [-2],
+        'DM-FREEZER1': [null],
         'SIM-TRM1': [144, 144, 144, 144, 144, 144, 177, 177, 177, 177, 177, 177],
         'SIM-TRM2': [144, 144, 144, 144, 144, 144, 177, 177, 177, 177, 177, 177],
         'SIM-PRINTER1': [18, 10],
-        'SIM-REFLOW1': [
-          136,
-          140,
-          146,
-          150,
-          146,
-          150,
-          146,
-          150,
-          156,
-          156,
-          180,
-          180,
-          270,
-          270,
-          260,
-          260,
-          null,
-          null,
-          null
-        ],
+        'SIM-REFLOW1': [136, 140, 146, 150, 146, 150, 146, 150, 156, 156, 180, 180, 270, 270, 260, 260, null, null, null],
         // 'SIM-OVEN1': [160,165,165,-6, -6,-6, -6],
         'SIM-OVEN1': [165],
         'SIM-OVEN2': [165],
@@ -350,15 +238,15 @@ export default {
     },
     changeImg() {
       if (
-        this.form.eqpId === 'APJ-RT' ||
-        this.form.eqpId === 'APJ-HT' ||
-        this.form.eqpId === 'APJ-AT2' ||
-        this.form.eqpId === 'APJ-OVEN1' ||
-        this.form.eqpId === 'APJ-OVEN2' ||
-        this.form.eqpId === 'APJ-FREEZER3' ||
-        this.form.eqpId === 'APJ-FREEZER1' ||
-        this.form.eqpId === 'APJ-FREEZER2' ||
-        this.form.eqpId === 'APJ-CLEAN-US1' ||
+        this.form.eqpId === 'DM-RT' ||
+        this.form.eqpId === 'DM-HT' ||
+        this.form.eqpId === 'DM-AT2' ||
+        this.form.eqpId === 'DM-OVEN1' ||
+        this.form.eqpId === 'DM-OVEN2' ||
+        this.form.eqpId === 'DM-FREEZER3' ||
+        this.form.eqpId === 'DM-FREEZER1' ||
+        this.form.eqpId === 'DM-FREEZER2' ||
+        this.form.eqpId === 'DM-CLEAN-US1' ||
         this.form.eqpId === 'SIM-OVEN1' ||
         this.form.eqpId === 'SIM-OVEN2' ||
         this.form.eqpId === 'SMA-OVEN1' ||
@@ -367,7 +255,7 @@ export default {
       ) {
         this.picUrl = this.form.eqpId
         this.picUrlDetail = this.picUrl
-          .replace('APJ-', 'DETAIL-')
+          .replace('DM-', 'DETAIL-')
           .replace('SIM-', 'DETAIL-')
           .replace('SMA-', 'DETAIL-')
           .replace('SX-', 'DETAIL-')
@@ -660,7 +548,7 @@ export default {
       option.series[0].data = this.produceOther(this.tempsValue, index, 0)
       var limitMax = this.limitMax[this.form.eqpId][index]
       var limitMin = this.limitMin[this.form.eqpId][index]
-      if ((this.form.eqpId === 'APJ-RT' && index === '5') || (this.form.eqpId === 'APJ-HT' && index === '8')) {
+      if ((this.form.eqpId === 'DM-RT' && index === '5') || (this.form.eqpId === 'DM-HT' && index === '8')) {
         // 高温的预热平台没有上下限和设定值
         option.series[1].data = [] // 设定
         option.series[2].data = [] // 下限
@@ -678,20 +566,15 @@ export default {
       return option
     },
     produceOther(data, index, int) {
-      console.log(data)
-      console.log(index)
-      console.log(int)
       var key = 4 * (index - 1) + int
       var result = []
       for (var i = 0, len = data.length; i < len; i++) {
         var tempsValues = data[i].other_temps_value.split(',')
         result.push(tempsValues[key])
       }
-      console.log(result)
       return result
     },
     loadTempDataPart(tab) {
-      console.log(tab.index)
       // 更新图片
       this.imgPosition = parseInt(tab.index)
       // eslint-disable-next-line eqeqeq

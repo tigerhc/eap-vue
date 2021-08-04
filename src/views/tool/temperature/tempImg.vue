@@ -1,28 +1,28 @@
 <template>
   <div class="tempImg">
     <!--高温室温-->
-    <div v-if="imgUrl==='APJ-RT' || imgUrl==='APJ-HT'" class="HTRT" >
-      <div v-if="imgUrl==='APJ-HT'" :class="imgOption===0?'positionHT1':'positionHT1_p'" @click="positionClk(0)"/>
-      <div v-if="imgUrl==='APJ-HT'" :class="imgOption===1?'positionHT2':'positionHT2_p'" @click="positionClk(1)"/>
-      <div v-if="imgUrl==='APJ-HT'" :class="imgOption===2?'positionHT3':'positionHT3_p'" @click="positionClk(2)"/>
-      <div v-if="imgUrl==='APJ-HT'" :class="imgOption===3?'positionHT4':'positionHT4_p'" @click="positionClk(3)"/>
-      <div v-if="imgUrl==='APJ-HT'" :class="imgOption===4?'positionHT5':'positionHT5_p'" @click="positionClk(4)"/>
-      <div v-if="imgUrl==='APJ-HT'" :class="imgOption===5?'positionHT6':'positionHT6_p'" @click="positionClk(5)"/>
-      <div v-if="imgUrl==='APJ-HT'" :class="imgOption===6?'positionHT7':'positionHT7_p'" @click="positionClk(6)"/>
-      <div v-if="imgUrl==='APJ-HT'" :class="imgOption===7?'positionHT8':'positionHT8_p'" @click="positionClk(7)"/>
-      <div v-if="imgUrl==='APJ-HT'" :class="imgOption===8?'positionHT9':'positionHT9_p'" @click="positionClk(8)"/>
-      <div v-if="imgUrl==='APJ-HT'" :class="imgOption===9?'positionHT10':'positionHT10_p'" @click="positionClk(9)"/>
-      <div v-if="imgUrl==='APJ-HT'" :class="imgOption===10?'positionHT11':'positionHT11_p'" @click="positionClk(10)"/>
-      <div v-if="imgUrl==='APJ-HT'" :class="imgOption===11?'positionHT12':'positionHT12_p'" @click="positionClk(11)"/>
-      <div v-if="imgUrl==='APJ-RT'" :class="imgOption===0?'positionRT1':'positionRT1_p'" @click="positionClk(0)"/>
-      <div v-if="imgUrl==='APJ-RT'" :class="imgOption===1?'positionRT2':'positionRT2_p'" @click="positionClk(1)"/>
-      <div v-if="imgUrl==='APJ-RT'" :class="imgOption===2?'positionRT3':'positionRT3_p'" @click="positionClk(2)"/>
-      <div v-if="imgUrl==='APJ-RT'" :class="imgOption===3?'positionRT4':'positionRT4_p'" @click="positionClk(3)"/>
-      <div v-if="imgUrl==='APJ-RT'" :class="imgOption===4?'positionRT5':'positionRT5_p'" @click="positionClk(4)"/>
-      <div v-if="imgUrl==='APJ-RT'" :class="imgOption===5?'positionRT6':'positionRT6_p'" @click="positionClk(5)"/>
-      <div v-if="imgUrl==='APJ-RT'" :class="imgOption===6?'positionRT7':'positionRT7_p'" @click="positionClk(6)"/>
+    <div v-if="imgUrl==='DM-RT' || imgUrl==='DM-HT'" class="HTRT" >
+      <div v-if="imgUrl==='DM-HT'" :class="imgOption===0?'positionHT1':'positionHT1_p'" @click="positionClk(0)"/>
+      <div v-if="imgUrl==='DM-HT'" :class="imgOption===1?'positionHT2':'positionHT2_p'" @click="positionClk(1)"/>
+      <div v-if="imgUrl==='DM-HT'" :class="imgOption===2?'positionHT3':'positionHT3_p'" @click="positionClk(2)"/>
+      <div v-if="imgUrl==='DM-HT'" :class="imgOption===3?'positionHT4':'positionHT4_p'" @click="positionClk(3)"/>
+      <div v-if="imgUrl==='DM-HT'" :class="imgOption===4?'positionHT5':'positionHT5_p'" @click="positionClk(4)"/>
+      <div v-if="imgUrl==='DM-HT'" :class="imgOption===5?'positionHT6':'positionHT6_p'" @click="positionClk(5)"/>
+      <div v-if="imgUrl==='DM-HT'" :class="imgOption===6?'positionHT7':'positionHT7_p'" @click="positionClk(6)"/>
+      <div v-if="imgUrl==='DM-HT'" :class="imgOption===7?'positionHT8':'positionHT8_p'" @click="positionClk(7)"/>
+      <div v-if="imgUrl==='DM-HT'" :class="imgOption===8?'positionHT9':'positionHT9_p'" @click="positionClk(8)"/>
+      <div v-if="imgUrl==='DM-HT'" :class="imgOption===9?'positionHT10':'positionHT10_p'" @click="positionClk(9)"/>
+      <div v-if="imgUrl==='DM-HT'" :class="imgOption===10?'positionHT11':'positionHT11_p'" @click="positionClk(10)"/>
+      <div v-if="imgUrl==='DM-HT'" :class="imgOption===11?'positionHT12':'positionHT12_p'" @click="positionClk(11)"/>
+      <div v-if="imgUrl==='DM-RT'" :class="imgOption===0?'positionRT1':'positionRT1_p'" @click="positionClk(0)"/>
+      <div v-if="imgUrl==='DM-RT'" :class="imgOption===1?'positionRT2':'positionRT2_p'" @click="positionClk(1)"/>
+      <div v-if="imgUrl==='DM-RT'" :class="imgOption===2?'positionRT3':'positionRT3_p'" @click="positionClk(2)"/>
+      <div v-if="imgUrl==='DM-RT'" :class="imgOption===3?'positionRT4':'positionRT4_p'" @click="positionClk(3)"/>
+      <div v-if="imgUrl==='DM-RT'" :class="imgOption===4?'positionRT5':'positionRT5_p'" @click="positionClk(4)"/>
+      <div v-if="imgUrl==='DM-RT'" :class="imgOption===5?'positionRT6':'positionRT6_p'" @click="positionClk(5)"/>
+      <div v-if="imgUrl==='DM-RT'" :class="imgOption===6?'positionRT7':'positionRT7_p'" @click="positionClk(6)"/>
     </div>
-    <div v-if="imgUrl==='APJ-AT2'" class="AT" >
+    <div v-if="imgUrl==='DM-AT2'" class="AT" >
       <div :class="imgOption===0?'positionAT1':'positionAT1_p'" @click="positionClk(0)"/>
       <div :class="imgOption===1?'positionAT2':'positionAT2_p'" @click="positionClk(1)"/>
       <div :class="imgOption===2?'positionAT3':'positionAT3_p'" @click="positionClk(2)"/>
@@ -34,12 +34,12 @@
       <div :class="imgOption===8?'positionAT9':'positionAT9_p'" @click="positionClk(8)"/>
       <div :class="imgOption===9?'positionAT10':'positionAT10_p'" @click="positionClk(9)"/>
     </div>
-    <div v-if="imgUrl==='APJ-OVEN1'" class="OVEN1" />
-    <div v-if="imgUrl==='APJ-OVEN2'" class="OVEN2" />
-    <div v-if="imgUrl==='APJ-FREEZER3'" class="FREEZER3" />
-    <div v-if="imgUrl==='APJ-FREEZER2'" class="FREEZER2" />
-    <div v-if="imgUrl==='APJ-FREEZER1'" class="FREEZER1" />
-    <div v-if="imgUrl==='APJ-CLEAN-US1'" class="CLEAN_US" />
+    <div v-if="imgUrl==='DM-OVEN1'" class="OVEN1" />
+    <div v-if="imgUrl==='DM-OVEN2'" class="OVEN2" />
+    <div v-if="imgUrl==='DM-FREEZER3'" class="FREEZER3" />
+    <div v-if="imgUrl==='DM-FREEZER2'" class="FREEZER2" />
+    <div v-if="imgUrl==='DM-FREEZER1'" class="FREEZER1" />
+    <div v-if="imgUrl==='DM-CLEAN-US1'" class="CLEAN_US" />
     <div v-if="imgUrl==='SMA-OVEN1'" class="SMA-OVEN1" />
     <div v-if="imgUrl==='SIM-OVEN1'" class="SIM-OVEN1" />
     <div v-if="imgUrl==='SIM-OVEN2'" class="SIM-OVEN2" />

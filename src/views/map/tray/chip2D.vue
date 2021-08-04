@@ -187,9 +187,9 @@ export default {
           return
         }
         for (var i = 0; i < dataList.length; i++) {
-          if (dataList[i].eqpId === 'APJ-IGBT-SMT1') {
+          if (dataList[i].eqpId === 'DM-IGBT-SMT1') {
             this.startIgbtData.push(dataList[i])
-          } else if (dataList[i].eqpId === 'APJ-FRD-SMT1') {
+          } else if (dataList[i].eqpId === 'DM-FRD-SMT1') {
             this.startFrdData.push(dataList[i])
           } else if (dataList[i].eqpId.indexOf('IGBT') > 0 || dataList[i].eqpId.indexOf('FRD') > 0) {
             this.igbtFrdList.push(dataList[i])

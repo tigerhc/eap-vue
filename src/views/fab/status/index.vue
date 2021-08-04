@@ -199,7 +199,8 @@ export default {
       DMProjectList: [{ lab: '部品', value: 'BP' }, { lab: '前工程', value: 'YK' }, { lab: '后工程', value: 'EK' }],
       SIMProjectList: [{ lab: '前工程', value: 'YK' }, { lab: '后工程', value: 'EK' }],
       yScroll: 'hidden',
-      monitorHeight: '100vh'
+      monitorHeight: '100vh',
+      lineNo: 'DM'
     }
   },
   watch: {
@@ -228,12 +229,14 @@ export default {
       this.yScroll = 'scroll'
       this.monitorHeight = '800px'
       this.projectList = this.DMProjectList
+      this.lineNo = 'DM'
     } else {
       this.projectText = 'SIM'
       this.curProject = 'YK'
-      this.yScroll = 'hidden'
-      this.monitorHeight = '100vh'
+      this.yScroll = 'scroll' // hidden
+      this.monitorHeight = '800px' // 100vh
       this.projectList = this.SIMProjectList
+      this.lineNo = 'SIM'
     }
     // this.projectText = 'DM' // TODO 本地调试
     // this.curProject = 'YK' // TODO 本地调试
@@ -258,8 +261,13 @@ export default {
         this.yScroll = 'scroll'
         this.monitorHeight = '800px'
       } else {
-        this.yScroll = 'hidden'
-        this.monitorHeight = '100vh'
+        if (this.lineNo === 'SIM' && this.curProject === 'YK') {
+          this.monitorHeight = '800px'
+          this.yScroll = 'scroll'
+        } else {
+          this.yScroll = 'hidden'
+          this.monitorHeight = '100vh'
+        }
       }
       this.inIt()
     },
@@ -292,7 +300,7 @@ export default {
 
     getYield() {
       fetchYield({
-        lineNo: 'DM',
+        lineNo: this.lineNo,
         curProject: this.curProject
       }).then((response) => {
         this.yieldList = response.data

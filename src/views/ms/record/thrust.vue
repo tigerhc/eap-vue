@@ -4,17 +4,17 @@
       <el-row>
         <el-col :span="2">
           <el-form-item>
-            <el-select :style="{width:'80px'}" v-model="form.lineNo" placeholder="线别" @change="lineChange">
+            <el-select :style="{width:'100px'}" v-model="form.lineNo" placeholder="线别" @change="lineChange">
               <el-option v-for="item in lines" :key="item" :label="item" :value="item" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item>
-              <el-select v-model="form.eqpId" clearable placeholder="机种名">
-                <el-option v-for="item in thrustEqpId" :key="item" :label="item" :value="item" />
-              </el-select>
-            <input v-model="form.lotNo" :style="{width:'80px',height:'32px',marginLeft:'20px'}" type="text" placeholder="批量号" class="el-input__inner">
+            <el-select v-model="form.eqpId" clearable placeholder="机种名" style="width:220px">
+              <el-option v-for="item in thrustEqpId" :key="item" :label="item" :value="item" />
+            </el-select>
+            <input v-model="form.lotNo" :style="{width:'100px',height:'32px',marginLeft:'20px'}" type="text" placeholder="批量号" class="el-input__inner">
           </el-form-item>
         </el-col>
         <el-col :span="10">

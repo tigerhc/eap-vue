@@ -17,7 +17,7 @@
             <div class="condition">
               <el-select
                 v-model="form.productionName"
-                :style="{ width: '270px' }"
+                :style="{ width: '290px' }"
                 placeholder="请选择机种名"
                 @change="search"
               >
@@ -54,7 +54,7 @@
           <el-form-item>
             <el-date-picker
               v-model="dateTime"
-              :style="{ width: '300px' }"
+              :style="{ width: '320px' }"
               type="daterange"
               value-format="yyyy-MM-dd"
               range-separator="-"

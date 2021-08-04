@@ -4,7 +4,7 @@
       <el-row>
         <el-form-item label="设备号:" ><!--prop="eqpId"-->
           <div class="condition">
-            <el-select v-model="form.eqpId" :style="{width:'295px'}" clearable @change="changeImg">
+            <el-select v-model="form.eqpId" :style="{width:'395px'}" clearable @change="changeImg">
               <el-option v-for="item in tempEqpId" :key="item.eqpId" :label="item.eqpName" :value="item.eqpId" />
             </el-select>
           </div>

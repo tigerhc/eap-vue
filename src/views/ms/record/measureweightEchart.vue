@@ -9,67 +9,28 @@
             </div>
           </el-form-item>
           <el-form-item>
-            <el-select
-              v-model="productionNo"
-              style="width: 100px"
-              class="wid90"
-              placeholder="机种名"
-              @change="productionNoChange"
-            >
+            <el-select v-model="productionNo" style="width: 106px" placeholder="机种名" clearable @change="productionNoChange">
               <el-option v-for="item in lineNoOptions" :key="item.lineNo" :label="item.lineNo" :value="item.lineNo" />
             </el-select>
-            <el-select v-model="chartParam.productionNo" class="wid90" @change="updateEqp">
+            <el-select v-model="chartParam.productionNo" style="width: 340px" @change="updateEqp" >
               <el-option v-for="item in productionNoOptions" :key="item" :label="item" :value="item" />
             </el-select>
-            <el-select
-              v-show="productionNo === '5GI' || productionNo === '6GI'"
-              v-model="chartParam.detailOption"
-              class="wid90"
-              @change="weightPosition"
-            >
-              <el-option
-                v-for="item in detailOptions"
-                :key="item.dtlName"
-                :label="item.dtlName"
-                :value="item.dtlValue"
-              />
+            <el-select v-show="productionNo === '5GI' || productionNo === '6GI'" v-model="chartParam.detailOption" class="wid90" @change="weightPosition">
+              <el-option v-for="item in detailOptions" :key="item.dtlName" :label="item.dtlName" :value="item.dtlValue" />
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-date-picker
-              v-model="dateTime"
-              type="daterange"
-              value-format="yyyy-MM-dd"
-              range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              class="wider"
-            />
+            <el-date-picker v-model="dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" class="wider" />
           </el-form-item>
-          <button
-            type="button"
-            class="el-button el-button--primary el-button--medium filter-item"
-            style="margin-left: 10px"
-            @click="searchClick"
-          >
+          <button type="button" class="el-button el-button--primary el-button--medium filter-item" style="margin-left: 10px" @click="searchClick" >
             <i class="el-icon-search" />
             <span>搜索</span>
           </button>
-          <button
-            type="button"
-            class="el-button el-button--primary el-button--medium filter-item"
-            style="margin-left: 10px"
-            @click="refreshClick"
-          >
+          <button type="button" class="el-button el-button--primary el-button--medium filter-item" style="margin-left: 10px" @click="refreshClick" >
             <i class="el-icon-refresh" />
             <span>清空</span>
           </button>
-          <button
-            type="button"
-            class="el-button el-button--primary el-button--medium filter-item"
-            style="margin-left: 10px"
-            @click="finddetail"
-          >
+          <button type="button" class="el-button el-button--primary el-button--medium filter-item" style="margin-left: 10px" @click="finddetail" >
             <i class="el-icon-refresh" />
             <span>导出</span>
           </button>
@@ -656,6 +617,10 @@ export default {
   border: 1px solid #b7b2b2;
 }
 .wider {
-  width: 260px;
+  width: 400px;
 }
+
+</style>
+<style>
+  .el-range-editor--medium .el-range-input{font-size: 20px !important;}
 </style>

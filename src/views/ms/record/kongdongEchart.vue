@@ -11,7 +11,7 @@
               <el-select v-model="chartParam.productionName" class="wider" @change="productionNameChange">
                 <el-option v-for="item in proNameOptions" :key="item" :label="item" :value="item" />
               </el-select>
-              <el-select v-model="chartParam.lineType" class="wid90" @change="lineTypeChange">
+              <el-select v-model="chartParam.lineType" :style="{width:'140px'}" @change="lineTypeChange">
                 <el-option v-for="item in positionOptions" :key="item" :label="item" :value="item" />
               </el-select>
             </div>
@@ -21,7 +21,7 @@
           <el-form-item label="日期:">
             <el-date-picker
               v-model="dateTime"
-              :style="{ width: '270px' }"
+              :style="{ width: '320px' }"
               type="daterange"
               value-format="yyyy-MM-dd"
               range-separator="__"
@@ -604,6 +604,6 @@ export default {
   width: 120px;
 }
 .wider {
-  width: 240px;
+  width: 316px;
 }
 </style>

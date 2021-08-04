@@ -129,7 +129,9 @@ code {
 //main-container全局样式
 .app-container {
   padding: 20px;
-  min-height: calc(100vh - 84px);
+  height: calc(100vh - 84px);
+  overflow: hidden;
+  overflow: auto;
 }
 
 .el-checkbox__original {

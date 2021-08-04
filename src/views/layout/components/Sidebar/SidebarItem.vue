@@ -8,7 +8,7 @@
       </app-link>
     </template>
 
-    <el-submenu v-else ref="submenu" index="1">
+    <el-submenu v-else ref="submenu" :index="resolveBasePath(item.path)">
       <template slot="title">
         <item v-if="item.meta" :icon="item.meta.icon" :title="generateTitle(item.meta.title)" />
       </template>
@@ -110,7 +110,15 @@ export default {
       }
       // path.resolve(this.basePath, routePath)
     },
-    resolveBasePath(routePath) {},
+    resolveBasePath(routePath) {
+      if (isExternal(routePath)) {
+        return routePath
+      }
+      if (isExternal(this.basePath)) {
+        return this.basePath
+      }
+      return path.resolve(this.basePath, routePath)
+    },
     isExternalLink(routePath) {
       return isExternal(routePath)
     },

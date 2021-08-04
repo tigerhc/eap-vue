@@ -5,7 +5,6 @@
         name="eqpId"
         label="设备号"
         sort
-        fixed
         align="left"
         handler="view"
         query

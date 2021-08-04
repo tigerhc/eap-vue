@@ -1,14 +1,19 @@
 <template>
-  <el-select v-bind="$attrs" :value="asyncValue" :multiple="multiple" collapse-tags filterable placeholder="设备号" @change="onValueChange">
-    <el-option
-      v-for="item in data"
-      :key="item.id"
-      :label="item[namekey]"
-      :value="item[valuekey]">
-      <span style="float: left;">{{ item[valuekey] }}</span>&nbsp;&nbsp;
+  <el-select
+    v-bind="$attrs"
+    :value="asyncValue"
+    :multiple="multiple"
+    collapse-tags
+    filterable
+    placeholder="设备号"
+    @change="onValueChange"
+  >
+    <el-option v-for="item in data" :key="item.id" :label="item[namekey]" :value="item[valuekey]">
+      <span style="float: left">{{ item[valuekey] }}</span
+      >&nbsp;&nbsp;
       <span style="color: #8492a6; font-size: 12px">{{ item.name }}</span>
-    <!--<span style="float: left; font-size: 13px">{{ item[valuekey]  }}</span>-->
-    <!--<span style="float: right; color: #8492a6; font-size: 13px">{{ item[namekey] }}</span>-->
+      <!--<span style="float: left; font-size: 13px">{{ item[valuekey]  }}</span>-->
+      <!--<span style="float: right; color: #8492a6; font-size: 13px">{{ item[namekey] }}</span>-->
     </el-option>
   </el-select>
 </template>
@@ -32,8 +37,8 @@ export default {
     },
     url: {
       type: String,
-      // default: '/fab/fabequipment/eqpIdlist'
-      default: 'edc/edceqpstate/selectEqpList'
+      default: '/fab/fabequipment/eqpIdlist'
+      // default: 'edc/edceqpstate/selectEqpList'
     },
     multiple: {
       type: Boolean,
@@ -70,8 +75,7 @@ export default {
         // this.data = (resp && resp.results) || []
         this.data = resp.id
       },
-      (e) => {
-      }
+      (e) => {}
     )
     // fetchEqpList()
     //   .then((response) => {
@@ -93,5 +97,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

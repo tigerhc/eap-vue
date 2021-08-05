@@ -9,9 +9,10 @@
     </div>
     <el-menu
       :show-timeout="200"
-      :default-active="$router.path"
+      :default-active="activeMenu"
       :collapse="isCollapse"
       :default-openeds="openeds"
+      :unique-opened="true"
       style="height: 90%"
       mode="vertical"
       background-color="#263238"
@@ -49,6 +50,15 @@ export default {
     },
     openeds() {
       return ['1']
+    },
+    activeMenu() {
+      const route = this.$route
+      const { meta, path } = route
+      // if set path, the sidebar will highlight the path you set
+      if (meta.activeMenu) {
+        return meta.activeMenu
+      }
+      return path
     }
   },
   mounted() {

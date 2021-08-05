@@ -62,6 +62,7 @@ export default {
   },
   created() {
     eqpList().then((response) => {
+      // console.log(response)
       this.tempEqpId = response.data.eqpId
     })
   },

@@ -45,22 +45,32 @@
           <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
           <!-- <el-row col="24" /> -->
           <el-input v-model="model.locationY" label="经度坐标" />
-          <w-select-dic v-model="model.isBindCreated" label="是否生成绑定传感器" dict="SFYN" />
+          <!-- <w-select-dic v-model="model.isBindCreated" label="是否生成绑定传感器" dict="SFYN" /> -->
         </w-form>
       </el-tab-pane>
       <el-tab-pane label="已绑定传感器" name="bindSorsen">
-        <w-edt-table v-slot="{}" ref="language" v-bind="table" url="">
-          <w-table-col name="sensorType" label="传感器类型" align="center">
-            <!-- <el-input v-model="table.model.sensorType" /> -->
-            <w-select-dic v-model="table.model.sensorType" />
-          </w-table-col>
-          <w-table-col name="sensorNum" label="传感器编号" align="center">
-            <el-input v-model="table.model.sensorNum" />
-          </w-table-col>
-          <w-table-col name="sensorName" label="传感器名称" align="center">
-            <el-input v-model="table.model.sensorName" />
-          </w-table-col>
-        </w-edt-table>
+        <w-form
+          :title="title"
+          :col="1"
+          :before-submit="beforeSubmit"
+          :rules="rules"
+          :on-load-data="onFormLoadData"
+          :model="model"
+          url="/fab/fabequipment/"
+        >
+          <w-edt-table v-slot="{}" ref="language" v-bind="table" url="">
+            <w-table-col name="sensorType" label="传感器类型" align="center">
+              <!-- <el-input v-model="table.model.sensorType" /> -->
+              <w-select-dic v-model="table.model.sensorType" />
+            </w-table-col>
+            <w-table-col name="sensorNum" label="传感器编号" align="center">
+              <el-input v-model="table.model.sensorNum" />
+            </w-table-col>
+            <w-table-col name="sensorName" label="传感器名称" align="center">
+              <el-input v-model="table.model.sensorName" />
+            </w-table-col>
+          </w-edt-table>
+        </w-form>
       </el-tab-pane>
     </el-tabs>
   </div>

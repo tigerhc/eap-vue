@@ -109,8 +109,8 @@ export default {
     finddetail() {
       this.chartParam.productionNo = this.chartParam.productionNo.toUpperCase()
       if (this.dateTime.length === 2) {
-        this.chartParam.startTime = this.dateTime[0]
-        this.chartParam.endTime = this.dateTime[1]
+        this.chartParam.startTime = this.dateTime[0] + ' 00:00:00'
+        this.chartParam.endTime = this.dateTime[1] + ' 23:59:59'
       }
       // eslint-disable-next-line no-undef
       if (this.toolbarStatus.exportsLoading) {
@@ -214,8 +214,8 @@ export default {
       }
       this.chartParam.productionNo = this.chartParam.productionNo.toUpperCase()
       if (this.dateTime.length === 2) {
-        this.chartParam.startTime = this.dateTime[0]
-        this.chartParam.endTime = this.dateTime[1]
+        this.chartParam.startTime = this.dateTime[0] + ' 00:00:00'
+        this.chartParam.endTime = this.dateTime[1] + ' 23:59:59'
       }
       var _this = this
       weightChart(this.chartParam).then((res) => {

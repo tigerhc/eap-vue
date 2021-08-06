@@ -1,7 +1,7 @@
 <template>
   <el-scrollbar wrap-class="scrollbar-wrapper">
     <div v-show="!isCollapse" class="header-sidebar" @click="comeBack">
-      <img :src="project.projectPhotoUrl" >
+<!--      <img :src="project.projectPhotoUrl" >-->
       <span id="projectName" />
     </div>
     <div v-show="isCollapse" style="padding-left: 10px" class="header-sidebar" @click="comeBack">
@@ -64,12 +64,18 @@ export default {
   mounted() {
     if (window.location.hostname === '10.160.144.9') {
       document.getElementById('projectName').innerHTML = 'CIM(二栋)'
+    } else if (window.location.hostname === '172.16.10.119') {
+      document.getElementById('projectName').innerHTML = '联研院半导体所中试线'
     } else {
       document.getElementById('projectName').innerHTML = 'CIM(一栋)'
     }
   },
   methods: {
     comeBack() {
+      if (window.location.hostname === '172.16.10.119') {
+        this.$router.push('/fab/eqp/equipment')
+        return
+      }
       this.$router.push('/dashboard')
     }
   }
@@ -94,8 +100,8 @@ export default {
   }
   span {
     color: #fff;
-    font-size: 20px;
-    margin-left: 10px;
+    font-size: 15px;
+    /*margin-left: 10px;*/
     vertical-align: middle;
     font-weight: 600;
     white-space: nowrap;

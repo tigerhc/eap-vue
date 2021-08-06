@@ -25,7 +25,8 @@
         auto-complete="on"
         label-position="left"
       >
-        <h1>道达IOT系统</h1>
+        <sys-config config_key="sys.login.systemTitle" />
+<!--        <h1>联研院半导体所中试线</h1>-->
         <div class="title-container">
           <h3 class="title">{{ $t('login.title') }}</h3>
           <lang-select class="set-language" />
@@ -154,6 +155,8 @@ export default {
               this.loading = false
               if (window.location.hostname === '10.160.144.9') {
                 this.$router.push({ path: 'board' || '/' })
+              } else if (window.location.hostname === '172.16.10.119') {
+                this.$router.push({ path: 'fab/eqp/equipment' || '/' })
               } else {
                 this.$router.push({ path: 'dashboard' || '/' })
               }
@@ -213,7 +216,7 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
-  background-image: url(../../assets/img/iotbg.jpg);
+  background-image: url(../../assets/img/bg.jpg);
   background-repeat: no-repeat;
   background-size: 100% 100%;
   .el-input {

@@ -12,7 +12,7 @@
       <w-table-button name="edit" hidden />
     </w-table>
 <!--    <el-button @click="re">aaaa</el-button>-->
-    <a href="http://localhost:81/dsk/edcdsklogrecipe/selectExport" >百度</a>
+    <!--<a href="http://localhost:81/dsk/edcdsklogrecipe/selectExport" >百度</a>-->
   </div>
 </template>
 
@@ -80,3 +80,4 @@ export default {
   }
 }
 </script>
+

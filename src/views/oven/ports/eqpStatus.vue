@@ -2,14 +2,14 @@
   <div class="Rtplotyieldday">
     <el-form ref="form" :model="form" :inline="true" class="form" label-width="90px" size="small">
       <el-row>
-        <el-col :span="5">
+        <el-col :span="9">
           <el-form-item label="设备" prop="station_code">
             <el-select v-model="form.station_code" :multiple="true" filterable placeholder="请选择">
               <el-option v-for="item in list3" :key="item.id" :label="item.id" :value="item.id" />
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="9">
           <el-form-item label="日期" prop="dateTime">
             <el-date-picker
               v-model="form.dateTime"

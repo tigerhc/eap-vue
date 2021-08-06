@@ -110,8 +110,8 @@ export default {
     if (window.location.hostname === '10.160.144.9') {
       this.lineNoOptions = [
         {
-          value: 'APJ',
-          label: 'APJ'
+          value: 'DM',
+          label: 'DM'
         }
       ]
     }

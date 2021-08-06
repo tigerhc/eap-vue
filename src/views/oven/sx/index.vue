@@ -4,7 +4,7 @@
       <el-form :inline="true" class="form">
         <el-row>
           <el-form-item>
-            <el-select v-model="form1.type" :style="{ width: '150px' }" placeholder="类型" @change="findProduction">
+            <el-select v-model="form1.type" :style="{ width: '90px' }" placeholder="类型" @change="findProduction">
               <el-option v-for="item in TypeResult" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
@@ -43,7 +43,7 @@
             <el-select
               v-show="form1.lineNo === 'SIM' && form.local === 'c'"
               v-model="form.localSimC"
-              :style="{ width: '200px' }"
+              :style="{ width: '150px' }"
               placeholder="位置"
               @change="search"
             >

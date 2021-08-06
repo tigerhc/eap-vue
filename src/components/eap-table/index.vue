@@ -948,3 +948,6 @@ function isHidden(conf) {
   min-height: calc(100vh - 84px);
 }
 </style>
+<style scoped>
+  .el-select--medium{width: 290px !important;}
+</style>

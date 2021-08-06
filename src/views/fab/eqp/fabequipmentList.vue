@@ -138,4 +138,8 @@ export default {
 .editCell:hover {
   cursor: pointer;
 }
+.el-select--medium{width: 320px!important;}
+</style>
+<style>
+
 </style>

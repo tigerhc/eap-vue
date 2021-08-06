@@ -1,7 +1,7 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
-      <el-select v-model="listQuery.eqpModelName" filterable style="width: 200px;" class="filter-item" placeholder="请选择设备类型">
+      <el-select v-model="listQuery.eqpModelName" filterable style="width: 600px;" class="filter-item" placeholder="请选择设备类型">
         <el-option
           v-for="item in eqpModelNameList"
           :key="item.id"

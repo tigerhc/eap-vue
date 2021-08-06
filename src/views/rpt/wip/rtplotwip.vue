@@ -94,12 +94,12 @@ export default {
   created() {
     if (window.location.hostname === '10.160.144.9') {
       this.form = {
-        lineNo: 'APJ'
+        lineNo: 'DM'
       }
       this.lineNoOptions = [
         {
-          value: 'APJ',
-          label: 'APJ'
+          value: 'DM',
+          label: 'DM'
         }
       ]
     }

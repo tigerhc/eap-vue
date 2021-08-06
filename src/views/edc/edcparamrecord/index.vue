@@ -1,17 +1,17 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.eqpId" style="width: 200px;"  placeholder="请输入设备号" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.bizSubType" style="width: 200px;"  placeholder="请输入业务小类" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.eqpId" style="width: 200px;" placeholder="请输入设备号" @keyup.enter.native="handleFilter"/>
+      <el-input v-model="listQuery.bizSubType" style="width: 200px;" placeholder="请输入业务小类" @keyup.enter.native="handleFilter"/>
       <el-date-picker
-      v-model="listQuery.bizDate"
+v-model="listQuery.bizDate"
+      style="width:465px;font-size: 16px"
       value-format="yyyy-MM-dd HH:mm:ss"
       type="datetimerange"
       range-separator="至"
       start-placeholder="开始日期"
-      end-placeholder="结束日期">
-    </el-date-picker>
-      <el-button v-waves  type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
+      end-placeholder="结束日期"/>
+      <el-button v-waves type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
     </div>
 
     <el-table
@@ -38,12 +38,12 @@
       </el-table-column>
       <el-table-column align="center" label="业务大类">
         <template slot-scope="scope">
-          <span>{{ scope.row.bizType | dictLabel('EDC_BIZ_TYPE')}}</span>
+          <span>{{ scope.row.bizType | dictLabel('EDC_BIZ_TYPE') }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="业务小类">
         <template slot-scope="scope">
-          <span>{{ scope.row.bizSubType | dictLabel('EDC_BIZ_SUB_TYPE')}}</span>
+          <span>{{ scope.row.bizSubType | dictLabel('EDC_BIZ_SUB_TYPE') }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="创建人">
@@ -77,7 +77,7 @@ import { fetchList } from '@/api/public'
 import waves from '@/directive/waves' // 水波纹指令
 
 export default {
-  name: 'edcparamrecord',
+  name: 'Edcparamrecord',
   directives: {
     waves
   },
@@ -94,7 +94,7 @@ export default {
         limit: 10,
         bizSubType: undefined,
         eqpId: undefined,
-        bizDate:undefined,
+        bizDate: undefined,
         sort: 'updateDate'
       }
     }
@@ -106,7 +106,7 @@ export default {
     getList() {
       this.listLoading = true
       const params = this.changeParams(this.listQuery)
-      fetchList(this.tab,params).then(response => {
+      fetchList(this.tab, params).then(response => {
         this.list = response.data.results
         this.total = response.data.total
         this.listLoading = false
@@ -122,9 +122,9 @@ export default {
         'query.bizSubType||like': obj.bizSubType || '',
         'queryFields': 'id,eqpId,bizType,bizSubType,bizDate,createByName,'
       }
-      if(obj.bizDate){
-        params['query.bizDate||ge'] = obj.bizDate?obj.bizDate[0]:'';
-        params['query.bizDate||lt'] = obj.bizDate?obj.bizDate[1]:'';
+      if (obj.bizDate) {
+        params['query.bizDate||ge'] = obj.bizDate ? obj.bizDate[0] : ''
+        params['query.bizDate||lt'] = obj.bizDate ? obj.bizDate[1] : ''
       }
       return params
     },
@@ -158,8 +158,8 @@ export default {
         query: { id: item.id }
       })
     },
-    handleUpdate(item){
-        this.$router.push({ name: 'views/edc/edcparamrecord/recordDeteils',
+    handleUpdate(item) {
+      this.$router.push({ name: 'views/edc/edcparamrecord/recordDeteils',
         query: { id: item.id }
       })
     }

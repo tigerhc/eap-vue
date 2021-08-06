@@ -35,3 +35,6 @@ export default {
   methods: {}
 }
 </script>
+<style>
+  .el-select--medium{width: 300px !important;}
+</style>

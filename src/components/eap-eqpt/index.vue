@@ -511,7 +511,7 @@ export default {
       var eqpId = data.eqpId
       var status = data.status
       var wip = data.wip
-      var ppid = data.ppid
+      var ppid = data.pPID
       var lotNo = data.lotNo
       var modelName = data.modelName
       for (var i = 0; i < _this.eqpList.length; i++) {

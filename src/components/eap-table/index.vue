@@ -1,5 +1,6 @@
 <script>
 import api from './fetch'
+import request from '../../utils/request'
 
 // function remove(val) {
 //   var index = this.indexOf(val)
@@ -62,6 +63,10 @@ export default {
     limit: {
       type: Number,
       default: 10
+    },
+    export: {
+      type: String,
+      default: null
     }
   },
   data: function() {
@@ -419,27 +424,66 @@ export default {
         return
       }
       this.toolbarStatus.exportsLoading = true
-      const q = this.getParams(this.query)
-      this.api
-        .export(q)
-        .then((response) => {
-          if (response.code === 0) {
-            return import('@/vendor/Export2Excel').then((excel) => {
-              excel.export_byte_to_excel(response.bytes, response.title)
+      if (this.export == null) {
+        const q = this.getParams(this.query)
+        this.api
+          .export(q)
+          .then((response) => {
+            if (response.code === 0) {
+              return import('@/vendor/Export2Excel').then((excel) => {
+                excel.export_byte_to_excel(response.bytes, response.title)
+                this.toolbarStatus.exportsLoading = false
+              })
+            } else {
+              this.$notify.error({
+                title: '失败',
+                message: (response && response.errmsg) || '导出失败!',
+                duration: 2000
+              })
+              this.toolbarStatus.exportsLoading = false
+            }
+          })
+          .catch((e) => {
+            this.toolbarStatus.exportsLoading = false
+          })
+      } else {
+        if (this.multipleSelection.length > 0) {
+          const obj = {
+            ids: this.multipleSelection.map((i) => i.id).join(',')
+          }
+          request({
+            url: this.export,
+            method: 'post',
+            params: obj
+          }).then((res) => {
+            if (res.data.code === 0) {
+              return import('@/vendor/Export2Excel').then((excel) => {
+                console.log(res)
+                excel.export_byte_to_excel(res.data.bytes, res.data.title)
+                this.toolbarStatus.exportsLoading = false
+              })
+            } else {
+              this.$notify.error({
+                title: '失败',
+                message: (res && res.data.errmsg) || '导出失败!',
+                duration: 2000
+              })
+              this.toolbarStatus.exportsLoading = false
+            }
+          })
+            .catch((e) => {
               this.toolbarStatus.exportsLoading = false
             })
-          } else {
-            this.$notify.error({
-              title: '失败',
-              message: (response && response.errmsg) || '导出失败!',
-              duration: 2000
-            })
-            this.toolbarStatus.exportsLoading = false
-          }
-        })
-        .catch((e) => {
+        } else {
+          this.$notify({
+            showClose: true,
+            message: '请选择至少一条数据导出',
+            type: 'error',
+            duration: 2000
+          })
           this.toolbarStatus.exportsLoading = false
-        })
+        }
+      }
     },
     // 重置搜索表单
     reset() {},

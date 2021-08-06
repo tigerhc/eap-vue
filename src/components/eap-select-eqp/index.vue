@@ -72,8 +72,8 @@ export default {
   mounted() {
     this.api.anylist({ 'page.size': 99999 }).then(
       (resp) => {
-        // this.data = (resp && resp.results) || []
-        this.data = resp.id
+        this.data = (resp && resp.results) || []
+        // this.data = resp.id
       },
       (e) => {}
     )

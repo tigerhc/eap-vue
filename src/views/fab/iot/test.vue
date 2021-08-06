@@ -4,7 +4,7 @@
       <el-row>
         <el-form-item label="设备号:" prop="eqpId">
           <div class="condition">
-            <el-select v-model="form.eqpId" clearable>
+            <el-select v-model="form.eqpId" clearable style="width:340px">
               <el-option v-for="item in tempEqpId" :key="item.eqpId" :label="item.eqpName" :value="item.eqpId" />
             </el-select>
           </div>
@@ -115,7 +115,6 @@ export default {
             result.push(arr4.slice(i, i + 4))
           }
           this.kData = result
-          console.log(this.kData)
           this.editableTabs = this.unique(arr1)
           this.kTime = this.unique(arr2)
           this.editableTabsValue = this.editableTabs[index]

@@ -7,7 +7,7 @@
             :str="form.eqpId"
             :multiple="false"
             :disabled="false"
-            param="MS"
+            param=""
             @input="onValueChange($event)"
           />
         </el-form-item>
@@ -273,6 +273,8 @@ export default {
     margin-top: 20px;
   }
 }
+
 </style>
 <style>
+  .el-input--small .el-input__inner{width:400px}
 </style>

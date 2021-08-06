@@ -67,8 +67,8 @@ export default {
           id: '6GI'
         },
         {
-          name: 'APJ',
-          id: 'APJ'
+          name: 'DM',
+          id: 'DM'
         },
         {
           name: 'BSG',

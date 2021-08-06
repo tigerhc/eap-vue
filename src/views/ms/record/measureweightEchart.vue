@@ -399,6 +399,9 @@ export default {
               textStyle: {
                 fontSize: 20,
                 fontWeight: 800
+              },
+              formatter: function(value, index) {
+                return value.toFixed(1)
               }
             }
           },
@@ -622,5 +625,5 @@ export default {
 
 </style>
 <style>
-  .el-range-editor--medium .el-range-input{font-size: 20px !important;}
+  .el-range-editor--medium .el-range-input{font-size: 18px !important;}
 </style>

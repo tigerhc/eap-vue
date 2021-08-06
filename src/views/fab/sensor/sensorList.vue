@@ -1,16 +1,7 @@
 <template>
   <div class="app-container calendar-list-container">
     <w-table v-slot="{}" v-bind="table" url="fab/fabSensor" sort="">
-      <w-table-col
-        name="sorId"
-        label="传感器号"
-        fixed
-        align="left"
-        query
-        namekey="sorId"
-        condition="in"
-        querymode="select"
-      />
+      <w-table-col name="sorId" label="传感器号" align="left" query namekey="sorId" condition="in" querymode="select" />
       <w-table-col name="sorName" label="传感器名称" align="left" />
       <w-table-col name="officeId" label="部门" width="100" align="left" />
       <w-table-col name="bcCode" label="BC号" align="center" />

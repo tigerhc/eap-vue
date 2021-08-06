@@ -7,7 +7,6 @@
         label="程序名称"
         width="200"
         sort
-        fixed
         align="center"
         handler="edit"
         query

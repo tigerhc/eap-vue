@@ -1,26 +1,29 @@
 <template>
   <div id="tempchar" class="app app-container calendar-list-container">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
-      <el-row>
-        <el-form-item label="设备号:" prop="eqpId">
-          <div class="condition">
-            <el-select v-model="form.eqpId" clearable>
-              <el-option v-for="item in tempEqpId" :key="item.eqpId" :label="item.eqpName" :value="item.eqpId" />
-            </el-select>
-          </div>
-        </el-form-item>
-        <el-form-item label="日期:" prop="dateTime">
-          <el-date-picker
-            v-model="form.dateTime"
-            type="daterange"
-            value-format="yyyy-MM-dd"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-          />
-        </el-form-item>
-        <el-button type="primary" @click="search">查询</el-button>
-      </el-row>
+      <el-form-item label="设备号:" prop="eqpId">
+        <div class="condition">
+          <el-select v-model="form.eqpId" clearable>
+            <el-option
+              v-for="item in tempEqpId"
+              :key="item.eqpId"
+              :label="item.eqpId + '——' + item.eqpName"
+              :value="item.eqpId"
+            />
+          </el-select>
+        </div>
+      </el-form-item>
+      <el-form-item label="日期:" prop="dateTime">
+        <el-date-picker
+          v-model="form.dateTime"
+          type="daterange"
+          value-format="yyyy-MM-dd"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        />
+      </el-form-item>
+      <el-button type="primary" @click="search">查询</el-button>
     </el-form>
     <el-tabs v-model="editableTabsValue" type="card" @tab-click="loadTempDataPart">
       <el-tab-pane v-for="item in editableTabs" :key="item" :label="item" :name="item" />
@@ -62,7 +65,7 @@ export default {
   },
   created() {
     eqpList().then((response) => {
-      // console.log(response)
+      console.log(response)
       this.tempEqpId = response.data.eqpId
     })
   },

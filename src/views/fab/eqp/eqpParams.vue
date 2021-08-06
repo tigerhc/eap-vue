@@ -2,17 +2,7 @@
   <div class="app-container calendar-list-container">
     <w-table v-slot="{}" v-bind="table" url="/edc/edcparamdefinemodel">
       <!--todo fixed属性导致当前列变为第一列-->
-      <w-table-col
-        name="paramCode"
-        label="编码"
-        width="120"
-        sort
-        fixed
-        align="left"
-        handler="view"
-        query
-        condition="like"
-      />
+      <w-table-col name="paramCode" label="编码" width="120" sort align="left" handler="view" query condition="like" />
       <w-table-col name="subEqpId" label="设备号" align="center" dict query condition="eq" />
       <w-table-col name="paramName" label="名称" align="left" />
       <w-table-col name="maxValue" label="最大值" width="100" align="center" />

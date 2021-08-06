@@ -235,6 +235,7 @@ export default {
     },
     getData() {
       fetchGetChart().then((response) => {
+        console.log(response)
         for (const item of response.data) {
           this.statusList.push(item.EQP_STATUS)
         }

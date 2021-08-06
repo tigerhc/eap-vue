@@ -3,13 +3,13 @@
     <div class="filter-container">
       <el-row :gutter="5">
         <el-col :span="3">
-          <el-input v-model="searchObj.lotNo" placeholder="请输入批次号" clearable/>
+          <el-input v-model="searchObj.lotNo" placeholder="请输入批次号" clearable />
         </el-col>
         <el-col :span="4">
-          <el-input v-model="searchObj.chipId" placeholder="请输入芯片编号" clearable/>
+          <el-input v-model="searchObj.chipId" placeholder="请输入芯片编号" clearable />
         </el-col>
         <el-col :span="5" class="tray-chip-eqp-selet">
-          <w-select-eqp v-model="searchObj.eqpIds"/>
+          <w-select-eqp v-model="searchObj.eqpIds" />
         </el-col>
         <el-date-picker
           v-model="searchObj.time"
@@ -28,23 +28,19 @@
       </el-row>
     </div>
     <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="lotNo" label="批次号" width="150" fixed/>
-      <el-table-column prop="chipId" label="芯片编号" width="150" fixed>
+      <el-table-column prop="lotNo" label="批次号" width="150" />
+      <el-table-column prop="chipId" label="芯片编号" width="150">
         <template v-if="scope.row.chipId" slot-scope="scope">
-          <el-button
-            type="text"
-            size="small"
-            @click="handleChipClick(scope.row)"
-          >{{ scope.row.chipId }}</el-button>
+          <el-button type="text" size="small" @click="handleChipClick(scope.row)">{{ scope.row.chipId }}</el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="eqpId" label="设备号" width="150" fixed/>
-      <el-table-column prop="productionNo" label="品番号" width="150"/>
-      <el-table-column prop="toTrayId" label="托盘ID" width="100"/>
-      <el-table-column prop="toX" label="X坐标" width="80"/>
-      <el-table-column prop="toY" label="Y坐标" width="80"/>
-      <el-table-column prop="judgeResult" label="质量" width="80"/>
-      <el-table-column :formatter="colDateFormatter" prop="startTime" label="时间" width="180"/>
+      <el-table-column prop="eqpId" label="设备号" width="150" />
+      <el-table-column prop="productionNo" label="品番号" width="150" />
+      <el-table-column prop="toTrayId" label="托盘ID" width="100" />
+      <el-table-column prop="toX" label="X坐标" width="80" />
+      <el-table-column prop="toY" label="Y坐标" width="80" />
+      <el-table-column prop="judgeResult" label="质量" width="80" />
+      <el-table-column :formatter="colDateFormatter" prop="startTime" label="时间" width="180" />
     </el-table>
     <el-pagination
       :current-page="searchObj.page"
@@ -59,7 +55,7 @@
 </template>
 
 <style lang="scss">
-.a-tray-job-history{
+.a-tray-job-history {
   margin-left: 3px;
   border: 0;
   font-size: 12px;

@@ -1,41 +1,47 @@
 <template>
   <div>
     <w-form v-bind="formConf" :col="3" :model="model" :bottom-btn="true">
-      <el-input v-model="model.recordId" label="流水号"/>
-      <el-input v-model="model.eqpId" label="设备号"/>
+      <el-input v-model="model.recordId" label="流水号" />
+      <el-input v-model="model.eqpId" label="设备号" />
       <el-row col="24" />
-      <el-input v-model="model.productionNo" label="产品"/>
-      <el-input v-model="model.productionName" label="产品名"/>
-      <el-input v-model="model.lotNo" label="批号"/>
-      <el-input v-model="model.waferId" label="晶圆ID"/>
-      <el-input v-model="model.timing" label="时机"/>
-      <el-input v-model="model.sampleCount" label="采样数"/>
-      <el-input v-model="model.status" label="状态"/>
-      <w-select-dic v-model="model.approveResult" style="width:100%" label="判定结果" dict="JUDGE_RESULT" />
+      <el-input v-model="model.productionNo" label="产品" />
+      <el-input v-model="model.productionName" label="产品名" />
+      <el-input v-model="model.lotNo" label="批号" />
+      <el-input v-model="model.waferId" label="晶圆ID" />
+      <el-input v-model="model.timing" label="时机" />
+      <el-input v-model="model.sampleCount" label="采样数" />
+      <el-input v-model="model.status" label="状态" />
+      <w-select-dic v-model="model.approveResult" style="width: 100%" label="判定结果" dict="JUDGE_RESULT" />
       <el-input v-model="model.createBy" :disabled="true" label="量测人" />
       <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
     </w-form>
     <div class="model">
       <el-button class="exportBtn" @click="exportDetail">
-        <i class="fa-download"/>
+        <i class="fa-download" />
         <span>导出Excel</span>
       </el-button>
       <el-form v-if="rowData.length > 0" :model="model" disabled>
-        <div v-for="(item,index) in rowData" :key="item.id">
-          <el-row v-if="index%3==0">
+        <div v-for="(item, index) in rowData" :key="item.id">
+          <el-row v-if="index % 3 == 0">
             <el-col :xs="24" :span="8">
               <el-form-item :label="item.itemName" label-width="150px">
-                <el-input v-model="item.itemValue" :class="item.itemResult == 'N'?'jk-font-red':''"/>
+                <el-input v-model="item.itemValue" :class="item.itemResult == 'N' ? 'jk-font-red' : ''" />
               </el-form-item>
             </el-col>
-            <el-col v-if="(index+1) < rowData.length" :xs="24" :span="8">
-              <el-form-item :label="rowData[index+1].itemName" label-width="150px">
-                <el-input v-model="rowData[index+1].itemValue" :class="rowData[index+1].itemResult == 'N'?'jk-font-red':''"/>
+            <el-col v-if="index + 1 < rowData.length" :xs="24" :span="8">
+              <el-form-item :label="rowData[index + 1].itemName" label-width="150px">
+                <el-input
+                  v-model="rowData[index + 1].itemValue"
+                  :class="rowData[index + 1].itemResult == 'N' ? 'jk-font-red' : ''"
+                />
               </el-form-item>
             </el-col>
-            <el-col v-if="(index+2) < rowData.length" :xs="24" :span="8">
-              <el-form-item :label="rowData[index+2].itemName" label-width="150px">
-                <el-input v-model="rowData[index+2].itemValue" :class="rowData[index+2].itemResult == 'N'?'jk-font-red':''"/>
+            <el-col v-if="index + 2 < rowData.length" :xs="24" :span="8">
+              <el-form-item :label="rowData[index + 2].itemName" label-width="150px">
+                <el-input
+                  v-model="rowData[index + 2].itemValue"
+                  :class="rowData[index + 2].itemResult == 'N' ? 'jk-font-red' : ''"
+                />
               </el-form-item>
             </el-col>
           </el-row>
@@ -43,24 +49,16 @@
       </el-form>
     </div>
     <div class="model">
-      <div v-for="item in gridData" :key="item.id" style="margin-left: 150px;">
-        <el-table
-          :data="item.data"
-          :header-row-class-name="headStyle"
-          :cell-class-name="bodyRowStyle"
-          border
-
-          stripe>
-          <el-table-column fixed type="index"/>
+      <div v-for="item in gridData" :key="item.id" style="margin-left: 150px">
+        <el-table :data="item.data" :header-row-class-name="headStyle" :cell-class-name="bodyRowStyle" border stripe>
+          <el-table-column type="index" />
           <div v-for="(col, index) in item.head" :key="col">
-            <el-table-column v-if="index==0" :prop="col.rowName" label="rowName">
+            <el-table-column v-if="index == 0" :prop="col.rowName" label="rowName">
               <template slot-scope="scope">
                 <div>{{ scope.row[index].rowName }}</div>
               </template>
             </el-table-column>
-            <el-table-column
-              :prop="col"
-              :label="col">
+            <el-table-column :prop="col" :label="col">
               <template slot-scope="scope">
                 <div :class="scope.row[index].className">{{ scope.row[index][col] }}</div>
               </template>
@@ -70,11 +68,11 @@
       </div>
     </div>
     <div class="model">
-        <div class="jk-grid-9-parent">
-          <div v-for="(item,index) in circles" :key="index" class="jk-grid-9-item">
-            {{ index+1 }}<w-circle-jy :ary="item"/>
-          </div>
+      <div class="jk-grid-9-parent">
+        <div v-for="(item, index) in circles" :key="index" class="jk-grid-9-item">
+          {{ index + 1 }}<w-circle-jy :ary="item" />
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -220,7 +218,16 @@ export default {
             }
             this.groupData(gd, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax, rowName)
           } else {
-            const gd = this.groupData(null, id, heads.split(','), grids.split(','), itemResult, limitMin, limitMax, rowName)
+            const gd = this.groupData(
+              null,
+              id,
+              heads.split(','),
+              grids.split(','),
+              itemResult,
+              limitMin,
+              limitMax,
+              rowName
+            )
             this.circleIndex = 1
             this.gridData.push(gd)
             if (!this.jumpFlag(rowName)) {
@@ -258,22 +265,23 @@ export default {
         url: 'ms/msmeasurerecord/exportDetail',
         method: 'post',
         params: this.param
-      }).then((res) => {
-        if (res.data.code === 0) {
-          return import('@/vendor/Export2Excel').then((excel) => {
-            console.log(res)
-            excel.export_byte_to_excel(res.data.bytes, res.data.title)
-            this.exportsLoading = false
-          })
-        } else {
-          this.$notify.error({
-            title: '失败',
-            message: (res && res.data.errmsg) || '导出失败!',
-            duration: 2000
-          })
-          this.exportsLoading = false
-        }
       })
+        .then((res) => {
+          if (res.data.code === 0) {
+            return import('@/vendor/Export2Excel').then((excel) => {
+              console.log(res)
+              excel.export_byte_to_excel(res.data.bytes, res.data.title)
+              this.exportsLoading = false
+            })
+          } else {
+            this.$notify.error({
+              title: '失败',
+              message: (res && res.data.errmsg) || '导出失败!',
+              duration: 2000
+            })
+            this.exportsLoading = false
+          }
+        })
         .catch((e) => {
           this.exportsLoading = false
         })
@@ -282,61 +290,62 @@ export default {
 }
 </script>
 <style lang="scss">
-  .exportBtn {
-    width: 150px;
-    height: 40px;
-    display: block;
-    position: absolute;
-    top: 310px;
-    right:40px;
-    font-size: 14px;
-    padding: 10px 20px;
-    border-radius: 4px;
-    border: 1px solid #67c23a;
-    color: #fff;
-    background-color: #67c23a;
-    line-height: 1;
-    font-weight: 500;
-    transition: .1s;
-  }
-  .el-table th, .headStyle {
-    background-color: #1e6abc;
-    color: white;
-  }
-  .el-table .rowStyle {
-    /*padding: 2px 0px;*/
-    /*margin: 0;*/
-    font-weight:bold
-  }
-  .el-table {
-    /*min-height: calc(100vh - 84px - 96px - 42px);*/
-    min-height: auto;
-  }
-  .el-input.is-disabled.jk-font-red .el-input__inner {
-    color: red;
-  }
+.exportBtn {
+  width: 150px;
+  height: 40px;
+  display: block;
+  position: absolute;
+  top: 310px;
+  right: 40px;
+  font-size: 14px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: 1px solid #67c23a;
+  color: #fff;
+  background-color: #67c23a;
+  line-height: 1;
+  font-weight: 500;
+  transition: 0.1s;
+}
+.el-table th,
+.headStyle {
+  background-color: #1e6abc;
+  color: white;
+}
+.el-table .rowStyle {
+  /*padding: 2px 0px;*/
+  /*margin: 0;*/
+  font-weight: bold;
+}
+.el-table {
+  /*min-height: calc(100vh - 84px - 96px - 42px);*/
+  min-height: auto;
+}
+.el-input.is-disabled.jk-font-red .el-input__inner {
+  color: red;
+}
 
-  .el-table tr .jk-font-red {
-    color: red;
-  }
-  .jk-grid-9-parent {
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  .jk-grid-9-item {
-    width: calc(100vh - 180px - 50px) / 3;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    margin-left: 10px;
-  }
-  /*.jk-grid-9-item:not(first-child) {*/
-    /*margin-left: 10px;*/
-  /*}*/
+.el-table tr .jk-font-red {
+  color: red;
+}
+.jk-grid-9-parent {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.jk-grid-9-item {
+  width: calc(100vh - 180px - 50px) / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+/*.jk-grid-9-item:not(first-child) {*/
+/*margin-left: 10px;*/
+/*}*/
 </style>

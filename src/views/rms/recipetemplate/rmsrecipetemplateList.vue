@@ -1,7 +1,7 @@
 <template>
   <div class="app-container calendar-list-container">
     <w-table v-bind="table" url="/fab/fabequipmentmodel" sort="create_date.desc">
-      <w-table-col name="manufacturerName" label="设备厂家" query condition="like" fixed handler="edit" />
+      <w-table-col name="manufacturerName" label="设备厂家" query condition="like" handler="edit" />
       <w-table-col
         name="classCode"
         label="设备类型"

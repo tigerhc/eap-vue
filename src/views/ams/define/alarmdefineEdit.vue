@@ -45,7 +45,7 @@
     <div style="border-top: 1px solid #ddd; padding: 5px 0; margin: 10px 0" />
     <w-edt-table v-slot="{}" ref="language" v-bind="table" url="/edc/edcamsdefine">
       <!--todo fixed属性导致当前列变为第一列-->
-      <w-table-col name="alarmLanguage" required label="语言类型" dict="I18N_CODE" sort fixed align="left">
+      <w-table-col name="alarmLanguage" required label="语言类型" dict="I18N_CODE" sort align="left">
         <!-- <el-input v-model="table.model.alarmLanguage" /> -->
         <w-select-dic v-model="table.model.alarmLanguage" style="width: 100%" label="状态" dict="I18N_CODE" />
       </w-table-col>

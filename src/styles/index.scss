@@ -254,13 +254,13 @@ code {
 
 //滚动条的宽度
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 12px;
   height: 8px;
-  background-color: #2780ec;
+  background-color: #f1f1f1;
   border-radius: 6px;
 }
 //滚动条的滑块
 ::-webkit-scrollbar-thumb {
-  background-color: #2780ec;
-  border-radius: 6px;
+  background-color: #c1c1c1;
+  border-radius: 12px;
 }

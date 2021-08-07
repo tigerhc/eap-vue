@@ -1,48 +1,52 @@
 <template>
   <div id="app">
-    <span class="title">设备列表</span>
+    <div style="width: 50%; display: inline-block">
+      <el-select v-model="selectEqpId" filterable style="width: 200px; margin-left: 20px" class="filter-item" clearable placeholder="请选择设备ID">
+        <el-option
+          v-for="item in eqpIdList"
+          :key="item.id"
+          :label="item.eqpId + '-' + item.modelName"
+          :value="item.eqpId"/>
+      </el-select>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="queryEqp">{{ $t('table.search') }}</el-button>
+    </div>
     <div class="statusLegend">
-      <label class="runLabel">RUN: </label><el-button type="success" /><br >
-      <label class="downLabel">DOWN: </label><el-button type="danger" /><br >
-      <label class="idelLabel">IDEL: </label><el-button type="primary" /><br >
-      <label class="stopLabel">STOP: </label><el-button type="warning" /><br >
-      <label class="setupLabel">SETUP: </label><el-button type="info" />
+      <span class="runLabel">RUN: </span><el-button type="success" @click="findRunEqpt()" />
+      <span class="downLabel">DOWN: </span><el-button type="danger" @click="findDownEqpt()" />
+      <span class="idelLabel">IDEL: </span><el-button type="primary" @click="findIdelEqpt()" />
+      <span class="stopLabel">STOP: </span><el-button type="warning" @click="findStopEqpt()" />
+      <span class="setupLabel">SETUP: </span><el-button type="info" @click="findSetupEqpt()" />
     </div>
     <div id="eqp_list">
       <div v-for="item in eqpList" id="statusDiv" :key="item.eqpId" :class="item.status">
-        <!--        <img :id="item.eqpId" src="@/assets/img/close.png" class="close_img" @click="tips(item.eqpId)">-->
+        <!--                <img :id="item.eqpId" src="@/assets/img/close.png" class="close_img" @click="tips(item.eqpId)">-->
         <span class="eqp_name">{{ item.eqpId }}</span>
         <span class="model">{{ item.modelName }}</span>
-        <div class="eqp_msg">
-          <!--          <img src="@/assets/img/eqp.jpg" class="eqp_img" @click="openMessage(item.eqpId)">-->
-          <img src="@/assets/img/eqp.jpg" class="eqp_img" >
+        <el-popover
+          placement="right"
+          width="200"
+          trigger="hover">
           <div :class="item.status + 'connect'">
             <label class="connect_font connect_position">IP: </label>
-            <span class="connect_font connect_position">{{ item.ip }}</span>
-          </div>
-          <div :class="item.status + 'connect'">
+            <span class="connect_font">{{ item.ip }}</span><br>
             <label class="connect_font connect_position">端口号: </label>
-            <span class="connect_font">{{ item.port }}</span>
-          </div>
-          <div :class="item.status + 'connect'">
+            <span class="connect_font">{{ item.port }}</span><br>
             <label class="connect_font connect_position">DEVICE: </label>
-            <span class="connect_font">{{ item.deviceId }} </span>
-          </div>
-          <div :class="item.status + 'connect'">
+            <span class="connect_font">{{ item.deviceId }}</span><br>
             <label class="connect_font connect_position">WIP: </label>
-            <span class="connect_font">{{ item.wip }}</span>
-          </div>
-          <div :class="item.status + 'connect'" class="recipe">
+            <span class="connect_font">{{ item.wip }}</span><br>
             <label class="connect_font connect_position">Recipe:</label>
             <span v-if="item.ppid">{{ item.ppid }}</span>
-            <span v-else class="connect_font">无数据</span>
-          </div>
-          <div :class="item.status + 'connect'" class="lot">
+            <span v-else class="connect_font">无数据</span><br>
             <label class="connect_font connect_position">LotNo:</label>
             <span v-if="item.lotNo">{{ item.lotNo }}</span>
             <span v-else class="connect_font">无数据</span>
           </div>
-        </div>
+          <div slot="reference" class="eqp_msg">
+            <!--          <img src="@/assets/img/eqp.jpg" class="eqp_img" @click="openMessage(item.eqpId)">-->
+            <img src="@/assets/img/eqpt.jpg" class="eqp_img" >
+          </div>
+        </el-popover>
       </div>
       <!--      <el-popover-->
       <!--        v-model="visible"-->
@@ -90,7 +94,7 @@ export default {
   },
   data: function() {
     return {
-      eqpList: [
+      allEqpList: [
         {
           eqpId: '1',
           status: 'RUN',
@@ -145,34 +149,333 @@ export default {
           wip: '5',
           ppid: 'recipe05',
           lotNo: 'lotNo05'
+        },
+        {
+          eqpId: '6',
+          status: 'RUN',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5001',
+          deviceId: '6',
+          wip: '1',
+          ppid: 'recipe01',
+          lotNo: 'lotNo01'
+        },
+        {
+          eqpId: '7',
+          status: 'DOWN',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5002',
+          deviceId: '2',
+          wip: '2',
+          ppid: 'recipe02',
+          lotNo: 'lotNo02'
+        },
+        {
+          eqpId: '8',
+          status: 'IDEL',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5003',
+          deviceId: '3',
+          wip: '3',
+          ppid: 'recipe03',
+          lotNo: 'lotNo03'
+        },
+        {
+          eqpId: '9',
+          status: 'STOP',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5004',
+          deviceId: '4',
+          wip: '4',
+          ppid: 'recipe04',
+          lotNo: 'lotNo04'
+        },
+        {
+          eqpId: '10',
+          status: 'SETUP',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5005',
+          deviceId: '5',
+          wip: '5',
+          ppid: 'recipe05',
+          lotNo: 'lotNo05'
+        },
+        {
+          eqpId: '11',
+          status: 'RUN',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5001',
+          deviceId: '1',
+          wip: '1',
+          ppid: 'recipe01',
+          lotNo: 'lotNo01'
+        },
+        {
+          eqpId: '12',
+          status: 'DOWN',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5002',
+          deviceId: '2',
+          wip: '2',
+          ppid: 'recipe02',
+          lotNo: 'lotNo02'
+        },
+        {
+          eqpId: '13',
+          status: 'IDEL',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5003',
+          deviceId: '3',
+          wip: '3',
+          ppid: 'recipe03',
+          lotNo: 'lotNo03'
+        },
+        {
+          eqpId: '14',
+          status: 'STOP',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5004',
+          deviceId: '4',
+          wip: '4',
+          ppid: 'recipe04',
+          lotNo: 'lotNo04'
+        },
+        {
+          eqpId: '15',
+          status: 'SETUP',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5005',
+          deviceId: '5',
+          wip: '5',
+          ppid: 'recipe05',
+          lotNo: 'lotNo05'
+        },
+        {
+          eqpId: '16',
+          status: 'RUN',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5001',
+          deviceId: '1',
+          wip: '1',
+          ppid: 'recipe01',
+          lotNo: 'lotNo01'
+        },
+        {
+          eqpId: '17',
+          status: 'DOWN',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5002',
+          deviceId: '2',
+          wip: '2',
+          ppid: 'recipe02',
+          lotNo: 'lotNo02'
+        },
+        {
+          eqpId: '18',
+          status: 'IDEL',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5003',
+          deviceId: '3',
+          wip: '3',
+          ppid: 'recipe03',
+          lotNo: 'lotNo03'
+        },
+        {
+          eqpId: '19',
+          status: 'STOP',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5004',
+          deviceId: '4',
+          wip: '4',
+          ppid: 'recipe04',
+          lotNo: 'lotNo04'
+        },
+        {
+          eqpId: '20',
+          status: 'SETUP',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5005',
+          deviceId: '5',
+          wip: '5',
+          ppid: 'recipe05',
+          lotNo: 'lotNo05'
+        },
+        {
+          eqpId: '21',
+          status: 'RUN',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5001',
+          deviceId: '1',
+          wip: '1',
+          ppid: 'recipe01',
+          lotNo: 'lotNo01'
+        },
+        {
+          eqpId: '22',
+          status: 'DOWN',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5002',
+          deviceId: '2',
+          wip: '2',
+          ppid: 'recipe02',
+          lotNo: 'lotNo02'
+        },
+        {
+          eqpId: '23',
+          status: 'IDEL',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5003',
+          deviceId: '3',
+          wip: '3',
+          ppid: 'recipe03',
+          lotNo: 'lotNo03'
+        },
+        {
+          eqpId: '24',
+          status: 'STOP',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5004',
+          deviceId: '4',
+          wip: '4',
+          ppid: 'recipe04',
+          lotNo: 'lotNo04'
+        },
+        {
+          eqpId: '25',
+          status: 'SETUP',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5005',
+          deviceId: '5',
+          wip: '5',
+          ppid: 'recipe05',
+          lotNo: 'lotNo05'
+        },
+        {
+          eqpId: '26',
+          status: 'RUN',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5001',
+          deviceId: '1',
+          wip: '1',
+          ppid: 'recipe01',
+          lotNo: 'lotNo01'
+        },
+        {
+          eqpId: '27',
+          status: 'DOWN',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5002',
+          deviceId: '2',
+          wip: '2',
+          ppid: 'recipe02',
+          lotNo: 'lotNo02'
+        },
+        {
+          eqpId: '28',
+          status: 'IDEL',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5003',
+          deviceId: '3',
+          wip: '3',
+          ppid: 'recipe03',
+          lotNo: 'lotNo03'
+        },
+        {
+          eqpId: '29',
+          status: 'STOP',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5004',
+          deviceId: '4',
+          wip: '4',
+          ppid: 'recipe04',
+          lotNo: 'lotNo04'
+        },
+        {
+          eqpId: '30',
+          status: 'SETUP',
+          modelName: '测试',
+          ip: '127.0.0.1',
+          port: '5005',
+          deviceId: '5',
+          wip: '5',
+          ppid: 'recipe05',
+          lotNo: 'lotNo05'
         }
       ],
-      dialogVisible: false
+      eqpList: [],
+      dialogVisible: false,
+      searchEqpId: '',
+      eqpIdList: [],
+      selectEqpId: ''
     }
   },
   watch: {
+    allEqpList: function() {
+      return this.allEqpList
+    },
     eqpList: function() {
       return this.eqpList
     }
   },
   created() {
-    this.iniWebscoketFunc()
-    // this.getEqptList()
+    var _this = this
+    _this.eqpList = _this.allEqpList
+    _this.allEqpList.forEach(function(value) {
+      var obj = {
+        eqpId: value.eqpId,
+        modelName: value.modelName
+      }
+      _this.eqpIdList.push(obj)
+    })
+    _this.iniWebscoketFunc()
+    // _this.getEqptList()
   },
   methods: {
-    getEqptList() {
+    getEqptList: function() {
+      var _this = this
       request({
         url: this.url,
         method: 'get'
       }).then((response) => {
-        this.eqpList = response.data
+        _this.allEqpList = response.data
+        _this.eqpList = response.data
+        _this.allEqpList.forEach(function(value) {
+          var obj = {
+            eqpId: value.eqpId,
+            modelName: value.modelName
+          }
+          _this.eqpIdList.push(obj)
+        })
       })
     },
     iniWebscoketFunc: function() {
       var _this = this
       var socket
       var localUrl = window.location.hostname
-      console.log(localUrl)
       var pathName = location.pathname
       var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1)
       if (typeof WebSocket === 'undefined') {
@@ -208,7 +511,7 @@ export default {
       var eqpId = data.eqpId
       var status = data.status
       var wip = data.wip
-      var ppid = data.ppid
+      var ppid = data.pPID
       var lotNo = data.lotNo
       var modelName = data.modelName
       for (var i = 0; i < _this.eqpList.length; i++) {
@@ -230,6 +533,64 @@ export default {
           }
         }
       }
+    },
+    findRunEqpt: function() {
+      var _this = this
+      _this.eqpList = []
+      _this.allEqpList.forEach(function(value) {
+        if (value.status === 'RUN') {
+          _this.eqpList.push(value)
+        }
+      })
+    },
+    findDownEqpt: function() {
+      var _this = this
+      _this.eqpList = []
+      _this.allEqpList.forEach(function(value) {
+        if (value.status === 'DOWN') {
+          _this.eqpList.push(value)
+        }
+      })
+    },
+    findIdelEqpt: function() {
+      var _this = this
+      _this.eqpList = []
+      _this.allEqpList.forEach(function(value) {
+        if (value.status === 'IDEL') {
+          _this.eqpList.push(value)
+        }
+      })
+    },
+    findStopEqpt: function() {
+      var _this = this
+      _this.eqpList = []
+      _this.allEqpList.forEach(function(value) {
+        if (value.status === 'STOP') {
+          _this.eqpList.push(value)
+        }
+      })
+    },
+    findSetupEqpt: function() {
+      var _this = this
+      _this.eqpList = []
+      _this.allEqpList.forEach(function(value) {
+        if (value.status === 'SETUP') {
+          _this.eqpList.push(value)
+        }
+      })
+    },
+    queryEqp: function() {
+      var _this = this
+      if (_this.selectEqpId === '') {
+        _this.eqpList = _this.allEqpList
+        return
+      }
+      _this.eqpList = []
+      _this.allEqpList.forEach(function(value) {
+        if (value.eqpId === _this.selectEqpId) {
+          _this.eqpList.push(value)
+        }
+      })
     }
   }
 }
@@ -237,7 +598,7 @@ export default {
 
 <style scoped>
 #app {
-  width: 1430px;
+  /*width: 1430px;*/
   height: auto;
   margin: auto;
 }
@@ -246,51 +607,51 @@ export default {
 }
 .statusLegend {
   float: right;
+  margin-right: 70px;
   font-size: 0;
-  padding-top: 10px;
 }
 .runLabel {
   color: #67c23a;
   display: inline-block;
-  margin: 10px 5px 10px 0;
+  margin: 10px 5px 10px 20px;
   font-size: 15px;
-  width: 60px;
+  font-weight: bolder;
   text-align: right;
   vertical-align: middle;
 }
 .downLabel {
   color: #f56c6c;
   display: inline-block;
-  margin: 10px 5px 10px 0;
+  margin: 10px 5px 10px 20px;
   font-size: 15px;
-  width: 60px;
+  font-weight: bolder;
   text-align: right;
   vertical-align: middle;
 }
 .idelLabel {
   color: #409eff;
   display: inline-block;
-  margin: 10px 5px 10px 0;
+  margin: 10px 5px 10px 20px;
   font-size: 15px;
-  width: 60px;
+  font-weight: bolder;
   text-align: right;
   vertical-align: middle;
 }
 .stopLabel {
   color: #e6a23c;
   display: inline-block;
-  margin: 10px 5px 10px 0;
+  margin: 10px 5px 10px 20px;
   font-size: 15px;
-  width: 60px;
+  font-weight: bolder;
   text-align: right;
   vertical-align: middle;
 }
 .setupLabel {
   color: #909399;
   display: inline-block;
-  margin: 10px 5px 10px 0;
+  margin: 10px 5px 10px 20px;
   font-size: 15px;
-  width: 60px;
+  font-weight: bolder;
   text-align: right;
   vertical-align: middle;
 }
@@ -321,44 +682,42 @@ export default {
 }
 #statusDiv {
   display: inline-block;
-  width: 240px;
-  height: 235px;
+  width: 180px;
+  height: 180px;
   margin-top: 10px;
-  margin-left: 10px;
+  margin-left: 20px;
 }
 .RUN {
   background: #67c23a;
-  /*background: #00a854;*/
 }
 .DOWN {
   background: #f56c6c;
-  /*background: #c9302c;*/
 }
 .IDEL {
   background: #409eff;
-  /*background: royalblue;*/
 }
 .STOP {
   background: #e6a23c;
-  /*background: orange;*/
 }
 .SETUP {
   background: #909399;
-  /*background: grey;*/
 }
 .eqp_msg {
-  width: 230px;
-  height: 188px;
+  width: 170px;
+  height: 133px;
   margin-left: 5px;
   background: white;
 }
 .eqp_name {
+  width: 180px;
   display: block;
   font-size: 22px;
   color: white;
   text-align: center;
 }
 .model {
+  margin: 0;
+  width: 180px;
   display: block;
   font-size: 15px;
   color: white;
@@ -366,29 +725,24 @@ export default {
 }
 .eqp_img {
   float: left;
-  width: 100px;
-  height: 134px;
+  width: 100%;
+  height: 100%;
   /*cursor: pointer;*/
 }
 .RUNconnect {
   color: #67c23a;
-  padding-top: 15px;
 }
 .DOWNconnect {
   color: #f56c6c;
-  padding-top: 15px;
 }
 .IDELconnect {
   color: #409eff;
-  padding-top: 15px;
 }
 .STOPconnect {
   color: #e6a23c;
-  padding-top: 15px;
 }
 .SETUPconnect {
   color: #909399;
-  padding-top: 15px;
 }
 .connect_position {
   /*padding-top: 5px;*/

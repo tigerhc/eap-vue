@@ -185,7 +185,7 @@ export default {
             type: 'bar',
             stack: '总量',
             label: {
-              show: true,
+              show: false,
               position: 'inside'
             },
             itemStyle: {

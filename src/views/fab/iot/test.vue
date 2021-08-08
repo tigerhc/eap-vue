@@ -1,29 +1,19 @@
 <template>
   <div id="tempchar" class="app app-container calendar-list-container">
     <el-form ref="form" :model="form" :inline="true" :rules="formRules" class="form" label-width="90px" size="small">
-      <el-form-item label="设备号:" prop="eqpId">
-        <div class="condition">
-          <el-select v-model="form.eqpId" clearable>
-            <el-option
-              v-for="item in tempEqpId"
-              :key="item.eqpId"
-              :label="item.eqpId + '——' + item.eqpName"
-              :value="item.eqpId"
-            />
-          </el-select>
-        </div>
-      </el-form-item>
-      <el-form-item label="日期:" prop="dateTime">
-        <el-date-picker
-          v-model="form.dateTime"
-          type="daterange"
-          value-format="yyyy-MM-dd"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        />
-      </el-form-item>
-      <el-button type="primary" @click="search">查询</el-button>
+      <el-row>
+        <el-form-item label="设备号:" prop="eqpId">
+          <div class="condition">
+            <el-select v-model="form.eqpId" clearable style="width:340px">
+              <el-option v-for="item in tempEqpId" :key="item.eqpId" :label="item.eqpName" :value="item.eqpId" />
+            </el-select>
+          </div>
+        </el-form-item>
+        <el-form-item label="日期:" prop="dateTime">
+          <el-date-picker v-model="form.dateTime" type="daterange" value-format="yyyy-MM-dd" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"/>
+        </el-form-item>
+        <el-button type="primary" @click="search">查询</el-button>
+      </el-row>
     </el-form>
     <el-tabs v-model="editableTabsValue" type="card" @tab-click="loadTempDataPart">
       <el-tab-pane v-for="item in editableTabs" :key="item" :label="item" :name="item" />
@@ -60,12 +50,12 @@ export default {
       formRules: {
         eqpId: [{ required: true, message: '请选择设备！', trigger: 'change' }],
         dateTime: [{ required: true, message: '请选择时间！', trigger: 'change' }]
-      }
+      },
+      tempMin: undefined
     }
   },
   created() {
     eqpList().then((response) => {
-      console.log(response)
       this.tempEqpId = response.data.eqpId
     })
   },
@@ -86,47 +76,53 @@ export default {
         if (val) {
           this.lShow = false
           this.kShow = false
-
           this.getKData(this.form.eqpId, this.form.dateTime[0], this.form.dateTime[1], this.num)
         }
       })
     },
     getKData(eqpId, startTime, endTime, index) {
-      return request(`oven/ovnbatchlotday/findDetail/${eqpId}/${startTime}/${endTime}`)
-        .then((res) => {
-          const arr1 = []
-          const arr2 = []
-          const arr3 = []
-          const arr4 = []
-          const datas = res.data.results
-          datas.sort(function(a, b) {
-            return a.periodDate > b.periodDate ? 1 : -1
-          })
-
-          datas.forEach((item) => {
-            arr2.push(item.periodDate)
-            arr1.push(item.eqpTemp)
-            if (item.eqpTemp === arr1[index]) {
-              arr3.push(item)
-            }
-          })
-          arr3.forEach((it) => {
-            arr4.push(parseInt(it.tempStart), parseInt(it.tempEnd), parseInt(it.tempMax), parseInt(it.tempMin))
-          })
-          const result = []
-          for (var i = 0; i < arr4.length; i += 4) {
-            result.push(arr4.slice(i, i + 4))
+      return request(`oven/ovnbatchlotday/findDetail/${eqpId}/${startTime}/${endTime}`).then((res) => {
+        const arr1 = []
+        const arr2 = []
+        const arr3 = []
+        const arr4 = []
+        const datas = res.data.results
+        var tabNames = []
+        datas.forEach((item) => {
+          tabNames.push(item.eqpTemp)
+          if (this.tempMin === undefined) {
+            this.tempMin = item.tempMin
+          } else if (this.tempMin > item.tempMin) {
+            this.tempMin = item.tempMin
           }
-          this.kData = result
-          console.log(this.kData)
-          this.editableTabs = this.unique(arr1)
-          this.kTime = this.unique(arr2)
-          this.editableTabsValue = this.editableTabs[index]
-          this.kShow = true
         })
-        .finally(() => {
-          this.kChart(index)
+        datas.sort(function(a, b) {
+          return a.periodDate > b.periodDate ? 1 : -1
         })
+
+        datas.forEach((item) => {
+          arr2.push(item.periodDate)
+          arr1.push(item.eqpTemp)
+          if (item.eqpTemp === arr1[index]) {
+            arr3.push(item)
+          }
+        })
+        arr3.forEach((it) => {
+          arr4.push(parseInt(it.tempStart), parseInt(it.tempEnd), parseInt(it.tempMax), parseInt(it.tempMin))
+        })
+        const result = []
+        for (var i = 0; i < arr4.length; i += 4) {
+          result.push(arr4.slice(i, i + 4))
+        }
+        this.kData = result
+        // this.editableTabs = this.unique(arr1)
+        this.editableTabs = tabNames
+        this.kTime = this.unique(arr2)
+        this.editableTabsValue = this.editableTabs[index]
+        this.kShow = true
+      }).finally(() => {
+        this.kChart(index)
+      })
     },
     kChart(index) {
       var chartDom = document.getElementById('kChart')
@@ -134,25 +130,28 @@ export default {
       var option
 
       option = {
-        legend: {
-          data: []
-        },
-        xAxis: {
-          type: 'category',
-          data: this.kTime
-        },
-        yAxis: { type: 'value', max: 200, min: 160 },
-        series: [
-          {
-            type: 'k',
-            data: this.kData
+        legend: { data: [] },
+        xAxis: { type: 'category', data: this.kTime, boundaryGap: false },
+        yAxis: {
+          type: 'value',
+          // max: 200,
+          min: this.tempMin,
+          axisLabel: {
+            textStyle: {
+              fontSize: 20,
+              fontWeight: 800
+            },
+            formatter: function(value, index) {
+              return value.toFixed(1)
+            }
           }
-        ],
+          // ,scale:true
+        },
+        series: [{ type: 'k', data: this.kData }],
         tooltip: {
           trigger: 'axis',
-          axisPointer: {
-            type: 'cross'
-          }
+          axisPointer: { type: 'cross' },
+          formatter: this.formatterHover // 修改鼠标悬停显示的内容
         }
       }
       mycharts.setOption(option)
@@ -174,54 +173,24 @@ export default {
             }
           }
         },
-        legend: {
-          data: this.extraTitle
-        },
-        dataZoom: [
-          {
-            type: 'inside',
-            start: 0,
-            end: 100
-          },
-          {
-            show: true,
-            type: 'slider',
-            y: '90%',
-            start: 0,
-            end: 100
-          }
-        ],
+        legend: { data: this.extraTitle },
+        dataZoom: [{ type: 'inside', start: 0, end: 100 }, { show: true, type: 'slider', y: '90%', start: 0, end: 100 }],
         toolbox: {
           show: true,
           feature: {
-            dataZoom: {
-              yAxisIndex: 'none'
-            },
+            dataZoom: { yAxisIndex: 'none' },
             dataView: { readOnly: false },
             magicType: { type: ['line', 'bar'] },
             restore: {},
             saveAsImage: {}
           }
         },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          axisLine: { onZero: false },
-          data: []
-        },
+        xAxis: { type: 'category', boundaryGap: false, axisLine: { onZero: false }, data: [] },
         yAxis: { type: 'value' },
         series: [
           {
             name: this.extraTitle[0],
-            itemStyle: {
-              normal: {
-                color: '#458B74',
-                lineStyle: {
-                  color: '#458B74',
-                  width: 3
-                }
-              }
-            },
+            itemStyle: { normal: { color: '#458B74', lineStyle: { color: '#458B74', width: 3 }}},
             smooth: true,
             type: 'line',
             data: ['temp_pv'],
@@ -232,16 +201,7 @@ export default {
             name: this.extraTitle[1],
             smooth: true,
             type: 'line',
-            itemStyle: {
-              normal: {
-                color: '#DAA520',
-                lineStyle: {
-                  color: '#DAA520',
-                  width: 2,
-                  type: 'dotted'
-                }
-              }
-            },
+            itemStyle: { normal: { color: '#DAA520', lineStyle: { color: '#DAA520', width: 2, type: 'dotted' }}},
             data: ['temp_sp'],
             animationDuration: 2600,
             animationEasing: 'quadraticOut'
@@ -250,46 +210,21 @@ export default {
             name: this.extraTitle[2],
             smooth: true,
             type: 'line',
-            itemStyle: {
-              normal: {
-                color: '#FF4040',
-                lineStyle: {
-                  color: '#FF4040',
-                  width: 2,
-                  type: 'dashed'
-                }
-              }
-            },
+            itemStyle: { normal: { color: '#FF4040', lineStyle: { color: '#FF4040', width: 2, type: 'dashed' }}},
             data: ['temp_min'],
             animationDuration: 2000,
             animationEasing: 'quadraticOut',
-            markLine: {
-              data: [{ type: 'max', name: '最大数据' }]
-            }
+            markLine: { data: [{ type: 'max', name: '最大数据' }] }
           },
           {
             name: this.extraTitle[3],
             smooth: true,
             type: 'line',
-            itemStyle: {
-              normal: {
-                color: '#8B2323',
-                lineStyle: {
-                  color: '#8B2323',
-                  width: 2,
-                  type: 'dashed'
-                },
-                areaStyle: {
-                  color: '#BBFFFF'
-                }
-              }
-            },
+            itemStyle: { normal: { color: '#8B2323', lineStyle: { color: '#8B2323', width: 2, type: 'dashed' }, areaStyle: { color: '#BBFFFF' }}},
             data: ['temp_max'],
             animationDuration: 2000,
             animationEasing: 'quadraticOut',
-            markLine: {
-              data: [{ type: 'max', name: '最大数据' }]
-            }
+            markLine: { data: [{ type: 'max', name: '最大数据' }] }
           }
         ]
       }
@@ -301,24 +236,15 @@ export default {
     },
     getLData(time, index) {
       this.tempsValue = []
-      const loading = this.$loading({
-        lock: true,
-        text: 'Loading',
-        target: document.querySelector('#tempchar')
-      })
+      const loading = this.$loading({ lock: true, text: 'Loading', target: document.querySelector('#tempchar') })
 
-      tempbytime('APJ-TRM1', {
-        beginTime: time,
-        endTime: time
+      tempbytime(this.form.eqpId, { beginTime: time, endTime: time }).then((res) => {
+        this.tempsValue = res.data.results
+        loading.close()
+        this.lShow = true
+      }).finally(() => {
+        this.lChart(index)
       })
-        .then((res) => {
-          this.tempsValue = res.data.results
-          loading.close()
-          this.lShow = true
-        })
-        .finally(() => {
-          this.lChart(index)
-        })
     },
     loadTempData(option, index) {
       option.xAxis.data = this.produce(this.tempsValue, 'create_date')
@@ -373,17 +299,13 @@ export default {
             var tempv = parseFloat(tempsValue[i])
             if (isNaN(dataMax) || dataMax === '') {
               dataMax = tempv
-            } else {
-              if (dataMax < tempv) {
-                dataMax = tempv
-              }
+            } else if (dataMax < tempv) {
+              dataMax = tempv
             }
             if (isNaN(dataMin) || dataMin === '') {
               dataMin = tempv
-            } else {
-              if (dataMin > tempv) {
-                dataMin = tempv
-              }
+            } else if (dataMin > tempv) {
+              dataMin = tempv
             }
           }
         }
@@ -395,16 +317,19 @@ export default {
         myYAxis.min = dataMin
       }
       return myYAxis
+    },
+    formatterHover(param) {
+      return (
+        '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">日期：' + param[0].axisValue + '</span><br>' +
+        '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">起始温度：' + param[0].data[1] + '</span><br>' +
+        '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">终止温度：' + param[0].data[2] + '</span><br>' +
+        '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">期间最小温度：' + param[0].data[4] + '</span><br>' +
+        '<span style="padding-left:5px;height:30px;line-height:30px;display: inline-block;">期间最大温度：' + param[0].data[3] + '</span>'
+      )
     }
   }
 }
 </script>
-
-<style  scoped>
-#kChart,
-#lineChart {
-  width: 100%;
-  height: 400px;
-  margin-top: 20px;
-}
+<style scoped>
+  #kChart, #lineChart {width: 100%;height: 400px;margin-top: 20px;}
 </style>

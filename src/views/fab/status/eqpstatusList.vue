@@ -1,5 +1,5 @@
 <template>
-  <div class="monitor">
+  <div >
     <el-row>
       <el-col :span="8">
         <el-button style="float: left" type="text" @click="maxFull" />
@@ -176,7 +176,7 @@ export default {
     timer() {
       setTimeout(() => {
         this.inIt()
-      }, 300000)
+      }, 15000)
     },
 
     getYield() {

@@ -17,7 +17,7 @@
         </el-col>
         <el-col v-if="subLineShow" :span="8">
           <el-form-item label="子线别" prop="lineNo">
-            <el-select v-model="form.subLineNo">
+            <el-select v-model="form.subLineNo" @change="initStation">
               <el-option
                 v-for="item in subLineNoOptions"
                 :key="item.id"
@@ -94,7 +94,7 @@ export default {
           label: 'SX'
         }
       ],
-      subLineNoOptions: [{ 'id': 'IGBT', 'lab': 'IGBT' }, { 'id': 'FRD', 'lab': 'FRD' }, { 'id': 'DBCT', 'lab': 'DBCT' }, { 'id': 'DBCB', 'lab': 'DBCB' }, { 'id': '后工程', 'lab': '后工程' }],
+      subLineNoOptions: [{ 'id': 'IGBT', 'lab': 'IGBT' }, { 'id': 'FRD', 'lab': 'FRD' }, { 'id': 'DBCT', 'lab': 'DBCT' }, { 'id': 'DBCB', 'lab': 'DBCB' }, { 'id': 'HGC', 'lab': '后工程' }],
       subLineShow: false
     }
   },
@@ -130,6 +130,10 @@ export default {
           child.push({ prop: stations[i].name, label: stations[i].name, color: '' })
         }
         c.child = child
+        this.cols = [
+          { fixed: true, prop: 'production_name', label: '品名', width: '250' },
+          { fixed: true, prop: 'lot_no', label: 'NO', width: '100' }
+        ]
         this.cols.push(c)
       })
     },

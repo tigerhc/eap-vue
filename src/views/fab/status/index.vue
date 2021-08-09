@@ -1,5 +1,6 @@
 <template>
-  <div :style="{overflowY:yScroll,height:monitorHeight}" class="monitor">
+  <!--<div :style="{overflowY:yScroll,height:monitorHeight}" class="monitor">-->
+  <div :style="{overflowY:yScroll,height:'100vh'}" class="monitor2">
     <el-row>
       <el-col :span="8">
         <el-button style="float: left" type="text" @click="maxFull" />
@@ -227,14 +228,14 @@ export default {
       this.projectText = 'DM'
       this.curProject = 'BP'
       this.yScroll = 'scroll'
-      this.monitorHeight = '800px'
+      this.monitorHeight = '900px'
       this.projectList = this.DMProjectList
       this.lineNo = 'DM'
     } else {
       this.projectText = 'SIM'
       this.curProject = 'YK'
       this.yScroll = 'scroll' // hidden
-      this.monitorHeight = '800px' // 100vh
+      this.monitorHeight = '100vh' // 100vh
       this.projectList = this.SIMProjectList
       this.lineNo = 'SIM'
     }
@@ -259,14 +260,14 @@ export default {
       // 样式控制, 仅部品加滚动条
       if (this.curProject === 'BP') {
         this.yScroll = 'scroll'
-        this.monitorHeight = '800px'
+        // this.monitorHeight = '900px'
       } else {
         if (this.lineNo === 'SIM' && this.curProject === 'YK') {
-          this.monitorHeight = '800px'
+          // this.monitorHeight = '900px'
           this.yScroll = 'scroll'
         } else {
           this.yScroll = 'hidden'
-          this.monitorHeight = '100vh'
+          // this.monitorHeight = '100vh'
         }
       }
       this.inIt()
@@ -455,7 +456,7 @@ export default {
 .span-STOP {
   background-color: DarkRed;
 }
-.monitor {
+.monitor2 {
   overflow-x: hidden;
   .pdttable {
     /*border-top : 1px solid #dcdfe6;*/
@@ -564,4 +565,5 @@ export default {
 <style>
   .card-panel-text{font-size: 20px !important;}
   .panel-group .card-panel{height: 210px !important;}
+  .contentBi{height:285px}
 </style>

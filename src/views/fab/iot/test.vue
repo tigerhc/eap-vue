@@ -82,7 +82,7 @@ export default {
     },
     getKData(eqpId, startTime, endTime, index) {
       return request(`oven/ovnbatchlotday/findDetail/${eqpId}/${startTime}/${endTime}`).then((res) => {
-        const arr1 = []
+        // const arr1 = []
         const arr2 = []
         const arr3 = []
         const arr4 = []
@@ -116,15 +116,42 @@ export default {
         })
 
         datas.forEach((item) => {
-          arr2.push(item.periodDate)
-          arr1.push(item.eqpTemp)
-          if (item.eqpTemp === arr1[index]) {
-            arr3.push(item)
+          // arr2.push(item.periodDate)
+          // arr1.push(item.eqpTemp)
+          // if (item.eqpTemp === arr1[index]) {
+          //   arr3.push(item)
+          // }
+          if (item.eqpTemp === tabNames[index]) {
+            arr2.push(item.periodDate) // X轴
+            arr3.push(item) // 原数据
           }
         })
-        arr3.forEach((it) => {
-          arr4.push(parseInt(it.tempStart), parseInt(it.tempEnd), parseInt(it.tempMax), parseInt(it.tempMin))
+        // 加载K线图
+        arr2.forEach((periodDateItem) => {
+          var unExist = true
+          arr3.forEach((it) => {
+            if (periodDateItem === it.periodDate && unExist) {
+              arr4.push(parseInt(it.tempStart), parseInt(it.tempEnd), parseInt(it.tempMax), parseInt(it.tempMin))
+              unExist = false
+            }
+          })
+          if (unExist) {
+            arr4.push(null, null, null, null)
+          }
         })
+        // arr3.forEach((it) => {
+        //   var unExist = true
+        //   arr2.forEach((periodDateItem) => {
+        //     if (periodDateItem === it.periodDate && unExist) {
+        //       arr4.push(parseInt(it.tempStart), parseInt(it.tempEnd), parseInt(it.tempMax), parseInt(it.tempMin))
+        //       unExist = false
+        //     }
+        //   })
+        //   if (unExist) {
+        //     arr4.push(null, null, null, null)
+        //   }
+        //   // arr4.push(parseInt(it.tempStart), parseInt(it.tempEnd), parseInt(it.tempMax), parseInt(it.tempMin))
+        // })
         const result = []
         for (var i = 0; i < arr4.length; i += 4) {
           result.push(arr4.slice(i, i + 4))
@@ -150,7 +177,7 @@ export default {
         yAxis: {
           type: 'value',
           // max: 200,
-          min: this.tempMin,
+          // min: this.tempMin,
           axisLabel: {
             textStyle: {
               fontSize: 20,
@@ -158,7 +185,8 @@ export default {
             },
             formatter: function(value, index) {
               return value.toFixed(1)
-            }
+            },
+            splitArea: { show: true }
           }
           // ,scale:true
         },
@@ -171,7 +199,8 @@ export default {
       }
       mycharts.setOption(option)
       mycharts.on('click', (params) => {
-        this.getLData(params.name, index)
+        // this.getLData(params.name, index)
+        this.getLData(params.name, this.editableTabsValue)
         this.lShow = false
       })
     },
@@ -257,10 +286,15 @@ export default {
         mycharts.setOption(this.loadTempData(option, index), true)
       }
     },
-    getLData(time, index) {
+    getLData(time, tabName) {
       this.tempsValue = []
       const loading = this.$loading({ lock: true, text: 'Loading', target: document.querySelector('#tempchar') })
-
+      var index
+      for (var tabIndex = 0; tabIndex < this.editableTabs.length; tabIndex++) {
+        if (this.editableTabs[tabIndex] === tabName) {
+          index = tabIndex
+        }
+      }
       tempbytime(this.form.eqpId, { beginTime: time, endTime: time }).then((res) => {
         this.tempsValue = res.data.results
         loading.close()

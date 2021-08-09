@@ -89,7 +89,22 @@ export default {
         const datas = res.data.results
         var tabNames = []
         datas.forEach((item) => {
-          tabNames.push(item.eqpTemp)
+          // tabName
+          if (tabNames.length > 0) {
+            var unExist = true
+            for (var i = 0; i < tabNames.length; i++) {
+              if (tabNames[i] === item.eqpTemp) {
+                unExist = false
+                break
+              }
+            }
+            if (unExist) {
+              tabNames.push(item.eqpTemp)
+            }
+          } else {
+            tabNames.push(item.eqpTemp)
+          }
+
           if (this.tempMin === undefined) {
             this.tempMin = item.tempMin
           } else if (this.tempMin > item.tempMin) {
@@ -131,7 +146,7 @@ export default {
 
       option = {
         legend: { data: [] },
-        xAxis: { type: 'category', data: this.kTime, boundaryGap: false },
+        xAxis: { type: 'category', data: this.kTime, boundaryGap: true },
         yAxis: {
           type: 'value',
           // max: 200,

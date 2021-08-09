@@ -25,7 +25,7 @@
         auto-complete="on"
         label-position="left"
       >
-        <sys-config config_key="sys.login.systemTitle" />
+        <!--<sys-config config_key="sys.login.systemTitle" />-->
 <!--        <h1>联研院半导体所中试线</h1>-->
         <div class="title-container">
           <h3 class="title">{{ $t('login.title') }}</h3>
@@ -216,7 +216,7 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
-  background-image: url(../../assets/img/iotbg.jpg);
+  background-image: url(../../assets/img/bg2.jpg);
   background-repeat: no-repeat;
   background-size: 100% 100%;
   .el-input {

@@ -201,7 +201,15 @@ export default {
           }
         },
         xAxis: { type: 'category', boundaryGap: false, axisLine: { onZero: false }, data: [] },
-        yAxis: { type: 'value' },
+        yAxis: {
+          type: 'value',
+          scale: true,
+          axisLabel: {
+            formatter: function(value, index) {
+              return value.toFixed(1)
+            }
+          }
+        },
         series: [
           {
             name: this.extraTitle[0],
@@ -267,10 +275,10 @@ export default {
       option.series[1].data = this.produceOther(this.tempsValue, index, 1) // 设定
       option.series[2].data = this.produceOther(this.tempsValue, index, 2) // 下限
       option.series[3].data = this.produceOther(this.tempsValue, index, 3) // 上限
-      var limitMax = 186
-      var limitMin = 174
-      var myYAxis = this.getYAxis(option.series[0].data, limitMax, limitMin)
-      option.yAxis = myYAxis
+      // var limitMax = 186
+      // var limitMin = 174
+      // var myYAxis = this.getYAxis(option.series[0].data, limitMax, limitMin)
+      // option.yAxis = myYAxis
       return option
     },
     loadTempDataFirst(option) {
@@ -280,10 +288,10 @@ export default {
       option.series[2].data = this.produce(this.tempsValue, 'temp_min')
       option.series[3].data = this.produce(this.tempsValue, 'temp_max')
       // 重置Y轴
-      var limitMax = 186
-      var limitMin = 174
-      var myYAxis = this.getYAxis(option.series[0].data, limitMax, limitMin)
-      option.yAxis = myYAxis
+      // var limitMax = 186
+      // var limitMin = 174
+      // var myYAxis = this.getYAxis(option.series[0].data, limitMax, limitMin)
+      // option.yAxis = myYAxis
       return option
     },
     produce(data, name) {
@@ -303,34 +311,38 @@ export default {
       return result
     },
     getYAxis(tempsValue, limitMax, limitMin) {
-      var dataMax = limitMax
-      var dataMin = limitMin
+      // var dataMax = limitMax
+      // var dataMin = limitMin
       var myYAxis = {}
       myYAxis.type = 'value'
-      if (this.searchBtn === '数据线查询' || limitMin === '') {
-        // 展示所有的数据,当数据没有超过上下限时显示同 else
-        if (tempsValue.length > 0) {
-          for (var i = 0; i < tempsValue.length; i++) {
-            var tempv = parseFloat(tempsValue[i])
-            if (isNaN(dataMax) || dataMax === '') {
-              dataMax = tempv
-            } else if (dataMax < tempv) {
-              dataMax = tempv
-            }
-            if (isNaN(dataMin) || dataMin === '') {
-              dataMin = tempv
-            } else if (dataMin > tempv) {
-              dataMin = tempv
-            }
-          }
-        }
+      myYAxis.scale = true
+      myYAxis.formatter = function(value, index) {
+        return value.toFixed(1)
       }
-      if (!isNaN(dataMax) && dataMax !== '') {
-        myYAxis.max = dataMax
-      }
-      if (!isNaN(dataMin) && dataMin !== '') {
-        myYAxis.min = dataMin
-      }
+      // if (this.searchBtn === '数据线查询' || limitMin === '') {
+      //   // 展示所有的数据,当数据没有超过上下限时显示同 else
+      //   if (tempsValue.length > 0) {
+      //     for (var i = 0; i < tempsValue.length; i++) {
+      //       var tempv = parseFloat(tempsValue[i])
+      //       // if (isNaN(dataMax) || dataMax === '') {
+      //       //   dataMax = tempv
+      //       // } else if (dataMax < tempv) {
+      //       //   dataMax = tempv
+      //       // }
+      //       if (isNaN(dataMin) || dataMin === '') {
+      //         dataMin = tempv
+      //       } else if (dataMin > tempv) {
+      //         dataMin = tempv
+      //       }
+      //     }
+      //   }
+      // }
+      // // if (!isNaN(dataMax) && dataMax !== '') {
+      // //   myYAxis.max = dataMax
+      // // }
+      // if (!isNaN(dataMin) && dataMin !== '') {
+      //   myYAxis.min = dataMin
+      // }
       return myYAxis
     },
     formatterHover(param) {

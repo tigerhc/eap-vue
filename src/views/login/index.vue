@@ -1,5 +1,6 @@
 <template>
   <div class="login-container">
+    <img :src="logo" alt="" class="logo" >
     <div class="login-main">
       <div class="login-introduce">
         <!--大连-->
@@ -25,8 +26,10 @@
         auto-complete="on"
         label-position="left"
       >
+        <h1>道达IOT系统</h1>
+
         <!--<sys-config config_key="sys.login.systemTitle" />-->
-<!--        <h1>联研院半导体所中试线</h1>-->
+        <!--        <h1>联研院半导体所中试线</h1>-->
         <div class="title-container">
           <h3 class="title">{{ $t('login.title') }}</h3>
           <lang-select class="set-language" />
@@ -84,6 +87,7 @@ import { isvalidUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import { Message } from 'element-ui'
 import SysConfig from '../../components/sys-config/index'
+import logo from '@/assets/img/totalogo.png'
 
 export default {
   name: 'Login',
@@ -106,6 +110,7 @@ export default {
       }
     }
     return {
+      logo: logo,
       loginForm: {
         username: 'admin',
         password: '123456'
@@ -216,13 +221,14 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
-  background-image: url(../../assets/img/bg2.jpg);
+  background-image: url(../../assets/img/iotbg.jpg);
   background-repeat: no-repeat;
   background-size: 100% 100%;
   .el-input {
     display: inline-block;
     height: 47px;
     width: 85%;
+    font-size: 16px;
     input {
       background: transparent;
       border: 0px;
@@ -261,12 +267,16 @@ $dark_gray: #889aa4;
 $light_gray: #eee;
 
 .login-container {
-  // background-attachment: fixed;
-  // position: fixed;
   height: 100%;
   width: 100%;
   background-color: #fff;
   position: relative;
+  .logo {
+    width: 15%;
+    position: absolute;
+    top: 5%;
+    left: 3%;
+  }
   .login-main {
     width: 60%;
     // background-color: red;
@@ -275,8 +285,12 @@ $light_gray: #eee;
     top: 50%;
     left: 50%;
     transform: translate(-40%, -50%);
+    display: flex;
+    justify-content: center;
     .login-introduce {
-      float: left;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+      // float: left;
       width: 50%;
       height: 100%;
       color: #fff;
@@ -326,7 +340,9 @@ $light_gray: #eee;
       flex-direction: column;
       align-items: center;
       background-color: #fff;
-      border-radius: 20px;
+      // border-radius: 20px;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
     }
     .tips {
       font-size: 14px;
@@ -384,22 +400,115 @@ $light_gray: #eee;
   }
 }
 </style>
-<style scoped>
-/* @media (min-width: 768px) {
-  .login-container .login-introduce {
-    width: 40% !important;
-    height: 80% !important;
-    /* overflow-y: scroll; */
-/* }
-  .login-container .login-introduce::-webkit-scrollbar {
-    display: none;
+<style scoped  lang="scss">
+@media only screen and (max-width: 768px) {
+  .login-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .logo {
+      width: 20%;
+      position: absolute;
+      top: 2%;
+      left: 2%;
+      z-index: 1000;
+    }
+    .login-main {
+      width: 75%;
+      height: 85%;
+      transform: translate(-50%, -50%);
+      flex-direction: column;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      .login-introduce {
+        width: 100%;
+        height: 50%;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        border-bottom-left-radius: 0px;
+      }
+      .login-form {
+        width: 100%;
+        height: 50%;
+        border-bottom-right-radius: 20px;
+        border-top-right-radius: 0px;
+        border-bottom-left-radius: 20px;
+        padding: 25px 25px 25px 25px;
+        .title-container {
+          margin-bottom: 30px;
+        }
+        .el-form-item {
+          margin-bottom: 30px;
+        }
+        .el-button {
+          margin-top: 10px !important;
+        }
+      }
+    }
   }
-  .login-container .login-form {
-    width: 40% !important;
-    height: 80% !important;
+}
+@media only screen and (min-width: 768px) and (min-width: 992px) {
+  .login-container {
+    width: 992px;
+    height: 100%;
   }
-}  */
-@media (min-width: 770px) and (max-width: 850px) {
+}
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+  .login-container {
+    width: 992px;
+    height: 100%;
+    .login-main {
+      width: 75%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      .login-introduce {
+        width: 50%;
+        height: 100%;
+      }
+      .login-form {
+        width: 50%;
+        height: 100%;
+      }
+    }
+    .show-pwd {
+      position: absolute;
+      right: 10px;
+      top: 7px;
+      font-size: 16px;
+      color: $dark_gray;
+      cursor: pointer;
+      user-select: none;
+    }
+    .thirdparty-button {
+      position: absolute;
+      right: 35px;
+      bottom: 28px;
+    }
+  }
+  .el-form-item {
+    width: 80%;
+    margin-bottom: 50px;
+  }
+}
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+  .login-container {
+    width: 1200px;
+    height: 100%;
+    .login-main {
+      width: 75%;
+    }
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .login-container {
+    width: 1920px;
+    height: 100%;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 992px) {
   .el-input {
     width: 150px;
   }

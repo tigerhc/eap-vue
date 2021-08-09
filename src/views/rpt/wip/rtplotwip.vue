@@ -15,7 +15,19 @@
             </el-select>
           </el-form-item>
         </el-col>
-
+        <el-col v-if="subLineShow" :span="8">
+          <el-form-item label="子线别" prop="lineNo">
+            <el-select v-model="form.subLineNo">
+              <el-option
+                v-for="item in subLineNoOptions"
+                :key="item.id"
+                :label="item.lab"
+                :value="item.id"
+                :disabled="item.disabled"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
         <el-button type="primary" @click="serch">查询</el-button>
       </el-row>
     </el-form>
@@ -60,7 +72,8 @@ export default {
       ], // 列集合
       lineNo: '',
       form: {
-        lineNo: 'SIM'
+        lineNo: 'SIM',
+        subLineNo: ''
       },
       formRules: {
         lineNo: [{ required: true, message: '请选择线别！', trigger: 'change' }]
@@ -80,7 +93,9 @@ export default {
           value: 'SX',
           label: 'SX'
         }
-      ]
+      ],
+      subLineNoOptions: [{ 'id': 'IGBT', 'lab': 'IGBT' }, { 'id': 'FRD', 'lab': 'FRD' }, { 'id': 'DBCT', 'lab': 'DBCT' }, { 'id': 'DBCB', 'lab': 'DBCB' }, { 'id': '后工程', 'lab': '后工程' }],
+      subLineShow: false
     }
   },
   watch: {
@@ -93,22 +108,19 @@ export default {
   },
   created() {
     if (window.location.hostname === '10.160.144.9') {
-      this.form = {
-        lineNo: 'DM'
-      }
-      this.lineNoOptions = [
-        {
-          value: 'DM',
-          label: 'DM'
-        }
-      ]
+      // this.form = {
+      //   lineNo: 'DM'
+      // }
+      this.form.lineNo = 'DM'
+      this.lineNoOptions = [{ value: 'DM', label: 'DM' }]
+      this.subLineShow = true
     }
     this.initStation()
   },
   methods: {
     initStation() {
       request({
-        url: '/sys/organization/findYieldStep',
+        url: '/sys/organization/findYieldStep?subLineNo=' + this.form.subLineNo,
         method: 'get'
       }).then((response) => {
         const stations = response.data
@@ -124,7 +136,7 @@ export default {
     serch() {
       this.tableData = []
       request({
-        url: '/mes/meslotwip/findLotYield?lineNo=' + this.form.lineNo,
+        url: '/mes/meslotwip/findLotYield?lineNo=' + this.form.lineNo + '&subLineNo=' + this.form.subLineNo,
         method: 'get'
       }).then((response) => {
         const data = response.data.yield

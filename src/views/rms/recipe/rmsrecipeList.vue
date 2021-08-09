@@ -7,25 +7,12 @@
         label="程序名称"
         width="200"
         sort
-        fixed
         align="center"
         handler="view"
         query
         condition="like"
       />
-      <w-table-col
-        name="eqpId"
-        label="设备号"
-        width="150"
-        sort
-        fixed
-        align="center"
-        query
-        dict
-        multiple
-        eqp
-        condition="in"
-      />
+      <w-table-col name="eqpId" label="设备号" width="150" sort align="center" query dict multiple eqp condition="in" />
       <w-table-col name="eqpModelName" width="120" label="设备类型" align="center" />
       <w-table-col
         name="eqpModelId"
@@ -102,8 +89,21 @@
       <w-table-toolbar name="downloadRecipe" label="下载recipe" type="primary" tip="下载recipe？" icon="fa-download" />
       <w-table-toolbar name="bdRecipe" label="比对recipe" type="primary" icon="el-icon-circle-plus-outline" />
       <w-table-button name="edit" label="升级" url="views/rms/recipe/rmsrecipeEdit" icon="el-icon-setting" />
-      <w-table-button v-if="row.approveStep === 0 && row.status !== 'Y'" name="enable" label="启用" tip="确认启用？" icon="el-icon-bell" />
-      <w-table-button v-if="row.status === 'Y'" name="diable" label="停用" tip="确认停用？" icon="el-icon-circle-close" type="warning" />
+      <w-table-button
+        v-if="row.approveStep === 0 && row.status !== 'Y'"
+        name="enable"
+        label="启用"
+        tip="确认启用？"
+        icon="el-icon-bell"
+      />
+      <w-table-button
+        v-if="row.status === 'Y'"
+        name="diable"
+        label="停用"
+        tip="确认停用？"
+        icon="el-icon-circle-close"
+        type="warning"
+      />
       <w-table-button
         :hidden="row.versionType !== 'DRAFT'"
         name="delete"
@@ -156,7 +156,7 @@
       :visible.sync="dialogFormUploadRecipeVisible"
       :close-on-click-modal="false"
       title="上传recipe"
-      style="width: 55%; margin: auto;overflow:hidden"
+      style="width: 55%; margin: auto; overflow: hidden"
     >
       <!--<el-form ref="dataModifyForm" :rules="modifyPasswordRules" :model="modifyPassword" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">-->
       <el-form ref="dataModifyForm" :model="uploadRecipe1" label-position="left" label-width="60px">
@@ -194,7 +194,7 @@
       style="width: 45%; margin: auto"
     >
       <div class="filter-container">
-        <el-input v-model="searchValue" placeholder="配方名称" clearable class="filter-item" style="width: 200px;" />
+        <el-input v-model="searchValue" placeholder="配方名称" clearable class="filter-item" style="width: 200px" />
         <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleSearch">{{
           $t('table.search')
         }}</el-button>
@@ -230,10 +230,10 @@
         :model="downloadRecipe1"
         label-position="left"
         label-width="100px"
-        style="width: 400px; margin-left:50px;"
+        style="width: 400px; margin-left: 50px"
       >
         <el-form-item label="设备号" prop="eqpId">
-          <w-select-eqp v-model="downloadRecipe1.eqpId" :multiple="false" param="filter" style="width:300px" />
+          <w-select-eqp v-model="downloadRecipe1.eqpId" :multiple="false" param="filter" style="width: 300px" />
         </el-form-item>
         <el-form-item label="程序名称" prop="recipeName">
           <el-input v-model="downloadRecipe1.recipeName" />

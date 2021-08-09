@@ -1,10 +1,10 @@
 <template>
   <div class="app-container calendar-list-container">
-    <w-table v-slot="{row}" v-bind="table" :row-class-name="tableRowClassName" url="/ms/msmeasurerecord" sort="create_date.desc" >
+    <w-table v-slot="{row}" v-bind="table" :row-class-name="tableRowClassName" url="/ms/msmeasurerecord" sort="create_date.desc" export="ms/msmeasurerecord/exportDetail" >
       <w-table-col name="recordId" label="流水号" width="280" sort align="left" handler="view"/>
-      <w-table-col name="eqpId" label="设备号" width="100" align="center" query dict multiple eqp param="" condition="in" />
-      <w-table-col name="eqpName" label="设备名" width="100" align="left" />
-      <w-table-col name="lotNo" label="批号" width="100" align="left" query condition="like"/>
+      <w-table-col name="eqpId" label="设备号" width="150" align="center" query dict multiple eqp param="MS" condition="in" />
+      <w-table-col name="eqpName" label="设备名" width="200" align="left" />
+      <w-table-col name="lotNo" label="批号" width="200" align="left" query condition="like"/>
       <w-table-col name="waferId" label="晶圆ID" width="100" align="left" query condition="like"/>
       <w-table-col name="timing" label="时机" width="80" align="center" />
       <!--<w-table-col name="sampleCount" label="采样数" width="80" align="right" />-->

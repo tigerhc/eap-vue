@@ -2,7 +2,7 @@
   <div class="app-container calendar-list-container">
     <w-table v-bind="table" :onloadsuccess="deal" url="/fab/fabequipmentmodel">
       <!--tip="确认查看"-->
-      <w-table-col name="manufacturerName" label="设备厂家" query condition="like" fixed handler="view" />
+      <w-table-col name="manufacturerName" label="设备厂家" query condition="like" handler="view" />
       <w-table-col name="classCode" label="设备类型" query condition="like" />
       <w-table-col name="activeFlag" label="有效标志" dict="ACTIVE_FLAG" />
       <w-table-col name="updateDate" label="更新时间" sort query querymode="date" condition="between" />

@@ -26,10 +26,8 @@
         auto-complete="on"
         label-position="left"
       >
-        <h1>道达IOT系统</h1>
-
-        <!--<sys-config config_key="sys.login.systemTitle" />-->
-        <!--        <h1>联研院半导体所中试线</h1>-->
+        <sys-config config_key="sys.login.systemTitle" />
+        <!-- <h1>联研院半导体所中试线</h1> -->
         <div class="title-container">
           <h3 class="title">{{ $t('login.title') }}</h3>
           <lang-select class="set-language" />
@@ -478,7 +476,7 @@ $light_gray: #eee;
       right: 10px;
       top: 7px;
       font-size: 16px;
-      color: $dark_gray;
+      color: #889aa4;
       cursor: pointer;
       user-select: none;
     }

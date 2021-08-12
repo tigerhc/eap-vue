@@ -1,8 +1,31 @@
 <template>
   <div class="app-container calendar-list-container">
     <w-table v-bind="table" url="/fab/fabequipment" sort="sortNo.asc">
-      <w-table-col name="eqpId" label="设备号" sort fixed align="left" handler="view" query eqp multiple namekey="id" condition="in" />
-      <w-table-col name="modelId" label="设备型号" hidden query dict url="/fab/fabequipmentmodel/list" namekey="modelName" querymode="select" condition="eq" filterable />
+      <w-table-col
+        name="eqpId"
+        label="设备号"
+        sort
+        fixed
+        align="left"
+        handler="view"
+        query
+        eqp
+        multiple
+        namekey="id"
+        condition="in"
+      />
+      <w-table-col
+        name="modelId"
+        label="设备型号"
+        hidden
+        query
+        dict
+        url="/fab/fabequipmentmodel/list"
+        namekey="modelName"
+        querymode="select"
+        condition="eq"
+        filterable
+      />
       <w-table-col name="eqpName" label="设备说明" align="left" />
       <w-table-col name="officeName" label="部门" width="100" align="left" />
       <w-table-col name="modelName" label="设备型号" align="left" />
@@ -10,11 +33,19 @@
       <w-table-col name="ip" label="机台IP地址" align="center" />
       <!--<w-table-col name="sortNo" label="排序号" sort/>-->
       <!-- todo filterable 属性-->
-      <w-table-col name="activeFlag" label="有效标志" width="100" align="center" dict="ACTIVE_FLAG" query condition="eq" />
+      <w-table-col
+        name="activeFlag"
+        label="有效标志"
+        width="100"
+        align="center"
+        dict="ACTIVE_FLAG"
+        query
+        condition="eq"
+      />
       <w-table-toolbar name="initStatus" label="初始化所有状态" type="warning" />
     </w-table>
     <!--设备列表组件-->
-<!--    <eap-eqpt/>-->
+    <!--    <eap-eqpt/>-->
   </div>
 </template>
 
@@ -138,8 +169,9 @@ export default {
 .editCell:hover {
   cursor: pointer;
 }
-.el-select--medium{width: 320px!important;}
+.el-select--medium {
+  width: 320px !important;
+}
 </style>
 <style>
-
 </style>

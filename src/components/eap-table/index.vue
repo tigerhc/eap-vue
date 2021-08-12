@@ -455,22 +455,23 @@ export default {
             url: this.export,
             method: 'post',
             params: obj
-          }).then((res) => {
-            if (res.data.code === 0) {
-              return import('@/vendor/Export2Excel').then((excel) => {
-                console.log(res)
-                excel.export_byte_to_excel(res.data.bytes, res.data.title)
-                this.toolbarStatus.exportsLoading = false
-              })
-            } else {
-              this.$notify.error({
-                title: '失败',
-                message: (res && res.data.errmsg) || '导出失败!',
-                duration: 2000
-              })
-              this.toolbarStatus.exportsLoading = false
-            }
           })
+            .then((res) => {
+              if (res.data.code === 0) {
+                return import('@/vendor/Export2Excel').then((excel) => {
+                  console.log(res)
+                  excel.export_byte_to_excel(res.data.bytes, res.data.title)
+                  this.toolbarStatus.exportsLoading = false
+                })
+              } else {
+                this.$notify.error({
+                  title: '失败',
+                  message: (res && res.data.errmsg) || '导出失败!',
+                  duration: 2000
+                })
+                this.toolbarStatus.exportsLoading = false
+              }
+            })
             .catch((e) => {
               this.toolbarStatus.exportsLoading = false
             })
@@ -639,7 +640,7 @@ export default {
       const opConf = {
         props: {
           ...deftConf,
-          fixed: deftConf.fixed === true ? 'right' : deftConf.fixed,
+          fixed: 'right',
           align: 'center'
         },
         scopedSlots: {
@@ -993,5 +994,7 @@ function isHidden(conf) {
 }
 </style>
 <style scoped>
-  .el-select--medium{width: 290px !important;}
+.el-select--medium {
+  width: 290px !important;
+}
 </style>

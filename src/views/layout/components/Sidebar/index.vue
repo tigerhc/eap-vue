@@ -1,7 +1,7 @@
 <template>
   <el-scrollbar wrap-class="scrollbar-wrapper">
     <div v-show="!isCollapse" class="header-sidebar" @click="comeBack">
-<!--      <img :src="project.projectPhotoUrl" >-->
+      <!--      <img :src="project.projectPhotoUrl" >-->
       <span id="projectName" />
     </div>
     <div v-show="isCollapse" style="padding-left: 10px" class="header-sidebar" @click="comeBack">
@@ -82,6 +82,13 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.el-scrollbar {
+  -moz-user-select: none; /*火狐*/
+  -webkit-user-select: none; /*webkit浏览器*/
+  -ms-user-select: none; /*IE10*/
+  -khtml-user-select: none; /*早期浏览器*/
+  user-select: none;
+}
 .header-sidebar {
   padding-left: 24px;
   display: flex;

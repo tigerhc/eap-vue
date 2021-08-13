@@ -69,12 +69,12 @@ export default {
   z-index: 999;
 }
 
-//取消双击选中文字
-.app-wrapper {
-  -moz-user-select: none; /*火狐*/
-  -webkit-user-select: none; /*webkit浏览器*/
-  -ms-user-select: none; /*IE10*/
-  -khtml-user-select: none; /*早期浏览器*/
-  user-select: none;
-}
+// //取消双击选中文字
+// .app-wrapper {
+//   -moz-user-select: none; /*火狐*/
+//   -webkit-user-select: none; /*webkit浏览器*/
+//   -ms-user-select: none; /*IE10*/
+//   -khtml-user-select: none; /*早期浏览器*/
+//   user-select: none;
+// }
 </style>

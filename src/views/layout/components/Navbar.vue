@@ -202,7 +202,11 @@ export default {
   background: -o-linear-gradient(top, #1c5bc7 0%, #2780ec 100%);
   background: -ms-linear-gradient(top, #1c5bc7 0%, #2780ec 100%);
   background: linear-gradient(to bottom, #1c5bc7 0%, #2780ec 100%);
-
+  -moz-user-select: none; /*火狐*/
+  -webkit-user-select: none; /*webkit浏览器*/
+  -ms-user-select: none; /*IE10*/
+  -khtml-user-select: none; /*早期浏览器*/
+  user-select: none;
   .headerSur {
     display: inline-block;
     // width: 40%;

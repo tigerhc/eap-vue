@@ -1,7 +1,8 @@
 <template>
   <div class="app-container calendar-list-container">
     <w-table v-slot="{row}" v-bind="table" url="/ms/msmeasureconfig" sort="create_date.asc" >
-      <w-table-col name="eqpModelName" label="设备型号" sort fixed align="left" handler="view"/>
+      <w-table-col name="eqpModelName" label="设备型号" sort query condition="like" fixed align="left" handler="view"/>
+      <w-table-col name="processNo" label="工序" align="left"/>
       <w-table-col name="productionNo" label="产品" align="left"/>
       <w-table-col name="timing" label="时机" width="100" align="left"/>
       <w-table-col name="status" label="状态" align="left" />

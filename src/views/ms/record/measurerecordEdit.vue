@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-container calendar-list-container">
     <w-form v-bind="formConf" :col="3" :model="model" :bottom-btn="true">
       <el-input v-model="model.recordId" label="流水号" />
       <el-input v-model="model.eqpId" label="设备号" />

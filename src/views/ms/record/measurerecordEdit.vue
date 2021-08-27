@@ -16,10 +16,10 @@
       <el-input v-model="model.updateDate" :disabled="true" label="更新日期" />
     </w-form>
     <div class="model">
-      <el-button class="exportBtn" @click="exportDetail">
-        <i class="fa-download" />
-        <span>导出Excel</span>
-      </el-button>
+<!--      <el-button class="exportBtn" @click="exportDetail">-->
+<!--        <i class="fa-download" />-->
+<!--        <span>导出Excel</span>-->
+<!--      </el-button>-->
       <el-form v-if="rowData.length > 0" :model="model" disabled>
         <div v-for="(item, index) in rowData" :key="item.id">
           <el-row v-if="index % 3 == 0">

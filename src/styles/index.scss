@@ -235,7 +235,9 @@ code {
 .el-table td .jk-font-red {
   color: red;
 }
-
+.el-table th.el-table__cell {
+  background-color: #409eff;
+}
 .el-table .el-table__row .el-form-item {
   margin-bottom: 0px;
 }
@@ -254,7 +256,7 @@ code {
 
 //滚动条的宽度
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
   height: 8px;
   background-color: #f1f1f1;
   border-radius: 6px;

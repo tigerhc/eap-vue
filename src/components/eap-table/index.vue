@@ -71,6 +71,8 @@ export default {
   },
   data: function() {
     return {
+      divHeight: null,
+      tableHeight: null,
       isLoading: false,
       colSet: [],
       query: {
@@ -136,6 +138,23 @@ export default {
   },
   created() {},
   mounted() {
+    this.$nextTick(function() {
+      this.divHeight = document.querySelector('.filter-container').offsetHeight - 56
+      const exceptHeight = 0
+      // this.$refs.table.$el.offsetTop：表格距离浏览器的高度
+      if (this.$refs.table.$el) {
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - exceptHeight
+      }
+
+      // 监听窗口大小变化
+      const self = this
+      window.onresize = function() {
+        if (self.$refs.table.$el) {
+          self.tableHeight = window.innerHeight - self.$refs.table.$el.offsetTop - exceptHeight
+        }
+      }
+    })
+
     this.moreQuery()
   },
   methods: {
@@ -846,9 +865,7 @@ export default {
       props: { data: this.list, ...this.conf },
       style: {
         width: '100%',
-        minHeight: this.hiddenQuery
-          ? 'calc(65vh - 84px - 96px - 42px - 1px )'
-          : 'calc(65vh - 84px - 96px - 42px - 46px - 1px )'
+        minHeight: this.tableHeight
       },
       key: this.tableKey,
       ref: 'table',
@@ -877,6 +894,15 @@ export default {
           }
           this.refresh()
         }
+      }
+    }
+    const divConf = {
+      style: {
+        width: '100%',
+        height: this.hiddenQuery
+          ? `calc(100vh - 84px - 96px - 42px  - 1px - ${this.divHeight}px)`
+          : 'calc(64vh - 84px - 38px   )',
+        overflowY: 'auto'
       }
     }
 
@@ -966,9 +992,11 @@ export default {
           {this.renderQuery(h)}
           {this.renderToobar()}
         </div>
-        <el-table {...tableConf} v-loading={this.isLoading}>
-          {allCols}
-        </el-table>
+        <div {...divConf}>
+          <el-table {...tableConf} v-loading={this.isLoading}>
+            {allCols}
+          </el-table>
+        </div>
         {pagination}
       </div>
     )
